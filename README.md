@@ -14,14 +14,8 @@ Prerequisites: JDK 17 (use the exact version), update Intellij to the most recen
    > Task :processResources NO-SOURCE
    > Task :classes
    
-   > Task :Duke.main()
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
-   
+   > Task :SGSafe.main()
+   This is SGSafe
    What is your name?
    ```
    Type some word and press enter to let the execution proceed to the end.
