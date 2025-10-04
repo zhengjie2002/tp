@@ -6,7 +6,7 @@ public class Case {
     private String info;
     private String victim;
     private String officer;
-    private boolean isClosed;
+    private boolean isOpen;
 
     Case (String title, String date, String info, String victim, String officer) {
         this.title = title;
@@ -14,6 +14,11 @@ public class Case {
         this.info = info;
         this.victim = victim;
         this.officer = officer;
-        this.isClosed = false;
+        this.isOpen = false;
+    }
+
+    public String getDisplayLine() {
+        String open = this.isOpen ? "[C]" : "[O]";
+        return open + " " + this.date + " " + this.title;
     }
 }

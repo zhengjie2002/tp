@@ -1,6 +1,7 @@
 package seedu.sgsafe;
 import java.util.Scanner;
 
+import seedu.sgsafe.utils.casefiles.CaseManager;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.ui.Parser;
@@ -46,5 +47,15 @@ public class SGSafe {
      */
     public static void doAction(String userInput) {
         Command command = Parser.parseInput(userInput);
+
+        switch (command.getType()) {
+        case LIST:
+            CaseManager.listCases();
+            break;
+        case INVALID:
+        case UNKNOWN:
+            Display.printMessage(command.getErrorMessage());
+            break;
+        }
     }
 }
