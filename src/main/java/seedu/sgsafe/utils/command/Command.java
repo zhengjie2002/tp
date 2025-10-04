@@ -1,5 +1,13 @@
 package seedu.sgsafe.utils.command;
 
 public abstract class Command {
-    public CommandType commandType = CommandType.UNKNOWN;
+    protected CommandType commandType = CommandType.UNKNOWN;
+
+    public CommandType getCommandType() {
+        return commandType;
+    }
+
+    public String[] getErrorMessage() {
+        return null;
+    }
 }
