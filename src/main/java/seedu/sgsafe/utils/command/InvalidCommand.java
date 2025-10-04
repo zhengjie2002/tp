@@ -14,12 +14,8 @@ public class InvalidCommand extends Command {
      * @param errorType the type of error that caused the command to be invalid
      */
     public InvalidCommand(InvalidCommandType errorType) {
+        this.commandType = CommandType.INVALID;
         this.errorMessage = InvalidCommandErrorMessages.getMessage(errorType);
-    }
-
-    @Override
-    public CommandType getType() {
-        return CommandType.INVALID;
     }
 
     public String[] getErrorMessage() {

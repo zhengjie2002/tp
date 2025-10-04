@@ -18,11 +18,7 @@ public class ListCommand extends Command {
      * @param listingMode the mode that determines which cases to list
      */
     public ListCommand(CaseListingMode listingMode) {
+        this.commandType = CommandType.LIST;
         this.listingMode = listingMode;
-    }
-
-    @Override
-    public CommandType getType() {
-        return CommandType.LIST;
     }
 }

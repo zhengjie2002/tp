@@ -1,7 +1,7 @@
 package seedu.sgsafe;
 import java.util.Scanner;
 
-import seedu.sgsafe.utils.casefiles.CaseManager;
+import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.ui.Parser;
@@ -28,7 +28,7 @@ public class SGSafe {
      * Continuously reads user input from the console until the user types "bye".
      * Each input is parsed and executed as a command.
      */
-    public static void mainLoop() {
+    private static void mainLoop() {
         Scanner in = new Scanner(System.in);
         String userInput;
         while (true) {
@@ -36,7 +36,7 @@ public class SGSafe {
             if (userInput.equals("bye")) {
                 return;
             }
-            doAction(userInput);
+            handleUserCommand(userInput);
         }
     }
 
@@ -45,10 +45,10 @@ public class SGSafe {
      *
      * @param userInput the raw input string entered by the user
      */
-    public static void doAction(String userInput) {
+    private static void handleUserCommand(String userInput) {
         Command command = Parser.parseInput(userInput);
 
-        switch (command.getType()) {
+        switch (command.getCommandType()) {
         case LIST:
             CaseManager.listCases();
             break;
