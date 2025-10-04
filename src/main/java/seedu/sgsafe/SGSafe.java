@@ -54,6 +54,7 @@ public class SGSafe {
             break;
         case INVALID:
         case UNKNOWN:
+        default:
             Display.printMessage(command.getErrorMessage());
             break;
         }
