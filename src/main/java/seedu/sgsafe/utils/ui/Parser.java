@@ -39,8 +39,8 @@ public class Parser {
         }
 
         return switch (keyword) {
-            case "list" -> parseListCommand(remainder);
-            default -> new InvalidCommand(InvalidCommandType.UNKNOWN_COMMAND);
+        case "list" -> parseListCommand(remainder);
+        default -> new InvalidCommand(InvalidCommandType.UNKNOWN_COMMAND);
         };
     }
 

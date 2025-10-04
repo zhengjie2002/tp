@@ -49,18 +49,18 @@ public class InvalidCommandErrorMessages {
      * Maps each {@link InvalidCommandType} to its corresponding error message(s).
      */
     private static final Map<InvalidCommandType, String[]> errorMessages = Map.of(
-            InvalidCommandType.EMPTY_COMMAND,
-            new String[] { ErrorText.EMPTY.text },
+        InvalidCommandType.EMPTY_COMMAND,
+        new String[] { ErrorText.EMPTY.text },
 
-            InvalidCommandType.UNKNOWN_COMMAND,
-            new String[] { ErrorText.UNKNOWN.text },
+        InvalidCommandType.UNKNOWN_COMMAND,
+        new String[] { ErrorText.UNKNOWN.text },
 
-            InvalidCommandType.LIST_COMMAND_INVALID_ARGUMENTS,
-            new String[] {
-                    ErrorText.COMMAND_INVALID_ARGS.text,
-                    ErrorText.LIST_HINT.text,
-                    ErrorText.LIST_EXAMPLE.text
-            }
+        InvalidCommandType.LIST_COMMAND_INVALID_ARGUMENTS,
+        new String[] {
+                ErrorText.COMMAND_INVALID_ARGS.text,
+                ErrorText.LIST_HINT.text,
+                ErrorText.LIST_EXAMPLE.text
+        }
     );
 
     /**
