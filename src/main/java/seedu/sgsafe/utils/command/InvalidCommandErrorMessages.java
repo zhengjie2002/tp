@@ -57,9 +57,9 @@ public class InvalidCommandErrorMessages {
 
         InvalidCommandType.LIST_COMMAND_INVALID_ARGUMENTS,
         new String[] {
-                ErrorText.COMMAND_INVALID_ARGS.text,
-                ErrorText.LIST_HINT.text,
-                ErrorText.LIST_EXAMPLE.text
+            ErrorText.COMMAND_INVALID_ARGS.text,
+            ErrorText.LIST_HINT.text,
+            ErrorText.LIST_EXAMPLE.text
         }
     );
 
