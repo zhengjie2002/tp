@@ -3,5 +3,6 @@ package seedu.sgsafe.utils.command;
 public enum CommandType {
     INVALID,
     UNKNOWN,
-    LIST
+    LIST,
+    ADD
 }
