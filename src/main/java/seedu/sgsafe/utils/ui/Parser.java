@@ -16,7 +16,10 @@ import java.util.Map;
  */
 public class Parser {
 
+    // Regular expression used to split input into flags and their values. It retains the delimiter.
     private static final String FLAG_SEPARATOR_REGEX = "\\s+(?=--)";
+
+    // Prefix used to identify flags in the input
     private static final String FLAG_PREFIX = "--";
 
     /**
@@ -82,34 +85,66 @@ public class Parser {
             return new InvalidCommand(InvalidCommandType.ADD_COMMAND_NO_ARGUMENTS);
         }
 
+        Map<String, String> flagValues = extractFlagValues(remainder);
+
+        if (flagValues == null) {
+            return new InvalidCommand(InvalidCommandType.ADD_COMMAND_INVALID_ARGUMENTS);
+        }
+
+        if (validateAddCommandFlags(flagValues)) {
+            return new InvalidCommand(InvalidCommandType.ADD_COMMAND_INVALID_ARGUMENTS);
+        }
+
+        return new AddCommand(flagValues.get("title"), flagValues.get("date"), flagValues.get("info"),
+                flagValues.get("victim"), flagValues.get("officer"));
+    }
+
+    /**
+     * Validates the presence of required flags for the {@code add} command.
+     * <p>
+     * The required flags are {@code title}, {@code date}, and {@code info}.
+     *
+     * @param flagValues a map of flag names with their corresponding values
+     * @return {@code true} if any required flag is missing, {@code false} otherwise
+     */
+    private static Boolean validateAddCommandFlags(Map<String, String> flagValues) {
+        return (!flagValues.containsKey("title") || !flagValues.containsKey("date") || !flagValues.containsKey("info"));
+    }
+
+    /**
+     * Extracts flags and their corresponding values from the input string.
+     * <p>
+     * The input is split based on the defined flag separator regex, and each part is processed
+     * to isolate the flag name and its value. The results are stored in a map.
+     *
+     * @param input the portion of the input containing flags and their values
+     * @return a map of flag names to their corresponding values
+     */
+    private static Map<String, String> extractFlagValues(String input) {
+
+        String[] parts = input.split(FLAG_SEPARATOR_REGEX);
         Map<String, String> flagValues = new HashMap<>();
-        String[] parts = remainder.split(FLAG_SEPARATOR_REGEX);
 
         for (String part : parts) {
+
             String trimmedPart = part.replaceFirst(FLAG_PREFIX, "").trim();
             if (trimmedPart.isEmpty()) {
-                return new InvalidCommand(InvalidCommandType.ADD_COMMAND_INVALID_ARGUMENTS);
+                return null;
             }
 
             int spaceIndex = trimmedPart.indexOf(" ");
             if (spaceIndex == -1) {
-                return new InvalidCommand(InvalidCommandType.ADD_COMMAND_MISSING_FLAG_VALUE);
+                return null; //
             }
 
             String flag = trimmedPart.substring(0, spaceIndex).trim();
             String value = trimmedPart.substring(spaceIndex + 1).trim();
 
             if (flagValues.containsKey(flag)) {
-                return new InvalidCommand(InvalidCommandType.ADD_COMMAND_DUPLICATE_FLAG);
+                return null;
             }
             flagValues.put(flag, value);
         }
-
-        if (!flagValues.containsKey("title") || !flagValues.containsKey("date") || !flagValues.containsKey("info")) {
-            return new InvalidCommand(InvalidCommandType.ADD_COMMAND_MISSING_REQUIRED_FIELDS);
-        }
-
-        return new AddCommand(flagValues.get("title"), flagValues.get("date"), flagValues.get("info"),
-                flagValues.get("victim"), flagValues.get("officer"));
+        return flagValues;
     }
 }
