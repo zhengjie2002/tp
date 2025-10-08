@@ -1,7 +1,9 @@
 package seedu.sgsafe;
+
 import java.util.Scanner;
 
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.ui.Parser;
@@ -51,6 +53,13 @@ public class SGSafe {
         switch (command.getCommandType()) {
         case LIST:
             CaseManager.listCases();
+            break;
+        case ADD:
+            if (command instanceof AddCommand) {
+                CaseManager.addCase((AddCommand) command);
+            } else {
+                Display.printMessage("Error: Invalid ADD command");
+            }
             break;
         case INVALID:
         case UNKNOWN:

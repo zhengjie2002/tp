@@ -9,4 +9,8 @@ public enum InvalidCommandType {
 
     // List Command Errors
     LIST_COMMAND_INVALID_ARGUMENTS,
+
+    // Add Command Errors
+    ADD_COMMAND_NO_ARGUMENTS,
+    ADD_COMMAND_INVALID_ARGUMENTS
 }

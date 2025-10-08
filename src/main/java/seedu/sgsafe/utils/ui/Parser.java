@@ -1,16 +1,26 @@
 package seedu.sgsafe.utils.ui;
 
+import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.InvalidCommand;
 import seedu.sgsafe.utils.command.InvalidCommandType;
 import seedu.sgsafe.utils.command.ListCommand;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Responsible for interpreting raw user input and converting it into structured {@link Command} objects.
  * Acts as the first step in the command execution pipeline by identifying the command type and validating arguments.
  */
 public class Parser {
+
+    // Regular expression used to split input into flags and their values. It retains the delimiter.
+    private static final String FLAG_SEPARATOR_REGEX = "\\s+(?=--)";
+
+    // Prefix used to identify flags in the input
+    private static final String FLAG_PREFIX = "--";
 
     /**
      * Parses raw user input into a {@link Command} object.
@@ -40,6 +50,7 @@ public class Parser {
 
         return switch (keyword) {
         case "list" -> parseListCommand(remainder);
+        case "add" -> parseAddCommand(remainder);
         default -> new InvalidCommand(InvalidCommandType.UNKNOWN_COMMAND);
         };
     }
@@ -48,7 +59,7 @@ public class Parser {
      * Parses the {@code list} command and validates its arguments.
      * <p>
      * If the remainder of the input is non-empty, the command is considered invalid.
-     * Otherwise, a {@link ListCommand} is returned with {@link CaseListingMode#ALL}.
+     * Otherwise, a {@link ListCommand} is returned.
      *
      * @param remainder the portion of the input following the {@code list} keyword
      * @return a valid {@link ListCommand} or an {@link InvalidCommand} if arguments are invalid
@@ -58,5 +69,82 @@ public class Parser {
             return new InvalidCommand(InvalidCommandType.LIST_COMMAND_INVALID_ARGUMENTS);
         }
         return new ListCommand(CaseListingMode.ALL);
+    }
+
+    /**
+     * Parses the {@code add} command and validates its arguments.
+     * <p>
+     * This method extracts flags and their values from the input, ensuring that required fields
+     * (title, date, and info) are present. If any validation fails, an {@link InvalidCommand} is returned.
+     *
+     * @param remainder the portion of the input following the {@code add} keyword
+     * @return a valid {@link AddCommand} or an {@link InvalidCommand} if arguments are invalid
+     */
+    private static Command parseAddCommand(String remainder) {
+        if (remainder.isEmpty()) {
+            return new InvalidCommand(InvalidCommandType.ADD_COMMAND_NO_ARGUMENTS);
+        }
+
+        Map<String, String> flagValues = extractFlagValues(remainder);
+
+        if (flagValues == null) {
+            return new InvalidCommand(InvalidCommandType.ADD_COMMAND_INVALID_ARGUMENTS);
+        }
+
+        if (validateAddCommandFlags(flagValues)) {
+            return new InvalidCommand(InvalidCommandType.ADD_COMMAND_INVALID_ARGUMENTS);
+        }
+
+        return new AddCommand(flagValues.get("title"), flagValues.get("date"), flagValues.get("info"),
+                flagValues.get("victim"), flagValues.get("officer"));
+    }
+
+    /**
+     * Validates the presence of required flags for the {@code add} command.
+     * <p>
+     * The required flags are {@code title}, {@code date}, and {@code info}.
+     *
+     * @param flagValues a map of flag names with their corresponding values
+     * @return {@code true} if any required flag is missing, {@code false} otherwise
+     */
+    private static Boolean validateAddCommandFlags(Map<String, String> flagValues) {
+        return (!flagValues.containsKey("title") || !flagValues.containsKey("date") || !flagValues.containsKey("info"));
+    }
+
+    /**
+     * Extracts flags and their corresponding values from the input string.
+     * <p>
+     * The input is split based on the defined flag separator regex, and each part is processed
+     * to isolate the flag name and its value. The results are stored in a map.
+     *
+     * @param input the portion of the input containing flags and their values
+     * @return a map of flag names to their corresponding values
+     */
+    private static Map<String, String> extractFlagValues(String input) {
+
+        String[] parts = input.split(FLAG_SEPARATOR_REGEX);
+        Map<String, String> flagValues = new HashMap<>();
+
+        for (String part : parts) {
+
+            String trimmedPart = part.replaceFirst(FLAG_PREFIX, "").trim();
+            if (trimmedPart.isEmpty()) {
+                return null;
+            }
+
+            int spaceIndex = trimmedPart.indexOf(" ");
+            if (spaceIndex == -1) {
+                return null; //
+            }
+
+            String flag = trimmedPart.substring(0, spaceIndex).trim();
+            String value = trimmedPart.substring(spaceIndex + 1).trim();
+
+            if (flagValues.containsKey(flag)) {
+                return null;
+            }
+            flagValues.put(flag, value);
+        }
+        return flagValues;
     }
 }
