@@ -5,8 +5,11 @@ import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.ListCommand;
 
+import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
+import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.ListCommandException;
+import seedu.sgsafe.utils.exceptions.MissingAddParameterException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
 import java.util.HashMap;
@@ -32,9 +35,9 @@ public class Parser {
      *
      * @param userInput the full input string entered by the user
      * @return a {@link Command} representing the parsed action
-     * @throws EmptyCommandException if the input is empty or contains only whitespace
+     * @throws EmptyCommandException   if the input is empty or contains only whitespace
      * @throws UnknownCommandException if the command keyword is not recognized
-     * @throws ListCommandException if the {@code list} command contains unexpected arguments
+     * @throws ListCommandException    if the {@code list} command contains unexpected arguments
      */
     public static Command parseInput(String userInput) {
         userInput = userInput.strip();
@@ -80,40 +83,42 @@ public class Parser {
      * Parses the {@code add} command and validates its arguments.
      * <p>
      * This method extracts flags and their values from the input, ensuring that required fields
-     * (title, date, and info) are present. If any validation fails, an {@link InvalidCommand} is returned.
+     * (title, date, and info) are present.
      *
      * @param remainder the portion of the input following the {@code add} keyword
-     * @return a valid {@link AddCommand} or an {@link InvalidCommand} if arguments are invalid
+     * @return a valid {@link AddCommand} if arguments are invalid
      */
     private static Command parseAddCommand(String remainder) {
-        if (remainder.isEmpty()) {
-            return null;
-        }
-
+        validateInputNotEmpty(remainder);
         Map<String, String> flagValues = extractFlagValues(remainder);
-
-        if (flagValues == null) {
-            return null;
-        }
-
-        if (validateAddCommandFlags(flagValues)) {
-            return null;
-        }
+        validateRequiredFlags(flagValues);
 
         return new AddCommand(flagValues.get("title"), flagValues.get("date"), flagValues.get("info"),
                 flagValues.get("victim"), flagValues.get("officer"));
     }
 
     /**
-     * Validates the presence of required flags for the {@code add} command.
-     * <p>
-     * The required flags are {@code title}, {@code date}, and {@code info}.
+     * Validates that the input is not empty.
      *
-     * @param flagValues a map of flag names with their corresponding values
-     * @return {@code true} if any required flag is missing, {@code false} otherwise
+     * @param input the input to validate
+     * @throws MissingAddParameterException if the input is empty
      */
-    private static Boolean validateAddCommandFlags(Map<String, String> flagValues) {
-        return (!flagValues.containsKey("title") || !flagValues.containsKey("date") || !flagValues.containsKey("info"));
+    private static void validateInputNotEmpty(String input) {
+        if (input.isEmpty()) {
+            throw new MissingAddParameterException();
+        }
+    }
+
+    /**
+     * Validates that all required flags are present.
+     *
+     * @param flagValues the map of flag names to their values
+     * @throws MissingAddParameterException if any required flag is missing
+     */
+    private static void validateRequiredFlags(Map<String, String> flagValues) {
+        if (!flagValues.containsKey("title") || !flagValues.containsKey("date") || !flagValues.containsKey("info")) {
+            throw new MissingAddParameterException();
+        }
     }
 
     /**
@@ -123,7 +128,9 @@ public class Parser {
      * to isolate the flag name and its value. The results are stored in a map.
      *
      * @param input the portion of the input containing flags and their values
-     * @return a map of flag names to their corresponding values
+     * @return a map of flag names with their corresponding values
+     * @throws DuplicateFlagException if a flag appears more than once in the input
+     * @throws IncorrectFlagException if a flag is malformed or missing its value
      */
     private static Map<String, String> extractFlagValues(String input) {
 
@@ -132,21 +139,23 @@ public class Parser {
 
         for (String part : parts) {
 
+            // First, the prefix -- is removed.
             String trimmedPart = part.replaceFirst(FLAG_PREFIX, "").trim();
             if (trimmedPart.isEmpty()) {
-                return null;
+                throw new IncorrectFlagException();
             }
 
             int spaceIndex = trimmedPart.indexOf(" ");
             if (spaceIndex == -1) {
-                return null; //
+                throw new IncorrectFlagException();
             }
 
+            // Then we separate the flag from its value.
             String flag = trimmedPart.substring(0, spaceIndex).trim();
             String value = trimmedPart.substring(spaceIndex + 1).trim();
 
             if (flagValues.containsKey(flag)) {
-                return null;
+                throw new DuplicateFlagException();
             }
             flagValues.put(flag, value);
         }
