@@ -166,7 +166,8 @@ public class Parser {
      */
     private static Command parseEditCommand(String remainder) {
         if (remainder.isEmpty() || !isValidEditCommandInput(remainder)) {
-            throw new InvalidEditCommandException("The 'edit' command requires a case number, followed by at least one flag and its value.");
+            throw new InvalidEditCommandException("The 'edit' command requires a case number, " +
+                    "followed by at least one flag and its value.");
         }
 
         int firstSpaceIndex = remainder.indexOf(" ");
@@ -181,7 +182,8 @@ public class Parser {
         Map<String, String> flagValues = extractFlagValues(replacements);
 
         if (flagValues == null) {
-            throw new InvalidEditCommandException("The 'edit' command requires at least one flag and every flag's corresponding value.");
+            throw new InvalidEditCommandException("The 'edit' command requires at least one flag " +
+                    "and every flag's corresponding value.");
         }
 
         for (String flag : flagValues.keySet()) {
@@ -201,8 +203,8 @@ public class Parser {
      * @return true if the input matches the required format, false otherwise
      */
     public static boolean isValidEditCommandInput(String input) {
-        final String INPUT_PATTERN = "^\\d+\\s+(--\\s*\\w+(?:\\s+\\S+)+)(?:\\s+--\\s*\\w+(?:\\s+\\S+)+)*$";
-        return Pattern.matches(INPUT_PATTERN, input.strip());
+        final String inputPattern  = "^\\d+\\s+(--\\s*\\w+(?:\\s+\\S+)+)(?:\\s+--\\s*\\w+(?:\\s+\\S+)+)*$";
+        return Pattern.matches(inputPattern, input.strip());
     }
 
 }
