@@ -6,7 +6,8 @@ import seedu.sgsafe.utils.command.CommandType;
 import seedu.sgsafe.utils.exceptions.ListCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParserTest {
 
