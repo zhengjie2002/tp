@@ -2,6 +2,7 @@ package seedu.sgsafe.utils.ui;
 
 import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.CaseListingMode;
+import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.EditCommand;
@@ -9,6 +10,7 @@ import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
+import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 
 import seedu.sgsafe.utils.exceptions.ListCommandException;
@@ -68,6 +70,7 @@ public class Parser {
         case "list" -> parseListCommand(remainder);
         case "add" -> parseAddCommand(remainder);
         case "edit" -> parseEditCommand(remainder);
+        case "close" -> parseCloseCommand(remainder);
         default -> throw new UnknownCommandException();
         };
     }
@@ -104,6 +107,23 @@ public class Parser {
 
         return new AddCommand(flagValues.get("title"), flagValues.get("date"), flagValues.get("info"),
                 flagValues.get("victim"), flagValues.get("officer"));
+    }
+
+    private static Command parseCloseCommand(String remainder) {
+        validateIndexNotEmpty(remainder);
+
+        try {
+            int caseNumber = Integer.parseInt(remainder);
+            return new CloseCommand(caseNumber);
+        } catch (NumberFormatException e) {
+            throw new InvalidCloseCommandException();
+        }
+    }
+
+    private static void validateIndexNotEmpty(String input) {
+        if (input.isEmpty()) {
+            throw new InvalidCloseCommandException();
+        }
     }
 
     /**
