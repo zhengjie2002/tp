@@ -48,21 +48,9 @@ public class Parser {
      * @throws ListCommandException    if the {@code list} command contains unexpected arguments
      */
     public static Command parseInput(String userInput) {
-        userInput = userInput.strip();
-        if (userInput.isEmpty()) {
-            throw new EmptyCommandException();
-        }
-
-        int spaceIndex = userInput.indexOf(" ");
-        String keyword = userInput;
-        if (spaceIndex != -1) {
-            keyword = userInput.substring(0, spaceIndex).trim();
-        }
-
-        String remainder = "";
-        if (spaceIndex != -1 && userInput.length() > spaceIndex + 1) {
-            remainder = userInput.substring(spaceIndex + 1).trim();
-        }
+        userInput = cleanUserInput(userInput);
+        String keyword = getKeywordFromUserInput(userInput);
+        String remainder = getRemainderFromUserInput(userInput);
 
         return switch (keyword) {
         case "list" -> parseListCommand(remainder);
@@ -70,6 +58,55 @@ public class Parser {
         case "edit" -> parseEditCommand(remainder);
         default -> throw new UnknownCommandException();
         };
+    }
+
+    /**
+     * Cleans the raw user input by trimming whitespace and validating non-emptiness.
+     *
+     * @param userInput the raw input string from the user
+     * @return a trimmed, non-empty input string
+     * @throws EmptyCommandException if the input is empty after trimming
+     */
+    private static String cleanUserInput(String userInput) {
+        userInput = userInput.strip();
+        if (userInput.isEmpty()) {
+            throw new EmptyCommandException();
+        }
+        return userInput;
+    }
+
+    /**
+     * Extracts the command keyword from the user input.
+     * <p>
+     * The keyword is assumed to be the first word before any space.
+     *
+     * @param userInput the full input string
+     * @return the command keyword (e.g., "add", "list", "edit")
+     */
+    private static String getKeywordFromUserInput(String userInput) {
+        int spaceIndex = userInput.indexOf(" ");
+        if (spaceIndex != -1) {
+            return userInput.substring(0, spaceIndex).trim();
+        } else {
+            return userInput;
+        }
+    }
+
+    /**
+     * Extracts the remainder of the input after the command keyword.
+     * <p>
+     * Used to pass arguments to command-specific parsers.
+     *
+     * @param userInput the full input string
+     * @return the remainder of the input after the keyword, or an empty string if none
+     */
+    private static String getRemainderFromUserInput(String userInput) {
+        int spaceIndex = userInput.indexOf(" ");
+        if (spaceIndex != -1 && userInput.length() > spaceIndex + 1) {
+            return userInput.substring(spaceIndex + 1).trim();
+        } else {
+            return "";
+        }
     }
 
     /**
