@@ -4,5 +4,6 @@ public enum CommandType {
     INVALID,
     UNKNOWN,
     LIST,
-    ADD
+    ADD,
+    EDIT
 }

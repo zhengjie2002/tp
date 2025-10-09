@@ -5,6 +5,7 @@ import java.util.Scanner;
 import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.Command;
+import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.exceptions.InvalidCommandException;
 import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.ui.Parser;
@@ -62,6 +63,9 @@ public class SGSafe {
                 } else {
                     Display.printMessage("Error: Invalid ADD command");
                 }
+                break;
+            case EDIT:
+                CaseManager.editCase((EditCommand) command);
                 break;
             case INVALID:
             case UNKNOWN:

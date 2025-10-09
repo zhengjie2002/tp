@@ -12,5 +12,6 @@ public enum InvalidCommandType {
 
     // Add Command Errors
     ADD_COMMAND_NO_ARGUMENTS,
-    ADD_COMMAND_INVALID_ARGUMENTS
+    ADD_COMMAND_INVALID_ARGUMENTS,
+
 }

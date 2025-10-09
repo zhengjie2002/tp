@@ -1,5 +1,7 @@
 package seedu.sgsafe.domain.casefiles;
 
+import java.util.Map;
+
 /**
  * Represents a case file in the SGSafe system.
  * Each case contains metadata such as title, date, victim, officer, and status.
@@ -52,5 +54,29 @@ public class Case {
     public String getDisplayLine() {
         String open = this.isOpen ? "[C]" : "[O]";
         return open + " " + this.date + " " + this.title;
+    }
+
+    /**
+     * Updates the fields of this Case object using the values provided in the map.
+     * Only the fields that appear in newValues will be changed.
+     *
+     * @param newValues a map containing the fields to update and their new values
+     */
+    public void update(Map<String, String> newValues) {
+        if (newValues.containsKey("title")) {
+            this.title = newValues.get("title");
+        }
+        if (newValues.containsKey("date")) {
+            this.date = newValues.get("date");
+        }
+        if (newValues.containsKey("info")) {
+            this.info = newValues.get("info");
+        }
+        if (newValues.containsKey("victim")) {
+            this.victim = newValues.get("victim");
+        }
+        if (newValues.containsKey("officer")) {
+            this.officer = newValues.get("officer");
+        }
     }
 }
