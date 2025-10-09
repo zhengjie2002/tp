@@ -7,7 +7,6 @@ import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCommandException;
-import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.ui.Parser;
 
