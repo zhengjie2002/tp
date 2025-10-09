@@ -56,6 +56,14 @@ public class Case {
         return open + " " + this.date + " " + this.title;
     }
 
+    public void setClosed() {
+        this.isOpen = false;
+    }
+
+    public void setOpen() {
+        this.isOpen = true;
+    }
+
     /**
      * Updates the fields of this Case object using the values provided in the map.
      * Only the fields that appear in newValues will be changed.
