@@ -7,6 +7,9 @@ import seedu.sgsafe.utils.command.InvalidCommand;
 import seedu.sgsafe.utils.command.InvalidCommandType;
 import seedu.sgsafe.utils.command.ListCommand;
 
+import seedu.sgsafe.utils.exceptions.EmptyCommandException;
+import seedu.sgsafe.utils.exceptions.UnknownCommandException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,11 +33,12 @@ public class Parser {
      *
      * @param userInput the full input string entered by the user
      * @return a {@link Command} representing the parsed action, or an {@link InvalidCommand} if parsing fails
+     * @throws EmptyCommandException if the input is empty or contains only whitespace
      */
     public static Command parseInput(String userInput) {
         userInput = userInput.strip();
         if (userInput.isEmpty()) {
-            return new InvalidCommand(InvalidCommandType.EMPTY_COMMAND);
+            throw new EmptyCommandException();
         }
 
         int spaceIndex = userInput.indexOf(" ");
@@ -51,7 +55,7 @@ public class Parser {
         return switch (keyword) {
         case "list" -> parseListCommand(remainder);
         case "add" -> parseAddCommand(remainder);
-        default -> new InvalidCommand(InvalidCommandType.UNKNOWN_COMMAND);
+        default -> throw new UnknownCommandException();
         };
     }
 
