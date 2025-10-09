@@ -8,6 +8,9 @@ public enum CaseListingMode {
     /** List all cases regardless of status. */
     ALL,
 
+    /** Defaults to listing all cases when command has no input arguments*/
+    DEFAULT,
+
     /** List only open cases. */
     OPEN_ONLY,
 

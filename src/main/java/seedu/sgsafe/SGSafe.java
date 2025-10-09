@@ -6,6 +6,7 @@ import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCommandException;
 import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.ui.Parser;
@@ -67,11 +68,8 @@ public class SGSafe {
             case EDIT:
                 CaseManager.editCase((EditCommand) command);
                 break;
-            case INVALID:
-            case UNKNOWN:
             default:
-                Display.printMessage(command.getErrorMessage());
-                break;
+                throw new EmptyCommandException();
             }
         } catch (InvalidCommandException e) {
             Display.printMessage(e.getErrorMessage());

@@ -42,7 +42,7 @@ public class Case {
         this.info = info;
         this.victim = victim;
         this.officer = officer;
-        this.isOpen = false;
+        this.isOpen = true;
     }
 
     /**
@@ -52,7 +52,7 @@ public class Case {
      * @return a display-friendly string representing the case
      */
     public String getDisplayLine() {
-        String open = this.isOpen ? "[C]" : "[O]";
+        String open = this.isOpen ? "[O]" : "[C]";
         return open + " " + this.date + " " + this.title;
     }
 

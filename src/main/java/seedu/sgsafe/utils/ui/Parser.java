@@ -4,12 +4,10 @@ import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.EditCommand;
-import seedu.sgsafe.utils.command.InvalidCommand;
-import seedu.sgsafe.utils.command.InvalidCommandType;
-import seedu.sgsafe.utils.command.ListCommand;
-
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
+import seedu.sgsafe.utils.command.ListCommand;
+import seedu.sgsafe.utils.exceptions.ListCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
 import java.util.HashMap;
@@ -36,11 +34,13 @@ public class Parser {
      * Parses raw user input into a {@link Command} object.
      * <p>
      * This method trims the input, extracts the command keyword, and delegates to specialized parsers
-     * based on the keyword. If the input is empty or unrecognized, an {@link InvalidCommand} is returned.
+     * based on the keyword. If the input is empty or unrecognized, an appropriate exception is thrown.
      *
      * @param userInput the full input string entered by the user
-     * @return a {@link Command} representing the parsed action, or an {@link InvalidCommand} if parsing fails
+     * @return a {@link Command} representing the parsed action
      * @throws EmptyCommandException if the input is empty or contains only whitespace
+     * @throws UnknownCommandException if the command keyword is not recognized
+     * @throws ListCommandException if the {@code list} command contains unexpected arguments
      */
     public static Command parseInput(String userInput) {
         userInput = userInput.strip();
@@ -71,40 +71,40 @@ public class Parser {
      * Parses the {@code list} command and validates its arguments.
      * <p>
      * If the remainder of the input is non-empty, the command is considered invalid.
-     * Otherwise, a {@link ListCommand} is returned.
      *
      * @param remainder the portion of the input following the {@code list} keyword
-     * @return a valid {@link ListCommand} or an {@link InvalidCommand} if arguments are invalid
+     * @return a valid {@link ListCommand} if no arguments are present
+     * @throws ListCommandException if unexpected arguments are provided
      */
     private static Command parseListCommand(String remainder) {
         if (!remainder.isEmpty()) {
-            return new InvalidCommand(InvalidCommandType.LIST_COMMAND_INVALID_ARGUMENTS);
+            throw new ListCommandException();
         }
-        return new ListCommand(CaseListingMode.ALL);
+        return new ListCommand(CaseListingMode.DEFAULT);
     }
 
     /**
      * Parses the {@code add} command and validates its arguments.
      * <p>
      * This method extracts flags and their values from the input, ensuring that required fields
-     * (title, date, and info) are present. If any validation fails, an {@link InvalidCommand} is returned.
+     * (title, date, and info) are present. If any validation fails, an [SHENNON REMOVED THIS SRY] is returned.
      *
      * @param remainder the portion of the input following the {@code add} keyword
-     * @return a valid {@link AddCommand} or an {@link InvalidCommand} if arguments are invalid
+     * @return a valid {@link AddCommand} or an [SHENNON REMOVED THIS SRY] if arguments are invalid
      */
     private static Command parseAddCommand(String remainder) {
         if (remainder.isEmpty()) {
-            return new InvalidCommand(InvalidCommandType.ADD_COMMAND_NO_ARGUMENTS);
+            return null;
         }
 
         Map<String, String> flagValues = extractFlagValues(remainder);
 
         if (flagValues == null) {
-            return new InvalidCommand(InvalidCommandType.ADD_COMMAND_INVALID_ARGUMENTS);
+            return null;
         }
 
         if (validateAddCommandFlags(flagValues)) {
-            return new InvalidCommand(InvalidCommandType.ADD_COMMAND_INVALID_ARGUMENTS);
+            return null;
         }
 
         return new AddCommand(flagValues.get("title"), flagValues.get("date"), flagValues.get("info"),
