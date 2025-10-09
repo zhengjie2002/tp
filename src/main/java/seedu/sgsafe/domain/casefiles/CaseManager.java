@@ -22,7 +22,7 @@ public class CaseManager {
      * Each case is printed with its index and display summary.
      * The output is wrapped using {@link Display#printMessage(String...)} for formatting.
      */
-    public static void listCases() {
+    public static String[] listCases() {
         int caseListSize = caseList.size();
         String[] caseDescriptions = new String[caseListSize];
         Case currentCase;
@@ -31,6 +31,7 @@ public class CaseManager {
             caseDescriptions[i] = (i + 1) + ". " + currentCase.getDisplayLine();
         }
         Display.printMessage(caseDescriptions);
+        return caseDescriptions;
     }
 
     /**
