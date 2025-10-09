@@ -10,7 +10,7 @@ public class ListCommand extends Command {
      * Specifies the listing mode for this command:
      * {@code OPEN_ONLY}, {@code CLOSED_ONLY}, or {@code ALL}.
      */
-    public final CaseListingMode listingMode;
+    private final CaseListingMode listingMode;
 
     /**
      * Constructs a {@code ListCommand} with the specified listing mode.
@@ -20,5 +20,9 @@ public class ListCommand extends Command {
     public ListCommand(CaseListingMode listingMode) {
         this.commandType = CommandType.LIST;
         this.listingMode = listingMode;
+    }
+
+    public CaseListingMode getListingMode() {
+        return listingMode;
     }
 }

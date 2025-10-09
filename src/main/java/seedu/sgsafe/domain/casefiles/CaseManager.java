@@ -1,5 +1,6 @@
 package seedu.sgsafe.domain.casefiles;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import seedu.sgsafe.utils.command.AddCommand;
@@ -16,23 +17,77 @@ public class CaseManager {
      * The central list of case records maintained by the application.
      * Each {@link Case} represents a single incident or report.
      */
-    public static ArrayList<Case> caseList = new ArrayList<>();
+    private static ArrayList<Case> caseList = new ArrayList<>();
 
     /**
-     * Displays all cases currently stored in {@link #caseList}.
-     * Each case is printed with its index and display summary.
-     * The output is wrapped using {@link Display#printMessage(String...)} for formatting.
+     * Displays the current list of cases to the user.
+     * <p>
+     * This method delegates to {@link #getCaseDescriptions()} for formatting,
+     * and passes the result to the {@code Display} class for output.
+     *
+     * @return the array of case descriptions that were printed
      */
     public static String[] listCases() {
-        int caseListSize = caseList.size();
-        String[] caseDescriptions = new String[caseListSize];
-        Case currentCase;
-        for (int i = 0; i < caseListSize; i++) {
-            currentCase = caseList.get(i);
-            caseDescriptions[i] = (i + 1) + ". " + currentCase.getDisplayLine();
-        }
+        String[] caseDescriptions = getCaseDescriptions();
         Display.printMessage(caseDescriptions);
         return caseDescriptions;
+    }
+
+    /**
+     * Builds and returns a formatted list of case descriptions.
+     * <p>
+     * The first line indicates the total number of cases, followed by each case's display line.
+     * This method does not perform any printing or UI logic.
+     *
+     * @return an array of formatted case description strings
+     */
+    private static String[] getCaseDescriptions() {
+        int caseListSize = caseList.size();
+        String[] descriptions = new String[caseListSize + 1];
+        descriptions[0] = generateCaseHeaderMessage(caseListSize);
+
+        for (int i = 0; i < caseListSize; i++) {
+            Case currentCase = caseList.get(i);
+            descriptions[i+1] = formatCaseLine(i, currentCase);
+        }
+
+        return descriptions;
+    }
+
+    /**
+     * Generates a header message based on the number of cases.
+     * <p>
+     * The output varies depending on the case count:
+     * <ul>
+     *   <li>For 0 cases: {@code "You currently have no cases. Add some now!"}</li>
+     *   <li>For 1 case: {@code "You currently have 1 case"}</li>
+     *   <li>For n > 1: {@code "You currently have n cases"}</li>
+     * </ul>
+     *
+     * @param caseCount the number of cases in the system
+     * @return a formatted header message string
+     */
+    private static String generateCaseHeaderMessage(int caseCount) {
+        if (caseCount == 0) {
+            return "You currently have no cases. Add some now!";
+        } else if (caseCount == 1) {
+            return "You currently have 1 case";
+        } else {
+            return "You currently have " + caseCount + " cases";
+        }
+    }
+
+    /**
+     * Formats a single case line for display.
+     * <p>
+     * The format includes the case index and its display line.
+     *
+     * @param index       the index of the case in the list (1-based)
+     * @param currentCase the {@link Case} object to format
+     * @return a formatted string representing the case
+     */
+    private static String formatCaseLine(int index, Case currentCase) {
+        return (index + 1) + ". " + currentCase.getDisplayLine();
     }
 
     /**
