@@ -54,8 +54,6 @@ public class CaseManager {
     public static void closeCase(CloseCommand command) {
         int caseNumber = command.getCaseNumber();
         if (caseNumber < 1 || caseNumber > caseList.size()) {
-//            Display.printMessage("Invalid case index, please try again.");
-//            return;
             throw new IndexOutOfBoundsException();
         }
         int caseIndex = caseNumber - 1;
