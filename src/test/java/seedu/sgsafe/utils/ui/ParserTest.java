@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.CommandType;
 import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.ListCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
@@ -80,5 +81,31 @@ class ParserTest {
     @Test
     void parseInput_missingCaseNumber_throwsInvalidEditCommandException() {
         assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit --title newTitle"));
+    }
+
+    // ----------- TESTS FOR CLOSE COMMANDS ----------- //
+
+    @Test
+    void parseInput_closeValid_returnsCloseCommand() {
+        Command command = Parser.parseInput("close 3");
+        assertEquals(CommandType.CLOSE, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_closeWithWhitespace_returnsCloseCommand() {
+        Command command = Parser.parseInput("   close   7   ");
+        assertEquals(CommandType.CLOSE, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_closeMissingArgument_throwsInvalidCloseCommandException() {
+        assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close"));
+        assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close   "));
+    }
+
+    @Test
+    void parseInput_closeNonInteger_throwsInvalidCloseCommandException() {
+        assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close abc"));
+        assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close three"));
     }
 }
