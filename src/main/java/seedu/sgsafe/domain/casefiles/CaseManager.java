@@ -3,8 +3,11 @@ package seedu.sgsafe.domain.casefiles;
 import java.util.ArrayList;
 
 import seedu.sgsafe.utils.command.AddCommand;
+import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.ui.Display;
+
+import seedu.sgsafe.utils.exceptions.IndexOutOfBoundsException;
 
 /**
  * Manages the collection of {@link Case} objects in the SGSafe system.
@@ -46,6 +49,17 @@ public class CaseManager {
                 command.getCaseInfo(), command.getCaseVictim(), command.getCaseOfficer());
         caseList.add(newCase);
         Display.printMessage("New case added:\n" + newCase.getDisplayLine());
+    }
+
+    public static void closeCase(CloseCommand command) {
+        int caseNumber = command.getCaseNumber();
+        if (caseNumber < 1 || caseNumber > caseList.size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        int caseIndex = caseNumber - 1;
+        Case caseToClose = caseList.get(caseIndex);
+        caseToClose.setClosed();
+        Display.printMessage("Case closed:\n" + caseToClose.getDisplayLine());
     }
 
     /**
