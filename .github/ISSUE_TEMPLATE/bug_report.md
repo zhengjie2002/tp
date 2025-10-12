@@ -8,8 +8,9 @@ assignees: ''
 **Describe the bug**\
 A clear and concise description of what the bug is.
 
-**To Reproduce**
+**To Reproduce**\
 Steps to reproduce the behavior:
+
 1. Launch the application with '...'
 2. Enter command '...'
 3. Observe the output/error
