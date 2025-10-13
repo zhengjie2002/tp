@@ -46,6 +46,51 @@ public class Case {
     }
 
     /**
+     * Retrieves the title or summary of the case.
+     *
+     * @return the title of the case
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Retrieves the date the case was recorded or occurred.
+     *
+     * @return the date of the case
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * Retrieves additional information about the case.
+     *
+     * @return the additional information about the case
+     */
+    public String getInfo() {
+        return info;
+    }
+
+    /**
+     * Retrieves the name of the victim involved in the case.
+     *
+     * @return the name of the victim, or null if not specified
+     */
+    public String getVictim() {
+        return victim;
+    }
+
+    /**
+     * Retrieves the name of the officer assigned to the case.
+     *
+     * @return the name of the officer, or null if not specified
+     */
+    public String getOfficer() {
+        return officer;
+    }
+
+    /**
      * Returns a formatted summary line for display purposes.
      * Includes the case status indicator, date, and title.
      *
