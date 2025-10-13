@@ -99,6 +99,7 @@ public class CaseManager {
      * @param command The {@link AddCommand} containing the details of the case to be added.
      */
     public static void addCase(AddCommand command) {
+        assert command != null : "AddCommand should not be null";
         Case newCase = new Case(command.getCaseTitle(), command.getCaseDate(),
                 command.getCaseInfo(), command.getCaseVictim(), command.getCaseOfficer());
         caseList.add(newCase);
