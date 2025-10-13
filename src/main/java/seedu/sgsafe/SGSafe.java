@@ -1,6 +1,8 @@
 package seedu.sgsafe;
 
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.command.AddCommand;
@@ -17,6 +19,9 @@ import seedu.sgsafe.utils.ui.Parser;
  */
 public class SGSafe {
 
+    // Logger for logging application events
+    private static final Logger logger = Logger.getLogger(SGSafe.class.getName());
+
     /**
      * Main method that starts the SGSafe application.
      * Invokes initialization, enters the command loop, and prints exit message.
@@ -24,6 +29,7 @@ public class SGSafe {
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) {
+        logger.log(Level.INFO, "SGSafe application started.");
         Display.printWelcomeMessage();
         mainLoop();
         Display.printGoodbyeMessage();
