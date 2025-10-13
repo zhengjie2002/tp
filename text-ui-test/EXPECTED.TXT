@@ -8,6 +8,38 @@
 	You currently have no cases. Add some now!
 	____________________________________________________________
 	____________________________________________________________
+	New case added:
+[O] 23-06-2020 Murder at Yishun
+	____________________________________________________________
+	____________________________________________________________
+	Your add command format is incorrect.
+	The correct format for a add command is
+	add --title TITLE --info INFO --date DATE [--victim VICTIM] [--officer OFFICER]
+	The items in [ ] are optional.
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case
+	1. [O] 23-06-2020 Murder at Yishun
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is a duplicate flag.
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is an incorrect usage of flag. Use flags like --title TITLE
+	Please see which flag is required for this command.
+	____________________________________________________________
+	____________________________________________________________
+	New case added:
+[O] 05-06-2018 Car accident
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases
+	1. [O] 23-06-2020 Murder at Yishun
+	2. [O] 05-06-2018 Car accident
+	____________________________________________________________
+	____________________________________________________________
 	Thanks for using SGSafe :)
 	We hope to see you again!
 	____________________________________________________________
