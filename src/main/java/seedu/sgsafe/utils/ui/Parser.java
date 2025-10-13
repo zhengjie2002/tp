@@ -1,21 +1,8 @@
 package seedu.sgsafe.utils.ui;
 
-import seedu.sgsafe.utils.command.AddCommand;
-import seedu.sgsafe.utils.command.CaseListingMode;
-import seedu.sgsafe.utils.command.CloseCommand;
-import seedu.sgsafe.utils.command.Command;
-import seedu.sgsafe.utils.command.ListCommand;
-import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.command.*;
 
-import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
-import seedu.sgsafe.utils.exceptions.EmptyCommandException;
-import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
-import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
-import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
-
-import seedu.sgsafe.utils.exceptions.ListCommandException;
-import seedu.sgsafe.utils.exceptions.MissingAddParameterException;
-import seedu.sgsafe.utils.exceptions.UnknownCommandException;
+import seedu.sgsafe.utils.exceptions.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +46,7 @@ public class Parser {
         case "add" -> parseAddCommand(remainder);
         case "edit" -> parseEditCommand(remainder);
         case "close" -> parseCloseCommand(remainder);
+        case "delete" -> parseDeleteCommand(remainder);
         default -> throw new UnknownCommandException();
         };
     }
@@ -275,4 +263,15 @@ public class Parser {
         return Pattern.matches(inputPattern, input.strip());
     }
 
+    private static Command parseDeleteCommand(String remainder) {
+        if(remainder.isEmpty() || !isNumeric(remainder)) {
+           throw new InvalidDeleteIndexException();
+        }
+        return new DeleteCommand(Integer.parseInt(remainder));
+    }
+
+    private static boolean isNumeric(String input) {
+        final String numberRegex = "[0-9]+";
+        return Pattern.matches(numberRegex, input);
+    }
 }
