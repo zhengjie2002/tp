@@ -3,7 +3,11 @@ package seedu.sgsafe;
 import java.util.Scanner;
 
 import seedu.sgsafe.domain.casefiles.CaseManager;
-import seedu.sgsafe.utils.command.*;
+import seedu.sgsafe.utils.command.AddCommand;
+import seedu.sgsafe.utils.command.CloseCommand;
+import seedu.sgsafe.utils.command.Command;
+import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.command.DeleteCommand;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCommandException;
 import seedu.sgsafe.utils.ui.Display;
