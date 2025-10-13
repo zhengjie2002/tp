@@ -290,8 +290,8 @@ public class Parser {
     }
 
     private static Command parseDeleteCommand(String remainder) {
-        if(remainder.isEmpty() || !isNumeric(remainder)) {
-           throw new InvalidDeleteIndexException();
+        if (remainder.isEmpty() || !isNumeric(remainder)) {
+            throw new InvalidDeleteIndexException();
         }
         return new DeleteCommand(Integer.parseInt(remainder));
     }
