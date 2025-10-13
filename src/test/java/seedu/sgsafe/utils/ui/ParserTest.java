@@ -11,7 +11,7 @@ import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.ListCommandException;
-import seedu.sgsafe.utils.exceptions.MissingAddParameterException;
+import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -124,11 +124,11 @@ class ParserTest {
 
     @Test
     void parseInput_addMissingCompulsoryFlag_throwsInvalidEditCommandException() {
-        assertThrows(MissingAddParameterException.class,
+        assertThrows(InvalidAddCommandException.class,
                 () -> Parser.parseInput("add --title CaseTitle --date 2025-12-12"));
-        assertThrows(MissingAddParameterException.class,
+        assertThrows(InvalidAddCommandException.class,
                 () -> Parser.parseInput("add --title CaseTitle --info SomeInfo --officer JaneDoe"));
-        assertThrows(MissingAddParameterException.class,
+        assertThrows(InvalidAddCommandException.class,
                 () -> Parser.parseInput("add  --date 2025-12-12 --victim JohnDoe --officer JaneDoe"));
     }
 
