@@ -1,12 +1,17 @@
 package seedu.sgsafe.utils.ui;
 
 import org.junit.jupiter.api.Test;
+
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.CommandType;
 import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.command.AddCommand;
+import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
+import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.ListCommandException;
+import seedu.sgsafe.utils.exceptions.MissingAddParameterException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -107,5 +112,48 @@ class ParserTest {
     void parseInput_closeNonInteger_throwsInvalidCloseCommandException() {
         assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close abc"));
         assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close three"));
+    }
+
+    // ----------- TESTS FOR ADD COMMANDS ----------- //
+    @Test
+    void parseInput_addValid_returnsAddCommand() {
+        Command command = Parser.parseInput(
+                "add --title CaseTitle --date 2025-12-12 --info SomeInfo --victim JohnDoe --officer JaneDoe");
+        assertEquals(CommandType.ADD, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_addMissingCompulsoryFlag_throwsInvalidEditCommandException() {
+        assertThrows(MissingAddParameterException.class,
+                () -> Parser.parseInput("add --title CaseTitle --date 2025-12-12"));
+        assertThrows(MissingAddParameterException.class,
+                () -> Parser.parseInput("add --title CaseTitle --info SomeInfo --officer JaneDoe"));
+        assertThrows(MissingAddParameterException.class,
+                () -> Parser.parseInput("add  --date 2025-12-12 --victim JohnDoe --officer JaneDoe"));
+    }
+
+    @Test
+    void parseInput_addWithExtraWhitespace_returnsAddCommand() {
+        Command command = Parser.parseInput(
+                "  add   --title   CaseTitle   --date   2025-12-12   --info   SomeInfo   --victim   " +
+                        "JohnDoe   --officer   JaneDoe  ");
+        assertEquals(CommandType.ADD, command.getCommandType());
+        assertEquals("CaseTitle", ((AddCommand) command).getCaseTitle());
+        assertEquals("2025-12-12", ((AddCommand) command).getCaseDate());
+        assertEquals("SomeInfo", ((AddCommand) command).getCaseInfo());
+        assertEquals("JohnDoe", ((AddCommand) command).getCaseVictim());
+        assertEquals("JaneDoe", ((AddCommand) command).getCaseOfficer());
+    }
+
+    @Test
+    void parseInput_addWithDuplicateFlags_throwDuplicateFlagException() {
+        assertThrows(DuplicateFlagException.class,
+                () -> Parser.parseInput("add --title CaseTitle --date 2025-12-12 --title CaseTitle2"));
+    }
+
+    @Test
+    void parseInput_addWithFlagError_throwIncorrectFlagException() {
+        assertThrows(IncorrectFlagException.class, () -> Parser.parseInput(
+                "add --title --date  --info SomeInfo --victim JohnDoe --officer JaneDoe"));
     }
 }
