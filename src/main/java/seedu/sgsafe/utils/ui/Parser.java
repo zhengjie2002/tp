@@ -23,6 +23,8 @@ import seedu.sgsafe.utils.exceptions.InvalidDeleteIndexException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 /**
@@ -30,6 +32,9 @@ import java.util.regex.Pattern;
  * Acts as the first step in the command execution pipeline by identifying the command type and validating arguments.
  */
 public class Parser {
+
+    // Logger for logging parsing activities and errors
+    private static final Logger logger = Logger.getLogger(Parser.class.getName());
 
     // Regular expression used to split input into flags and their values. It retains the delimiter.
     private static final String FLAG_SEPARATOR_REGEX = "\\s+(?=--)";
@@ -175,6 +180,7 @@ public class Parser {
      */
     private static void validateInputNotEmpty(String input) {
         if (input.isEmpty()) {
+            logger.log(Level.WARNING, "Add command input is empty");
             throw new MissingAddParameterException();
         }
     }
@@ -187,6 +193,7 @@ public class Parser {
      */
     private static void validateRequiredFlags(Map<String, String> flagValues) {
         if (!flagValues.containsKey("title") || !flagValues.containsKey("date") || !flagValues.containsKey("info")) {
+            logger.log(Level.WARNING, "Input missing required flags for command");
             throw new MissingAddParameterException();
         }
     }
@@ -212,11 +219,13 @@ public class Parser {
             // First, the prefix -- is removed.
             String trimmedPart = part.replaceFirst(FLAG_PREFIX, "").trim();
             if (trimmedPart.isEmpty()) {
+                logger.log(Level.WARNING, "Incorrect flag usage detected");
                 throw new IncorrectFlagException();
             }
 
             int spaceIndex = trimmedPart.indexOf(" ");
             if (spaceIndex == -1) {
+                logger.log(Level.WARNING, "Incorrect flag usage detected");
                 throw new IncorrectFlagException();
             }
 
@@ -225,6 +234,7 @@ public class Parser {
             String value = trimmedPart.substring(spaceIndex + 1).trim();
 
             if (flagValues.containsKey(flag)) {
+                logger.log(Level.WARNING, "Duplicated flags detected");
                 throw new DuplicateFlagException();
             }
             flagValues.put(flag, value);

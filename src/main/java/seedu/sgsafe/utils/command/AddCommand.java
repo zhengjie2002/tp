@@ -1,11 +1,16 @@
 package seedu.sgsafe.utils.command;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 /**
  * Represents a command to add a new case.
  * This command contains details about the case, including its title, date, information,
  * and optionally the victim and officer involved.
  */
 public class AddCommand extends Command {
+
+    private static final Logger logger = Logger.getLogger(AddCommand.class.getName());
 
     // Title of the case
     private final String caseTitle;
@@ -38,6 +43,7 @@ public class AddCommand extends Command {
         this.caseInfo = caseInfo;
         this.caseVictim = caseVictim;
         this.caseOfficer = caseOfficer;
+        logger.log(Level.INFO, "AddCommand created");
     }
 
     public String getCaseTitle() {
