@@ -87,7 +87,7 @@ public class SGSafe {
                 if(command instanceof DeleteCommand) {
                     CaseManager.deleteCase((DeleteCommand) command);
                 }else {
-                    Display.printMessage("Error: Invalid CLOSE command");
+                    Display.printMessage("Error: Invalid DELETE command");
                 }
                 break;
             default:
