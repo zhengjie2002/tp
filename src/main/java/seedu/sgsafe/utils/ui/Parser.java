@@ -170,6 +170,17 @@ public class Parser {
                 flagValues.get("victim"), flagValues.get("officer"));
     }
 
+    /**
+     * Parses the {@code close} command and validates its argument.
+     * <p>
+     * This method expects a single integer value representing the case number to close.
+     * If the input is empty or not a valid integer, an {@link InvalidCloseCommandException}
+     * will be thrown.
+     *
+     * @param remainder the portion of the input following the {@code close} keyword
+     * @return a valid {@link CloseCommand} if the argument is a valid case number
+     * @throws InvalidCloseCommandException if the argument is missing or non-numeric
+     */
     private static Command parseCloseCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidCloseCommandException();
