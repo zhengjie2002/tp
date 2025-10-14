@@ -138,6 +138,13 @@ public class CaseManager {
         Display.printMessage("Case edited:\n" + targetCase.getDisplayLine());
     }
 
+    /**
+     * Deletes an existing case in the case list using the case number in the DeleteCommand.
+     * The method checks if the case number is valid, and throws an IndexOutOfBoundsException if
+     * the case number is invalid
+     *
+     * @param command the {@link DeleteCommand} containing the case number.
+     */
     public static void deleteCase(DeleteCommand command) {
         int caseNumber = command.getCaseNumber();
         if (caseNumber < 1 || caseNumber > caseList.size()) {
