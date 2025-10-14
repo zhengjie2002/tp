@@ -8,6 +8,7 @@ import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
+import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.ListCommandException;
@@ -155,5 +156,15 @@ class ParserTest {
     void parseInput_addWithFlagError_throwIncorrectFlagException() {
         assertThrows(IncorrectFlagException.class, () -> Parser.parseInput(
                 "add --title --date  --info SomeInfo --victim JohnDoe --officer JaneDoe"));
+    }
+
+    @Test
+    void parseInput_addExceedInputLength_throwIncorrectFlagException() {
+        StringBuilder longInfo = new StringBuilder();
+        longInfo.append("a".repeat(8000));
+        String input =
+                String.format("add --title CaseTitle --date 2025-12-12 --info %s --victim JohnDoe --officer JaneDoe",
+                        longInfo);
+        assertThrows(InputLengthExceededException.class, () -> Parser.parseInput(input));
     }
 }

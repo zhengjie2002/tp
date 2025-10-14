@@ -11,6 +11,7 @@ import seedu.sgsafe.utils.command.DeleteCommand;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
+import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.ListCommandException;
@@ -46,6 +47,9 @@ public class Parser {
 
     // Validator instance for input validation
     private static final Validator validator = new Validator();
+
+    // Maximum allowed length for any input value
+    private static final int MAX_INPUT_LENGTH = 5000;
 
     /**
      * Parses raw user input into a {@link Command} object.
@@ -213,10 +217,17 @@ public class Parser {
             String flag = trimmedPart.substring(0, spaceIndex).trim();
             String value = trimmedPart.substring(spaceIndex + 1).trim();
 
+            if(value.length() > MAX_INPUT_LENGTH){
+                logger.log(Level.WARNING, "Input exceeds character limit");
+                throw new InputLengthExceededException();
+            }
+
             if (flagValues.containsKey(flag)) {
                 logger.log(Level.WARNING, "Duplicated flags detected");
                 throw new DuplicateFlagException();
             }
+
+            // Finally, we store the flag and its value in the map.
             flagValues.put(flag, value);
         }
         return flagValues;
