@@ -13,9 +13,8 @@ import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
-
 import seedu.sgsafe.utils.exceptions.ListCommandException;
-import seedu.sgsafe.utils.exceptions.MissingAddParameterException;
+import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
 import seedu.sgsafe.utils.exceptions.InvalidDeleteIndexException;
@@ -44,6 +43,9 @@ public class Parser {
 
     // List of valid flags to be taken as input from the user
     private static final List<String> VALID_FLAGS = List.of("title", "date", "info", "victim", "officer");
+
+    // Validator instance for input validation
+    private static final Validator validator = new Validator();
 
     /**
      * Parses raw user input into a {@link Command} object.
@@ -147,54 +149,32 @@ public class Parser {
      * @return a valid {@link AddCommand} if arguments are invalid
      */
     private static Command parseAddCommand(String remainder) {
-        validateInputNotEmpty(remainder);
+        List<String> requiredFlags = List.of("title", "date", "info");
+
+        if (validator.inputIsEmpty(remainder)) {
+            throw new InvalidAddCommandException();
+        }
+
         Map<String, String> flagValues = extractFlagValues(remainder);
-        validateRequiredFlags(flagValues);
+
+        if (!validator.haveAllRequiredFlags(flagValues, requiredFlags) ||
+                !validator.haveValidFlags(flagValues, VALID_FLAGS)) {
+            throw new InvalidAddCommandException();
+        }
 
         return new AddCommand(flagValues.get("title"), flagValues.get("date"), flagValues.get("info"),
                 flagValues.get("victim"), flagValues.get("officer"));
     }
 
     private static Command parseCloseCommand(String remainder) {
-        validateIndexNotEmpty(remainder);
-
+        if (validator.inputIsEmpty(remainder)) {
+            throw new InvalidCloseCommandException();
+        }
         try {
             int caseNumber = Integer.parseInt(remainder);
             return new CloseCommand(caseNumber);
         } catch (NumberFormatException e) {
             throw new InvalidCloseCommandException();
-        }
-    }
-
-    private static void validateIndexNotEmpty(String input) {
-        if (input.isEmpty()) {
-            throw new InvalidCloseCommandException();
-        }
-    }
-
-    /**
-     * Validates that the input is not empty.
-     *
-     * @param input the input to validate
-     * @throws MissingAddParameterException if the input is empty
-     */
-    private static void validateInputNotEmpty(String input) {
-        if (input.isEmpty()) {
-            logger.log(Level.WARNING, "Add command input is empty");
-            throw new MissingAddParameterException();
-        }
-    }
-
-    /**
-     * Validates that all required flags are present.
-     *
-     * @param flagValues the map of flag names to their values
-     * @throws MissingAddParameterException if any required flag is missing
-     */
-    private static void validateRequiredFlags(Map<String, String> flagValues) {
-        if (!flagValues.containsKey("title") || !flagValues.containsKey("date") || !flagValues.containsKey("info")) {
-            logger.log(Level.WARNING, "Input missing required flags for command");
-            throw new MissingAddParameterException();
         }
     }
 
@@ -285,7 +265,7 @@ public class Parser {
      * @return true if the input matches the required format, false otherwise
      */
     public static boolean isValidEditCommandInput(String input) {
-        final String inputPattern  = "^\\d+\\s+(--\\s*\\w+(?:\\s+\\S+)+)(?:\\s+--\\s*\\w+(?:\\s+\\S+)+)*$";
+        final String inputPattern = "^\\d+\\s+(--\\s*\\w+(?:\\s+\\S+)+)(?:\\s+--\\s*\\w+(?:\\s+\\S+)+)*$";
         return Pattern.matches(inputPattern, input.strip());
     }
 

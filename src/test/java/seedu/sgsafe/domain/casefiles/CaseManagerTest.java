@@ -1,5 +1,7 @@
 package seedu.sgsafe.domain.casefiles;
 
+import seedu.sgsafe.utils.command.AddCommand;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,6 +9,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class CaseManagerTest {
 
@@ -48,4 +51,50 @@ class CaseManagerTest {
         assertEquals("1. [O] 2023-10-01 Robbery", output[1]);
         assertEquals("2. [O] 2023-09-15 Fraud", output[2]);
     }
+
+    @Test
+    void addCase_withOneValidCommand_addsCaseSuccessfully() {
+        AddCommand command = new AddCommand("Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee");
+        CaseManager.addCase(command);
+
+        assertEquals(1, caseList.size());
+        assertEquals("Burglary", caseList.get(0).getTitle());
+        assertEquals("2023-10-05", caseList.get(0).getDate());
+        assertEquals("Broken window", caseList.get(0).getInfo());
+        assertEquals("Alice", caseList.get(0).getVictim());
+        assertEquals("Officer Lee", caseList.get(0).getOfficer());
+    }
+
+    @Test
+    void addCase_withThreeValidCommand_addsCaseSuccessfully() {
+        AddCommand command;
+        command = new AddCommand("Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee");
+        CaseManager.addCase(command);
+
+        command = new AddCommand("Burglary", "2023-10-05", "Broken window", null, null);
+        CaseManager.addCase(command);
+
+        command = new AddCommand("Burglary", "2023-10-05", "Broken window", "Alice", null);
+        CaseManager.addCase(command);
+
+        assertEquals(3, caseList.size());
+        assertEquals("Burglary", caseList.get(0).getTitle());
+        assertEquals("2023-10-05", caseList.get(0).getDate());
+        assertEquals("Broken window", caseList.get(0).getInfo());
+        assertEquals("Alice", caseList.get(0).getVictim());
+        assertEquals("Officer Lee", caseList.get(0).getOfficer());
+
+        assertEquals("Burglary", caseList.get(1).getTitle());
+        assertEquals("2023-10-05", caseList.get(1).getDate());
+        assertEquals("Broken window", caseList.get(1).getInfo());
+        assertNull(caseList.get(1).getVictim());
+        assertNull(caseList.get(1).getOfficer());
+
+        assertEquals("Burglary", caseList.get(2).getTitle());
+        assertEquals("2023-10-05", caseList.get(2).getDate());
+        assertEquals("Broken window", caseList.get(2).getInfo());
+        assertEquals("Alice", caseList.get(2).getVictim());
+        assertNull(caseList.get(2).getOfficer());
+    }
+
 }
