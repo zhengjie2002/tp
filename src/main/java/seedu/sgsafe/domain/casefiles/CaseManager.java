@@ -94,9 +94,9 @@ public class CaseManager {
      */
     private static boolean isCaseVisible(Case caseRecord, CaseListingMode mode) {
         return switch (mode) {
-            case OPEN_ONLY -> caseRecord.isOpen();
-            case CLOSED_ONLY -> !caseRecord.isOpen();
-            case ALL, DEFAULT -> true;
+        case OPEN_ONLY -> caseRecord.isOpen();
+        case CLOSED_ONLY -> !caseRecord.isOpen();
+        case ALL, DEFAULT -> true;
         };
     }
 
@@ -116,9 +116,9 @@ public class CaseManager {
      */
     private static String generateCaseHeaderMessage(int caseCount, CaseListingMode mode) {
         String statusLabel = switch (mode) {
-            case OPEN_ONLY -> "open";
-            case CLOSED_ONLY -> "closed";
-            case ALL, DEFAULT -> "total";
+        case OPEN_ONLY -> "open";
+        case CLOSED_ONLY -> "closed";
+        case ALL, DEFAULT -> "total";
         };
 
         if (caseCount == 0) {
