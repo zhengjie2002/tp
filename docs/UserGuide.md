@@ -1,42 +1,181 @@
-# User Guide
+# SGSafe User Guide
 
-## Introduction
+SGSafe is a *Command Line Interface (CLI) based case management system* that is designed specifically for law
+enforcement agencies in Singapore to manage, track and process cases. Built with the diverse needs of police personnel
+in mind, this application allows frontline officers to efficiently manage and process cases from creation to closure. By
+providing an easy to use yet efficient interface, SGSafe transforms traditional case management processes into an
+organised digital workflow that enhances operational efficiency for the public sector.
 
-{Give a product intro}
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [Features](#features)
+    - [Adding a case: `add`](#adding-a-case-add)
+    - [Listing all cases: `list`](#listing-all-cases-list)
+    - [Closing a case: `close`](#closing-a-case-close)
+    - [Updating a case: `edit`](#editing-a-case-edit)
+    - [Deleting a case: `delete`](#deleting-a-case-delete)
+    - [Exiting the program: `bye`](#exiting-the-program-bye)
+- [FAQ](#faq)
+- [Command Summary](#command-summary)
+- [Coming Soon](#coming-soon)
 
 ## Quick Start
 
-{Give steps to get started quickly}
+1. Ensure that you have Java 17 installed on your computer.
+2. Download the latest version of `SGSafe` from
+   the [releases page](https://github.com/AY2526S1-CS2113-W13-3/tp/releases).
+3. Copy the file to the folder you want to use as the home folder for SGSafe.
+4. Open a command terminal, navigate to the folder containing the JAR file, and run `java -jar SGSafe.jar` to start the
+   application.
+5. Type commands in the command line and press Enter to execute them. Refer to the [Command Summary](#command-summary)
+   section
+   below for a quick overview of available commands.
 
-1. Ensure that you have Java 17 or above installed.
-1. Down the latest version of `Duke` from [here](http://link.to/duke).
+---
 
-## Features 
+## Features
 
-{Give detailed description of each feature}
+> **Notes about the command format:**
+>
+> * Words in `UPPER_CASE` are the parameters to be supplied by the user.\
+    >   e.g., in `add --title TITLE`, `TITLE` is a parameter which can be used as `add --title Murder at Yishun`.
+>
+> * Parameters with command line flags can be in any order.\
+    >   e.g., if the command specifies `--title TITLE --date DATE`, `--date DATE --title TITLE` is also acceptable.
+>
+> * Parameters that are not preceded by command line flags must appear in the order specified.\
+    >   e.g., if the command specifies `close INDEX` INDEX must come after close.
+>
+> * Optional parameters are enclosed in square brackets.\
+    >   e.g., `--title TITLE [--victim VICTIM]` means the victim parameter is optional.
+> * The double-dash `--` is a reserved prefix used to identify flags, so it cannot be used as part of an input value.
 
-### Adding a todo: `todo`
-Adds a new item to the list of todo items.
+---
 
-Format: `todo n/TODO_NAME d/DEADLINE`
+### Adding a case: `add`
 
-* The `DEADLINE` can be in a natural language format.
-* The `TODO_NAME` cannot contain punctuation.  
+Adds a new case to the case management system.
 
-Example of usage: 
+**Format:** `add --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]`
 
-`todo n/Write the rest of the User Guide d/next week`
+* `TITLE`: The title or summary of the case
+* `DATE`: The date the case was recorded or occurred
+* `INFO`: Additional information or notes about the case
+* `VICTIM`: (Optional) The name(s) of the victim involved
+* `OFFICER`: (Optional) The name(s) of the officer assigned
 
-`todo n/Refactor the User Guide to remove passive voice d/13/04/2020`
+> ℹ️ Note: The above are stored as strings. No special formatting is required.\
+> ⚠️ Warning: A maximum of 5000 characters is allowed for all the fields.
+
+**Examples:**
+
+* `add --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith`
+* `add --info Burglary at 123 Main St --date 2024-02-20 --title Burglary case`
+
+### Listing all cases: `list`
+
+Shows a list of all cases in the system.
+
+**Format:** `list`
+
+* The list shows the index, status (Open `[O]` or Closed `[C]`), date, and title of each case.
+
+**Sample Output:**
+
+```
+	____________________________________________________________
+	You currently have 1 case
+	1. [O] 2024-01-15 Theft case
+	____________________________________________________________
+```
+
+---
+
+### Closing a case: `close`
+
+Marks a case as closed.
+
+**Format:** `close INDEX`
+
+* Closes the case at the specified `INDEX`.
+* The index refers to the index number shown in the displayed case list.
+* The index **must be a positive integer** 1, 2, 3, … and the case must exist
+
+**Examples:**
+
+* `list` followed by `close 2` closes the 2nd case in the list.
+
+---
+
+### Editing a case: `edit`
+
+Updates the details of an existing case.
+
+**Format:** `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]`
+
+* Updates the case at the specified `INDEX`.
+* At least one of the optional fields must be provided.
+* Existing values will be updated to the input values.
+
+**Examples:**
+
+* `edit 1 --victim Jane Smith --officer Officer Lee` updates the victim and officer of the 1st case in the list.
+* `edit 3 --title Updated title --date 2024-03-01` updates the title and date of the 3rd case in the list.
+
+> ℹ️ Note: The above are stored as strings. No special formatting is required.\
+> ⚠️ Warning: A maximum of 5000 characters is allowed for all the fields.
+
+---
+
+### Deleting a case: `delete`
+
+**Format:** `delete INDEX`
+
+* Deletes the case at the specified `INDEX`.
+* The index refers to the index number shown in the displayed case list.
+* The index **must be a positive integer** 1, 2, 3, … and the case must exist
+
+**Examples:**
+
+* `delete` followed by `delete 2` deletes the 2nd case in the list.
+
+---
+
+### Exiting the program: `bye`
+
+Exits the program.
+
+**Format:** `bye`
+
+---
 
 ## FAQ
 
-**Q**: How do I transfer my data to another computer? 
+**Q**: How do I transfer my data to another computer?
 
-**A**: {your answer here}
+**A**: Unfortunately, there is no built-in feature to transfer data between computers. This feature will be coming soon
+in the next iteration of SGSafe. Stay turned.
+
+**Q**: What happens if a case is marked as closed?
+
+**A**: Closed cases are still visible in the list but are marked with `[C]` instead of `[O]`.
+
+---
 
 ## Command Summary
 
-{Give a 'cheat sheet' of commands here}
+| Action          | Format                                                                                         | Example                                                                                                   |
+|-----------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| **Add case**    | `add --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]`              | `add --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith` |
+| **List cases**  | `list`                                                                                         | `list`                                                                                                    |
+| **Close case**  | `close INDEX`                                                                                  | `close 2`                                                                                                 |
+| **Edit case**   | `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]` | `edit 1 --victim Jane Smith --officer Officer Lee`                                                        |
+| **Delete case** | `delete INDEX`                                                                                 | `delete 2`                                                                                                |
+| **Exit**        | `bye`                                                                                          | `bye`                                                                                                     |
 
-* Add todo `todo n/TODO_NAME d/DEADLINE`
+## Coming Soon
+- Data transfer between computers
+- Support for multiple formats for date input
+- More advanced search and filter options
+- Escape character for `--` in input values
