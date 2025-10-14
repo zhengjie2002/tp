@@ -121,19 +121,45 @@ public class Parser {
     }
 
     /**
-     * Parses the {@code list} command and validates its arguments.
+     * Parses the {@code list} command and validates its optional {@code --status} flag.
      * <p>
-     * If the remainder of the input is non-empty, the command is considered invalid.
+     * Supports the following formats:
+     * <ul>
+     *   <li>{@code list} — Lists cases using the default mode</li>
+     *   <li>{@code list --status open} — Lists only open cases</li>
+     *   <li>{@code list --status closed} — Lists only closed cases</li>
+     *   <li>{@code list --status all} — Lists all cases</li>
+     * </ul>
+     * If the {@code --status} flag is present, its value must be one of {@code open}, {@code closed}, or {@code all}.
+     * Any invalid flag or value will result in a {@link ListCommandException}.
      *
      * @param remainder the portion of the input following the {@code list} keyword
-     * @return a valid {@link ListCommand} if no arguments are present
-     * @throws ListCommandException if unexpected arguments are provided
+     * @return a {@link ListCommand} with the appropriate {@link CaseListingMode}
+     * @throws ListCommandException if the input contains invalid flags or unsupported status values
      */
     private static Command parseListCommand(String remainder) {
-        if (!remainder.isEmpty()) {
+        if (remainder.isEmpty()) {
+            return new ListCommand(CaseListingMode.DEFAULT);
+        }
+
+        Map<String, String> flagValues = extractFlagValues(remainder);
+        List<String> validFlags = List.of("status");
+
+        if (!validator.haveValidFlags(flagValues, validFlags)) {
             throw new ListCommandException();
         }
-        return new ListCommand(CaseListingMode.DEFAULT);
+
+        String status = flagValues.get("status");
+        CaseListingMode mode;
+
+        switch (status.toLowerCase()) {
+        case "open" -> mode = CaseListingMode.OPEN_ONLY;
+        case "closed" -> mode = CaseListingMode.CLOSED_ONLY;
+        case "all" -> mode = CaseListingMode.ALL;
+        default -> throw new ListCommandException();
+        }
+
+        return new ListCommand(mode);
     }
 
     /**

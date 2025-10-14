@@ -9,6 +9,7 @@ import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCommandException;
 import seedu.sgsafe.utils.ui.Display;
@@ -63,7 +64,7 @@ public class SGSafe {
 
             switch (command.getCommandType()) {
             case LIST:
-                CaseManager.listCases();
+                CaseManager.listCases((ListCommand) command);
                 break;
             case ADD:
                 if (command instanceof AddCommand) {

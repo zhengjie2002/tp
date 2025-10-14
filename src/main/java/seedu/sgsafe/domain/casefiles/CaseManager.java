@@ -1,10 +1,13 @@
 package seedu.sgsafe.domain.casefiles;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import seedu.sgsafe.utils.command.AddCommand;
+import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.ui.Display;
 
 import seedu.sgsafe.utils.exceptions.IndexOutOfBoundsException;
@@ -29,62 +32,92 @@ public class CaseManager {
      *
      * @return the array of case descriptions that were printed
      */
-    public static String[] listCases() {
-        String[] caseDescriptions = getCaseDescriptions();
+    /**
+     * Displays the current list of cases filtered by the specified {@link CaseListingMode}.
+     * <p>
+     * Supported modes:
+     * <ul>
+     *   <li>{@code DEFAULT} — same as {@code ALL}</li>
+     *   <li>{@code OPEN_ONLY} — shows only open cases</li>
+     *   <li>{@code CLOSED_ONLY} — shows only closed cases</li>
+     *   <li>{@code ALL} — shows all cases</li>
+     * </ul>
+     *
+     * @param mode the listing mode to apply
+     * @return the array of case descriptions that were printed
+     */
+    public static String[] listCases(ListCommand command) {
+        CaseListingMode mode = command.getListingMode();
+        String[] caseDescriptions = getCaseDescriptions(mode);
         Display.printMessage(caseDescriptions);
         return caseDescriptions;
     }
 
     /**
-     * Builds and returns a formatted list of case descriptions.
+     * Builds and returns a formatted list of case descriptions based on the given mode.
      * <p>
-     * The first line indicates the total number of cases, followed by each case's display line.
-     * This method does not perform any printing or UI logic.
+     * The first line indicates the total number of matching cases, followed by each case's display line.
      *
+     * @param mode the listing mode to apply
      * @return an array of formatted case description strings
      */
-    private static String[] getCaseDescriptions() {
-        int caseListSize = caseList.size();
-        String[] descriptions = new String[caseListSize + 1];
-        descriptions[0] = generateCaseHeaderMessage(caseListSize);
+    private static String[] getCaseDescriptions(CaseListingMode mode) {
+        ArrayList<Case> matchingCases = filterCasesByMode(mode);
+        int count = matchingCases.size();
 
-        for (int i = 0; i < caseListSize; i++) {
-            Case currentCase = caseList.get(i);
-            descriptions[i+1] = formatCaseLine(i, currentCase);
+        String[] descriptions = new String[count + 1];
+        descriptions[0] = generateCaseHeaderMessage(count, mode);
+
+        for (int i = 0; i < count; i++) {
+            descriptions[i + 1] = formatCaseLine(i, matchingCases.get(i));
         }
 
         return descriptions;
     }
 
+    private static ArrayList<Case> filterCasesByMode(CaseListingMode mode) {
+        return new ArrayList<>(
+                caseList.stream()
+                        .filter(caseRecord -> isCaseVisible(caseRecord, mode))
+                        .toList()
+        );
+    }
+
+    private static boolean isCaseVisible(Case caseRecord, CaseListingMode mode) {
+        return switch (mode) {
+            case OPEN_ONLY -> caseRecord.isOpen();
+            case CLOSED_ONLY -> !caseRecord.isOpen();
+            case ALL, DEFAULT -> true;
+        };
+    }
+
     /**
-     * Generates a header message based on the number of cases.
-     * <p>
-     * The output varies depending on the case count:
-     * <ul>
-     *   <li>For 0 cases: {@code "You currently have no cases. Add some now!"}</li>
-     *   <li>For 1 case: {@code "You currently have 1 case"}</li>
-     *   <li>For n > 1: {@code "You currently have n cases"}</li>
-     * </ul>
+     * Generates a header message based on the number of cases and the listing mode.
      *
-     * @param caseCount the number of cases in the system
+     * @param caseCount the number of cases in the filtered list
+     * @param mode      the {@link CaseListingMode} used to filter the cases
      * @return a formatted header message string
      */
-    private static String generateCaseHeaderMessage(int caseCount) {
+    private static String generateCaseHeaderMessage(int caseCount, CaseListingMode mode) {
+        String statusLabel = switch (mode) {
+            case OPEN_ONLY -> "open";
+            case CLOSED_ONLY -> "closed";
+            case ALL, DEFAULT -> "total";
+        };
+
         if (caseCount == 0) {
-            return "You currently have no cases. Add some now!";
+            return "You currently have no " + statusLabel + " cases. Add some now!";
         } else if (caseCount == 1) {
-            return "You currently have 1 case";
+            return "You currently have 1 " + statusLabel + " case";
         } else {
-            return "You currently have " + caseCount + " cases";
+            return "You currently have " + caseCount + " " + statusLabel + " cases";
         }
     }
 
     /**
      * Formats a single case line for display.
-     * <p>
-     * The format includes the case index and its display line.
      *
-     * @param index       the index of the case in the list (1-based)
+     * @param index       the index of the case in the filtered list (1-based)
      * @param currentCase the {@link Case} object to format
      * @return a formatted string representing the case
      */

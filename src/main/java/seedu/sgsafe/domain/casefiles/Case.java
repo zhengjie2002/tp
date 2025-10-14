@@ -109,6 +109,10 @@ public class Case {
         this.isOpen = true;
     }
 
+    public boolean isOpen() {
+        return this.isOpen;
+    }
+
     /**
      * Updates the fields of this Case object using the values provided in the map.
      * Only the fields that appear in newValues will be changed.
