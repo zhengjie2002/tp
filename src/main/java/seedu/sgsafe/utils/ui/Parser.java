@@ -269,15 +269,14 @@ public class Parser {
         return Pattern.matches(inputPattern, input.strip());
     }
 
+    /**
+     * Parses the 'edit' command input, validates its format, and constructs an EditCommand object.
+     * Throws an InvalidDeleteIndexException if the input is missing or incorrectly formatted.
+     */
     private static Command parseDeleteCommand(String remainder) {
-        if (remainder.isEmpty() || !isNumeric(remainder)) {
+        if (remainder.isEmpty() || !validator.isNumeric(remainder)) {
             throw new InvalidDeleteIndexException();
         }
         return new DeleteCommand(Integer.parseInt(remainder));
-    }
-
-    private static boolean isNumeric(String input) {
-        final String numberRegex = "[0-9]+";
-        return Pattern.matches(numberRegex, input);
     }
 }
