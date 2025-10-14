@@ -6,5 +6,8 @@ list
 add --title Murder at Jurong --title Murder at Jurong --info Yishun Ring Road --date 05-06-2002
 add --title --title Murder at Yishun --info Yishun Ring Road --date
 add --title Car accident --info Jurong East Road --date 05-06-2018
+list --status open
+list --status closed
+list --status all
 list
 bye
