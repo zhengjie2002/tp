@@ -6,6 +6,7 @@ import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.command.DeleteCommand;
 
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
@@ -16,6 +17,7 @@ import seedu.sgsafe.utils.exceptions.ListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
+import seedu.sgsafe.utils.exceptions.InvalidDeleteIndexException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +69,7 @@ public class Parser {
         case "add" -> parseAddCommand(remainder);
         case "edit" -> parseEditCommand(remainder);
         case "close" -> parseCloseCommand(remainder);
+        case "delete" -> parseDeleteCommand(remainder);
         default -> throw new UnknownCommandException();
         };
     }
@@ -266,4 +269,14 @@ public class Parser {
         return Pattern.matches(inputPattern, input.strip());
     }
 
+    /**
+     * Parses the 'edit' command input, validates its format, and constructs an EditCommand object.
+     * Throws an InvalidDeleteIndexException if the input is missing or incorrectly formatted.
+     */
+    private static Command parseDeleteCommand(String remainder) {
+        if (remainder.isEmpty() || !validator.isNumeric(remainder)) {
+            throw new InvalidDeleteIndexException();
+        }
+        return new DeleteCommand(Integer.parseInt(remainder));
+    }
 }

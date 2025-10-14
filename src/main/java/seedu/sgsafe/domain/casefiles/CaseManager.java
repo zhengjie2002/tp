@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.CloseCommand;
+import seedu.sgsafe.utils.command.DeleteCommand;
 import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.ui.Display;
 
@@ -135,5 +136,23 @@ public class CaseManager {
 
         targetCase.update(editCommand.getNewFlagValues());
         Display.printMessage("Case edited:\n" + targetCase.getDisplayLine());
+    }
+
+    /**
+     * Deletes an existing case in the case list using the case number in the DeleteCommand.
+     * The method checks if the case number is valid, and throws an IndexOutOfBoundsException if
+     * the case number is invalid
+     *
+     * @param command the {@link DeleteCommand} containing the case number.
+     */
+    public static void deleteCase(DeleteCommand command) {
+        int caseNumber = command.getCaseNumber();
+        if (caseNumber < 1 || caseNumber > caseList.size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        int caseIndex = caseNumber - 1;
+        Case targetCase = caseList.get(caseIndex);
+        Display.printMessage("Case deleted:\n" + targetCase.getDisplayLine());
+        caseList.remove(caseIndex);
     }
 }
