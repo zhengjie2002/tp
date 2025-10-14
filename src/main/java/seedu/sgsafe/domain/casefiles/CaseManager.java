@@ -107,6 +107,14 @@ public class CaseManager {
         Display.printMessage("New case added:\n" + newCase.getDisplayLine());
     }
 
+    /**
+     * Closes an existing case in the case list using the case number in the CloseCommand.
+     * The method checks if the case number is valid, and throws an IndexOutOfBoundsException if
+     * the case number is invalid
+     *
+     * @param command the {@link CloseCommand} containing the case number to be closed
+     * @throws IndexOutOfBoundsException if the provided case number is invalid
+     */
     public static void closeCase(CloseCommand command) {
         int caseNumber = command.getCaseNumber();
         if (caseNumber < 1 || caseNumber > caseList.size()) {
