@@ -3,6 +3,7 @@ name: Bug report
 description: Information about the bug
 labels: type.Bug
 assignees: ''
+about: Please provide as much detail as possible to help us resolve the issue.
 ---
 
 **Describe the bug**\
