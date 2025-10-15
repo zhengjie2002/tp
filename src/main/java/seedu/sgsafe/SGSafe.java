@@ -10,6 +10,7 @@ import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.command.ListCommand;
+import seedu.sgsafe.utils.command.DeleteCommand;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCommandException;
 import seedu.sgsafe.utils.ui.Display;
@@ -82,6 +83,13 @@ public class SGSafe {
                 break;
             case EDIT:
                 CaseManager.editCase((EditCommand) command);
+                break;
+            case DELETE:
+                if(command instanceof DeleteCommand) {
+                    CaseManager.deleteCase((DeleteCommand) command);
+                }else {
+                    Display.printMessage("Error: Invalid DELETE command");
+                }
                 break;
             default:
                 throw new EmptyCommandException();

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 /**
  * The `Validator` class provides utility methods for validating flags and inputs.
@@ -65,5 +66,16 @@ public class Validator {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Checks if the given input string is composed of at least one number, and only numbers.
+     *
+     * @param input The input string to check.
+     * @return `true` if the string is composed of only numbers, `false` otherwise
+     */
+    public boolean isNumeric(String input) {
+        final String numberRegex = "^[0-9]+$";
+        return Pattern.matches(numberRegex, input);
     }
 }

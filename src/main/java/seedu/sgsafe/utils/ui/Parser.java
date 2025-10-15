@@ -6,16 +6,19 @@ import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.command.DeleteCommand;
 
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
+import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.ListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
+import seedu.sgsafe.utils.exceptions.InvalidDeleteIndexException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +48,9 @@ public class Parser {
     // Validator instance for input validation
     private static final Validator validator = new Validator();
 
+    // Maximum allowed length for any input value
+    private static final int MAX_INPUT_LENGTH = 5000;
+
     /**
      * Parses raw user input into a {@link Command} object.
      * <p>
@@ -67,6 +73,7 @@ public class Parser {
         case "add" -> parseAddCommand(remainder);
         case "edit" -> parseEditCommand(remainder);
         case "close" -> parseCloseCommand(remainder);
+        case "delete" -> parseDeleteCommand(remainder);
         default -> throw new UnknownCommandException();
         };
     }
@@ -189,6 +196,17 @@ public class Parser {
                 flagValues.get("victim"), flagValues.get("officer"));
     }
 
+    /**
+     * Parses the {@code close} command and validates its argument.
+     * <p>
+     * This method expects a single integer value representing the case number to close.
+     * If the input is empty or not a valid integer, an {@link InvalidCloseCommandException}
+     * will be thrown.
+     *
+     * @param remainder the portion of the input following the {@code close} keyword
+     * @return a valid {@link CloseCommand} if the argument is a valid case number
+     * @throws InvalidCloseCommandException if the argument is missing or non-numeric
+     */
     private static Command parseCloseCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidCloseCommandException();
@@ -236,10 +254,17 @@ public class Parser {
             String flag = trimmedPart.substring(0, spaceIndex).trim();
             String value = trimmedPart.substring(spaceIndex + 1).trim();
 
+            if(value.length() > MAX_INPUT_LENGTH){
+                logger.log(Level.WARNING, "Input exceeds character limit");
+                throw new InputLengthExceededException();
+            }
+
             if (flagValues.containsKey(flag)) {
                 logger.log(Level.WARNING, "Duplicated flags detected");
                 throw new DuplicateFlagException();
             }
+
+            // Finally, we store the flag and its value in the map.
             flagValues.put(flag, value);
         }
         return flagValues;
@@ -292,4 +317,14 @@ public class Parser {
         return Pattern.matches(inputPattern, input.strip());
     }
 
+    /**
+     * Parses the 'edit' command input, validates its format, and constructs an EditCommand object.
+     * Throws an InvalidDeleteIndexException if the input is missing or incorrectly formatted.
+     */
+    private static Command parseDeleteCommand(String remainder) {
+        if (remainder.isEmpty() || !validator.isNumeric(remainder)) {
+            throw new InvalidDeleteIndexException();
+        }
+        return new DeleteCommand(Integer.parseInt(remainder));
+    }
 }
