@@ -6,7 +6,10 @@ import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.CommandType;
 import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.command.AddCommand;
+import seedu.sgsafe.utils.command.ListCommand;
+import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
+import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
@@ -16,6 +19,7 @@ import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Map;
@@ -34,6 +38,11 @@ class ParserTest {
         assertThrows(UnknownCommandException.class, () -> Parser.parseInput("foo list"));
     }
 
+    @Test
+    void parseInput_emptyInput_throwsEmptyCommandException() {
+        assertThrows(EmptyCommandException.class, () -> Parser.parseInput("   "));
+    }
+
     // ----------- TESTS FOR LIST COMMANDS ----------- //
 
     @Test
@@ -43,8 +52,8 @@ class ParserTest {
     }
 
     @Test
-    void parseInput_listWithExtraArgAndWhitespace_throwsListCommandException() {
-        assertThrows(ListCommandException.class, () -> Parser.parseInput("  list extra  "));
+    void parseInput_listWithExtraArgAndWhitespace_throwsIncorrectFlagException() {
+        assertThrows(IncorrectFlagException.class, () -> Parser.parseInput("  list extra  "));
     }
 
     @Test
@@ -56,6 +65,50 @@ class ParserTest {
     void parseInput_listWithTabAndNewline_returnsListCommand() {
         Command command = Parser.parseInput("\tlist\n");
         assertEquals(CommandType.LIST, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_listWithMixedCase_returnsUnknownCommandException() {
+        assertThrows(UnknownCommandException.class, () -> Parser.parseInput("LiSt"));
+    }
+
+    @Test
+    void parseInput_listStatusClosed_returnsClosedOnlyMode() {
+        Command command = Parser.parseInput("list --status closed");
+        assertEquals(CommandType.LIST, command.getCommandType());
+        assertInstanceOf(ListCommand.class, command);
+        assertEquals(CaseListingMode.CLOSED_ONLY, ((ListCommand) command).getListingMode());
+    }
+
+    @Test
+    void parseInput_listStatusOpen_returnsOpenOnlyMode() {
+        Command command = Parser.parseInput("list --status open");
+        assertEquals(CommandType.LIST, command.getCommandType());
+        assertInstanceOf(ListCommand.class, command);
+        assertEquals(CaseListingMode.OPEN_ONLY, ((ListCommand) command).getListingMode());
+    }
+
+    @Test
+    void parseInput_listStatusAll_returnsAllMode() {
+        Command command = Parser.parseInput("list --status all");
+        assertEquals(CommandType.LIST, command.getCommandType());
+        assertInstanceOf(ListCommand.class, command);
+        assertEquals(CaseListingMode.ALL, ((ListCommand) command).getListingMode());
+    }
+
+    @Test
+    void parseInput_listStatusInvalid_throwsListCommandException() {
+        assertThrows(ListCommandException.class, () -> Parser.parseInput("list --status banana"));
+    }
+
+    @Test
+    void parseInput_listStatusMissingValue_throwsIncorrectFlagException() {
+        assertThrows(IncorrectFlagException.class, () -> Parser.parseInput("list --status"));
+    }
+
+    @Test
+    void parseInput_listStatusExtraArgs_throwsListCommandException() {
+        assertThrows(ListCommandException.class, () -> Parser.parseInput("list --status open extra"));
     }
 
     // ----------- TESTS FOR EDIT COMMANDS ----------- //
@@ -116,6 +169,7 @@ class ParserTest {
     }
 
     // ----------- TESTS FOR ADD COMMANDS ----------- //
+
     @Test
     void parseInput_addValid_returnsAddCommand() {
         Command command = Parser.parseInput(

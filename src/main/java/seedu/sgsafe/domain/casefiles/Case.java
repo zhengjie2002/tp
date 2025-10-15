@@ -9,6 +9,9 @@ import java.util.Map;
 public class Case {
 
     /** The title or summary of the case. */
+    private final String id;
+
+    /** The title or summary of the case. */
     private String title;
 
     /** The date the case was recorded or occurred. */
@@ -30,13 +33,15 @@ public class Case {
      * Constructs a {@code Case} object with the specified details.
      * The case is initialized as closed by default.
      *
+     * @param id      the case ID in hex form
      * @param title   the title or summary of the case
      * @param date    the date the case was recorded or occurred
      * @param info    additional information or notes about the case
      * @param victim  the name of the victim involved
      * @param officer the name of the officer assigned
      */
-    Case(String title, String date, String info, String victim, String officer) {
+    Case(String id, String title, String date, String info, String victim, String officer) {
+        this.id = id;
         this.title = title;
         this.date = date;
         this.info = info;
@@ -91,14 +96,38 @@ public class Case {
     }
 
     /**
-     * Returns a formatted summary line for display purposes.
-     * Includes the case status indicator, date, and title.
+     * Retrieves the unique ID of the case.
      *
-     * @return a display-friendly string representing the case
+     * @return the case ID
+     */
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * Returns a formatted summary line representing this case for display purposes.
+     * <p>
+     * The output includes:
+     * <ul>
+     *   <li>Status indicator: {@code [O]} for open, {@code [C]} for closed</li>
+     *   <li>Case ID: a unique 6-character hexadecimal string</li>
+     *   <li>Date and title of the case</li>
+     *   <li>Optional victim and officer details, if present</li>
+     * </ul>
+     * <p>
+     * Example output:
+     * <pre>
+     * [O] #0001a3 2025-10-14 Robbery | Victim: Alice | Officer: Officer Tan
+     * [C] #0001a4 2025-10-15 Fraud
+     * </pre>
+     *
+     * @return a display-friendly string summarizing the case
      */
     public String getDisplayLine() {
-        String open = this.isOpen ? "[O]" : "[C]";
-        return open + " " + this.date + " " + this.title;
+        String status = this.isOpen ? "[O]" : "[C]";
+        String victimLine = (this.victim == null) ? "" : (" | Victim: " + this.victim);
+        String officerLine = (this.officer == null) ? "" : (" | Officer: " + this.officer);
+        return status + " #" + this.id + " " + this.date + " " + this.title + victimLine + officerLine;
     }
 
     public void setClosed() {
@@ -107,6 +136,10 @@ public class Case {
 
     public void setOpen() {
         this.isOpen = true;
+    }
+
+    public boolean isOpen() {
+        return this.isOpen;
     }
 
     /**
