@@ -1,7 +1,10 @@
 package seedu.sgsafe.utils.exceptions;
 
 public class UnknownCommandException extends InvalidCommandException {
-    public UnknownCommandException() {
-        super("The command you have entered is not recognized.");
+    private static final String STARTING_MESSAGE = "The command '";
+    private static final String ERROR_MESSAGE = "' that you have entered is not recognised.";
+
+    public UnknownCommandException(String CommandWord) {
+        super(STARTING_MESSAGE + CommandWord + ERROR_MESSAGE);
     }
 }
