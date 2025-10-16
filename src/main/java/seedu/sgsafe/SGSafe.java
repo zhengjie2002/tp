@@ -3,15 +3,9 @@ package seedu.sgsafe;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.ConsoleHandler;
 
-import seedu.sgsafe.domain.casefiles.CaseManager;
-import seedu.sgsafe.utils.command.AddCommand;
-import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
-import seedu.sgsafe.utils.command.EditCommand;
-import seedu.sgsafe.utils.command.ListCommand;
-import seedu.sgsafe.utils.command.DeleteCommand;
-import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCommandException;
 import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.ui.Parser;
@@ -32,6 +26,9 @@ public class SGSafe {
      */
     public static void main(String[] args) {
         logger.log(Level.INFO, "SGSafe application started.");
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setLevel(Level.SEVERE);
+        
         Display.printWelcomeMessage();
         mainLoop();
         Display.printGoodbyeMessage();
@@ -62,38 +59,7 @@ public class SGSafe {
     private static void handleUserCommand(String userInput) {
         try {
             Command command = Parser.parseInput(userInput);
-
-            switch (command.getCommandType()) {
-            case LIST:
-                CaseManager.listCases((ListCommand) command);
-                break;
-            case ADD:
-                if (command instanceof AddCommand) {
-                    CaseManager.addCase((AddCommand) command);
-                } else {
-                    Display.printMessage("Error: Invalid ADD command");
-                }
-                break;
-            case CLOSE:
-                if (command instanceof CloseCommand) {
-                    CaseManager.closeCase((CloseCommand) command);
-                } else {
-                    Display.printMessage("Error: Invalid CLOSE command");
-                }
-                break;
-            case EDIT:
-                CaseManager.editCase((EditCommand) command);
-                break;
-            case DELETE:
-                if(command instanceof DeleteCommand) {
-                    CaseManager.deleteCase((DeleteCommand) command);
-                }else {
-                    Display.printMessage("Error: Invalid DELETE command");
-                }
-                break;
-            default:
-                throw new EmptyCommandException();
-            }
+            command.execute();
         } catch (InvalidCommandException e) {
             Display.printMessage(e.getErrorMessage());
         }
