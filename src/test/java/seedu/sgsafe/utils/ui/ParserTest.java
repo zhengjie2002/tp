@@ -1,29 +1,16 @@
 package seedu.sgsafe.utils.ui;
 
 import org.junit.jupiter.api.Test;
-
-import seedu.sgsafe.utils.command.Command;
-import seedu.sgsafe.utils.command.CommandType;
-import seedu.sgsafe.utils.command.EditCommand;
-import seedu.sgsafe.utils.command.AddCommand;
-import seedu.sgsafe.utils.command.ListCommand;
-import seedu.sgsafe.utils.command.CaseListingMode;
-import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
-import seedu.sgsafe.utils.exceptions.EmptyCommandException;
-import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
-import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
-import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
-import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
-import seedu.sgsafe.utils.exceptions.ListCommandException;
-import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
-import seedu.sgsafe.utils.exceptions.UnknownCommandException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import seedu.sgsafe.utils.command.*;
+import seedu.sgsafe.utils.exceptions.*;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Unit tests for {@link Parser}, verifying correct command parsing and exception handling.
+ */
 class ParserTest {
 
     // ----------- TESTS FOR GENERAL INVALID COMMANDS ----------- //
@@ -49,6 +36,8 @@ class ParserTest {
     void parseInput_listWithWhitespace_returnsListCommand() {
         Command command = Parser.parseInput("  list  ");
         assertEquals(CommandType.LIST, command.getCommandType());
+        assertInstanceOf(ListCommand.class, command);
+        assertEquals(CaseListingMode.DEFAULT, ((ListCommand) command).getListingMode());
     }
 
     @Test
@@ -65,6 +54,8 @@ class ParserTest {
     void parseInput_listWithTabAndNewline_returnsListCommand() {
         Command command = Parser.parseInput("\tlist\n");
         assertEquals(CommandType.LIST, command.getCommandType());
+        assertInstanceOf(ListCommand.class, command);
+        assertEquals(CaseListingMode.DEFAULT, ((ListCommand) command).getListingMode());
     }
 
     @Test
@@ -116,7 +107,6 @@ class ParserTest {
     @Test
     void parseInput_validEditCommand_returnsEditCommand() {
         Command command = Parser.parseInput("edit 1 --title NewTitle --date 2025-10-10");
-
         assertEquals(CommandType.EDIT, command.getCommandType());
 
         EditCommand editCommand = (EditCommand) command;
