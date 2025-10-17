@@ -322,9 +322,19 @@ public class Parser {
      * Throws an InvalidDeleteIndexException if the input is missing or incorrectly formatted.
      */
     private static Command parseDeleteCommand(String remainder) {
-        if (remainder.isEmpty() || !validator.isNumeric(remainder)) {
+        int caseNumber = 0;
+        try {
+            caseNumber = Integer.parseInt(remainder);
+        } catch (NumberFormatException e) {
+            logger.log(Level.WARNING, "The wrong input was entered into the 'delete' command.");
             throw new InvalidDeleteIndexException();
         }
-        return new DeleteCommand(Integer.parseInt(remainder));
+
+        if(caseNumber < 1){
+            logger.log(Level.WARNING, "The case number must be greater than 0.");
+            throw new InvalidDeleteIndexException();
+        }
+
+        return new DeleteCommand(caseNumber);
     }
 }
