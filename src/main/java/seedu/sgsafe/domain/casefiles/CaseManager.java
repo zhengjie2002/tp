@@ -198,6 +198,7 @@ public class CaseManager {
      * @param editCommand the {@link EditCommand} containing the case number and the new values to update
      */
     public static void editCase(EditCommand editCommand) {
+        assert editCommand != null : "editCommand should not be null";
         int caseNumber = editCommand.getCaseNumber();
         if  (caseNumber < 1 || caseNumber > caseList.size()) {
             Display.printMessage("Invalid case index, please try again.");

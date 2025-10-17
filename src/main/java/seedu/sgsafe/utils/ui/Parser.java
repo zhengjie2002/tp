@@ -294,12 +294,14 @@ public class Parser {
         Map<String, String> flagValues = extractFlagValues(replacements);
 
         if (flagValues == null) {
+            logger.log(Level.INFO, "Missing flag values in input");
             throw new InvalidEditCommandException("The 'edit' command requires at least one flag " +
                     "and every flag's corresponding value.");
         }
 
         for (String flag : flagValues.keySet()) {
             if (!VALID_FLAGS.contains(flag)) {
+                logger.log(Level.INFO, "Invalid flags were entered");
                 throw new InvalidEditCommandException("The flag '" + flag + "' is not recognized.");
             }
         }
