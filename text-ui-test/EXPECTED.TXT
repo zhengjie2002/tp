@@ -2,14 +2,11 @@
 	Welcome to SGSafe
 	____________________________________________________________
 	____________________________________________________________
-	The command you have entered is not recognized.
-	____________________________________________________________
-	____________________________________________________________
-	You currently have no total cases. Add some now!
+	The command 'James' that you have entered is not recognised.
 	____________________________________________________________
 	____________________________________________________________
 	New case added:
-[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	Your add command format is incorrect.
@@ -18,39 +15,13 @@
 	The items in [ ] are optional.
 	____________________________________________________________
 	____________________________________________________________
-	You currently have 1 total case
-	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	____________________________________________________________
-	____________________________________________________________
-	Your command format is incorrect.
-	There is a duplicate flag.
-	____________________________________________________________
-	____________________________________________________________
 	Your command format is incorrect.
 	There is an incorrect usage of flag. Use flags like --title TITLE
 	Please see which flag is required for this command.
 	____________________________________________________________
 	____________________________________________________________
-	New case added:
-[O] #000001 05-06-2018 Car accident
-	____________________________________________________________
-	____________________________________________________________
-	You currently have 2 open cases
+	You currently have 1 case in total
 	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 05-06-2018 Car accident
-	____________________________________________________________
-	____________________________________________________________
-	You currently have no closed cases. Add some now!
-	____________________________________________________________
-	____________________________________________________________
-	You currently have 2 total cases
-	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 05-06-2018 Car accident
-	____________________________________________________________
-	____________________________________________________________
-	You currently have 2 total cases
-	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 05-06-2018 Car accident
 	____________________________________________________________
 	____________________________________________________________
 	Thanks for using SGSafe :)

@@ -40,7 +40,7 @@ public class Case {
      * @param victim  the name of the victim involved
      * @param officer the name of the officer assigned
      */
-    Case(String id, String title, String date, String info, String victim, String officer) {
+    public Case(String id, String title, String date, String info, String victim, String officer) {
         this.id = id;
         this.title = title;
         this.date = date;
