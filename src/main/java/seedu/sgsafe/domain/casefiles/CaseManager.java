@@ -178,6 +178,8 @@ public class CaseManager {
      * @throws IndexOutOfBoundsException if the provided case number is invalid
      */
     public static void closeCase(CloseCommand command) {
+        assert command != null : "CloseCommand should not be null";
+
         int caseNumber = command.getCaseNumber();
         if (caseNumber < 1 || caseNumber > caseList.size()) {
             throw new IndexOutOfBoundsException();
