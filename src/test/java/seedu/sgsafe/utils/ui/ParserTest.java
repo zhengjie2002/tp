@@ -1,12 +1,31 @@
 package seedu.sgsafe.utils.ui;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
-import seedu.sgsafe.utils.command.*;
-import seedu.sgsafe.utils.exceptions.*;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+
+import seedu.sgsafe.utils.command.CaseListingMode;
+import seedu.sgsafe.utils.command.Command;
+import seedu.sgsafe.utils.command.CommandType;
+import seedu.sgsafe.utils.command.ListCommand;
+import seedu.sgsafe.utils.command.AddCommand;
+import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
+import seedu.sgsafe.utils.exceptions.EmptyCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
+import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
+import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
+import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
+
+import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
 /**
  * Unit tests for {@link Parser}, verifying correct command parsing and exception handling.
@@ -89,7 +108,7 @@ class ParserTest {
 
     @Test
     void parseInput_listStatusInvalid_throwsListCommandException() {
-        assertThrows(ListCommandException.class, () -> Parser.parseInput("list --status banana"));
+        assertThrows(InvalidListCommandException.class, () -> Parser.parseInput("list --status banana"));
     }
 
     @Test
@@ -99,7 +118,7 @@ class ParserTest {
 
     @Test
     void parseInput_listStatusExtraArgs_throwsListCommandException() {
-        assertThrows(ListCommandException.class, () -> Parser.parseInput("list --status open extra"));
+        assertThrows(InvalidListCommandException.class, () -> Parser.parseInput("list --status open extra"));
     }
 
     // ----------- TESTS FOR EDIT COMMANDS ----------- //

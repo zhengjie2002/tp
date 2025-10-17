@@ -102,9 +102,9 @@ public class ListCommand extends Command {
      */
     private boolean isCaseVisible(Case caseRecord) {
         return switch (this.listingMode) {
-            case OPEN_ONLY -> caseRecord.isOpen();
-            case CLOSED_ONLY -> !caseRecord.isOpen();
-            case ALL, DEFAULT -> true;
+        case OPEN_ONLY -> caseRecord.isOpen();
+        case CLOSED_ONLY -> !caseRecord.isOpen();
+        case ALL, DEFAULT -> true;
         };
     }
 
@@ -129,9 +129,9 @@ public class ListCommand extends Command {
      */
     private String generateCaseHeaderMessage(int caseCount) {
         String statusLabel = switch (this.listingMode) {
-            case OPEN_ONLY -> "open";
-            case CLOSED_ONLY -> "closed";
-            case ALL, DEFAULT -> "in total";
+        case OPEN_ONLY -> "open";
+        case CLOSED_ONLY -> "closed";
+        case ALL, DEFAULT -> "in total";
         };
 
         if (caseCount == 0) {

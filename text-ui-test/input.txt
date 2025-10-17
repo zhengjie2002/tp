@@ -1,4 +1,6 @@
 James Gosling
 add --title Murder at Yishun --info Yishun Ring Road --date 23-06-2020 --victim Lim Ying --officer Tony
 add --title Murder at Clementi --info Nowhere
+list status
+list
 bye

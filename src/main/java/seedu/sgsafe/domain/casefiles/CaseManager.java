@@ -2,11 +2,9 @@ package seedu.sgsafe.domain.casefiles;
 
 import java.util.ArrayList;
 
-import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.DeleteCommand;
 import seedu.sgsafe.utils.command.EditCommand;
-import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.ui.Display;
 
 import seedu.sgsafe.utils.exceptions.IndexOutOfBoundsException;

@@ -14,7 +14,7 @@ import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
-import seedu.sgsafe.utils.exceptions.ListCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
@@ -61,7 +61,7 @@ public class Parser {
      * @return a {@link Command} representing the parsed action
      * @throws EmptyCommandException   if the input is empty or contains only whitespace
      * @throws UnknownCommandException if the command keyword is not recognized
-     * @throws ListCommandException    if the {@code list} command contains unexpected arguments
+     * @throws InvalidListCommandException    if the {@code list} command contains unexpected arguments
      */
     public static Command parseInput(String userInput) {
         userInput = cleanUserInput(userInput);
@@ -138,11 +138,11 @@ public class Parser {
      *   <li>{@code list --status all} — Lists all cases</li>
      * </ul>
      * If the {@code --status} flag is present, its value must be one of {@code open}, {@code closed}, or {@code all}.
-     * Any invalid flag or value will result in a {@link ListCommandException}.
+     * Any invalid flag or value will result in a {@link InvalidListCommandException}.
      *
      * @param remainder the portion of the input following the {@code list} keyword
      * @return a {@link ListCommand} with the appropriate {@link CaseListingMode}
-     * @throws ListCommandException if the input contains invalid flags or unsupported status values
+     * @throws InvalidListCommandException if the input contains invalid flags or unsupported status values
      */
     private static Command parseListCommand(String remainder) {
         if (remainder.isEmpty()) {
@@ -153,7 +153,7 @@ public class Parser {
         List<String> validFlags = List.of("status");
 
         if (!validator.haveValidFlags(flagValues, validFlags)) {
-            throw new ListCommandException();
+            throw new InvalidListCommandException();
         }
 
         String status = flagValues.get("status");
@@ -163,7 +163,7 @@ public class Parser {
         case "open" -> mode = CaseListingMode.OPEN_ONLY;
         case "closed" -> mode = CaseListingMode.CLOSED_ONLY;
         case "all" -> mode = CaseListingMode.ALL;
-        default -> throw new ListCommandException();
+        default -> throw new InvalidListCommandException();
         }
 
         return new ListCommand(mode);

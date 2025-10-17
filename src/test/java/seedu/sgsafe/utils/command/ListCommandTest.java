@@ -1,5 +1,8 @@
 package seedu.sgsafe.utils.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seedu.sgsafe.domain.casefiles.Case;
@@ -7,8 +10,6 @@ import seedu.sgsafe.domain.casefiles.CaseManager;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for {@link ListCommand}, verifying correct filtering and output formatting
