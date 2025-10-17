@@ -74,7 +74,7 @@ public class Parser {
         case "edit" -> parseEditCommand(remainder);
         case "close" -> parseCloseCommand(remainder);
         case "delete" -> parseDeleteCommand(remainder);
-        default -> throw new UnknownCommandException();
+        default -> throw new UnknownCommandException(keyword);
         };
     }
 

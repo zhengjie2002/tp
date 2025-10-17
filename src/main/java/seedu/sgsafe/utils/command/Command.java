@@ -10,4 +10,8 @@ public abstract class Command {
     public String[] getErrorMessage() {
         return null;
     }
+
+    public void execute(){
+        // to be overridden by subclasses
+    };
 }

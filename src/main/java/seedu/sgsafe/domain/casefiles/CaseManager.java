@@ -2,7 +2,6 @@ package seedu.sgsafe.domain.casefiles;
 
 import java.util.ArrayList;
 
-import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.DeleteCommand;
@@ -23,6 +22,10 @@ public class CaseManager {
      * Each {@link Case} represents a single incident or report.
      */
     private static ArrayList<Case> caseList = new ArrayList<>();
+
+    public static int getCaseListSize() {
+        return caseList.size();
+    }
 
     /**
      * Displays the current list of cases filtered by the specified {@link CaseListingMode}.
@@ -153,18 +156,13 @@ public class CaseManager {
     }
 
     /**
-     * Adds a new case to the {@link #caseList} based on the details provided in the {@link AddCommand}.
-     * After adding the case, a confirmation message is displayed with the case's summary.
+     * Adds a new case to the case list.
      *
-     * @param command The {@link AddCommand} containing the details of the case to be added.
+     * @param newCase the {@link Case} object to be added
      */
-    public static void addCase(AddCommand command) {
-        assert command != null : "AddCommand should not be null";
-        String id = generateHexId();
-        Case newCase = new Case(id, command.getCaseTitle(),
-                command.getCaseDate(), command.getCaseInfo(), command.getCaseVictim(), command.getCaseOfficer());
+    public static void addCase(Case newCase) {
+        assert newCase != null : "AddCommand should not be null";
         caseList.add(newCase);
-        Display.printMessage("New case added:\n" + newCase.getDisplayLine());
     }
 
     /**
@@ -195,7 +193,7 @@ public class CaseManager {
      */
     public static void editCase(EditCommand editCommand) {
         int caseNumber = editCommand.getCaseNumber();
-        if  (caseNumber < 1 || caseNumber > caseList.size()) {
+        if (caseNumber < 1 || caseNumber > caseList.size()) {
             Display.printMessage("Invalid case index, please try again.");
             return;
         }
