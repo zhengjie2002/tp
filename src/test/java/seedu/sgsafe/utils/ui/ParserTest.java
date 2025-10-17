@@ -187,7 +187,7 @@ class ParserTest {
     }
 
     @Test
-    void parseInput_addMissingCompulsoryFlag_throwsInvalidEditCommandException() {
+    void parseInput_addMissingCompulsoryFlag_throwsInvalidAddCommandException() {
         assertThrows(InvalidAddCommandException.class,
                 () -> Parser.parseInput("add --title CaseTitle --date 2025-12-12"));
         assertThrows(InvalidAddCommandException.class,
