@@ -79,11 +79,13 @@ public class CaseManager {
      * @return a new {@link ArrayList} containing only the matching cases
      */
     private static ArrayList<Case> filterCasesByMode(CaseListingMode mode) {
-        return new ArrayList<>(
+        ArrayList<Case> filteredCases = new ArrayList<>(
                 caseList.stream()
                         .filter(caseRecord -> isCaseVisible(caseRecord, mode))
                         .toList()
         );
+        assert caseList.size() >= filteredCases.size() : "Filtered list larger than original";
+        return filteredCases;
     }
 
     /**
