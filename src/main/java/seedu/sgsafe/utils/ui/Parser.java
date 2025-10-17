@@ -209,12 +209,14 @@ public class Parser {
      */
     private static Command parseCloseCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
+            logger.log(Level.WARNING, "Input is empty");
             throw new InvalidCloseCommandException();
         }
         try {
             int caseNumber = Integer.parseInt(remainder);
             return new CloseCommand(caseNumber);
         } catch (NumberFormatException e) {
+            logger.log(Level.WARNING, "Invalid number format");
             throw new InvalidCloseCommandException();
         }
     }
