@@ -132,7 +132,4 @@ public class CaseManager {
         Display.printMessage("Case deleted:\n" + targetCase.getDisplayLine());
         caseList.remove(caseIndex);
     }
-
-    public static void editCase(int caseId, Map<String, String> newFlagValues) {
-    }
 }

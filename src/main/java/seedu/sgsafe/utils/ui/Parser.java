@@ -275,18 +275,17 @@ public class Parser {
      * Throws an InvalidEditCommandException if the input is missing, incorrectly formatted, or contains invalid flags.
      */
     private static Command parseEditCommand(String remainder) {
-        if (remainder.isEmpty() || !isValidEditCommandInput(remainder)) {
-            throw new InvalidEditCommandException("The 'edit' command requires a case number, " +
+        if (remainder.isEmpty()) {
+            throw new InvalidEditCommandException("The 'edit' command requires a case ID, " +
                     "followed by at least one flag and its value.");
         }
 
         int firstSpaceIndex = remainder.indexOf(" ");
         if (firstSpaceIndex == -1) {
-            throw new InvalidEditCommandException("Missing case number or flags in 'edit' command.");
+            throw new InvalidEditCommandException("Missing case ID or flags in 'edit' command.");
         }
 
-        String caseNumberString = remainder.substring(0, firstSpaceIndex);
-        int caseNumberInteger = Integer.parseInt(caseNumberString);
+        String caseId = remainder.substring(0, firstSpaceIndex);
         String replacements = remainder.substring(firstSpaceIndex + 1).trim();
 
         Map<String, String> flagValues = extractFlagValues(replacements);
@@ -298,7 +297,7 @@ public class Parser {
 
         validateRequiredFlags(flagValues);
 
-        return new EditCommand(caseNumberInteger, flagValues);
+        return new EditCommand(caseId, flagValues);
     }
 
     private static void validateRequiredFlags(Map<String, String> flagValues) {

@@ -11,15 +11,15 @@ import seedu.sgsafe.domain.casefiles.CaseManager;
  */
 public class EditCommand extends Command {
     // The case number of the case to edit
-    private final int caseId;
+    private final String caseId;
 
     // Map of new field values, where the key is the flag (e.g. "title", "date")
     private final Map<String, String> newFlagValues;
 
     // Constructor that sets the case number and new field values
-    public EditCommand(int caseNumber, Map<String, String> newFlagValues) {
+    public EditCommand(String caseId, Map<String, String> newFlagValues) {
         this.commandType = CommandType.EDIT;
-        this.caseId = caseNumber;
+        this.caseId = caseId;
         this.newFlagValues = newFlagValues;
     }
 
