@@ -296,13 +296,17 @@ public class Parser {
                     "and every flag's corresponding value.");
         }
 
+        validateRequiredFlags(flagValues);
+
+        return new EditCommand(caseNumberInteger, flagValues);
+    }
+
+    private static void validateRequiredFlags(Map<String, String> flagValues) {
         for (String flag : flagValues.keySet()) {
             if (!VALID_FLAGS.contains(flag)) {
                 throw new InvalidEditCommandException("The flag '" + flag + "' is not recognized.");
             }
         }
-
-        return new EditCommand(caseNumberInteger, flagValues);
     }
 
     /**
