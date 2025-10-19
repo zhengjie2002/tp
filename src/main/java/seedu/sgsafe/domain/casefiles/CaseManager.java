@@ -1,11 +1,10 @@
 package seedu.sgsafe.domain.casefiles;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-import seedu.sgsafe.utils.command.DeleteCommand;
-import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.ui.Display;
-
 import seedu.sgsafe.utils.exceptions.IndexOutOfBoundsException;
 
 /**
@@ -68,7 +67,12 @@ public class CaseManager {
         caseToClose.setClosed();
     }
 
-    //@@author:shennontay
+    /**
+     * Finds and returns a {@link Case} object from the case list using its unique ID.
+     *
+     * @param id the hexadecimal ID of the case to find
+     * @return the Case with the matching ID, or null if not found
+     */
     public static Case getCaseById(String id) {
         return caseList.stream()
                 .filter(c -> c.getId().equals(id))
@@ -77,34 +81,34 @@ public class CaseManager {
     }
 
     /**
-     * Edits an existing case in the case list using the details provided in the EditCommand.
-     * The method first checks if the case number is valid, then updates the corresponding case
-     * with the new field values.
+     * Updates an existing {@link Case} with new field values.
+     * <p>
+     * Finds the case by its {@code caseId} using {@link #getCaseById(String)} and applies
+     * the updates from {@code newFlagValues} via {@link Case#update(Map)}.
+     * Assumes the case exists (checked by assertion).
      *
-     * @param editCommand the {@link EditCommand} containing the case number and the new values to update
+     * @param caseId the 6-character hexadecimal case ID
+     * @param newFlagValues map of field names to new values
+     * @return the updated case’s display line
      */
-    public static void editCase(EditCommand editCommand) {
-        int caseNumber = editCommand.getCaseNumber();
-        if (caseNumber < 1 || caseNumber > caseList.size()) {
-            Display.printMessage("Invalid case index, please try again.");
-            return;
+    public static String editCase(String caseId, Map<String, String> newFlagValues)
+            throws CaseNotFoundException {
+        Case caseToEdit = getCaseById(caseId);
+        if (caseToEdit == null) {
+            throw new CaseNotFoundException(caseId);
         }
-        int caseIndex = caseNumber - 1;
-        Case targetCase = caseList.get(caseIndex);
-
-        targetCase.update(editCommand.getNewFlagValues());
-        Display.printMessage("Case edited:\n" + targetCase.getDisplayLine());
+        caseToEdit.update(newFlagValues);
+        return caseToEdit.getDisplayLine();
     }
 
     /**
-     * Deletes an existing case in the case list using the case number in the DeleteCommand.
+     * Deletes an existing case in the case list using its index in the case list.
      * The method checks if the case number is valid, and throws an IndexOutOfBoundsException if
      * the case number is invalid
      *
-     * @param command the {@link DeleteCommand} containing the case number.
+     * @param caseNumber the index of the case to be deleted (1-indexed).
      */
-    public static void deleteCase(DeleteCommand command) {
-        int caseNumber = command.getCaseNumber();
+    public static void deleteCase(int caseNumber) {
         if (caseNumber < 1 || caseNumber > caseList.size()) {
             throw new IndexOutOfBoundsException();
         }

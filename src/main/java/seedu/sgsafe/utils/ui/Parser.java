@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import java.util.regex.Pattern;
 
 /**
  * Responsible for interpreting raw user input and converting it into structured {@link Command} objects.
@@ -272,46 +271,27 @@ public class Parser {
      * Throws an InvalidEditCommandException if the input is missing, incorrectly formatted, or contains invalid flags.
      */
     private static Command parseEditCommand(String remainder) {
-        if (remainder.isEmpty() || !isValidEditCommandInput(remainder)) {
-            throw new InvalidEditCommandException("The 'edit' command requires a case number, " +
-                    "followed by at least one flag and its value.");
+        if (remainder.isEmpty()) {
+            throw new InvalidEditCommandException();
         }
 
         int firstSpaceIndex = remainder.indexOf(" ");
         if (firstSpaceIndex == -1) {
-            throw new InvalidEditCommandException("Missing case number or flags in 'edit' command.");
+            throw new InvalidEditCommandException();
+        }
+        String caseId = remainder.substring(0, firstSpaceIndex);
+        if (!validator.isValidCaseId(caseId)) {
+            throw new InvalidEditCommandException();
         }
 
-        String caseNumberString = remainder.substring(0, firstSpaceIndex);
-        int caseNumberInteger = Integer.parseInt(caseNumberString);
         String replacements = remainder.substring(firstSpaceIndex + 1).trim();
-
         Map<String, String> flagValues = extractFlagValues(replacements);
 
-        if (flagValues == null) {
-            throw new InvalidEditCommandException("The 'edit' command requires at least one flag " +
-                    "and every flag's corresponding value.");
+        if (!validator.haveValidFlags(flagValues, VALID_FLAGS)){
+            throw new IncorrectFlagException();
         }
 
-        for (String flag : flagValues.keySet()) {
-            if (!VALID_FLAGS.contains(flag)) {
-                throw new InvalidEditCommandException("The flag '" + flag + "' is not recognized.");
-            }
-        }
-
-        return new EditCommand(caseNumberInteger, flagValues);
-    }
-
-    /**
-     * Checks whether the provided input string matches the valid format for an 'edit' command.
-     * The valid format must begin with a case number followed by one or more flags and their values.
-     *
-     * @param input the user input string to validate
-     * @return true if the input matches the required format, false otherwise
-     */
-    public static boolean isValidEditCommandInput(String input) {
-        final String inputPattern = "^\\d+\\s+(--\\s*\\w+(?:\\s+\\S+)+)(?:\\s+--\\s*\\w+(?:\\s+\\S+)+)*$";
-        return Pattern.matches(inputPattern, input.strip());
+        return new EditCommand(caseId, flagValues);
     }
 
     /**

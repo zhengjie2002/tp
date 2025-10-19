@@ -97,4 +97,20 @@ public class Validator {
         return currentCaseList.stream()
                 .anyMatch(c -> c.getId().equals(caseId));
     }
+
+    /**
+     * Checks whether the provided case ID is a valid 6-character hexadecimal string.
+     *
+     * @param caseId the case ID to validate
+     * @return {@code true} if the case ID is valid; {@code false} otherwise
+     */
+    public boolean isValidCaseId(String caseId) {
+        if (caseId == null) {
+            return false;
+        }
+        // Regex explanation:
+        // ^ and $ → start and end of string anchors
+        // [0-9A-Fa-f]{6} → exactly 6 characters of 0-9 or A-F (any case)
+        return caseId.matches("^[0-9A-Fa-f]{6}$");
+    }
 }
