@@ -61,12 +61,11 @@ public class CaseManager {
     }
 
     /**
-     * Closes an existing case in the case list using the case ID.
+     * Closes an existing case in the case list.
      *
-     * @param caseId the unique identifier of the case to be closed
+     * @param caseToClose the case to be closed
      */
-    public static void closeCase(String caseId) {
-        Case caseToClose = getCaseById(caseId);
+    public static void closeCase(Case caseToClose) {
         caseToClose.setClosed();
     }
 

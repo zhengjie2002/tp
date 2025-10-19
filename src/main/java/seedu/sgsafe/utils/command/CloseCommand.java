@@ -22,8 +22,8 @@ public class CloseCommand extends Command {
 
     @Override
     public void execute() {
-        CaseManager.closeCase(caseId);
         Case caseToClose = CaseManager.getCaseById(caseId);
+        CaseManager.closeCase(caseToClose);
         Display.printMessage("Case closed:", caseToClose.getDisplayLine());
     }
 }
