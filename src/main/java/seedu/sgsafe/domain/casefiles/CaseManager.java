@@ -121,8 +121,7 @@ public class CaseManager {
      *
      * @param command the {@link DeleteCommand} containing the case number.
      */
-    public static void deleteCase(DeleteCommand command) {
-        int caseNumber = command.getCaseNumber();
+    public static void deleteCase(int caseNumber) {
         if (caseNumber < 1 || caseNumber > caseList.size()) {
             throw new IndexOutOfBoundsException();
         }
