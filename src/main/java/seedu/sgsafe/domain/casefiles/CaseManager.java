@@ -115,11 +115,11 @@ public class CaseManager {
     }
 
     /**
-     * Deletes an existing case in the case list using the case number in the DeleteCommand.
+     * Deletes an existing case in the case list using its index in the case list.
      * The method checks if the case number is valid, and throws an IndexOutOfBoundsException if
      * the case number is invalid
      *
-     * @param command the {@link DeleteCommand} containing the case number.
+     * @param caseNumber the index of the case to be deleted (1-indexed).
      */
     public static void deleteCase(int caseNumber) {
         if (caseNumber < 1 || caseNumber > caseList.size()) {
