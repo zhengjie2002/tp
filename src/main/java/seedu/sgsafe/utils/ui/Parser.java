@@ -12,6 +12,7 @@ import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
+import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
@@ -198,24 +199,20 @@ public class Parser {
     /**
      * Parses the {@code close} command and validates its argument.
      * <p>
-     * This method expects a single integer value representing the case number to close.
-     * If the input is empty or not a valid integer, an {@link InvalidCloseCommandException}
+     * This method expects a string representing the caseId to close.
+     * If the input is empty or not a valid caseId, an {@link InvalidCloseCommandException}
      * will be thrown.
      *
      * @param remainder the portion of the input following the {@code close} keyword
-     * @return a valid {@link CloseCommand} if the argument is a valid case number
-     * @throws InvalidCloseCommandException if the argument is missing or non-numeric
+     * @return a valid {@link CloseCommand} if the argument is a valid caseId
+     * @throws InvalidCloseCommandException if the argument is missing
+     * @throws InvalidCaseIdException if the caseId does not exist
      */
     private static Command parseCloseCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidCloseCommandException();
         }
-        try {
-            int caseNumber = Integer.parseInt(remainder);
-            return new CloseCommand(caseNumber);
-        } catch (NumberFormatException e) {
-            throw new InvalidCloseCommandException();
-        }
+        return new CloseCommand(remainder);
     }
 
     /**

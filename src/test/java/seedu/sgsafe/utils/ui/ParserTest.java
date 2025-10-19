@@ -159,13 +159,13 @@ class ParserTest {
 
     @Test
     void parseInput_closeValid_returnsCloseCommand() {
-        Command command = Parser.parseInput("close 3");
+        Command command = Parser.parseInput("close 000001");
         assertEquals(CommandType.CLOSE, command.getCommandType());
     }
 
     @Test
     void parseInput_closeWithWhitespace_returnsCloseCommand() {
-        Command command = Parser.parseInput("   close   7   ");
+        Command command = Parser.parseInput("   close   000001   ");
         assertEquals(CommandType.CLOSE, command.getCommandType());
     }
 
@@ -173,12 +173,6 @@ class ParserTest {
     void parseInput_closeMissingArgument_throwsInvalidCloseCommandException() {
         assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close"));
         assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close   "));
-    }
-
-    @Test
-    void parseInput_closeNonInteger_throwsInvalidCloseCommandException() {
-        assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close abc"));
-        assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close three"));
     }
 
     // ----------- TESTS FOR ADD COMMANDS ----------- //

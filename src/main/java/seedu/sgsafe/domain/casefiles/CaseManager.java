@@ -3,10 +3,8 @@ package seedu.sgsafe.domain.casefiles;
 import java.util.ArrayList;
 import java.util.Map;
 
-import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.ui.Display;
-
 import seedu.sgsafe.utils.exceptions.IndexOutOfBoundsException;
 
 /**
@@ -61,22 +59,12 @@ public class CaseManager {
     }
 
     /**
-     * Closes an existing case in the case list using the case number in the CloseCommand.
-     * The method checks if the case number is valid, and throws an IndexOutOfBoundsException if
-     * the case number is invalid
+     * Closes an existing case in the case list.
      *
-     * @param command the {@link CloseCommand} containing the case number to be closed
-     * @throws IndexOutOfBoundsException if the provided case number is invalid
+     * @param caseToClose the case to be closed
      */
-    public static void closeCase(CloseCommand command) {
-        int caseNumber = command.getCaseNumber();
-        if (caseNumber < 1 || caseNumber > caseList.size()) {
-            throw new IndexOutOfBoundsException();
-        }
-        int caseIndex = caseNumber - 1;
-        Case caseToClose = caseList.get(caseIndex);
+    public static void closeCase(Case caseToClose) {
         caseToClose.setClosed();
-        Display.printMessage("Case closed:\n" + caseToClose.getDisplayLine());
     }
 
     /**
