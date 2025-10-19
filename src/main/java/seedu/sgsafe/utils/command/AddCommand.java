@@ -16,6 +16,9 @@ public class AddCommand extends Command {
 
     private static final Logger logger = Logger.getLogger(AddCommand.class.getName());
 
+    // Format string for generating case IDs
+    private static final String CASE_ID_FORMAT = "%06x";
+
     // Title of the case
     private final String caseTitle;
 
@@ -30,9 +33,6 @@ public class AddCommand extends Command {
 
     // Name of the officer handling the case (optional)
     private final String caseOfficer;
-
-    // Format string for generating case IDs
-    private static final String CASE_ID_FORMAT = "%06x";
 
     /**
      * Constructs an AddCommand with the specified case details.
