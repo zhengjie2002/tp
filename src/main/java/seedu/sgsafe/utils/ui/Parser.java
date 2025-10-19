@@ -12,6 +12,7 @@ import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
+import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
@@ -205,14 +206,15 @@ public class Parser {
      *
      * @param remainder the portion of the input following the {@code close} keyword
      * @return a valid {@link CloseCommand} if the argument is a valid caseId
-     * @throws InvalidCloseCommandException if the argument is missing or the caseId does not exist
+     * @throws InvalidCloseCommandException if the argument is missing
+     * @throws InvalidCaseIdException if the caseId does not exist
      */
     private static Command parseCloseCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidCloseCommandException();
         }
         if (!validator.caseIdExists(remainder)) {
-            throw new InvalidCloseCommandException();
+            throw new InvalidCaseIdException();
         }
         return new CloseCommand(remainder);
     }
