@@ -5,6 +5,7 @@ import java.util.Map;
 
 import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.DeleteCommand;
+import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.ui.Display;
 
 import seedu.sgsafe.utils.exceptions.IndexOutOfBoundsException;
@@ -103,9 +104,12 @@ public class CaseManager {
      * @param newFlagValues map of field names to new values
      * @return the updated case’s display line
      */
-    public static String editCase(String caseId, Map<String, String> newFlagValues) {
+    public static String editCase(String caseId, Map<String, String> newFlagValues)
+            throws CaseNotFoundException {
         Case caseToEdit = getCaseById(caseId);
-        assert  caseToEdit != null : "Case should not be null";
+        if (caseToEdit == null) {
+            throw new CaseNotFoundException(caseId);
+        }
         caseToEdit.update(newFlagValues);
         return caseToEdit.getDisplayLine();
     }

@@ -3,6 +3,7 @@ package seedu.sgsafe.utils.command;
 import java.util.Map;
 
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.ui.Display;
 
 /**
@@ -31,8 +32,12 @@ public class EditCommand extends Command {
 
     @Override
     public void execute() {
-        String displayLine = CaseManager.editCase(caseId, newFlagValues);
-        Display.printMessage("Case edited:", displayLine);
+        try {
+            String displayLine = CaseManager.editCase(caseId, newFlagValues);
+            Display.printMessage("Case edited:", displayLine);
+        } catch (CaseNotFoundException e) {
+            Display.printMessage(e.getMessage());
+        }
     }
 }
 

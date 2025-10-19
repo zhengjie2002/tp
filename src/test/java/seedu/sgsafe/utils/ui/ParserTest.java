@@ -16,6 +16,7 @@ import seedu.sgsafe.utils.command.CommandType;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
