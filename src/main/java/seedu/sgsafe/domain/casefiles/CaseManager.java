@@ -61,22 +61,21 @@ public class CaseManager {
     }
 
     /**
-     * Closes an existing case in the case list using the case number in the CloseCommand.
-     * The method checks if the case number is valid, and throws an IndexOutOfBoundsException if
-     * the case number is invalid
+     * Closes an existing case in the case list using the case ID.
      *
-     * @param command the {@link CloseCommand} containing the case number to be closed
-     * @throws IndexOutOfBoundsException if the provided case number is invalid
+     * @param caseId the unique identifier of the case to be closed
      */
-    public static void closeCase(CloseCommand command) {
-        int caseNumber = command.getCaseNumber();
-        if (caseNumber < 1 || caseNumber > caseList.size()) {
-            throw new IndexOutOfBoundsException();
-        }
-        int caseIndex = caseNumber - 1;
-        Case caseToClose = caseList.get(caseIndex);
+    public static void closeCase(String caseId) {
+        Case caseToClose = getCaseById(caseId);
         caseToClose.setClosed();
-        Display.printMessage("Case closed:\n" + caseToClose.getDisplayLine());
+    }
+
+    //@@author:shennontay
+    public static Case getCaseById(String id) {
+        return caseList.stream()
+                .filter(c -> c.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     /**

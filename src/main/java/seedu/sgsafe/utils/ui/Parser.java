@@ -199,24 +199,22 @@ public class Parser {
     /**
      * Parses the {@code close} command and validates its argument.
      * <p>
-     * This method expects a single integer value representing the case number to close.
-     * If the input is empty or not a valid integer, an {@link InvalidCloseCommandException}
+     * This method expects a string representing the caseId to close.
+     * If the input is empty or not a valid caseId, an {@link InvalidCloseCommandException}
      * will be thrown.
      *
      * @param remainder the portion of the input following the {@code close} keyword
-     * @return a valid {@link CloseCommand} if the argument is a valid case number
-     * @throws InvalidCloseCommandException if the argument is missing or non-numeric
+     * @return a valid {@link CloseCommand} if the argument is a valid caseId
+     * @throws InvalidCloseCommandException if the argument is missing or the caseId does not exist
      */
     private static Command parseCloseCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidCloseCommandException();
         }
-        try {
-            int caseNumber = Integer.parseInt(remainder);
-            return new CloseCommand(caseNumber);
-        } catch (NumberFormatException e) {
+        if (!validator.caseIdExists(remainder)) {
             throw new InvalidCloseCommandException();
         }
+        return new CloseCommand(remainder);
     }
 
     /**
