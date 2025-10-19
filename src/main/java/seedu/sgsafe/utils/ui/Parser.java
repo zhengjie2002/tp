@@ -213,9 +213,6 @@ public class Parser {
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidCloseCommandException();
         }
-        if (!validator.caseIdExists(remainder)) {
-            throw new InvalidCaseIdException();
-        }
         return new CloseCommand(remainder);
     }
 

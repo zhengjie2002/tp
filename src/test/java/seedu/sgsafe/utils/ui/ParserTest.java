@@ -18,6 +18,7 @@ import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
@@ -169,12 +170,6 @@ class ParserTest {
     void parseInput_closeMissingArgument_throwsInvalidCloseCommandException() {
         assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close"));
         assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close   "));
-    }
-
-    @Test
-    void parseInput_closeNonInteger_throwsInvalidCloseCommandException() {
-        assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close abc"));
-        assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close three"));
     }
 
     // ----------- TESTS FOR ADD COMMANDS ----------- //

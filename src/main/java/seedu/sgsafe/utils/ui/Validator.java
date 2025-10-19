@@ -92,7 +92,7 @@ public class Validator {
      * @param caseId the unique identifier of the case to check.
      * @return {@code true} if a case with the given ID exists; {@code false} otherwise.
      */
-    public boolean caseIdExists(String caseId) {
+    public static boolean caseIdExists(String caseId) {
         ArrayList<Case> currentCaseList = CaseManager.getCaseList();
         return currentCaseList.stream()
                 .anyMatch(c -> c.getId().equals(caseId));

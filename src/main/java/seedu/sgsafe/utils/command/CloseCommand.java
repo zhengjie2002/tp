@@ -2,7 +2,10 @@ package seedu.sgsafe.utils.command;
 
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.ui.Display;
+import seedu.sgsafe.utils.ui.Validator;
+
 
 /**
  * Represents a command to close an existing case in the SGSafe system.
@@ -22,6 +25,10 @@ public class CloseCommand extends Command {
 
     @Override
     public void execute() {
+        if (!Validator.caseIdExists(caseId)) {
+            throw new InvalidCaseIdException();
+        }
+
         Case caseToClose = CaseManager.getCaseById(caseId);
         CaseManager.closeCase(caseToClose);
         Display.printMessage("Case closed:", caseToClose.getDisplayLine());
