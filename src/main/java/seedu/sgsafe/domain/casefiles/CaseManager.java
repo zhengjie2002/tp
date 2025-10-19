@@ -93,25 +93,21 @@ public class CaseManager {
     }
 
     /**
-     * Edits the details of an existing {@link Case} identified by its unique case ID.
+     * Updates an existing {@link Case} with new field values.
      * <p>
-     * This method first retrieves the corresponding {@link Case} object using
-     * {@link #getCaseById(String)}. If a matching case is found, it applies the updates
-     * provided in the {@code newFlagValues} map by calling {@link Case#update(Map)}.
-     * Only the fields included in the map will be modified; all others remain unchanged.
+     * Finds the case by its {@code caseId} using {@link #getCaseById(String)} and applies
+     * the updates from {@code newFlagValues} via {@link Case#update(Map)}.
+     * Assumes the case exists (checked by assertion).
      *
-     * @param caseId        the hexadecimal ID of the case to edit
-     * @param newFlagValues a map containing field names and their updated values
-     *                      (e.g., "title", "date", "info", "victim", "officer")
+     * @param caseId the 6-character hexadecimal case ID
+     * @param newFlagValues map of field names to new values
+     * @return the updated case’s display line
      */
-    public static void editCase(String caseId, Map<String, String> newFlagValues) {
+    public static String editCase(String caseId, Map<String, String> newFlagValues) {
         Case caseToEdit = getCaseById(caseId);
-        if (caseToEdit == null) {
-            Display.printMessage("Invalid case ID, please try again.");
-            return;
-        }
+        assert  caseToEdit != null : "Case should not be null";
         caseToEdit.update(newFlagValues);
-        Display.printMessage("Case edited:\n" + caseToEdit.getDisplayLine());
+        return caseToEdit.getDisplayLine();
     }
 
     /**

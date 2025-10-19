@@ -3,6 +3,7 @@ package seedu.sgsafe.utils.command;
 import java.util.Map;
 
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.utils.ui.Display;
 
 /**
  * Represents a command to edit an existing case in the SGSafe system.
@@ -30,7 +31,8 @@ public class EditCommand extends Command {
 
     @Override
     public void execute() {
-        CaseManager.editCase(caseId, newFlagValues);
+        String displayLine = CaseManager.editCase(caseId, newFlagValues);
+        Display.printMessage("Case edited:", displayLine);
     }
 }
 
