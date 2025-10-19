@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import seedu.sgsafe.utils.command.CloseCommand;
-import seedu.sgsafe.utils.command.DeleteCommand;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.ui.Display;
 
