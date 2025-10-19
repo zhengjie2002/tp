@@ -1,10 +1,11 @@
 package seedu.sgsafe.domain.casefiles;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.DeleteCommand;
-import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.ui.Display;
 
 import seedu.sgsafe.utils.exceptions.IndexOutOfBoundsException;
@@ -80,23 +81,37 @@ public class CaseManager {
     }
 
     /**
-     * Edits an existing case in the case list using the details provided in the EditCommand.
-     * The method first checks if the case number is valid, then updates the corresponding case
-     * with the new field values.
+     * Finds and returns a {@link Case} object from the case list using its unique ID.
      *
-     * @param editCommand the {@link EditCommand} containing the case number and the new values to update
+     * @param id the hexadecimal ID of the case to find
+     * @return the Case with the matching ID, or null if not found
      */
-    public static void editCase(EditCommand editCommand) {
-        int caseNumber = editCommand.getCaseNumber();
-        if (caseNumber < 1 || caseNumber > caseList.size()) {
-            Display.printMessage("Invalid case index, please try again.");
-            return;
-        }
-        int caseIndex = caseNumber - 1;
-        Case targetCase = caseList.get(caseIndex);
+    public static Case getCaseById(String id) {
+        return caseList.stream()
+                .filter(c -> c.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
 
-        targetCase.update(editCommand.getNewFlagValues());
-        Display.printMessage("Case edited:\n" + targetCase.getDisplayLine());
+    /**
+     * Updates an existing {@link Case} with new field values.
+     * <p>
+     * Finds the case by its {@code caseId} using {@link #getCaseById(String)} and applies
+     * the updates from {@code newFlagValues} via {@link Case#update(Map)}.
+     * Assumes the case exists (checked by assertion).
+     *
+     * @param caseId the 6-character hexadecimal case ID
+     * @param newFlagValues map of field names to new values
+     * @return the updated case’s display line
+     */
+    public static String editCase(String caseId, Map<String, String> newFlagValues)
+            throws CaseNotFoundException {
+        Case caseToEdit = getCaseById(caseId);
+        if (caseToEdit == null) {
+            throw new CaseNotFoundException(caseId);
+        }
+        caseToEdit.update(newFlagValues);
+        return caseToEdit.getDisplayLine();
     }
 
     /**
