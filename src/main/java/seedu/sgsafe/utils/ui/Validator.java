@@ -27,7 +27,7 @@ public class Validator {
      *
      * @param flagValues A map containing flag names as keys and their values as values.
      * @param validFlags A list of valid flag names.
-     * @return `true` if all flags are valid, `false` otherwise.
+     * @return {@code true} if all flags are valid, {@code false} otherwise.
      */
     public Boolean haveValidFlags(Map<String, String> flagValues, List<String> validFlags) {
         for (String flag : flagValues.keySet()) {
@@ -46,7 +46,7 @@ public class Validator {
      *
      * @param flagValues    A map containing flag names as keys and their values as values.
      * @param requiredFlags A list of required flag names.
-     * @return `true` if all required flags are present, `false` otherwise.
+     * @return {@code true} if all required flags are present, {@code false} otherwise.
      */
     public Boolean haveAllRequiredFlags(Map<String, String> flagValues, List<String> requiredFlags) {
         for (String requiredFlag : requiredFlags) {
@@ -62,7 +62,7 @@ public class Validator {
      * Checks if the given input string is empty.
      *
      * @param input The input string to check.
-     * @return `true` if the input is empty, `false` otherwise.
+     * @return {@code true} if the input is empty, {@code false} otherwise.
      */
     public Boolean inputIsEmpty(String input) {
         if (input.isEmpty()) {
@@ -76,7 +76,7 @@ public class Validator {
      * Checks if the given input string is composed of at least one number, and only numbers.
      *
      * @param input The input string to check.
-     * @return `true` if the string is composed of only numbers, `false` otherwise
+     * @return {@code true} if the string is composed of only numbers, {@code false}  otherwise
      */
     public boolean isNumeric(String input) {
         final String numberRegex = "^[0-9]+$";

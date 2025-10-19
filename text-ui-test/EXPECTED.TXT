@@ -5,6 +5,9 @@
 	The command 'James' that you have entered is not recognised.
 	____________________________________________________________
 	____________________________________________________________
+	You currently have no cases in total. Add some now!
+	____________________________________________________________
+	____________________________________________________________
 	New case added:
 	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
@@ -15,13 +18,69 @@
 	The items in [ ] are optional.
 	____________________________________________________________
 	____________________________________________________________
+	You currently have 1 case in total
+	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is a duplicate flag.
+	____________________________________________________________
+	____________________________________________________________
 	Your command format is incorrect.
 	There is an incorrect usage of flag. Use flags like --title TITLE
 	Please see which flag is required for this command.
 	____________________________________________________________
 	____________________________________________________________
-	You currently have 1 case in total
+	New case added:
+	[O] #000001 05-06-2018 Car accident
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases open
 	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] #000001 05-06-2018 Car accident
+	____________________________________________________________
+	____________________________________________________________
+	You currently have no cases closed. Add some now!
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] #000001 05-06-2018 Car accident
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is an incorrect usage of flag. Use flags like --title TITLE
+	Please see which flag is required for this command.
+	____________________________________________________________
+	____________________________________________________________
+	Case closed:
+	[C] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	____________________________________________________________
+	____________________________________________________________
+	Case edited:
+	[O] #000001 05-06-2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	The 'edit' command requires a case ID followed by at least one flag and its value.
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is an incorrect usage of flag. Use flags like --title TITLE
+	Please see which flag is required for this command.
+	____________________________________________________________
+	____________________________________________________________
+	Your close command format is incorrect.
+	The correct format for a close command is
+	close CASE-NUMBER
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	[C] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] #000001 05-06-2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case closed
+	[C] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	Thanks for using SGSafe :)

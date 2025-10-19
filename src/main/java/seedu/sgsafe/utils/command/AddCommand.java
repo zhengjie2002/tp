@@ -16,6 +16,9 @@ public class AddCommand extends Command {
 
     private static final Logger logger = Logger.getLogger(AddCommand.class.getName());
 
+    // Format string for generating case IDs
+    private static final String CASE_ID_FORMAT = "%06x";
+
     // Title of the case
     private final String caseTitle;
 
@@ -71,6 +74,7 @@ public class AddCommand extends Command {
     }
 
     // @@author xelisce
+
     /**
      * Generates a unique 6-character hexadecimal ID for a new case.
      * <p>
@@ -89,7 +93,7 @@ public class AddCommand extends Command {
      */
     private static String generateHexId() {
         int raw = CaseManager.getCaseListSize();
-        return String.format("%06x", raw); // zero-padded 6-digit hex
+        return String.format(CASE_ID_FORMAT, raw); // zero-padded 6-digit hex
     }
 
     // @@author zhengjie2002

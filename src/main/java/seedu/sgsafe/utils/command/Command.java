@@ -11,7 +11,6 @@ public abstract class Command {
         return null;
     }
 
-    public void execute(){
-        // to be overridden by subclasses
-    };
+    // Abstract method to be implemented by subclasses to execute the command
+    public abstract void execute();
 }
