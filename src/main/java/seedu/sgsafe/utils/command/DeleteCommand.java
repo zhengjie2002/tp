@@ -12,6 +12,7 @@ public class DeleteCommand extends Command {
 
     // Constructor that sets the case number
     public DeleteCommand(int caseNumber) {
+        assert caseNumber > 0;
         this.commandType = CommandType.DELETE;
         this.caseNumber = caseNumber;
     }
