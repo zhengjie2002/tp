@@ -72,7 +72,6 @@ Adds a new case to the case management system.
 
 * `add --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith`
 * `add --info Burglary at 123 Main St --date 2024-02-20 --title Burglary case`
-  Absolutely, Bronx — here’s the updated section with clear, practical examples added for both summary and verbose modes. You can paste this directly into your Markdown file:
 
 ---
 
