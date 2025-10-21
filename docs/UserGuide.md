@@ -161,15 +161,15 @@ Updates the details of an existing case.
 
 ### Deleting a case: `delete`
 
-**Format:** `delete INDEX`
+**Format:** `delete ID`
 
-* Deletes the case at the specified `INDEX`.
-* The index refers to the index number shown in the displayed case list.
-* The index **must be a positive integer** 1, 2, 3, … and the case must exist
+* Deletes the case with the specified ID.
+* The id refers to the id of the case itself.
+* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist
 
 **Examples:**
 
-* `delete` followed by `delete 2` deletes the 2nd case in the list.
+* `delete 00012a` deletes the case with the id 00012a in the list.
 
 ---
 
@@ -202,7 +202,7 @@ in the next iteration of SGSafe. Stay turned.
 | **List cases**  | `list`                                                                                         | `list`                                                                                                    |
 | **Close case**  | `close INDEX`                                                                                  | `close 2`                                                                                                 |
 | **Edit case**   | `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]` | `edit 1 --victim Jane Smith --officer Officer Lee`                                                        |
-| **Delete case** | `delete INDEX`                                                                                 | `delete 2`                                                                                                |
+| **Delete case** | `delete ID`                                                                                    | `delete 00beef`                                                                                           |
 | **Exit**        | `bye`                                                                                          | `bye`                                                                                                     |
 
 ## Coming Soon
