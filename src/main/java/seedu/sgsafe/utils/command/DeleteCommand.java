@@ -1,24 +1,31 @@
 package seedu.sgsafe.utils.command;
 
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
+import seedu.sgsafe.utils.ui.Display;
 
 /**
  * Represents a command to edit an existing case in the SGSafe system.
- * This command stores the case number to identify which case to update
+ * This command stores the case id to identify which case to update
  */
 public class DeleteCommand extends Command {
     // The case number of the case to delete
-    private final int caseNumber;
+    private final String caseId;
 
     // Constructor that sets the case number
-    public DeleteCommand(int caseNumber) {
-        assert caseNumber > 0;
+    public DeleteCommand(String caseId) {
+        assert caseId != null;
         this.commandType = CommandType.DELETE;
-        this.caseNumber = caseNumber;
+        this.caseId = caseId;
     }
 
     @Override
     public void execute() {
-        CaseManager.deleteCase(caseNumber);
+        try {
+            String caseToDelete = CaseManager.deleteCase(this.caseId);
+            Display.printMessage("Case Deleted: " + caseToDelete);
+        } catch (CaseNotFoundException e) {
+            Display.printMessage(e.getMessage());
+        }
     }
 }

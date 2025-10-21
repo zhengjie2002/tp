@@ -29,6 +29,9 @@ public class Case {
     /** Indicates whether the case is currently open. */
     private boolean isOpen;
 
+    /** Indicates whether a case has been deleted. */
+    private boolean isDeleted;
+
     /**
      * Constructs a {@code Case} object with the specified details.
      * The case is initialized as closed by default.
@@ -48,6 +51,7 @@ public class Case {
         this.victim = victim;
         this.officer = officer;
         this.isOpen = true;
+        this.isDeleted = false;
     }
 
     /**
@@ -102,6 +106,14 @@ public class Case {
      */
     public String getId() {
         return this.id;
+    }
+
+    public boolean isDeleted() {
+        return this.isDeleted;
+    }
+
+    public void setDeleted() {
+        this.isDeleted = true;
     }
 
     /**

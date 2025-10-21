@@ -18,8 +18,7 @@ import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
-
-import seedu.sgsafe.utils.exceptions.InvalidDeleteIndexException;
+import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -347,13 +346,13 @@ public class Parser {
     }
 
     /**
-     * Parses the 'edit' command input, validates its format, and constructs an EditCommand object.
-     * Throws an InvalidDeleteIndexException if the input is missing or incorrectly formatted.
+     * Parses the 'delete' command input, validates its format, and constructs an DeleteCommand object.
+     * Throws an InvalidDeleteCommandException if the input is missing or incorrectly formatted.
      */
     private static Command parseDeleteCommand(String remainder) {
-        if (remainder.isEmpty() || !validator.isNumeric(remainder)) {
-            throw new InvalidDeleteIndexException();
+        if (!validator.isValidCaseId(remainder)) {
+            throw new InvalidDeleteCommandException();
         }
-        return new DeleteCommand(Integer.parseInt(remainder));
+        return new DeleteCommand(remainder.toLowerCase());
     }
 }

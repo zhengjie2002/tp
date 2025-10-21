@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import java.util.regex.Pattern;
 
 /**
  * The `Validator` class provides utility methods for validating flags and inputs.
@@ -73,20 +72,9 @@ public class Validator {
     }
 
     /**
-     * Checks if the given input string is composed of at least one number, and only numbers.
-     *
-     * @param input The input string to check.
-     * @return {@code true} if the string is composed of only numbers, {@code false}  otherwise
-     */
-    public boolean isNumeric(String input) {
-        final String numberRegex = "^[0-9]+$";
-        return Pattern.matches(numberRegex, input);
-    }
-
-    /**
      * Checks whether a case with the specified case ID exists in the current case list.
      * This method retrieves the list of all existing cases from the {@link CaseManager}
-     * and uses a stream to determine if any case in the list has an ID matching the given
+     * and uses a stream to determine if any undeleted case in the list has an ID matching the given
      * {@code caseId}.
      *
      * @param caseId the unique identifier of the case to check.
@@ -95,7 +83,7 @@ public class Validator {
     public static boolean caseIdExists(String caseId) {
         ArrayList<Case> currentCaseList = CaseManager.getCaseList();
         return currentCaseList.stream()
-                .anyMatch(c -> c.getId().equals(caseId));
+                .anyMatch(c -> (c.getId().equals(caseId) && !c.isDeleted()));
     }
 
     /**
