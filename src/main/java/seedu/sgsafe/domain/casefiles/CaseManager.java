@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
-import seedu.sgsafe.utils.exceptions.IndexOutOfBoundsException;
 
 /**
  * Manages the collection of {@link Case} objects in the SGSafe system.
@@ -53,7 +52,7 @@ public class CaseManager {
      */
     public static Case getCaseById(String id) {
         return caseList.stream()
-                .filter(c -> c.getId().equals(id))
+                .filter(c -> (c.getId().equals(id) && !c.isDeleted()))
                 .findFirst()
                 .orElse(null);
     }
@@ -80,20 +79,18 @@ public class CaseManager {
     }
 
     /**
-     * Deletes an existing case in the case list using its index in the case list.
-     * The method checks if the case number is valid, and throws an IndexOutOfBoundsException if
-     * the case number is invalid
+     * Deletes an existing case in the case list using its id.
+     * Throws an {@link CaseNotFoundException} if the case does not exist or has been deleted.
      *
-     * @param caseNumber the index of the case to be deleted (1-indexed).
-     * @return the case that has been deleted.
+     * @param caseId the id of the case to be deleted.
+     * @return the deleted case's display line.
      */
-    public static String deleteCase(int caseNumber) {
-        if (caseNumber < 1 || caseNumber > caseList.size()) {
-            throw new IndexOutOfBoundsException();
+    public static String deleteCase(String caseId) throws CaseNotFoundException {
+        Case caseToDelete = getCaseById(caseId);
+        if (caseToDelete == null) {
+            throw new CaseNotFoundException(caseId);
         }
-        int caseIndex = caseNumber - 1;
-        Case targetCase = caseList.get(caseIndex);
-        targetCase.setDeleted();
-        return targetCase.getDisplayLine();
+        caseToDelete.setDeleted();
+        return caseToDelete.getDisplayLine();
     }
 }

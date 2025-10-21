@@ -86,7 +86,7 @@ public class Validator {
     /**
      * Checks whether a case with the specified case ID exists in the current case list.
      * This method retrieves the list of all existing cases from the {@link CaseManager}
-     * and uses a stream to determine if any case in the list has an ID matching the given
+     * and uses a stream to determine if any undeleted case in the list has an ID matching the given
      * {@code caseId}.
      *
      * @param caseId the unique identifier of the case to check.
@@ -95,7 +95,7 @@ public class Validator {
     public static boolean caseIdExists(String caseId) {
         ArrayList<Case> currentCaseList = CaseManager.getCaseList();
         return currentCaseList.stream()
-                .anyMatch(c -> c.getId().equals(caseId));
+                .anyMatch(c -> (c.getId().equals(caseId) && !c.isDeleted()));
     }
 
     /**
