@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
-import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.exceptions.IndexOutOfBoundsException;
 
 /**
@@ -86,14 +85,15 @@ public class CaseManager {
      * the case number is invalid
      *
      * @param caseNumber the index of the case to be deleted (1-indexed).
+     * @return the case that has been deleted.
      */
-    public static void deleteCase(int caseNumber) {
+    public static String deleteCase(int caseNumber) {
         if (caseNumber < 1 || caseNumber > caseList.size()) {
             throw new IndexOutOfBoundsException();
         }
         int caseIndex = caseNumber - 1;
         Case targetCase = caseList.get(caseIndex);
-        Display.printMessage("Case deleted:\n" + targetCase.getDisplayLine());
-        caseList.remove(caseIndex);
+        targetCase.setDeleted();
+        return targetCase.getDisplayLine();
     }
 }

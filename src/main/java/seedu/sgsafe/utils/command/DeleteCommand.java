@@ -1,6 +1,7 @@
 package seedu.sgsafe.utils.command;
 
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.utils.ui.Display;
 
 /**
  * Represents a command to edit an existing case in the SGSafe system.
@@ -19,6 +20,7 @@ public class DeleteCommand extends Command {
 
     @Override
     public void execute() {
-        CaseManager.deleteCase(caseNumber);
+        String caseToDelete = CaseManager.deleteCase(caseNumber);
+        Display.printMessage("Case Deleted: " + caseToDelete);
     }
 }
