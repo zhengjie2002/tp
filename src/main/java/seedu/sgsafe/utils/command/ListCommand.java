@@ -21,14 +21,17 @@ public class ListCommand extends Command {
      */
     private final CaseListingMode listingMode;
 
+    private final boolean isVerbose;
+
     /**
      * Constructs a {@code ListCommand} with the specified listing mode.
      *
      * @param listingMode the mode used to filter cases for display
      */
-    public ListCommand(CaseListingMode listingMode) {
+    public ListCommand(CaseListingMode listingMode, boolean isVerbose) {
         this.commandType = CommandType.LIST;
         this.listingMode = listingMode;
+        this.isVerbose = isVerbose;
     }
 
     /**
