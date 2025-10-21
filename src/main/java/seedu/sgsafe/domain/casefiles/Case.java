@@ -130,6 +130,45 @@ public class Case {
         return status + " #" + this.id + " " + this.date + " " + this.title + victimLine + officerLine;
     }
 
+    /**
+     * Returns a verbose, multi-line representation of this case for detailed display.
+     * <p>
+     * The header line uses the format {@code ==== CASE ID 000000 ====}.
+     * The {@code info} field is capped at 100 characters; if longer, it is truncated and suffixed with {@code "..."}.
+     *
+     * @return an array of strings representing the verbose display of the case
+     */
+    public String[] getMultiLineVerboseDisplay() {
+        String header = "======== CASE ID " + this.id + " ========";
+        String statusLine = "Status  : " + (this.isOpen ? "Open" : "Closed");
+        String truncatedInfo = truncateInfo(this.info);
+
+        return new String[] {
+            header,
+            statusLine,
+            "Title   : " + (title == null ? "" : title),
+            "Date    : " + (date == null ? "" : date),
+            "Info    : " + truncatedInfo,
+            "Victim  : " + (victim == null ? "" : victim),
+            "Officer : " + (officer == null ? "" : officer)
+        };
+    }
+
+    /**
+     * Truncates the given info string to a maximum of 100 characters.
+     * If the input exceeds the limit, it is shortened and suffixed with {@code "..."}.
+     * If the input is {@code null}, an empty string is returned.
+     *
+     * @param info the original info string
+     * @return a truncated version of the info string, capped at 100 characters
+     */
+    private static String truncateInfo(String info) {
+        if (info == null) {
+            return "";
+        }
+        return info.length() > 100 ? info.substring(0, 100) + "..." : info;
+    }
+
     public void setClosed() {
         this.isOpen = false;
     }

@@ -10,12 +10,12 @@ organised digital workflow that enhances operational efficiency for the public s
 
 - [Quick Start](#quick-start)
 - [Features](#features)
-    - [Adding a case: `add`](#adding-a-case-add)
-    - [Listing all cases: `list`](#listing-all-cases-list)
-    - [Closing a case: `close`](#closing-a-case-close)
-    - [Updating a case: `edit`](#editing-a-case-edit)
-    - [Deleting a case: `delete`](#deleting-a-case-delete)
-    - [Exiting the program: `bye`](#exiting-the-program-bye)
+  - [Adding a case: `add`](#adding-a-case-add)
+  - [Listing cases: `list`](#listing-cases-list)
+  - [Closing a case: `close`](#closing-a-case-close)
+  - [Updating a case: `edit`](#editing-a-case-edit)
+  - [Deleting a case: `delete`](#deleting-a-case-delete)
+  - [Exiting the program: `bye`](#exiting-the-program-bye)
 - [FAQ](#faq)
 - [Command Summary](#command-summary)
 - [Coming Soon](#coming-soon)
@@ -72,23 +72,54 @@ Adds a new case to the case management system.
 
 * `add --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith`
 * `add --info Burglary at 123 Main St --date 2024-02-20 --title Burglary case`
+  Absolutely, Bronx — here’s the updated section with clear, practical examples added for both summary and verbose modes. You can paste this directly into your Markdown file:
 
-### Listing all cases: `list`
+---
 
-Shows a list of all cases in the system.
+### Listing cases: `list`
 
-**Format:** `list`
+Displays all cases in the system.
 
-* The list shows the index, status (Open `[O]` or Closed `[C]`), date, and title of each case.
+**Format:** `list [--status STATUS] [--mode MODE]`
 
-**Sample Output:**
+**Optional Flags:**
+- `--status STATUS`: `open`, `closed`, or `all` (default: all)
+- `--mode MODE`: `summary` or `verbose` (default: summary)
 
+**Examples:**
+- `list` — Lists all cases in summary mode
+- `list --status open` — Lists only open cases in summary mode
+- `list --status closed --mode verbose` — Lists closed cases with full details
+- `list --mode verbose` — Lists all cases with detailed output
+
+**Summary Mode Output:**
 ```
-	____________________________________________________________
-	You currently have 1 case
-	1. [O] 2024-01-15 Theft case
-	____________________________________________________________
+____________________________________________________________
+You currently have 1 case
+1. [O] 2024-01-15 Theft case
+____________________________________________________________
 ```
+
+**Verbose Mode Output:**
+```
+You currently have 2 cases in total
+==== CASE ID 000001 ====
+Status  : Open
+Title   : Robbery
+Date    : 2025-10-01
+Info    : Masked suspect entered the premises and demanded cash...
+Victim  : John Doe
+Officer : Officer Tan
+==== CASE ID 000002 ====
+Status  : Closed
+Title   : Fraud
+Date    : 2025-10-02
+Info    : Email scam targeting elderly victims...
+Victim  : Jane Doe
+Officer : Officer Lim
+```
+
+> ℹ️ In verbose mode, the `info` field is truncated to 100 characters with `...` if too long.
 
 ---
 

@@ -128,45 +128,97 @@ public class Parser {
     }
 
     /**
-     * Parses the {@code list} command and validates its optional {@code --status} flag.
+     * Parses the {@code list} command and validates its optional {@code --status} and {@code --mode} flags.
      * <p>
-     * Supports the following formats:
+     * Supported formats include:
      * <ul>
-     *   <li>{@code list} — Lists cases using the default mode</li>
+     *   <li>{@code list} — Lists cases using the default mode and non-verbose output</li>
      *   <li>{@code list --status open} — Lists only open cases</li>
      *   <li>{@code list --status closed} — Lists only closed cases</li>
      *   <li>{@code list --status all} — Lists all cases</li>
+     *   <li>{@code list --mode verbose} — Enables verbose output</li>
+     *   <li>{@code list --status open --mode summary} — Lists open cases with summary output</li>
      * </ul>
-     * If the {@code --status} flag is present, its value must be one of {@code open}, {@code closed}, or {@code all}.
-     * Any invalid flag or value will result in a {@link InvalidListCommandException}.
+     * If {@code --status} is present, its value must be one of {@code open}, {@code closed}, or {@code all}.
+     * If {@code --mode} is present, its value must be either {@code verbose} or {@code summary}.
+     * Any invalid flag or value will result in a {@link IncorrectFlagException}.
      *
      * @param remainder the portion of the input following the {@code list} keyword
-     * @return a {@link ListCommand} with the appropriate {@link CaseListingMode}
-     * @throws InvalidListCommandException if the input contains invalid flags or unsupported status values
+     * @return a {@link ListCommand} with the appropriate {@link CaseListingMode} and verbosity setting
+     * @throws IncorrectFlagException if the input contains invalid flags or unsupported values
      */
     private static Command parseListCommand(String remainder) {
         if (remainder.isEmpty()) {
-            return new ListCommand(CaseListingMode.DEFAULT);
+            return new ListCommand(CaseListingMode.DEFAULT, false);
         }
 
         Map<String, String> flagValues = extractFlagValues(remainder);
-        List<String> validFlags = List.of("status");
+        List<String> validFlags = List.of("status", "mode");
 
         if (!validator.haveValidFlags(flagValues, validFlags)) {
-            throw new InvalidListCommandException();
+            throw new IncorrectFlagException();
         }
 
-        String status = flagValues.get("status");
-        CaseListingMode mode;
+        CaseListingMode listingMode = parseListStatus(flagValues.get("status"));
+        boolean isVerbose = parseListMode(flagValues.get("mode"));
 
-        switch (status.toLowerCase()) {
-        case "open" -> mode = CaseListingMode.OPEN_ONLY;
-        case "closed" -> mode = CaseListingMode.CLOSED_ONLY;
-        case "all" -> mode = CaseListingMode.ALL;
-        default -> throw new InvalidListCommandException();
+        return new ListCommand(listingMode, isVerbose);
+    }
+
+    /**
+     * Parses the {@code --status} flag value and maps it to a {@link CaseListingMode}.
+     * <p>
+     * Valid values are:
+     * <ul>
+     *   <li>{@code open} — Maps to {@link CaseListingMode#OPEN_ONLY}</li>
+     *   <li>{@code closed} — Maps to {@link CaseListingMode#CLOSED_ONLY}</li>
+     *   <li>{@code all} — Maps to {@link CaseListingMode#ALL}</li>
+     * </ul>
+     * If the value is {@code null} or empty, {@link CaseListingMode#DEFAULT} is returned.
+     * Any other value will result in a {@link IncorrectFlagException}.
+     *
+     * @param status the value of the {@code --status} flag
+     * @return the corresponding {@link CaseListingMode}
+     * @throws IncorrectFlagException if the status value is invalid
+     */
+    private static CaseListingMode parseListStatus(String status) {
+        if (status == null || status.isEmpty()) {
+            return CaseListingMode.DEFAULT;
         }
 
-        return new ListCommand(mode);
+        return switch (status.toLowerCase()) {
+        case "open" -> CaseListingMode.OPEN_ONLY;
+        case "closed" -> CaseListingMode.CLOSED_ONLY;
+        case "all" -> CaseListingMode.ALL;
+        default -> throw new IncorrectFlagException();
+        };
+    }
+
+    /**
+     * Parses the {@code --mode} flag value and determines verbosity.
+     * <p>
+     * Valid values are:
+     * <ul>
+     *   <li>{@code verbose} — Enables verbose output</li>
+     *   <li>{@code summary} — Enables summary (non-verbose) output</li>
+     * </ul>
+     * If the value is {@code null} or empty, summary mode is assumed by default.
+     * Any other value will result in a {@link IncorrectFlagException}.
+     *
+     * @param mode the value of the {@code --mode} flag
+     * @return {@code true} if verbose mode is enabled, {@code false} otherwise
+     * @throws IncorrectFlagException if the mode value is invalid
+     */
+    private static boolean parseListMode(String mode) {
+        if (mode == null || mode.isEmpty()) {
+            return false; // default to non-verbose
+        }
+
+        return switch (mode.toLowerCase()) {
+        case "verbose" -> true;
+        case "summary" -> false;
+        default -> throw new IncorrectFlagException();
+        };
     }
 
     /**

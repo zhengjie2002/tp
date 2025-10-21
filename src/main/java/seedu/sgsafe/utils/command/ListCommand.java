@@ -1,6 +1,8 @@
 package seedu.sgsafe.utils.command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
@@ -12,23 +14,26 @@ import seedu.sgsafe.utils.ui.Display;
  * This command supports multiple listing modes to filter cases:
  * {@link CaseListingMode#OPEN_ONLY}, {@link CaseListingMode#CLOSED_ONLY},
  * {@link CaseListingMode#ALL}, and {@link CaseListingMode#DEFAULT}.
- * The output includes a summary header and a list of matching cases.
+ * It also supports verbose mode to display detailed case information.
  */
 public class ListCommand extends Command {
 
-    /**
-     * The mode that determines which cases to include in the listing.
-     */
+    /** The mode that determines which cases to include in the listing. */
     private final CaseListingMode listingMode;
 
+    /** Whether to display cases in verbose (multi-line) format. */
+    private final boolean isVerbose;
+
     /**
-     * Constructs a {@code ListCommand} with the specified listing mode.
+     * Constructs a {@code ListCommand} with the specified listing mode and verbosity.
      *
      * @param listingMode the mode used to filter cases for display
+     * @param isVerbose   whether to display cases in verbose format
      */
-    public ListCommand(CaseListingMode listingMode) {
+    public ListCommand(CaseListingMode listingMode, boolean isVerbose) {
         this.commandType = CommandType.LIST;
         this.listingMode = listingMode;
+        this.isVerbose = isVerbose;
     }
 
     /**
@@ -54,12 +59,18 @@ public class ListCommand extends Command {
     }
 
     /**
-     * Retrieves and formats the list of case descriptions based on the current {@link CaseListingMode}.
+     * Retrieves and formats the list of case descriptions based on the current {@link CaseListingMode}
+     * and verbosity setting.
      * <p>
      * The output array includes:
      * <ul>
      *   <li>Index 0: a summary header indicating the number of matching cases</li>
-     *   <li>Subsequent indices: one line per matching case, formatted via {@link Case#getDisplayLine()}</li>
+     *   <li>Subsequent indices:
+     *     <ul>
+     *       <li>In summary mode: one line per case via {@link Case#getDisplayLine()}</li>
+     *       <li>In verbose mode: multiple lines per case via {@link Case#getMultiLineVerboseDisplay()}</li>
+     *     </ul>
+     *   </li>
      * </ul>
      *
      * @param caseList the full list of cases to filter and format
@@ -68,16 +79,38 @@ public class ListCommand extends Command {
     String[] getCaseDescriptions(ArrayList<Case> caseList) {
         ArrayList<Case> matchingCases = filterCasesByMode(caseList);
         int count = matchingCases.size();
+        List<String> outputLines = new ArrayList<>();
 
-        String[] descriptions = new String[count + 1];
-        descriptions[0] = generateCaseHeaderMessage(count);
+        outputLines.add(generateCaseHeaderMessage(count));
+        List<String> formattedCaseLines = formatCases(matchingCases);
+        outputLines.addAll(formattedCaseLines);
 
-        for (int i = 0; i < count; i++) {
-            Case currentCase = matchingCases.get(i);
-            descriptions[i + 1] = currentCase.getDisplayLine();
+        return outputLines.toArray(new String[0]);
+    }
+
+    /**
+     * Formats a list of cases based on the current verbosity setting.
+     * <p>
+     * In verbose mode, each case is rendered using {@link Case#getMultiLineVerboseDisplay()},
+     * prefixed with a divider line. In summary mode, each case is rendered using {@link Case#getDisplayLine()}.
+     *
+     * @param cases the list of cases to format
+     * @return a list of formatted strings representing each case
+     */
+    private List<String> formatCases(List<Case> cases) {
+        List<String> lines = new ArrayList<>();
+
+        for (Case currentCase : cases) {
+            if (this.isVerbose) {
+                String[] currentLines = currentCase.getMultiLineVerboseDisplay();
+                lines.addAll(Arrays.asList(currentLines));
+            } else {
+                String currentLine = currentCase.getDisplayLine();
+                lines.add(currentLine);
+            }
         }
 
-        return descriptions;
+        return lines;
     }
 
     /**
