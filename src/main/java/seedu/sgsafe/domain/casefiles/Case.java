@@ -144,13 +144,13 @@ public class Case {
         String truncatedInfo = truncateInfo(this.info);
 
         return new String[] {
-                header,
-                statusLine,
-                "Title   : " + (title == null ? "" : title),
-                "Date    : " + (date == null ? "" : date),
-                "Info    : " + truncatedInfo,
-                "Victim  : " + (victim == null ? "" : victim),
-                "Officer : " + (officer == null ? "" : officer)
+            header,
+            statusLine,
+            "Title   : " + (title == null ? "" : title),
+            "Date    : " + (date == null ? "" : date),
+            "Info    : " + truncatedInfo,
+            "Victim  : " + (victim == null ? "" : victim),
+            "Officer : " + (officer == null ? "" : officer)
         };
     }
 
