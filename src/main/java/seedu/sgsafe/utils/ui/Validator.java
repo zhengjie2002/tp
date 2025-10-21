@@ -1,5 +1,9 @@
 package seedu.sgsafe.utils.ui;
 
+import seedu.sgsafe.domain.casefiles.Case;
+import seedu.sgsafe.domain.casefiles.CaseManager;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -23,7 +27,7 @@ public class Validator {
      *
      * @param flagValues A map containing flag names as keys and their values as values.
      * @param validFlags A list of valid flag names.
-     * @return `true` if all flags are valid, `false` otherwise.
+     * @return {@code true} if all flags are valid, {@code false} otherwise.
      */
     public Boolean haveValidFlags(Map<String, String> flagValues, List<String> validFlags) {
         for (String flag : flagValues.keySet()) {
@@ -42,7 +46,7 @@ public class Validator {
      *
      * @param flagValues    A map containing flag names as keys and their values as values.
      * @param requiredFlags A list of required flag names.
-     * @return `true` if all required flags are present, `false` otherwise.
+     * @return {@code true} if all required flags are present, {@code false} otherwise.
      */
     public Boolean haveAllRequiredFlags(Map<String, String> flagValues, List<String> requiredFlags) {
         for (String requiredFlag : requiredFlags) {
@@ -58,7 +62,7 @@ public class Validator {
      * Checks if the given input string is empty.
      *
      * @param input The input string to check.
-     * @return `true` if the input is empty, `false` otherwise.
+     * @return {@code true} if the input is empty, {@code false} otherwise.
      */
     public Boolean inputIsEmpty(String input) {
         if (input.isEmpty()) {
@@ -72,10 +76,41 @@ public class Validator {
      * Checks if the given input string is composed of at least one number, and only numbers.
      *
      * @param input The input string to check.
-     * @return `true` if the string is composed of only numbers, `false` otherwise
+     * @return {@code true} if the string is composed of only numbers, {@code false}  otherwise
      */
     public boolean isNumeric(String input) {
         final String numberRegex = "^[0-9]+$";
         return Pattern.matches(numberRegex, input);
+    }
+
+    /**
+     * Checks whether a case with the specified case ID exists in the current case list.
+     * This method retrieves the list of all existing cases from the {@link CaseManager}
+     * and uses a stream to determine if any case in the list has an ID matching the given
+     * {@code caseId}.
+     *
+     * @param caseId the unique identifier of the case to check.
+     * @return {@code true} if a case with the given ID exists; {@code false} otherwise.
+     */
+    public static boolean caseIdExists(String caseId) {
+        ArrayList<Case> currentCaseList = CaseManager.getCaseList();
+        return currentCaseList.stream()
+                .anyMatch(c -> c.getId().equals(caseId));
+    }
+
+    /**
+     * Checks whether the provided case ID is a valid 6-character hexadecimal string.
+     *
+     * @param caseId the case ID to validate
+     * @return {@code true} if the case ID is valid; {@code false} otherwise
+     */
+    public boolean isValidCaseId(String caseId) {
+        if (caseId == null) {
+            return false;
+        }
+        // Regex explanation:
+        // ^ and $ → start and end of string anchors
+        // [0-9A-Fa-f]{6} → exactly 6 characters of 0-9 or A-F (any case)
+        return caseId.matches("^[0-9A-Fa-f]{6}$");
     }
 }

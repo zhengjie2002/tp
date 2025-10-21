@@ -1,18 +1,36 @@
 package seedu.sgsafe.utils.command;
 
+import seedu.sgsafe.domain.casefiles.Case;
+import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
+import seedu.sgsafe.utils.ui.Display;
+import seedu.sgsafe.utils.ui.Validator;
+
+
 /**
  * Represents a command to close an existing case in the SGSafe system.
- * This command stores the case number to identify which case to update
+ * This command stores the case ID to identify which case to update
+ * <p>
+ * When executed, this command marks the specified case as closed using the
+ * {@link CaseManager}, and then displays a confirmation message containing
+ * the case's details via the {@link Display} class.
  */
 public class CloseCommand extends Command {
-    private final int caseNumber;
+    private final String caseId;
 
-    public CloseCommand(int caseNumber) {
+    public CloseCommand(String caseId) {
         this.commandType = CommandType.CLOSE;
-        this.caseNumber = caseNumber;
+        this.caseId = caseId;
     }
 
-    public int getCaseNumber() {
-        return caseNumber;
+    @Override
+    public void execute() {
+        if (!Validator.caseIdExists(caseId)) {
+            throw new InvalidCaseIdException();
+        }
+
+        Case caseToClose = CaseManager.getCaseById(caseId);
+        CaseManager.closeCase(caseToClose);
+        Display.printMessage("Case closed:", caseToClose.getDisplayLine());
     }
 }

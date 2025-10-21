@@ -10,4 +10,7 @@ public abstract class Command {
     public String[] getErrorMessage() {
         return null;
     }
+
+    // Abstract method to be implemented by subclasses to execute the command
+    public abstract void execute();
 }

@@ -1,29 +1,35 @@
 package seedu.sgsafe.utils.ui;
 
-import org.junit.jupiter.api.Test;
-
-import seedu.sgsafe.utils.command.Command;
-import seedu.sgsafe.utils.command.CommandType;
-import seedu.sgsafe.utils.command.EditCommand;
-import seedu.sgsafe.utils.command.AddCommand;
-import seedu.sgsafe.utils.command.ListCommand;
-import seedu.sgsafe.utils.command.CaseListingMode;
-import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
-import seedu.sgsafe.utils.exceptions.EmptyCommandException;
-import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
-import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
-import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
-import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
-import seedu.sgsafe.utils.exceptions.ListCommandException;
-import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
-import seedu.sgsafe.utils.exceptions.UnknownCommandException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Map;
 
+
+
+import seedu.sgsafe.utils.command.CaseListingMode;
+import seedu.sgsafe.utils.command.Command;
+import seedu.sgsafe.utils.command.CommandType;
+import seedu.sgsafe.utils.command.ListCommand;
+import seedu.sgsafe.utils.command.AddCommand;
+import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
+import seedu.sgsafe.utils.exceptions.EmptyCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
+import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
+import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
+import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
+
+import seedu.sgsafe.utils.exceptions.UnknownCommandException;
+
+/**
+ * Unit tests for {@link Parser}, verifying correct command parsing and exception handling.
+ */
 class ParserTest {
 
     // ----------- TESTS FOR GENERAL INVALID COMMANDS ----------- //
@@ -49,6 +55,8 @@ class ParserTest {
     void parseInput_listWithWhitespace_returnsListCommand() {
         Command command = Parser.parseInput("  list  ");
         assertEquals(CommandType.LIST, command.getCommandType());
+        assertInstanceOf(ListCommand.class, command);
+        assertEquals(CaseListingMode.DEFAULT, ((ListCommand) command).getListingMode());
     }
 
     @Test
@@ -65,6 +73,8 @@ class ParserTest {
     void parseInput_listWithTabAndNewline_returnsListCommand() {
         Command command = Parser.parseInput("\tlist\n");
         assertEquals(CommandType.LIST, command.getCommandType());
+        assertInstanceOf(ListCommand.class, command);
+        assertEquals(CaseListingMode.DEFAULT, ((ListCommand) command).getListingMode());
     }
 
     @Test
@@ -98,7 +108,7 @@ class ParserTest {
 
     @Test
     void parseInput_listStatusInvalid_throwsListCommandException() {
-        assertThrows(ListCommandException.class, () -> Parser.parseInput("list --status banana"));
+        assertThrows(InvalidListCommandException.class, () -> Parser.parseInput("list --status banana"));
     }
 
     @Test
@@ -108,19 +118,17 @@ class ParserTest {
 
     @Test
     void parseInput_listStatusExtraArgs_throwsListCommandException() {
-        assertThrows(ListCommandException.class, () -> Parser.parseInput("list --status open extra"));
+        assertThrows(InvalidListCommandException.class, () -> Parser.parseInput("list --status open extra"));
     }
 
     // ----------- TESTS FOR EDIT COMMANDS ----------- //
 
     @Test
     void parseInput_validEditCommand_returnsEditCommand() {
-        Command command = Parser.parseInput("edit 1 --title NewTitle --date 2025-10-10");
-
+        Command command = Parser.parseInput("edit 000000 --title NewTitle --date 2025-10-10");
         assertEquals(CommandType.EDIT, command.getCommandType());
 
         EditCommand editCommand = (EditCommand) command;
-        assertEquals(1, editCommand.getCaseNumber());
 
         Map<String, String> newValues = editCommand.getNewFlagValues();
         assertEquals("NewTitle", newValues.get("title"));
@@ -129,30 +137,35 @@ class ParserTest {
 
     @Test
     void parseInput_missingFlagValue_throwsInvalidEditCommandException() {
-        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit 2 --title"));
+        assertThrows(IncorrectFlagException.class, () -> Parser.parseInput("edit abc123 --date"));
     }
 
     @Test
     void parseInput_invalidFlag_throwsInvalidEditCommandException() {
-        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit 3 --invalidFlag newValue"));
+        assertThrows(IncorrectFlagException.class, () -> Parser.parseInput("edit ffffff --invalidFlag newValue"));
     }
 
     @Test
-    void parseInput_missingCaseNumber_throwsInvalidEditCommandException() {
+    void parseInput_missingCaseId_throwsInvalidEditCommandException() {
         assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit --title newTitle"));
+    }
+
+    @Test
+    void parseInput_wrongCaseId_throwsInvalidEditCommandException() {
+        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit WrongcaseId --title newTitle"));
     }
 
     // ----------- TESTS FOR CLOSE COMMANDS ----------- //
 
     @Test
     void parseInput_closeValid_returnsCloseCommand() {
-        Command command = Parser.parseInput("close 3");
+        Command command = Parser.parseInput("close 000001");
         assertEquals(CommandType.CLOSE, command.getCommandType());
     }
 
     @Test
     void parseInput_closeWithWhitespace_returnsCloseCommand() {
-        Command command = Parser.parseInput("   close   7   ");
+        Command command = Parser.parseInput("   close   000001   ");
         assertEquals(CommandType.CLOSE, command.getCommandType());
     }
 
@@ -160,12 +173,6 @@ class ParserTest {
     void parseInput_closeMissingArgument_throwsInvalidCloseCommandException() {
         assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close"));
         assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close   "));
-    }
-
-    @Test
-    void parseInput_closeNonInteger_throwsInvalidCloseCommandException() {
-        assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close abc"));
-        assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close three"));
     }
 
     // ----------- TESTS FOR ADD COMMANDS ----------- //
@@ -178,7 +185,7 @@ class ParserTest {
     }
 
     @Test
-    void parseInput_addMissingCompulsoryFlag_throwsInvalidEditCommandException() {
+    void parseInput_addMissingCompulsoryFlag_throwsInvalidAddCommandException() {
         assertThrows(InvalidAddCommandException.class,
                 () -> Parser.parseInput("add --title CaseTitle --date 2025-12-12"));
         assertThrows(InvalidAddCommandException.class,

@@ -12,9 +12,10 @@ import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
+import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
-import seedu.sgsafe.utils.exceptions.ListCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
@@ -25,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import java.util.regex.Pattern;
 
 /**
  * Responsible for interpreting raw user input and converting it into structured {@link Command} objects.
@@ -61,7 +61,7 @@ public class Parser {
      * @return a {@link Command} representing the parsed action
      * @throws EmptyCommandException   if the input is empty or contains only whitespace
      * @throws UnknownCommandException if the command keyword is not recognized
-     * @throws ListCommandException    if the {@code list} command contains unexpected arguments
+     * @throws InvalidListCommandException    if the {@code list} command contains unexpected arguments
      */
     public static Command parseInput(String userInput) {
         userInput = cleanUserInput(userInput);
@@ -74,7 +74,7 @@ public class Parser {
         case "edit" -> parseEditCommand(remainder);
         case "close" -> parseCloseCommand(remainder);
         case "delete" -> parseDeleteCommand(remainder);
-        default -> throw new UnknownCommandException();
+        default -> throw new UnknownCommandException(keyword);
         };
     }
 
@@ -138,11 +138,11 @@ public class Parser {
      *   <li>{@code list --status all} — Lists all cases</li>
      * </ul>
      * If the {@code --status} flag is present, its value must be one of {@code open}, {@code closed}, or {@code all}.
-     * Any invalid flag or value will result in a {@link ListCommandException}.
+     * Any invalid flag or value will result in a {@link InvalidListCommandException}.
      *
      * @param remainder the portion of the input following the {@code list} keyword
      * @return a {@link ListCommand} with the appropriate {@link CaseListingMode}
-     * @throws ListCommandException if the input contains invalid flags or unsupported status values
+     * @throws InvalidListCommandException if the input contains invalid flags or unsupported status values
      */
     private static Command parseListCommand(String remainder) {
         if (remainder.isEmpty()) {
@@ -153,7 +153,7 @@ public class Parser {
         List<String> validFlags = List.of("status");
 
         if (!validator.haveValidFlags(flagValues, validFlags)) {
-            throw new ListCommandException();
+            throw new InvalidListCommandException();
         }
 
         String status = flagValues.get("status");
@@ -163,7 +163,7 @@ public class Parser {
         case "open" -> mode = CaseListingMode.OPEN_ONLY;
         case "closed" -> mode = CaseListingMode.CLOSED_ONLY;
         case "all" -> mode = CaseListingMode.ALL;
-        default -> throw new ListCommandException();
+        default -> throw new InvalidListCommandException();
         }
 
         return new ListCommand(mode);
@@ -199,26 +199,20 @@ public class Parser {
     /**
      * Parses the {@code close} command and validates its argument.
      * <p>
-     * This method expects a single integer value representing the case number to close.
-     * If the input is empty or not a valid integer, an {@link InvalidCloseCommandException}
+     * This method expects a string representing the caseId to close.
+     * If the input is empty or not a valid caseId, an {@link InvalidCloseCommandException}
      * will be thrown.
      *
      * @param remainder the portion of the input following the {@code close} keyword
-     * @return a valid {@link CloseCommand} if the argument is a valid case number
-     * @throws InvalidCloseCommandException if the argument is missing or non-numeric
+     * @return a valid {@link CloseCommand} if the argument is a valid caseId
+     * @throws InvalidCloseCommandException if the argument is missing
+     * @throws InvalidCaseIdException if the caseId does not exist
      */
     private static Command parseCloseCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
-            logger.log(Level.WARNING, "Input is empty");
             throw new InvalidCloseCommandException();
         }
-        try {
-            int caseNumber = Integer.parseInt(remainder);
-            return new CloseCommand(caseNumber);
-        } catch (NumberFormatException e) {
-            logger.log(Level.WARNING, "Invalid number format");
-            throw new InvalidCloseCommandException();
-        }
+        return new CloseCommand(remainder);
     }
 
     /**
@@ -277,48 +271,27 @@ public class Parser {
      * Throws an InvalidEditCommandException if the input is missing, incorrectly formatted, or contains invalid flags.
      */
     private static Command parseEditCommand(String remainder) {
-        if (remainder.isEmpty() || !isValidEditCommandInput(remainder)) {
-            throw new InvalidEditCommandException("The 'edit' command requires a case number, " +
-                    "followed by at least one flag and its value.");
+        if (remainder.isEmpty()) {
+            throw new InvalidEditCommandException();
         }
 
         int firstSpaceIndex = remainder.indexOf(" ");
         if (firstSpaceIndex == -1) {
-            throw new InvalidEditCommandException("Missing case number or flags in 'edit' command.");
+            throw new InvalidEditCommandException();
+        }
+        String caseId = remainder.substring(0, firstSpaceIndex);
+        if (!validator.isValidCaseId(caseId)) {
+            throw new InvalidEditCommandException();
         }
 
-        String caseNumberString = remainder.substring(0, firstSpaceIndex);
-        int caseNumberInteger = Integer.parseInt(caseNumberString);
         String replacements = remainder.substring(firstSpaceIndex + 1).trim();
-
         Map<String, String> flagValues = extractFlagValues(replacements);
 
-        if (flagValues == null) {
-            logger.log(Level.INFO, "Missing flag values in input");
-            throw new InvalidEditCommandException("The 'edit' command requires at least one flag " +
-                    "and every flag's corresponding value.");
+        if (!validator.haveValidFlags(flagValues, VALID_FLAGS)){
+            throw new IncorrectFlagException();
         }
 
-        for (String flag : flagValues.keySet()) {
-            if (!VALID_FLAGS.contains(flag)) {
-                logger.log(Level.INFO, "Invalid flags were entered");
-                throw new InvalidEditCommandException("The flag '" + flag + "' is not recognized.");
-            }
-        }
-
-        return new EditCommand(caseNumberInteger, flagValues);
-    }
-
-    /**
-     * Checks whether the provided input string matches the valid format for an 'edit' command.
-     * The valid format must begin with a case number followed by one or more flags and their values.
-     *
-     * @param input the user input string to validate
-     * @return true if the input matches the required format, false otherwise
-     */
-    public static boolean isValidEditCommandInput(String input) {
-        final String inputPattern = "^\\d+\\s+(--\\s*\\w+(?:\\s+\\S+)+)(?:\\s+--\\s*\\w+(?:\\s+\\S+)+)*$";
-        return Pattern.matches(inputPattern, input.strip());
+        return new EditCommand(caseId, flagValues);
     }
 
     /**
@@ -326,19 +299,9 @@ public class Parser {
      * Throws an InvalidDeleteIndexException if the input is missing or incorrectly formatted.
      */
     private static Command parseDeleteCommand(String remainder) {
-        int caseNumber = 0;
-        try {
-            caseNumber = Integer.parseInt(remainder);
-        } catch (NumberFormatException e) {
-            logger.log(Level.WARNING, "The wrong input was entered into the 'delete' command.");
+        if (remainder.isEmpty() || !validator.isNumeric(remainder)) {
             throw new InvalidDeleteIndexException();
         }
-
-        if(caseNumber < 1){
-            logger.log(Level.WARNING, "The case number must be greater than 0.");
-            throw new InvalidDeleteIndexException();
-        }
-
-        return new DeleteCommand(caseNumber);
+        return new DeleteCommand(Integer.parseInt(remainder));
     }
 }

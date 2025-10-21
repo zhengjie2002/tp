@@ -9,5 +9,12 @@ add --title Car accident --info Jurong East Road --date 05-06-2018
 list --status open
 list --status closed
 list --status all
+list --status
+close 000000
+edit 000001 --title Robbery
+edit 000001
+edit 000001 --food Robbery
+close
 list
+list --status closed
 bye
