@@ -134,6 +134,9 @@ public class ListCommand extends Command {
      * @return {@code true} if the case matches the filter criteria; {@code false} otherwise
      */
     private boolean isCaseVisible(Case caseRecord) {
+        if (caseRecord.isDeleted()) {
+            return false;
+        }
         return switch (this.listingMode) {
         case OPEN_ONLY -> caseRecord.isOpen();
         case CLOSED_ONLY -> !caseRecord.isOpen();
