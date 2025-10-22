@@ -21,6 +21,7 @@ import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 
@@ -145,13 +146,18 @@ class ParserTest {
     }
 
     @Test
-    void parseInput_missingCaseId_throwsInvalidEditCommandException() {
-        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit --title newTitle"));
+    void parseInput_missingCaseId_throwsInvalidCaseIdException() {
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("edit --title newTitle"));
     }
 
     @Test
-    void parseInput_wrongCaseId_throwsInvalidEditCommandException() {
-        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit WrongcaseId --title newTitle"));
+    void parseInput_missingInput_throwsInvalidEditCommandException() {
+        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit "));
+    }
+
+    @Test
+    void parseInput_wrongCaseId_throwsInvalidCaseIdException() {
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("edit WrongcaseId --title newTitle"));
     }
 
     // ----------- TESTS FOR CLOSE COMMANDS ----------- //
@@ -172,6 +178,12 @@ class ParserTest {
     void parseInput_closeMissingArgument_throwsInvalidCloseCommandException() {
         assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close"));
         assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close   "));
+    }
+
+    @Test
+    void parseInput_closeWrongCaseId_throwsInvalidCaseIdException() {
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("close A01"));
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("close 1"));
     }
 
     // ----------- TESTS FOR ADD COMMANDS ----------- //
