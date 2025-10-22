@@ -6,7 +6,7 @@ import java.util.Map;
  * Represents a case file in the SGSafe system.
  * Each case contains metadata such as title, date, victim, officer, and status.
  */
-public class Case {
+public abstract class Case {
 
     /** The title or summary of the case. */
     private final String id;
@@ -81,6 +81,8 @@ public class Case {
         return info;
     }
 
+    public abstract String getCategory();
+
     /**
      * Retrieves the name of the victim involved in the case.
      *
@@ -137,9 +139,10 @@ public class Case {
      */
     public String getDisplayLine() {
         String status = this.isOpen ? "[O]" : "[C]";
+        String category = getCategory();
         String victimLine = (this.victim == null) ? "" : (" | Victim: " + this.victim);
         String officerLine = (this.officer == null) ? "" : (" | Officer: " + this.officer);
-        return status + " #" + this.id + " " + this.date + " " + this.title + victimLine + officerLine;
+        return status + " [" + category + "]" + " #" + this.id + " " + this.date + " " + this.title + victimLine + officerLine;
     }
 
     /**
