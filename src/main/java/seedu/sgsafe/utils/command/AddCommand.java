@@ -1,7 +1,10 @@
 package seedu.sgsafe.utils.command;
 
+import seedu.sgsafe.domain.casefiles.AccidentCase;
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.domain.casefiles.OthersCase;
+import seedu.sgsafe.domain.casefiles.TheftCase;
 import seedu.sgsafe.utils.ui.Display;
 
 import java.util.logging.Logger;
@@ -18,6 +21,9 @@ public class AddCommand extends Command {
 
     // Format string for generating case IDs
     private static final String CASE_ID_FORMAT = "%06x";
+
+    // Category of the case
+    private final String caseCategory;
 
     // Title of the case
     private final String caseTitle;
@@ -43,8 +49,9 @@ public class AddCommand extends Command {
      * @param caseVictim  The name of the victim involved in the case. Can be null.
      * @param caseOfficer The name of the officer handling the case. Can be null.
      */
-    public AddCommand(String caseTitle, String caseDate, String caseInfo, String caseVictim, String caseOfficer) {
+    public AddCommand(String caseCategory, String caseTitle, String caseDate, String caseInfo, String caseVictim, String caseOfficer) {
         this.commandType = CommandType.ADD;
+        this.caseCategory = caseCategory.toLowerCase();
         this.caseTitle = caseTitle;
         this.caseDate = caseDate;
         this.caseInfo = caseInfo;
@@ -100,7 +107,19 @@ public class AddCommand extends Command {
     @Override
     public void execute() {
         String id = generateHexId();
-        Case newCase = new Case(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        Case newCase;
+
+        switch (caseCategory) {
+        case "theft":
+            newCase = new TheftCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+            break;
+        case "accident":
+            newCase = new AccidentCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+            break;
+        default:
+            newCase = new OthersCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        }
+
         CaseManager.addCase(newCase);
         Display.printMessage("New case added:", newCase.getDisplayLine());
     }
