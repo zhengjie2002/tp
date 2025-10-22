@@ -9,8 +9,10 @@ class AddCommandTest {
 
     @Test
     void constructor_validParameters_createsCommandSuccessfully() {
-        AddCommand command = new AddCommand("Case Title", "2023-10-01", "Case Info", "Victim Name", "Officer Name");
+        AddCommand command = new AddCommand("Theft","Case Title", "2023-10-01",
+                "Case Info", "Victim Name", "Officer Name");
 
+        assertEquals("theft", command.getCaseCategory());
         assertEquals("Case Title", command.getCaseTitle());
         assertEquals("2023-10-01", command.getCaseDate());
         assertEquals("Case Info", command.getCaseInfo());
@@ -20,8 +22,9 @@ class AddCommandTest {
 
     @Test
     void constructor_withNullOptionalParameters_createsCommandSuccessfully() {
-        AddCommand command = new AddCommand("Case Title", "2023-10-01", "Case Info", null, null);
+        AddCommand command = new AddCommand("Theft","Case Title", "2023-10-01", "Case Info", null, null);
 
+        assertEquals("theft", command.getCaseCategory());
         assertEquals("Case Title", command.getCaseTitle());
         assertEquals("2023-10-01", command.getCaseDate());
         assertEquals("Case Info", command.getCaseInfo());
@@ -31,7 +34,7 @@ class AddCommandTest {
 
     @Test
     void constructor_validParameters_setsCommandTypeToAdd() {
-        AddCommand command = new AddCommand("Title", "2023-10-01", "Info", null, null);
+        AddCommand command = new AddCommand("Theft", "Title", "2023-10-01", "Info", null, null);
 
         assertEquals(CommandType.ADD, command.getCommandType());
     }
@@ -39,6 +42,7 @@ class AddCommandTest {
     @Test
     void constructor_withSpecialCharacters_preservesCharacters() {
         AddCommand command = new AddCommand(
+                "Theft",
                 "Case @#$%",
                 "2023-10-01",
                 "Info with symbols: !@#$%^&*()",

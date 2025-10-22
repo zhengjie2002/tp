@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.domain.casefiles.OthersCase;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ class ListCommandTest {
 
     @Test
     void list_withOneOpenCase_returnsCorrectHeaderAndLine() {
-        caseList.add(new Case("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new OthersCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
 
         ListCommand command = new ListCommand(CaseListingMode.OPEN_ONLY, false);
         String[] output = command.getCaseDescriptions(caseList);
@@ -51,10 +52,11 @@ class ListCommandTest {
 
     @Test
     void list_withMixedCases_filtersByStatusCorrectly() {
-        caseList.add(new Case("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
-        caseList.add(new Case("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
+        caseList.add(new OthersCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new OthersCase("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
 
-        Case closedCase = new Case("000003", "Trespass", "2025-10-03", "Unauthorized entry", "Jake Doe", "Officer Ong");
+        Case closedCase = new OthersCase("000003", "Trespass", "2025-10-03",
+                "Unauthorized entry", "Jake Doe", "Officer Ong");
         closedCase.setClosed();
         caseList.add(closedCase);
 
@@ -73,10 +75,11 @@ class ListCommandTest {
 
     @Test
     void list_withAllMode_returnsAllCases() {
-        caseList.add(new Case("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
-        caseList.add(new Case("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
+        caseList.add(new OthersCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new OthersCase("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
 
-        Case closedCase = new Case("000003", "Trespass", "2025-10-03", "Unauthorized entry", "Jake Doe", "Officer Ong");
+        Case closedCase = new OthersCase("000003", "Trespass", "2025-10-03",
+                "Unauthorized entry", "Jake Doe", "Officer Ong");
         closedCase.setClosed();
         caseList.add(closedCase);
 
@@ -90,8 +93,8 @@ class ListCommandTest {
 
     @Test
     void list_withDefaultMode_behavesLikeAll() {
-        caseList.add(new Case("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
-        caseList.add(new Case("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
+        caseList.add(new OthersCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new OthersCase("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
 
         String[] output = new ListCommand(CaseListingMode.DEFAULT, false).getCaseDescriptions(caseList);
         assertEquals("You currently have 2 cases in total", output[0]);
@@ -102,7 +105,7 @@ class ListCommandTest {
 
     @Test
     void list_verboseMode_includesDetailedInfo() {
-        caseList.add(new Case("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new OthersCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
 
         ListCommand command = new ListCommand(CaseListingMode.ALL, true);
         String[] output = command.getCaseDescriptions(caseList);
@@ -118,7 +121,7 @@ class ListCommandTest {
 
     @Test
     void list_summaryMode_omitsDetailedInfo() {
-        caseList.add(new Case("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new OthersCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
 
         ListCommand command = new ListCommand(CaseListingMode.ALL, false);
         String[] output = command.getCaseDescriptions(caseList);
@@ -131,10 +134,11 @@ class ListCommandTest {
 
     @Test
     void list_verboseMixed_includesDetails() {
-        caseList.add(new Case("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
-        caseList.add(new Case("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
+        caseList.add(new OthersCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new OthersCase("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
 
-        Case closedCase = new Case("000003", "Trespass", "2025-10-03", "Unauthorized entry", "Jake Doe", "Officer Ong");
+        Case closedCase = new OthersCase("000003", "Trespass", "2025-10-03",
+                "Unauthorized entry", "Jake Doe", "Officer Ong");
         closedCase.setClosed();
         caseList.add(closedCase);
 
@@ -159,10 +163,11 @@ class ListCommandTest {
 
     @Test
     void list_summaryMixed_omitsDetails() {
-        caseList.add(new Case("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
-        caseList.add(new Case("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
+        caseList.add(new OthersCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new OthersCase("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
 
-        Case closedCase = new Case("000003", "Trespass", "2025-10-03", "Unauthorized entry", "Jake Doe", "Officer Ong");
+        Case closedCase = new OthersCase("000003", "Trespass", "2025-10-03",
+                "Unauthorized entry", "Jake Doe", "Officer Ong");
         closedCase.setClosed();
         caseList.add(closedCase);
 
@@ -178,7 +183,7 @@ class ListCommandTest {
     @Test
     void list_verboseMode_truncatesLongInfo() {
         String longInfo = "X".repeat(150);
-        caseList.add(new Case("000004", "Forgery", "2025-10-04", longInfo, "Alex", "Officer Lee"));
+        caseList.add(new OthersCase("000004", "Forgery", "2025-10-04", longInfo, "Alex", "Officer Lee"));
 
         ListCommand command = new ListCommand(CaseListingMode.ALL, true);
         String[] output = command.getCaseDescriptions(caseList);
@@ -195,7 +200,7 @@ class ListCommandTest {
 
     @Test
     void list_verboseMode_handlesMissingFieldsGracefully() {
-        caseList.add(new Case("000005", "Vandalism", "2025-10-05", "Graffiti", null, null));
+        caseList.add(new OthersCase("000005", "Vandalism", "2025-10-05", "Graffiti", null, null));
 
         ListCommand command = new ListCommand(CaseListingMode.ALL, true);
         String[] output = command.getCaseDescriptions(caseList);

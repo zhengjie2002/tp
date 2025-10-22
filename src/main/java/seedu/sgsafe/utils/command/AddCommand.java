@@ -49,7 +49,8 @@ public class AddCommand extends Command {
      * @param caseVictim  The name of the victim involved in the case. Can be null.
      * @param caseOfficer The name of the officer handling the case. Can be null.
      */
-    public AddCommand(String caseCategory, String caseTitle, String caseDate, String caseInfo, String caseVictim, String caseOfficer) {
+    public AddCommand(String caseCategory, String caseTitle, String caseDate,
+                      String caseInfo, String caseVictim, String caseOfficer) {
         this.commandType = CommandType.ADD;
         this.caseCategory = caseCategory.toLowerCase();
         this.caseTitle = caseTitle;
@@ -58,6 +59,10 @@ public class AddCommand extends Command {
         this.caseVictim = caseVictim;
         this.caseOfficer = caseOfficer;
         logger.log(Level.INFO, "AddCommand created");
+    }
+
+    public String getCaseCategory() {
+        return caseCategory;
     }
 
     public String getCaseTitle() {

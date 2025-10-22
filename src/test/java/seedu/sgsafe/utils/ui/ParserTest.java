@@ -179,7 +179,8 @@ class ParserTest {
     @Test
     void parseInput_addValid_returnsAddCommand() {
         Command command = Parser.parseInput(
-                "add --title CaseTitle --date 2025-12-12 --info SomeInfo --victim JohnDoe --officer JaneDoe");
+                "add --category Theft --title CaseTitle --date 2025-12-12 " +
+                        "--info SomeInfo --victim JohnDoe --officer JaneDoe");
         assertEquals(CommandType.ADD, command.getCommandType());
     }
 
@@ -196,9 +197,10 @@ class ParserTest {
     @Test
     void parseInput_addWithExtraWhitespace_returnsAddCommand() {
         Command command = Parser.parseInput(
-                "  add   --title   CaseTitle   --date   2025-12-12   --info   SomeInfo   --victim   " +
-                        "JohnDoe   --officer   JaneDoe  ");
+                "  add   --category  Others --title   CaseTitle   --date   2025-12-12   " +
+                        "--info   SomeInfo   --victim   JohnDoe   --officer   JaneDoe  ");
         assertEquals(CommandType.ADD, command.getCommandType());
+        assertEquals("others", ((AddCommand) command).getCaseCategory());
         assertEquals("CaseTitle", ((AddCommand) command).getCaseTitle());
         assertEquals("2025-12-12", ((AddCommand) command).getCaseDate());
         assertEquals("SomeInfo", ((AddCommand) command).getCaseInfo());

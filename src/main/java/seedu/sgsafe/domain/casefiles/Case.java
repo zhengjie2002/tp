@@ -124,6 +124,7 @@ public abstract class Case {
      * The output includes:
      * <ul>
      *   <li>Status indicator: {@code [O]} for open, {@code [C]} for closed</li>
+     *   <li>Category of the case</li>
      *   <li>Case ID: a unique 6-character hexadecimal string</li>
      *   <li>Date and title of the case</li>
      *   <li>Optional victim and officer details, if present</li>
@@ -142,7 +143,8 @@ public abstract class Case {
         String category = getCategory();
         String victimLine = (this.victim == null) ? "" : (" | Victim: " + this.victim);
         String officerLine = (this.officer == null) ? "" : (" | Officer: " + this.officer);
-        return status + " [" + category + "]" + " #" + this.id + " " + this.date + " " + this.title + victimLine + officerLine;
+        return status + " [" + category + "]" + " #" + this.id + " " +
+                this.date + " " + this.title + victimLine + officerLine;
     }
 
     /**

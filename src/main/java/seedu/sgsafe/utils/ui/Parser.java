@@ -224,7 +224,7 @@ public class Parser {
      * Parses the {@code add} command and validates its arguments.
      * <p>
      * This method extracts flags and their values from the input, ensuring that required fields
-     * (title, date, and info) are present.
+     * (category, title, date, and info) are present.
      *
      * @param remainder the portion of the input following the {@code add} keyword
      * @return a valid {@link AddCommand} if arguments are invalid
@@ -243,8 +243,8 @@ public class Parser {
             throw new InvalidAddCommandException();
         }
 
-        return new AddCommand(flagValues.get("category"), flagValues.get("title"), flagValues.get("date"), flagValues.get("info"),
-                flagValues.get("victim"), flagValues.get("officer"));
+        return new AddCommand(flagValues.get("category"), flagValues.get("title"), flagValues.get("date"),
+                flagValues.get("info"), flagValues.get("victim"), flagValues.get("officer"));
     }
 
     /**
