@@ -9,17 +9,17 @@
 	____________________________________________________________
 	____________________________________________________________
 	New case added:
-	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] [Others] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	Your add command format is incorrect.
-	The correct format for a add command is
-	add --title TITLE --info INFO --date DATE [--victim VICTIM] [--officer OFFICER]
+	The correct format for an add command is
+	add --category CATEGORY --title TITLE --info INFO --date DATE [--victim VICTIM] [--officer OFFICER]
 	The items in [ ] are optional.
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case in total
-	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] [Others] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	Your command format is incorrect.
@@ -31,21 +31,21 @@
 	Please see which flag is required for this command.
 	____________________________________________________________
 	____________________________________________________________
-	New case added:
-	[O] #000001 05-06-2018 Car accident
+	Your add command format is incorrect.
+	The correct format for an add command is
+	add --category CATEGORY --title TITLE --info INFO --date DATE [--victim VICTIM] [--officer OFFICER]
+	The items in [ ] are optional.
 	____________________________________________________________
 	____________________________________________________________
-	You currently have 2 cases open
-	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 05-06-2018 Car accident
+	You currently have 1 case open
+	[O] [Others] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	You currently have no cases closed. Add some now!
 	____________________________________________________________
 	____________________________________________________________
-	You currently have 2 cases in total
-	[O] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 05-06-2018 Car accident
+	You currently have 1 case in total
+	[O] [Others] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	Your command format is incorrect.
@@ -54,11 +54,10 @@
 	____________________________________________________________
 	____________________________________________________________
 	Case closed:
-	[C] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[C] [Others] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
-	Case edited:
-	[O] #000001 05-06-2018 Robbery
+	No case found with ID: 000001
 	____________________________________________________________
 	____________________________________________________________
 	The 'edit' command requires a case ID followed by at least one flag and its value.
@@ -74,13 +73,12 @@
 	close CASE-NUMBER
 	____________________________________________________________
 	____________________________________________________________
-	You currently have 2 cases in total
-	[C] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 05-06-2018 Robbery
+	You currently have 1 case in total
+	[C] [Others] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case closed
-	[C] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[C] [Others] #000000 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	Thanks for using SGSafe :)
