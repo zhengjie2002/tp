@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import seedu.sgsafe.utils.exceptions.CaseAlreadyClosedException;
+import seedu.sgsafe.utils.exceptions.CaseAlreadyOpenException;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 
 /**
@@ -65,6 +66,23 @@ public class CaseManager {
         }
         caseToClose.setClosed();
         return caseToClose.getDisplayLine();
+    }
+
+    /**
+     * Closes an existing case in the case list.
+     *
+     * @param caseId the case to be closed
+     */
+    public static String openCase(String caseId) throws CaseNotFoundException {
+        Case caseToOpen = getCaseById(caseId);
+        if (caseToOpen == null) {
+            throw new CaseNotFoundException(caseId);
+        }
+        if (caseToOpen.isOpen()) {
+            throw new CaseAlreadyOpenException(caseId);
+        }
+        caseToOpen.setOpen();
+        return caseToOpen.getDisplayLine();
     }
 
     /**
