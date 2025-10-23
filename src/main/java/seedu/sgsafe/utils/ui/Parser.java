@@ -251,17 +251,22 @@ public class Parser {
      * Parses the {@code close} command and validates its argument.
      * <p>
      * This method expects a string representing the caseId to close.
-     * If the input is empty or not a valid caseId, an {@link InvalidCloseCommandException}
+     * If the input is empty, an {@link InvalidCloseCommandException}
+     * will be thrown.
+     * If the caseId format is wrong, an {@link InvalidCaseIdException}
      * will be thrown.
      *
      * @param remainder the portion of the input following the {@code close} keyword
      * @return a valid {@link CloseCommand} if the argument is a valid caseId
      * @throws InvalidCloseCommandException if the argument is missing
-     * @throws InvalidCaseIdException if the caseId does not exist
+     * @throws InvalidCaseIdException if the caseId format is wrong
      */
     private static Command parseCloseCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidCloseCommandException();
+        }
+        if (!validator.isValidCaseId(remainder)) {
+            throw new InvalidCaseIdException();
         }
         return new CloseCommand(remainder);
     }
@@ -332,7 +337,7 @@ public class Parser {
         }
         String caseId = remainder.substring(0, firstSpaceIndex);
         if (!validator.isValidCaseId(caseId)) {
-            throw new InvalidEditCommandException();
+            throw new InvalidCaseIdException();
         }
 
         String replacements = remainder.substring(firstSpaceIndex + 1).trim();

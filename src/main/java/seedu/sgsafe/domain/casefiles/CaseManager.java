@@ -3,6 +3,7 @@ package seedu.sgsafe.domain.casefiles;
 import java.util.ArrayList;
 import java.util.Map;
 
+import seedu.sgsafe.utils.exceptions.CaseAlreadyClosedException;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 
 /**
@@ -35,14 +36,6 @@ public class CaseManager {
         caseList.add(newCase);
     }
 
-    /**
-     * Closes an existing case in the case list.
-     *
-     * @param caseToClose the case to be closed
-     */
-    public static void closeCase(Case caseToClose) {
-        caseToClose.setClosed();
-    }
 
     /**
      * Finds and returns a {@link Case} object from the case list using its unique ID.
@@ -55,6 +48,23 @@ public class CaseManager {
                 .filter(c -> (c.getId().equals(id) && !c.isDeleted()))
                 .findFirst()
                 .orElse(null);
+    }
+
+    /**
+     * Closes an existing case in the case list.
+     *
+     * @param caseId the case to be closed
+     */
+    public static String closeCase(String caseId) throws CaseNotFoundException {
+        Case caseToClose = getCaseById(caseId);
+        if (caseToClose == null) {
+            throw new CaseNotFoundException(caseId);
+        }
+        if (!caseToClose.isOpen()) {
+            throw new CaseAlreadyClosedException(caseId);
+        }
+        caseToClose.setClosed();
+        return caseToClose.getDisplayLine();
     }
 
     /**
