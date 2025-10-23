@@ -69,9 +69,9 @@ public class CaseManager {
     }
 
     /**
-     * Closes an existing case in the case list.
+     * Reopens a closed case in the case list.
      *
-     * @param caseId the case to be closed
+     * @param caseId the case to be opened
      */
     public static String openCase(String caseId) throws CaseNotFoundException {
         Case caseToOpen = getCaseById(caseId);

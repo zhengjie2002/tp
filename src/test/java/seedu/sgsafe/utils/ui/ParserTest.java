@@ -25,6 +25,7 @@ import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 
+import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
 /**
@@ -184,6 +185,32 @@ class ParserTest {
     void parseInput_closeWrongCaseId_throwsInvalidCaseIdException() {
         assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("close A01"));
         assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("close 1"));
+    }
+
+    // ----------- TESTS FOR OPEN COMMANDS ----------- //
+
+    @Test
+    void parseInput_openValid_returnsOpenCommand() {
+        Command command = Parser.parseInput("open 000001");
+        assertEquals(CommandType.OPEN, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_openWithWhitespace_returnsOpenCommand() {
+        Command command = Parser.parseInput("   open   000001   ");
+        assertEquals(CommandType.OPEN, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_openMissingArgument_throwsInvalidOpenCommandException() {
+        assertThrows(InvalidOpenCommandException.class, () -> Parser.parseInput("open"));
+        assertThrows(InvalidOpenCommandException.class, () -> Parser.parseInput("open   "));
+    }
+
+    @Test
+    void parseInput_openWrongCaseId_throwsInvalidCaseIdException() {
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("open A01"));
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("open 1"));
     }
 
     // ----------- TESTS FOR ADD COMMANDS ----------- //
