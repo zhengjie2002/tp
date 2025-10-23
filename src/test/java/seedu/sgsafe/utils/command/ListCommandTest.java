@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
-import seedu.sgsafe.domain.casefiles.OthersCase;
+import seedu.sgsafe.domain.casefiles.type.OthersCase;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

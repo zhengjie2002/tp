@@ -1,10 +1,17 @@
 package seedu.sgsafe.utils.command;
 
-import seedu.sgsafe.domain.casefiles.AccidentCase;
+import seedu.sgsafe.domain.casefiles.type.financial.ScamCase;
+import seedu.sgsafe.domain.casefiles.type.property.ArsonCase;
+import seedu.sgsafe.domain.casefiles.type.property.VandalismCase;
+import seedu.sgsafe.domain.casefiles.type.traffic.SpeedingCase;
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
-import seedu.sgsafe.domain.casefiles.OthersCase;
-import seedu.sgsafe.domain.casefiles.TheftCase;
+import seedu.sgsafe.domain.casefiles.type.violent.AssaultCase;
+import seedu.sgsafe.domain.casefiles.type.violent.MurderCase;
+import seedu.sgsafe.domain.casefiles.type.OthersCase;
+import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
+import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
+import seedu.sgsafe.utils.exceptions.InvalidCategoryException;
 import seedu.sgsafe.utils.ui.Display;
 
 import java.util.logging.Logger;
@@ -115,14 +122,35 @@ public class AddCommand extends Command {
         Case newCase;
 
         switch (caseCategory) {
+        case "scam":
+            newCase = new ScamCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+            break;
         case "theft":
             newCase = new TheftCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
             break;
-        case "accident":
-            newCase = new AccidentCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "arson":
+            newCase = new ArsonCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+            break;
+        case "vandalism":
+            newCase = new VandalismCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+            break;
+        case "speeding":
+            newCase = new SpeedingCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+            break;
+        case "assault":
+            newCase = new AssaultCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+            break;
+        case "murder":
+            newCase = new MurderCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+            break;
+        case "robbery":
+            newCase = new RobberyCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+            break;
+        case "others":
+            newCase = new OthersCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
             break;
         default:
-            newCase = new OthersCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+            throw new InvalidCategoryException();
         }
 
         CaseManager.addCase(newCase);

@@ -1,5 +1,8 @@
 package seedu.sgsafe.domain.casefiles;
 
+import seedu.sgsafe.domain.casefiles.type.CaseCategory;
+import seedu.sgsafe.domain.casefiles.type.CaseType;
+
 import java.util.Map;
 
 /**
@@ -10,6 +13,15 @@ public abstract class Case {
 
     /** The title or summary of the case. */
     private final String id;
+
+    /** The type of case. */
+    protected CaseType type;
+
+    /** The category of the case. */
+    protected CaseCategory category;
+
+    /** The category name to be printed. */
+    protected String categoryString;
 
     /** The title or summary of the case. */
     private String title;
@@ -81,7 +93,13 @@ public abstract class Case {
         return info;
     }
 
-    public abstract String getCategory();
+    public CaseType getType() {
+        return type;
+    }
+
+    public CaseCategory getCategory() {
+        return category;
+    }
 
     /**
      * Retrieves the name of the victim involved in the case.
@@ -140,10 +158,9 @@ public abstract class Case {
      */
     public String getDisplayLine() {
         String status = this.isOpen ? "[O]" : "[C]";
-        String category = getCategory();
         String victimLine = (this.victim == null) ? "" : (" | Victim: " + this.victim);
         String officerLine = (this.officer == null) ? "" : (" | Officer: " + this.officer);
-        return status + " [" + category + "]" + " #" + this.id + " " +
+        return status + " #" + this.id + " " + "[" + categoryString + "] " +
                 this.date + " " + this.title + victimLine + officerLine;
     }
 

@@ -2,6 +2,7 @@ package seedu.sgsafe.domain.casefiles;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
