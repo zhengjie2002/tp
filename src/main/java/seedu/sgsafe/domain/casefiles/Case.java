@@ -10,6 +10,14 @@ import java.util.Map;
  * Each case contains metadata such as title, date, victim, officer, and status.
  */
 public abstract class Case {
+    /** The type of case. */
+    protected CaseType type;
+
+    /** The category of the case. */
+    protected CaseCategory category;
+
+    /** The category name to be printed. */
+    protected String categoryString;
 
     /** The title or summary of the case. */
     private final String id;
@@ -34,15 +42,6 @@ public abstract class Case {
 
     /** Indicates whether a case has been deleted. */
     private boolean isDeleted;
-
-    /** The type of case. */
-    public CaseType type;
-
-    /** The category of the case. */
-    public CaseCategory category;
-
-    /** The category name to be printed. */
-    public String categoryString;
 
     /**
      * Constructs a {@code Case} object with the specified details.
