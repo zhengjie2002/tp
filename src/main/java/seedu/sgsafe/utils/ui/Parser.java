@@ -274,6 +274,20 @@ public class Parser {
         return new CloseCommand(remainder);
     }
 
+    /**
+     * Parses the {@code close} command and validates its argument.
+     * <p>
+     * This method expects a string representing the caseId to open.
+     * If the input is empty, an {@link InvalidCloseCommandException}
+     * will be thrown.
+     * If the caseId format is wrong, an {@link InvalidCaseIdException}
+     * will be thrown.
+     *
+     * @param remainder the portion of the input following the {@code open} keyword
+     * @return a valid {@link OpenCommand} if the argument is a valid caseId
+     * @throws InvalidOpenCommandException if the argument is missing
+     * @throws InvalidCaseIdException if the caseId format is wrong
+     */
     private static Command parseOpenCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidOpenCommandException();

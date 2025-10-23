@@ -65,6 +65,7 @@ public class CaseManager {
             throw new CaseAlreadyClosedException(caseId);
         }
         caseToClose.setClosed();
+        assert !caseToClose.isOpen() : "Case should be closed";
         return caseToClose.getDisplayLine();
     }
 
@@ -82,6 +83,7 @@ public class CaseManager {
             throw new CaseAlreadyOpenException(caseId);
         }
         caseToOpen.setOpen();
+        assert caseToOpen.isOpen() : "Case should be open";
         return caseToOpen.getDisplayLine();
     }
 
