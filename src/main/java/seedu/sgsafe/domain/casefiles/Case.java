@@ -1,7 +1,7 @@
 package seedu.sgsafe.domain.casefiles;
 
-import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 import seedu.sgsafe.domain.casefiles.type.CaseType;
+import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 
 import java.util.Map;
 
@@ -13,15 +13,6 @@ public abstract class Case {
 
     /** The title or summary of the case. */
     private final String id;
-
-    /** The type of case. */
-    protected CaseType type;
-
-    /** The category of the case. */
-    protected CaseCategory category;
-
-    /** The category name to be printed. */
-    protected String categoryString;
 
     /** The title or summary of the case. */
     private String title;
@@ -43,6 +34,15 @@ public abstract class Case {
 
     /** Indicates whether a case has been deleted. */
     private boolean isDeleted;
+
+    /** The type of case. */
+    public CaseType type;
+
+    /** The category of the case. */
+    public CaseCategory category;
+
+    /** The category name to be printed. */
+    public String categoryString;
 
     /**
      * Constructs a {@code Case} object with the specified details.
@@ -93,10 +93,20 @@ public abstract class Case {
         return info;
     }
 
+    /**
+     * Retrieves the type of the case.
+     *
+     * @return the type of the case.
+     */
     public CaseType getType() {
         return type;
     }
 
+    /**
+     * Retrieves the category of the case.
+     *
+     * @return the category of the case.
+     */
     public CaseCategory getCategory() {
         return category;
     }

@@ -1,6 +1,5 @@
 package seedu.sgsafe.domain.casefiles.type.financial;
 
-import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 
 public class TheftCase extends FinancialCase {
