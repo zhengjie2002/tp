@@ -71,7 +71,7 @@
 	____________________________________________________________
 	Your close command format is incorrect.
 	The correct format for a close command is
-	close CASE-NUMBER
+	close <case ID>
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total

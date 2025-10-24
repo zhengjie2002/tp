@@ -29,12 +29,16 @@ original source as well}
 
 ### Target user profile
 
-{Describe the target user profile}
+- police officer who needs to manage a significant number of cases
+- prefers desktop apps over other types of apps
+- can type fast
+- prefers typing to using the mouse
+- comfortable using CLI apps
 
 ### Value proposition
 
-{Describe the value proposition: what problem does it solve?}
-
+- manage and track cases faster than a typical mouse/GUI driven app
+    
 ## Appendix B: User Stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
