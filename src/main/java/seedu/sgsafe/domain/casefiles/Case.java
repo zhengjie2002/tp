@@ -253,12 +253,12 @@ public class Case {
      */
     public String toSaveString() {
         return "id:" + this.id
-                + ",title:" + (this.title == null ? "" : this.title)
-                + ",date:" + (this.date == null ? "" : this.date)
-                + ",info:" + (this.info == null ? "" : this.info)
-                + ",victim:" + (this.victim == null ? "" : this.victim)
-                + ",officer:" + (this.officer == null ? "" : this.officer)
-                + ",isDeleted:" + (this.isDeleted ? "1" : "0")
-                + ",isOpen:" + (this.isOpen ? "1" : "0");
+                + "|title:" + (this.title == null ? "" : this.title)
+                + "|date:" + (this.date == null ? "" : this.date)
+                + "|info:" + (this.info == null ? "" : this.info)
+                + "|victim:" + (this.victim == null ? "" : this.victim)
+                + "|officer:" + (this.officer == null ? "" : this.officer)
+                + "|isDeleted:" + (this.isDeleted ? "1" : "0")
+                + "|isOpen:" + (this.isOpen ? "1" : "0");
     }
 }

@@ -20,7 +20,7 @@ public class Storage {
 
     private Map<String, String> getFields(String saveString) {
         Map<String, String> fields = new HashMap<>();
-        for (String field : saveString.split(",")) {
+        for (String field : saveString.split("\\|")) {
             String[] splitField = field.split(":", 2);
             String key = splitField[0];
             String value = (splitField[1].isEmpty()) ? null : splitField[1];
