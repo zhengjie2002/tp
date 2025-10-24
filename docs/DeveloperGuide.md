@@ -25,6 +25,43 @@ original source as well}
 
 {Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
+### UI Component
+
+The API of this component is primarily specified in `Display.java`, with parsing functionality in `Parser.java` and validation in `Validator.java`.
+
+#### Structure of the UI Component
+
+The UI consists of three main parts: `Display`, `Parser`, and `Validator`. All these work together to handle user interaction through a console-based command-line interface.
+
+The UI component uses standard input/output streams. The interaction flow is managed in the `SGSafe` main class.
+
+#### Responsibilities
+
+The UI component:
+
+- **Displays formatted output** to the user using `Display`, which wraps messages in visual dividers
+- **Parses user commands** using `Parser` to convert raw input into `Command` objects
+- **Validates input** using `Validator` to ensure data integrity before execution
+- **Keeps a reference to the Command component**, as it relies on Commands to execute user actions
+- **Depends on classes in the Domain component**, as it displays `Case` objects from `CaseManager`
+
+#### Key Classes
+
+**Display**: Handles all user-facing output with formatted messages, including welcome/goodbye messages and command results.
+
+**Parser**: Interprets raw input and creates structured `Command` objects by extracting keywords, validating flags, and enforcing input constraints.
+
+**Validator**: Provides utility methods to validate flags, check required fields, and verify case ID format (6-character hexadecimal).
+
+#### Interaction Flow
+
+1. `SGSafe.mainLoop()` reads user input from console
+2. `Parser.parseInput()` validates input and creates the appropriate `Command` object
+3. `Command.execute()` is called to perform the action
+4. Commands interact with `CaseManager` to modify or retrieve `Case` objects
+5. Results are displayed via `Display.printMessage()`
+6. Exceptions are caught and error messages shown through `Display`
+
 ## Appendix A: Product scope
 
 ### Target user profile
