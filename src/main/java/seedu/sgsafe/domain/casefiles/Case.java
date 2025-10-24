@@ -1,6 +1,8 @@
 package seedu.sgsafe.domain.casefiles;
 
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a case file in the SGSafe system.
@@ -136,49 +138,81 @@ public class Case {
      * @return a display-friendly string summarizing the case
      */
     public String getDisplayLine() {
-        String status = this.isOpen ? "[O]" : "[C]";
-        String victimLine = (this.victim == null) ? "" : (" | Victim: " + this.victim);
-        String officerLine = (this.officer == null) ? "" : (" | Officer: " + this.officer);
-        return status + " #" + this.id + " " + this.date + " " + this.title + victimLine + officerLine;
+        String status = this.isOpen ? "[Open]" : "[Closed]";
+        return String.format("%-8s %-6s %-10s %s", status, this.id, this.date, this.title);
     }
 
     /**
      * Returns a verbose, multi-line representation of this case for detailed display.
      * <p>
      * The header line uses the format {@code ==== CASE ID 000000 ====}.
-     * The {@code info} field is capped at 100 characters; if longer, it is truncated and suffixed with {@code "..."}.
+     * All fields are truncated to 100 characters and suffixed with {@code "..."} if longer.
+     * Optional fields like {@code victim} and {@code officer} are omitted if not present.
      *
      * @return an array of strings representing the verbose display of the case
      */
     public String[] getMultiLineVerboseDisplay() {
-        String header = "======== CASE ID " + this.id + " ========";
-        String statusLine = "Status  : " + (this.isOpen ? "Open" : "Closed");
-        String truncatedInfo = truncateInfo(this.info);
+        List<String> lines = new ArrayList<>();
+        lines.add(formatCaseIDHeader());
+        lines.add(formatStatus());
+        lines.add(formatLine("Title", title));
+        lines.add(formatLine("Date", date));
+        lines.add(formatLine("Info", info));
 
-        return new String[] {
-            header,
-            statusLine,
-            "Title   : " + (title == null ? "" : title),
-            "Date    : " + (date == null ? "" : date),
-            "Info    : " + truncatedInfo,
-            "Victim  : " + (victim == null ? "" : victim),
-            "Officer : " + (officer == null ? "" : officer)
-        };
+        if (victim != null) {
+            lines.add(formatLine("Victim", victim));
+        }
+        if (officer != null) {
+            lines.add(formatLine("Officer", officer));
+        }
+
+        return lines.toArray(new String[0]);
     }
 
     /**
-     * Truncates the given info string to a maximum of 100 characters.
-     * If the input exceeds the limit, it is shortened and suffixed with {@code "..."}.
-     * If the input is {@code null}, an empty string is returned.
+     * Constructs the header line for the verbose display.
+     * Format: {@code "======== CASE ID 000000 ========"}
      *
-     * @param info the original info string
-     * @return a truncated version of the info string, capped at 100 characters
+     * @return the formatted header string
      */
-    private static String truncateInfo(String info) {
-        if (info == null) {
-            return "";
-        }
-        return info.length() > 100 ? info.substring(0, 100) + "..." : info;
+    private String formatCaseIDHeader() {
+        return "======== CASE ID " + this.id + " ========";
+    }
+
+    /**
+     * Constructs the status line indicating whether the case is open or closed.
+     * Format: {@code "Status  : Open"} or {@code "Status  : Closed"}
+     *
+     * @return the formatted status string
+     */
+    private String formatStatus() {
+        return "Status  : " + (this.isOpen ? "Open" : "Closed");
+    }
+
+    /**
+     * Formats a labeled line with truncated content.
+     * If the value is {@code null}, an empty string is used.
+     * Format: {@code "Label   : value"}
+     *
+     * @param label the label to display (e.g., "Title", "Date")
+     * @param value the value to display, which will be truncated
+     * @return the formatted line
+     */
+    private String formatLine(String label, String value) {
+        return label + "  : " + truncate(value);
+    }
+
+    /**
+     * Truncates the input string to a maximum of 100 characters.
+     * If the input is {@code null}, returns an empty string.
+     * If the input exceeds 100 characters, appends {@code "..."}.
+     *
+     * @param input the string to truncate
+     * @return the truncated string
+     */
+    private String truncate(String input) {
+        if (input == null) return "";
+        return input.length() <= 100 ? input : input.substring(0, 100) + "...";
     }
 
     public void setClosed() {
