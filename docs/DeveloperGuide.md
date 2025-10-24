@@ -25,6 +25,19 @@ original source as well}
 
 {Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
+### Overall logic
+
+The main code flow is as follows:
+1. Print welcome message
+2. Initialize CaseManager with saved info from `data.txt` if it exists
+3. Read user input from System.in
+4. Parse user input to obtain a Command object that contains the 
+information necessary to execute the command
+5. execute user command
+6. until the command is to exit the program, repeat steps 3 to 5
+7. Save the updated list of commands to `data.txt`
+8. Print exit message
+
 ## Appendix A: Product scope
 
 ### Target user profile
