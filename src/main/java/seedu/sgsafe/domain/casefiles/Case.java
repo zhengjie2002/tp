@@ -152,6 +152,7 @@ public abstract class Case {
 
     public void setDeleted() {
         this.isDeleted = true;
+        this.updatedAt = LocalDateTime.now();
     }
 
     /**
