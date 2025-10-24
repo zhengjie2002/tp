@@ -266,4 +266,17 @@ class ParserTest {
                         longInfo);
         assertThrows(InputLengthExceededException.class, () -> Parser.parseInput(input));
     }
+
+    @Test
+    void parseInput_addValidWithEscape_returnsAddCommand() {
+        Command command = Parser.parseInput(
+                "  add --title   CaseTitle\\--longinfo   --date   2025-12-12   --info   SomeInfo   --victim   " +
+                        "JohnDoe   --officer   JaneDoe  ");
+        assertEquals(CommandType.ADD, command.getCommandType());
+        assertEquals("CaseTitle--longinfo", ((AddCommand) command).getCaseTitle());
+        assertEquals("2025-12-12", ((AddCommand) command).getCaseDate());
+        assertEquals("SomeInfo", ((AddCommand) command).getCaseInfo());
+        assertEquals("JohnDoe", ((AddCommand) command).getCaseVictim());
+        assertEquals("JaneDoe", ((AddCommand) command).getCaseOfficer());
+    }
 }
