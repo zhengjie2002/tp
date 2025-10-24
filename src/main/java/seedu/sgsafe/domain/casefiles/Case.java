@@ -1,12 +1,23 @@
 package seedu.sgsafe.domain.casefiles;
 
+import seedu.sgsafe.domain.casefiles.type.CaseType;
+import seedu.sgsafe.domain.casefiles.type.CaseCategory;
+
 import java.util.Map;
 
 /**
  * Represents a case file in the SGSafe system.
  * Each case contains metadata such as title, date, victim, officer, and status.
  */
-public class Case {
+public abstract class Case {
+    /** The type of case. */
+    protected CaseType type;
+
+    /** The category of the case. */
+    protected CaseCategory category;
+
+    /** The category name to be printed. */
+    protected String categoryString;
 
     /** The title or summary of the case. */
     private final String id;
@@ -82,6 +93,24 @@ public class Case {
     }
 
     /**
+     * Retrieves the type of the case.
+     *
+     * @return the type of the case.
+     */
+    public CaseType getType() {
+        return type;
+    }
+
+    /**
+     * Retrieves the category of the case.
+     *
+     * @return the category of the case.
+     */
+    public CaseCategory getCategory() {
+        return category;
+    }
+
+    /**
      * Retrieves the name of the victim involved in the case.
      *
      * @return the name of the victim, or null if not specified
@@ -122,6 +151,7 @@ public class Case {
      * The output includes:
      * <ul>
      *   <li>Status indicator: {@code [O]} for open, {@code [C]} for closed</li>
+     *   <li>Category of the case</li>
      *   <li>Case ID: a unique 6-character hexadecimal string</li>
      *   <li>Date and title of the case</li>
      *   <li>Optional victim and officer details, if present</li>
@@ -139,7 +169,8 @@ public class Case {
         String status = this.isOpen ? "[O]" : "[C]";
         String victimLine = (this.victim == null) ? "" : (" | Victim: " + this.victim);
         String officerLine = (this.officer == null) ? "" : (" | Officer: " + this.officer);
-        return status + " #" + this.id + " " + this.date + " " + this.title + victimLine + officerLine;
+        return status + " #" + this.id + " " + "[" + categoryString + "] " +
+                this.date + " " + this.title + victimLine + officerLine;
     }
 
     /**
