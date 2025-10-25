@@ -3,6 +3,8 @@ package seedu.sgsafe.domain.casefiles;
 import seedu.sgsafe.domain.casefiles.type.CaseType;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -225,11 +227,17 @@ public abstract class Case {
     }
 
     /**
-     * Updates the fields of this Case object using the values provided in the map.
-     * Only the fields that appear in newValues will be changed.
+     * Returns the list of valid flags that can be used to edit this case type.
+     * The default implementation returns common flags shared by all case types.
+     * Subclasses with additional fields should override this method.
      *
-     * @param newValues a map containing the fields to update and their new values
+     * @return list of valid flag names for editing
      */
+    public List<String> getValidEditFlags() {
+        // Default flags for all case types
+        return List.of("title", "date", "info", "victim", "officer");
+    }
+
     public void update(Map<String, String> newValues) {
         if (newValues.containsKey("title")) {
             this.title = newValues.get("title");
