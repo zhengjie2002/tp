@@ -44,9 +44,6 @@ public class SGSafe {
         String userInput;
         while (true) {
             userInput = in.nextLine();
-            if (userInput.equals("bye")) {
-                return;
-            }
             handleUserCommand(userInput);
         }
     }

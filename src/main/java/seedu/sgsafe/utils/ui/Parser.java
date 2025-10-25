@@ -1,6 +1,7 @@
 package seedu.sgsafe.utils.ui;
 
 import seedu.sgsafe.utils.command.AddCommand;
+import seedu.sgsafe.utils.command.ByeCommand;
 import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
@@ -13,6 +14,7 @@ import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
+import seedu.sgsafe.utils.exceptions.InvalidByeCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
@@ -76,6 +78,7 @@ public class Parser {
         case "close" -> parseCloseCommand(remainder);
         case "open" -> parseOpenCommand(remainder);
         case "delete" -> parseDeleteCommand(remainder);
+        case "bye" -> parseByeCommand(remainder);
         default -> throw new UnknownCommandException(keyword);
         };
     }
@@ -386,5 +389,12 @@ public class Parser {
             throw new InvalidDeleteCommandException();
         }
         return new DeleteCommand(remainder.toLowerCase());
+    }
+
+    private static Command parseByeCommand(String remainder) {
+        if (!remainder.isEmpty()) {
+            throw new InvalidByeCommandException();
+        }
+        return new ByeCommand();
     }
 }

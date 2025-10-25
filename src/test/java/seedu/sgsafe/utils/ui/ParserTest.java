@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 
-
+import seedu.sgsafe.utils.command.ByeCommand;
 import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.CommandType;
@@ -21,6 +21,7 @@ import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidByeCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
@@ -267,5 +268,19 @@ class ParserTest {
                 String.format("add --title CaseTitle --date 2025-12-12 --info %s --victim JohnDoe --officer JaneDoe",
                         longInfo);
         assertThrows(InputLengthExceededException.class, () -> Parser.parseInput(input));
+    }
+
+    // ----------- TESTS FOR BYE COMMAND ----------- //
+
+    @Test
+    void parseInput_byeCommand_returnsByeCommand() {
+        Command cmd = Parser.parseInput("bye");
+        assertEquals(ByeCommand.class, cmd.getClass());
+    }
+
+    @Test
+    void parseInput_byeCommandWithExtraArgs_throwsInvalidByeCommandException() {
+        assertThrows(InvalidByeCommandException.class,
+                () -> Parser.parseInput("bye now"));
     }
 }
