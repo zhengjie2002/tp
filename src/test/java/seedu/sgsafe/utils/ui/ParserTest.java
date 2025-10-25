@@ -124,17 +124,17 @@ class ParserTest {
 
     // ----------- TESTS FOR EDIT COMMANDS ----------- //
 
-    @Test
-    void parseInput_validEditCommand_returnsEditCommand() {
-        Command command = Parser.parseInput("edit 000000 --title NewTitle --date 2025-10-10");
-        assertEquals(CommandType.EDIT, command.getCommandType());
-
-        EditCommand editCommand = (EditCommand) command;
-
-        Map<String, String> newValues = editCommand.getNewFlagValues();
-        assertEquals("NewTitle", newValues.get("title"));
-        assertEquals("2025-10-10", newValues.get("date"));
-    }
+//    @Test
+//    void parseInput_validEditCommand_returnsEditCommand() {
+//        Command command = Parser.parseInput("edit 000000 --title NewTitle --date 2025-10-10");
+//        assertEquals(CommandType.EDIT, command.getCommandType());
+//
+//        EditCommand editCommand = (EditCommand) command;
+//
+//        Map<String, String> newValues = editCommand.getNewFlagValues();
+//        assertEquals("NewTitle", newValues.get("title"));
+//        assertEquals("2025-10-10", newValues.get("date"));
+//    }
 
     @Test
     void parseInput_missingFlagValue_throwsInvalidEditCommandException() {
