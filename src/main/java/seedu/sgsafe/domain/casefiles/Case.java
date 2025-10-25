@@ -238,6 +238,15 @@ public abstract class Case {
         return List.of("title", "date", "info", "victim", "officer");
     }
 
+    /**
+     * Updates the editable fields of {@code Case} instance using the provided map of new values.
+     * <p>
+     * Each key in {@code newValues} corresponds to a valid editable field (e.g. {@code title}, {@code date},
+     * {@code info}, {@code victim}, {@code officer}). Only fields present in the map are updated; all
+     * others remain unchanged.
+     *
+     * @param newValues a map containing field names and their new values
+     */
     public void update(Map<String, String> newValues) {
         if (newValues.containsKey("title")) {
             this.title = newValues.get("title");
