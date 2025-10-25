@@ -9,7 +9,8 @@ import java.util.List;
 
 /**
  * Shows valid flags for editing a case.
- * User can then use "edit <caseId> --flag value" to actually edit.
+ * <p>
+ * Example: {@code edit <caseId> --flag value}
  */
 public class EditPromptCommand extends Command {
     private final String caseId;

@@ -3,7 +3,6 @@ package seedu.sgsafe.domain.casefiles;
 import seedu.sgsafe.domain.casefiles.type.CaseType;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

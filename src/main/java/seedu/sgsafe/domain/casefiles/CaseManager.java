@@ -110,7 +110,6 @@ public class CaseManager {
         // Validate flags before updating
         List<String> invalidFlags = getInvalidEditFlags(caseToEdit, newFlagValues);
         if (!invalidFlags.isEmpty()) {
-            System.out.println(invalidFlags);
             throw new IncorrectFlagException(invalidFlags);
         }
 

@@ -352,9 +352,12 @@ public class Parser {
 
     /**
      * Parses the 'edit' command input.
+     * <p>
      * Supports two modes:
-     * 1. edit <caseId> - Shows valid flags for the case
-     * 2. edit <caseId> --flag value - Directly edits the case
+     * <ol>
+     *   <li>{@code edit <caseId>} - Shows valid flags for the case</li>
+     *   <li>{@code edit <caseId> --flag value} - Directly edits the case</li>
+     * </ol>
      */
     private static Command parseEditCommand(String remainder) {
         if (remainder.isEmpty()) {
