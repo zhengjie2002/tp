@@ -10,12 +10,13 @@ organised digital workflow that enhances operational efficiency for the public s
 
 - [Quick Start](#quick-start)
 - [Features](#features)
-  - [Adding a case: `add`](#adding-a-case-add)
-  - [Listing cases: `list`](#listing-cases-list)
-  - [Closing a case: `close`](#closing-a-case-close)
-  - [Updating a case: `edit`](#editing-a-case-edit)
-  - [Deleting a case: `delete`](#deleting-a-case-delete)
-  - [Exiting the program: `bye`](#exiting-the-program-bye)
+    - [Adding a case: `add`](#adding-a-case-add)
+    - [Listing cases: `list`](#listing-cases-list)
+    - [Closing a case: `close`](#closing-a-case-close)
+    - [Updating a case: `edit`](#editing-a-case-edit)
+    - [Deleting a case: `delete`](#deleting-a-case-delete)
+    - [Exiting the program: `bye`](#exiting-the-program-bye)
+    - [Settings: `setting`](#settings-setting)
 - [FAQ](#faq)
 - [Command Summary](#command-summary)
 - [Coming Soon](#coming-soon)
@@ -65,7 +66,9 @@ Adds a new case to the case management system.
 * `VICTIM`: (Optional) The name(s) of the victim involved
 * `OFFICER`: (Optional) The name(s) of the officer assigned
 
-> ℹ️ Note: The above are stored as strings. No special formatting is required.\
+> ℹ️ Note: The above are stored as strings (except date). No special formatting is required for those inputs.\
+> ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using
+> the settings command below.\
 > ⚠️ Warning: A maximum of 5000 characters is allowed for all the fields.
 
 **Examples:**
@@ -82,16 +85,19 @@ Displays all cases in the system.
 **Format:** `list [--status STATUS] [--mode MODE]`
 
 **Optional Flags:**
+
 - `--status STATUS`: `open`, `closed`, or `all` (default: all)
 - `--mode MODE`: `summary` or `verbose` (default: summary)
 
 **Examples:**
+
 - `list` — Lists all cases in summary mode
 - `list --status open` — Lists only open cases in summary mode
 - `list --status closed --mode verbose` — Lists closed cases with full details
 - `list --mode verbose` — Lists all cases with detailed output
 
 **Summary Mode Output:**
+
 ```
 ____________________________________________________________
 You currently have 1 case
@@ -100,6 +106,7 @@ ____________________________________________________________
 ```
 
 **Verbose Mode Output:**
+
 ```
 You currently have 2 cases in total
 ==== CASE ID 000001 ====
@@ -153,7 +160,9 @@ Updates the details of an existing case.
 * `edit 1 --victim Jane Smith --officer Officer Lee` updates the victim and officer of the 1st case in the list.
 * `edit 3 --title Updated title --date 2024-03-01` updates the title and date of the 3rd case in the list.
 
-> ℹ️ Note: The above are stored as strings. No special formatting is required.\
+> ℹ️ Note: The above are stored as strings (except date). No special formatting is required for those inputs.\
+> ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using
+> the settings command below.\
 > ⚠️ Warning: A maximum of 5000 characters is allowed for all the fields.
 
 ---
@@ -180,6 +189,28 @@ Exits the program.
 
 ---
 
+### Settings: `setting`
+
+This is a function to perform user defined setting for the program. User can set the date input format and output
+format.
+
+**Format:** `setting --type TYPE --value VALUE`
+> ℹ️ Note: Type can only be `dateinput` representing the input format and `dateoutput` representing the format where the
+> date will be printed.\
+> ⚠️ Warning: The value must be a valid date format according to Java's DateFormatter.
+> For more information, please refer
+> to [Java DateTimeFormatter](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html).
+> ⚠️ Warning: Note that month is capitalised in the date-time-formatter.
+> The default input and output format is `dd/MM/yyyy`
+
+**Examples:**
+
+* `setting --type dateinput --value dd-MM-yyyy` means that all input for date must follow dd-MM-yyyy format to be
+  considered valid.
+* `setting --type dateoutput --value dd/MM/yyyy` means that all output for date will be printed in dd/MM/yyyy format.
+
+---
+
 ## FAQ
 
 **Q**: How do I transfer my data to another computer?
@@ -202,9 +233,11 @@ in the next iteration of SGSafe. Stay turned.
 | **Close case**  | `close INDEX`                                                                                  | `close 2`                                                                                                 |
 | **Edit case**   | `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]` | `edit 1 --victim Jane Smith --officer Officer Lee`                                                        |
 | **Delete case** | `delete ID`                                                                                    | `delete 00beef`                                                                                           |
+| **Setting**     | `setting --type TYPE --value VALUE`                                                            | `setting --type dateinput --value dd-MM-yyyy`                                                             |
 | **Exit**        | `bye`                                                                                          | `bye`                                                                                                     |
 
 ## Coming Soon
+
 - Data transfer between computers
 - Support for multiple formats for date input
 - More advanced search and filter options
