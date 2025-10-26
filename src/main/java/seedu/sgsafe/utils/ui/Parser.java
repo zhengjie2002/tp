@@ -17,6 +17,7 @@ import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
@@ -24,7 +25,9 @@ import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidSettingCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
+import seedu.sgsafe.utils.settings.Settings;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -238,6 +241,7 @@ public class Parser {
      */
     private static Command parseAddCommand(String remainder) {
         List<String> requiredFlags = List.of("category", "title", "date", "info");
+        LocalDate date;
 
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidAddCommandException();
@@ -250,7 +254,14 @@ public class Parser {
             throw new InvalidAddCommandException();
         }
 
-        return new AddCommand(flagValues.get("category"), flagValues.get("title"), flagValues.get("date"),
+        try {
+            date = DateFormatter.parseDate(flagValues.get("date"), Settings.getInputDateFormat());
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Invalid date format detected");
+            throw new InvalidDateInputException();
+        }
+
+        return new AddCommand(flagValues.get("category"), flagValues.get("title"), date,
                 flagValues.get("info"), flagValues.get("victim"), flagValues.get("officer"));
     }
 
