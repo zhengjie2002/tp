@@ -30,9 +30,13 @@ public class Settings {
      */
     public static void setOutputDateFormat(String format) {
         // Validate format by attempting to create a DateTimeFormatter and parse. If it fails it will throw an exception
+        if (format == null || format.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         LocalDate testDate = LocalDate.of(2024, 1, 15);
-        testDate.format(formatter);
+        String formattedDate = testDate.format(formatter);
+        LocalDate parsedDate = LocalDate.parse(formattedDate, formatter);
         outputDateFormat = format;
     }
 
@@ -44,9 +48,13 @@ public class Settings {
      */
     public static void setInputDateFormat(String format) {
         // Validate format by attempting to create a DateTimeFormatter and parse. If it fails it will throw an exception
+        if (format == null || format.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         LocalDate testDate = LocalDate.of(2024, 1, 15);
-        testDate.format(formatter);
+        String formattedDate = testDate.format(formatter);
+        LocalDate parsedDate = LocalDate.parse(formattedDate, formatter);
         inputDateFormat = format;
     }
 }
