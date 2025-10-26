@@ -9,7 +9,7 @@
 	____________________________________________________________
 	____________________________________________________________
 	New case added:
-	[O] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] #000000 [Murder] 23/06/2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	Your add command format is incorrect.
@@ -19,7 +19,7 @@
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case in total
-	[O] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] #000000 [Murder] 23/06/2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	Your command format is incorrect.
@@ -32,20 +32,20 @@
 	____________________________________________________________
 	____________________________________________________________
 	New case added:
-	[O] #000001 [Traffic accident] 05-06-2018 Car accident
+	[O] #000001 [Traffic accident] 05/06/2018 Car accident
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases open
-	[O] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 [Traffic accident] 05-06-2018 Car accident
+	[O] #000000 [Murder] 23/06/2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] #000001 [Traffic accident] 05/06/2018 Car accident
 	____________________________________________________________
 	____________________________________________________________
 	You currently have no cases closed. Add some now!
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total
-	[O] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 [Traffic accident] 05-06-2018 Car accident
+	[O] #000000 [Murder] 23/06/2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] #000001 [Traffic accident] 05/06/2018 Car accident
 	____________________________________________________________
 	____________________________________________________________
 	Your command format is incorrect.
@@ -54,11 +54,11 @@
 	____________________________________________________________
 	____________________________________________________________
 	Case closed:
-	[C] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[C] #000000 [Murder] 23/06/2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	Case edited:
-	[O] #000001 [Traffic accident] 05-06-2018 Robbery
+	[O] #000001 [Traffic accident] 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
 	The 'edit' command requires a case ID followed by at least one flag and its value.
@@ -75,12 +75,12 @@
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total
-	[C] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 [Traffic accident] 05-06-2018 Robbery
+	[C] #000000 [Murder] 23/06/2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] #000001 [Traffic accident] 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case closed
-	[C] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[C] #000000 [Murder] 23/06/2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
 	Thanks for using SGSafe :)
