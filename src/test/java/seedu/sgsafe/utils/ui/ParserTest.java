@@ -28,6 +28,7 @@ import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
+import seedu.sgsafe.utils.settings.Settings;
 
 /**
  * Unit tests for {@link Parser}, verifying correct command parsing and exception handling.
@@ -218,6 +219,7 @@ class ParserTest {
 
     @Test
     void parseInput_addValid_returnsAddCommand() {
+        Settings.setInputDateFormat("dd/MM/yyyy");
         Command command = Parser.parseInput(
                 "add --category Theft --title CaseTitle --date 12/02/2022 " +
                         "--info SomeInfo --victim JohnDoe --officer JaneDoe");
@@ -236,6 +238,7 @@ class ParserTest {
 
     @Test
     void parseInput_addWithExtraWhitespace_returnsAddCommand() {
+        Settings.setInputDateFormat("dd/MM/yyyy");
         LocalDate date = LocalDate.of(2022, 01, 12);
         Command command = Parser.parseInput(
                 "  add   --category  Others --title   CaseTitle   --date   12/01/2022   " +
