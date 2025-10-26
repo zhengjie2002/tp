@@ -243,9 +243,9 @@ public abstract class Case {
         if (newValues.containsKey("title")) {
             this.title = newValues.get("title");
         }
-//        if (newValues.containsKey("date")) {
-//            this.date = newValues.get("date");
-//        }
+        //if (newValues.containsKey("date")) {
+        //    this.date = newValues.get("date");
+        //}
         if (newValues.containsKey("info")) {
             this.info = newValues.get("info");
         }

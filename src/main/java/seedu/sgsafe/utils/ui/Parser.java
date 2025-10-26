@@ -136,6 +136,7 @@ public class Parser {
         }
     }
 
+    //@@ author xelisce
     /**
      * Parses the {@code list} command and validates its optional {@code --status} and {@code --mode} flags.
      * <p>
@@ -196,10 +197,10 @@ public class Parser {
         }
 
         return switch (status.toLowerCase()) {
-            case "open" -> CaseListingMode.OPEN_ONLY;
-            case "closed" -> CaseListingMode.CLOSED_ONLY;
-            case "all" -> CaseListingMode.ALL;
-            default -> throw new IncorrectFlagException();
+        case "open" -> CaseListingMode.OPEN_ONLY;
+        case "closed" -> CaseListingMode.CLOSED_ONLY;
+        case "all" -> CaseListingMode.ALL;
+        default -> throw new IncorrectFlagException();
         };
     }
 
@@ -224,11 +225,13 @@ public class Parser {
         }
 
         return switch (mode.toLowerCase()) {
-            case "verbose" -> true;
-            case "summary" -> false;
-            default -> throw new IncorrectFlagException();
+        case "verbose" -> true;
+        case "summary" -> false;
+        default -> throw new IncorrectFlagException();
         };
     }
+
+    //@@ author
 
     /**
      * Parses the {@code add} command and validates its arguments.
