@@ -37,21 +37,12 @@ organised digital workflow that enhances operational efficiency for the public s
 ---
 
 ## Case Categories
+**Financial Cases** 💰
+**Categories:** Scam, Theft  
+**Tags:**  
+Theft:
+- Stolen Object  
 
-| Type          | Type Tags                                            | Category  | Category Tags                       |
-|---------------|------------------------------------------------------|-----------|-------------------------------------|
-| **Financial** |                                                      | Scam      |                                     |
-|               |                                                      | Theft     | - Stolen Object                     |
-| **Property**  |                                                      | Arson     |                                     |
-|               |                                                      | Vandalism |                                     |
-| **Sexual**    |                                                      | Rape      |                                     |
-|               |                                                      | Voyeurism |                                     |
-| **Traffic**   | - Vehicle type<br/> - Vehicle plate<br/> - Road name | Speeding  | - Speed limit<br/> - Exceeded speed |
-|               |                                                      | Accident  |                                     |
-| **Violent**   |                                                      | Assault   |                                     |
-|               |                                                      | Murder    | - Weapon<br/> - Number of victims   |
-|               |                                                      | Robbery   |                                     |
-| **Others**    | - Custom Category                                    | Others    |                                     |
 
 ---
 
