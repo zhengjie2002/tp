@@ -48,7 +48,7 @@ public class CaseManager {
      */
     public static Case getCaseById(String id) {
         return caseList.stream()
-                .filter(c -> (c.getId().equals(id) && !c.isDeleted()))
+                .filter(c -> (c.getId().equals(id.toLowerCase()) && !c.isDeleted()))
                 .findFirst()
                 .orElse(null);
     }
