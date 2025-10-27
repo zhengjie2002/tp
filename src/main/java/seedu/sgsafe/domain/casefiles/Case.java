@@ -237,6 +237,24 @@ public abstract class Case {
     }
 
     /**
+     * Truncates the input string to a maximum of {@code MAX_DISPLAY_WIDTH_CHARACTERS}.
+     * <p>
+     * If the input is {@code null}, returns an empty string.
+     * If the input exceeds the maximum display width, the result is truncated and suffixed with {@code "..."}.
+     * This method is typically used to ensure summary lines remain within a readable width.
+     *
+     * @param input the string to truncate
+     * @return the truncated string, or an empty string if input is {@code null}
+     */
+    protected String truncate(String input) {
+        if (input == null) {
+            return "";
+        }
+        return input.length() <=
+                MAX_DISPLAY_WIDTH_CHARACTERS ? input : input.substring(0, MAX_DISPLAY_WIDTH_CHARACTERS) + "...";
+    }
+
+    /**
      * Constructs a detailed, multi-line string representation of this case for verbose display.
      * <p>
      * The output begins with a header line in the format {@code ==== CASE ID 000000 ====},
@@ -335,7 +353,7 @@ public abstract class Case {
      * @param label the label to format
      * @return the formatted prefix string
      */
-    private static String formatPrefix(String label) {
+    protected static String formatPrefix(String label) {
         return String.format("%-" + MAX_LABEL_WIDTH + "s: ", label);
     }
 
@@ -345,7 +363,7 @@ public abstract class Case {
      * @param line          the current line buffer
      * @param currentLength the number of characters currently used in the line (excluding prefix padding)
      */
-    private record LineState(StringBuilder line, int currentLength) {
+    protected record LineState(StringBuilder line, int currentLength) {
     }
 
     /**
@@ -389,8 +407,8 @@ public abstract class Case {
      * @param line   the current line buffer
      * @return the remaining portion of the word that fits within the available width
      */
-    private static String handleLongWord(String word, int available, String prefix,
-                                         List<String> lines, StringBuilder line) {
+    protected static String handleLongWord(String word, int available, String prefix,
+                                 List<String> lines, StringBuilder line) {
         while (word.length() > available) {
             int chunkLength = available - 1; // leave one character's space for dash
             String chunk = word.substring(0, chunkLength) + "-";
@@ -417,8 +435,8 @@ public abstract class Case {
      * @param lines         the list of lines to append to
      * @return a {@link LineState} containing the updated line buffer and character count
      */
-    private static LineState tryAddWord(String word, StringBuilder line, int currentLength,
-                                        int available, String prefix, List<String> lines) {
+    protected static LineState tryAddWord(String word, StringBuilder line, int currentLength,
+                                int available, String prefix, List<String> lines) {
         // If word doesn't fit, flush current line
         if (currentLength + word.length() > available) {
             lines.add(line.toString());
@@ -436,21 +454,6 @@ public abstract class Case {
         currentLength += word.length();
 
         return new LineState(line, currentLength);
-    }
-
-    /**
-     * Truncates the input string to a maximum of {@code MAX_DISPLAY_WIDTH_CHARACTERS}.
-     * <p>
-     * If the input is {@code null}, returns an empty string.
-     * If the input exceeds the maximum display width, the result is truncated and suffixed with {@code "..."}.
-     * This method is typically used to ensure summary lines remain within a readable width.
-     *
-     * @param input the string to truncate
-     * @return the truncated string, or an empty string if input is {@code null}
-     */
-    private String truncate(String input) {
-        return input.length() <=
-                MAX_DISPLAY_WIDTH_CHARACTERS ? input : input.substring(0, MAX_DISPLAY_WIDTH_CHARACTERS) + "...";
     }
 
     //@@ author
