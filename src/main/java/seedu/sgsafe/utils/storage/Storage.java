@@ -19,13 +19,29 @@ import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Storage {
+    private static final String SAVE_DATE_PATTERN = "dd/MM/yyyy";
+    private static final String SAVE_DATETIME_PATTERN = "dd/MM/yyyy HH:mm:ss";
+
     private final String filename;
+
+    public static String getSaveDatePattern() {
+        return SAVE_DATE_PATTERN;
+    }
+
+    public static String getSaveDateTimePattern() {
+        return SAVE_DATETIME_PATTERN;
+    }
 
     public Storage(String filename) {
         this.filename = filename;
@@ -45,15 +61,20 @@ public class Storage {
     private Case getCaseFromSaveString(String line) {
         Map<String, String> fields = getFields(line);
 
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getSaveDatePattern());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(getSaveDateTimePattern());
+
         String id = fields.get("id");
         String title = fields.get("title");
-        String date = fields.get("date");
+        LocalDate date = LocalDate.parse(fields.get("date"), dateFormatter);
         String info = fields.get("info");
         String victim = fields.get("victim");
         String officer = fields.get("officer");
-        boolean isDeleted = fields.get("isDeleted").equals("1");
-        boolean isOpen = fields.get("isOpen").equals("1");
+        boolean isDeleted = fields.get("is-deleted").equals("1");
+        boolean isOpen = fields.get("is-open").equals("1");
         String category = fields.get("category");
+        LocalDateTime createdAt = LocalDateTime.parse(fields.get("created-at"), dateTimeFormatter);
+        LocalDateTime updatedAt = LocalDateTime.parse(fields.get("updated-at"), dateTimeFormatter);
 
         Case newCase = switch (CaseCategory.valueOf(category)) {
         case SCAM -> new ScamCase(id, title, date, info, victim, officer);
@@ -71,8 +92,12 @@ public class Storage {
         default -> throw new IllegalStateException("Unexpected value given as category: " + category);
         };
 
-        newCase.setDeleted(isDeleted);
+        // update timestamps
+        newCase.setCreatedAt(createdAt);
+        newCase.setUpdatedAt(updatedAt);
 
+        // update booleans
+        newCase.setDeleted(isDeleted);
         if (isOpen) {
             newCase.setOpen();
         } else {
