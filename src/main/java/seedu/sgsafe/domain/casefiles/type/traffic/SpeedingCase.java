@@ -17,11 +17,11 @@ public class SpeedingCase extends TrafficCase {
         this.categoryString = "Speeding";
     }
 
-    public int getSpeedLimit() {
+    public Integer getSpeedLimit() {
         return speedLimit;
     }
 
-    public int getExceededSpeed() {
+    public Integer getExceededSpeed() {
         return exceededSpeed;
     }
 

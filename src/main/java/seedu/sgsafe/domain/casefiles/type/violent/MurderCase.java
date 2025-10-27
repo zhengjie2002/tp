@@ -17,6 +17,14 @@ public class MurderCase extends ViolentCase {
         this.categoryString = "Murder";
     }
 
+    public String getWeapon() {
+        return weapon;
+    }
+
+    public Integer getNumberOfVictims() {
+        return numberOfVictims;
+    }
+
     @Override
     public List<String> getValidEditFlags() {
         return List.of("title", "date", "info", "victim", "officer", "weapon", "number-of-victims");
