@@ -187,7 +187,7 @@ public abstract class Case {
     public String getDisplayLine() {
         String status = this.isOpen ? "[Open]" : "[Closed]";
         String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
-        return String.format("%-8s %-9s %-6s %-10s %s", status, categoryString, this.id, dateString, this.title);
+        return String.format("%-8s %-16s %-6s %-10s %s", status, categoryString, this.id, dateString, this.title);
     }
 
     /**
