@@ -109,54 +109,67 @@ Adds a new case to the case management system.
 
 ---
 
-### Listing cases: `list`
+### Listing Cases: `list`
 
-Displays all cases in the system.
+Displays all cases in the system, with optional filters and formatting modes.
 
-**Format:** `list [--status STATUS] [--mode MODE]`
+#### **Format:** `list --status <open|closed|all> --mode <summary|verbose>`
 
-**Optional Flags:**
+#### Flags
+- `--status` (optional): Filters cases by their status.
+  - `open`: Show only open cases.
+  - `closed`: Show only closed cases.
+  - `all`: Show all cases (default).
+- `--mode` (optional): Controls the level of detail in the output.
+  - `summary`: One-line display per case.
+  - `verbose`: Multi-line display with labeled fields.
 
-- `--status STATUS`: `open`, `closed`, or `all` (default: all)
-- `--mode MODE`: `summary` or `verbose` (default: summary)
+#### Summary Mode Output
+Each case is shown in a single line with:
+- Status: `[Open]` or `[Closed]`
+- Category (e.g., `Theft`, `Scam`)
+- Case ID (6-character hexadecimal)
+- Date
+- Title
 
-**Examples:**
-
-- `list` — Lists all cases in summary mode
-- `list --status open` — Lists only open cases in summary mode
-- `list --status closed --mode verbose` — Lists closed cases with full details
-- `list --mode verbose` — Lists all cases with detailed output
-
-**Summary Mode Output:**
-
+Example:
 ```
-____________________________________________________________
-You currently have 1 case
-1. [O] 2024-01-15 Theft case
-____________________________________________________________
-```
-
-**Verbose Mode Output:**
-
-```
-You currently have 2 cases in total
-==== CASE ID 000001 ====
-Status  : Open
-Title   : Robbery
-Date    : 2025-10-01
-Info    : Masked suspect entered the premises and demanded cash...
-Victim  : John Doe
-Officer : Officer Tan
-==== CASE ID 000002 ====
-Status  : Closed
-Title   : Fraud
-Date    : 2025-10-02
-Info    : Email scam targeting elderly victims...
-Victim  : Jane Doe
-Officer : Officer Lim
+STATUS   CATEGORY         ID     DATE       TITLE
+[Open]   Theft            0001a3 2025-10-14 Robbery
+[Closed] Scam             0001a4 2025-10-15 Fraud
+[Closed] Traffic accident 0001a5 2025-10-15 Fraud
 ```
 
-> ℹ️ In verbose mode, the `info` field is truncated to 100 characters with `...` if too long.
+#### Verbose Mode Output
+Each case is shown in multiple lines with:
+- Status
+- Category (e.g., `Theft`, `Scam`)
+- Case ID
+- Date
+- Title
+- Info
+- The time the case was created
+- The last updated time of the case
+- Victim (if available)
+- Officer (if available)
+
+Example:
+```
+You currently have 1 case in total
+======== CASE ID 000000 ========
+Status     : Open
+Category   : Murder
+Title      : TITLE
+Date       : 22/04/2023
+Info       : Masked suspect entered victim's bedroom
+Created at : 2025-10-27T18:28:25.170780500
+Updated at : 2025-10-27T18:28:25.170780500
+Victim     : Jane Doe
+Officer    : Officer John Lee
+```
+
+> Note: Deleted cases are excluded from all listings.
+
 
 ---
 
