@@ -138,6 +138,7 @@ public class Storage {
                 fw.append(c.toSaveString());
                 fw.append(System.lineSeparator());
             }
+            fw.flush();
         } catch (IOException e) {
             System.out.println("Something went wrong while saving: " + e.getMessage());
         }

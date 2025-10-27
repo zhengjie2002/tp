@@ -381,6 +381,6 @@ public abstract class Case {
                 + "|is-deleted:" + (this.isDeleted ? "1" : "0")
                 + "|is-open:" + (this.isOpen ? "1" : "0")
                 + "|created-at:" + (this.createdAt == null ? "" : this.createdAt.format(dateTimeFormatter))
-                + "|updated-at:" + (this.updatedAt == null ? "" : this.updatedAt.format(dateFormatter));
+                + "|updated-at:" + (this.updatedAt == null ? "" : this.updatedAt.format(dateTimeFormatter));
     }
 }
