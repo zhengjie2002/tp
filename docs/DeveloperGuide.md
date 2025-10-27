@@ -37,8 +37,8 @@ The main code flow is as follows:
 4. Parse user input to obtain a Command object that contains the 
 information necessary to execute the command
 5. execute user command
-6. until the command is to exit the program, repeat steps 3 to 5
-7. Save the updated list of commands to `data.txt`
+6. Save the case info to `data.txt`
+7. until the command is to exit the program, repeat steps 3 to 5
 8. Print exit message
 
 ### UI Component
