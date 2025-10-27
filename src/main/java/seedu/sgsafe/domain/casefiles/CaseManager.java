@@ -120,7 +120,7 @@ public class CaseManager {
         if (caseToDelete == null) {
             throw new CaseNotFoundException(caseId);
         }
-        caseToDelete.setDeleted();
+        caseToDelete.setDeleted(true);
         return caseToDelete.getDisplayLine();
     }
 }

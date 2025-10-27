@@ -165,8 +165,8 @@ public abstract class Case {
         return this.isDeleted;
     }
 
-    public void setDeleted() {
-        this.isDeleted = true;
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     /**
@@ -284,6 +284,7 @@ public abstract class Case {
      */
     public String toSaveString() {
         return "id:" + this.id
+                + "|category:" + this.category.toString()
                 + "|title:" + (this.title == null ? "" : this.title)
                 + "|date:" + (this.date == null ? "" : this.date)
                 + "|info:" + (this.info == null ? "" : this.info)

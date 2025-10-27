@@ -2,6 +2,19 @@ package seedu.sgsafe.utils.storage;
 
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.domain.casefiles.type.CaseCategory;
+import seedu.sgsafe.domain.casefiles.type.OthersCase;
+import seedu.sgsafe.domain.casefiles.type.financial.ScamCase;
+import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
+import seedu.sgsafe.domain.casefiles.type.property.ArsonCase;
+import seedu.sgsafe.domain.casefiles.type.property.VandalismCase;
+import seedu.sgsafe.domain.casefiles.type.sexual.RapeCase;
+import seedu.sgsafe.domain.casefiles.type.sexual.VoyeurismCase;
+import seedu.sgsafe.domain.casefiles.type.traffic.AccidentCase;
+import seedu.sgsafe.domain.casefiles.type.traffic.SpeedingCase;
+import seedu.sgsafe.domain.casefiles.type.violent.AssaultCase;
+import seedu.sgsafe.domain.casefiles.type.violent.MurderCase;
+import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -40,8 +53,33 @@ public class Storage {
         String officer = fields.get("officer");
         boolean isDeleted = fields.get("isDeleted").equals("1");
         boolean isOpen = fields.get("isOpen").equals("1");
+        String category = fields.get("category");
 
-        return new Case(id, title, date, info, victim, officer, isOpen, isDeleted);
+        Case newCase = switch (CaseCategory.valueOf(category)) {
+        case SCAM -> new ScamCase(id, title, date, info, victim, officer);
+        case THEFT -> new TheftCase(id, title, date, info, victim, officer);
+        case ARSON -> new ArsonCase(id, title, date, info, victim, officer);
+        case VANDALISM -> new VandalismCase(id, title, date, info, victim, officer);
+        case RAPE -> new RapeCase(id, title, date, info, victim, officer);
+        case VOYEURISM -> new VoyeurismCase(id, title, date, info, victim, officer);
+        case ACCIDENT -> new AccidentCase(id, title, date, info, victim, officer);
+        case SPEEDING -> new SpeedingCase(id, title, date, info, victim, officer);
+        case ASSAULT -> new AssaultCase(id, title, date, info, victim, officer);
+        case MURDER -> new MurderCase(id, title, date, info, victim, officer);
+        case ROBBERY -> new RobberyCase(id, title, date, info, victim, officer);
+        case OTHERS -> new OthersCase(id, title, date, info, victim, officer);
+        default -> throw new IllegalStateException("Unexpected value given as category: " + category);
+        };
+
+        newCase.setDeleted(isDeleted);
+
+        if (isOpen) {
+            newCase.setOpen();
+        } else {
+            newCase.setClosed();
+        }
+
+        return newCase;
     }
 
     public void loadCaseManager() {
