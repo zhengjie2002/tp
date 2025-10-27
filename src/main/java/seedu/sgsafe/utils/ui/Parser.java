@@ -430,7 +430,7 @@ public class Parser {
      * @return map of flag names and their values converted to appropriate types
      * @throws InvalidEditCommandException if a value cannot be converted to the expected type
      */
-    private static Map<String, Object> convertFlagValueTypes(Map<String, String> rawValues) {
+    public static Map<String, Object> convertFlagValueTypes(Map<String, String> rawValues) {
         logger.fine("Starting flag value type conversion.");
 
         Map<String, Object> typedValues = new HashMap<>();
