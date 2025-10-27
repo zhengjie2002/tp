@@ -413,11 +413,66 @@ public class Parser {
         // Check if replacements start with --
         if (replacements.startsWith("--")) {
             Map<String, String> flagValues = extractFlagValues(replacements);
-            return new EditCommand(caseId, flagValues);
+            Map<String, Object> typedFlagValues = convertFlagValueTypes(flagValues);
+            return new EditCommand(caseId, typedFlagValues);
         } else {
             throw new InvalidEditCommandException();
         }
     }
+
+    /**
+     * Converts raw flag values from strings to their appropriate types based on flag names.
+     * @param rawValues map of flag names and their string values as input by the user
+     * @return map of flag names and their values converted to appropriate types
+     * @throws InvalidEditCommandException if a value cannot be converted to the expected type
+     */
+    private static Map<String, Object> convertFlagValueTypes(Map<String, String> rawValues) {
+        logger.fine("Starting flag value type conversion.");
+
+        Map<String, Object> typedValues = new HashMap<>();
+        LocalDate parsedDate;
+
+        for (Map.Entry<String, String> entry : rawValues.entrySet()) {
+            String flag = entry.getKey();
+            String value = entry.getValue();
+
+            // Convert based on flag type (e.g. date for "date", integer for "no-of-victims")
+            switch (flag) {
+            case "date":
+                try {
+                    parsedDate = DateFormatter.parseDate(rawValues.get("date"), Settings.getInputDateFormat());
+                    typedValues.put(flag, parsedDate);
+                } catch (Exception e) {
+                    logger.log(Level.WARNING, "Failed to parse date value '" + value + "' for flag '" + flag + "'.");
+                    throw new InvalidDateInputException();
+                }
+                break;
+
+            case "exceeded-speed",
+                 "number-of-victims", "speed-limit":
+                try {
+                    int intValue = Integer.parseInt(value);
+                    if (intValue < 0) {
+                        logger.log(Level.WARNING,"Value for flag '" + flag + "' is negative: " + intValue);
+                        throw new InvalidEditCommandException();
+                    }
+                    typedValues.put(flag, intValue);
+                } catch (NumberFormatException e) {
+                    logger.log(Level.WARNING, "Failed to parse integer from non-numeric string '" + value
+                            + "' for flag '" + flag + "'.");
+                    throw new InvalidEditCommandException();
+                }
+                break;
+            default:
+                // All other flags remain as String
+                typedValues.put(flag, value);
+            }
+        }
+
+        logger.fine("Finished flag value type conversion.");
+        return typedValues;
+    }
+
 
     /**
      * Parses the 'delete' command input, validates its format, and constructs an DeleteCommand object.
