@@ -5,6 +5,7 @@ import seedu.sgsafe.utils.command.ByeCommand;
 import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
+import seedu.sgsafe.utils.command.HelpCommand;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.command.DeleteCommand;
@@ -18,6 +19,7 @@ import seedu.sgsafe.utils.exceptions.InvalidByeCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidHelpCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
@@ -79,6 +81,7 @@ public class Parser {
         case "open" -> parseOpenCommand(remainder);
         case "delete" -> parseDeleteCommand(remainder);
         case "bye" -> parseByeCommand(remainder);
+        case "help" -> parseHelpCommand(remainder);
         default -> throw new UnknownCommandException(keyword);
         };
     }
@@ -396,5 +399,12 @@ public class Parser {
             throw new InvalidByeCommandException();
         }
         return new ByeCommand();
+    }
+
+    private static Command parseHelpCommand(String remainder) {
+        if (!remainder.isEmpty()) {
+            throw new InvalidHelpCommandException();
+        }
+        return new HelpCommand();
     }
 }

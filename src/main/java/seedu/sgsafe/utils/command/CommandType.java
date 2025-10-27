@@ -7,5 +7,6 @@ public enum CommandType {
     CLOSE,
     OPEN,
     DELETE,
-    BYE
+    BYE,
+    HELP
 }
