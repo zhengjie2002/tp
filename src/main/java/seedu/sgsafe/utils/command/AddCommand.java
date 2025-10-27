@@ -1,5 +1,6 @@
 package seedu.sgsafe.utils.command;
 
+import seedu.sgsafe.domain.casefiles.type.financial.BurglaryCase;
 import seedu.sgsafe.domain.casefiles.type.financial.ScamCase;
 import seedu.sgsafe.domain.casefiles.type.property.ArsonCase;
 import seedu.sgsafe.domain.casefiles.type.property.VandalismCase;
@@ -125,6 +126,7 @@ public class AddCommand extends Command {
         switch (caseCategory) {
         case "scam" -> newCase = new ScamCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "theft" -> newCase = new TheftCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "burglary" -> newCase = new BurglaryCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "arson" -> newCase = new ArsonCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "vandalism" -> newCase = new VandalismCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "speeding" -> newCase = new SpeedingCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
