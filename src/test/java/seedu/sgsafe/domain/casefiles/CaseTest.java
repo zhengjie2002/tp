@@ -86,4 +86,25 @@ public class CaseTest {
         assertTrue(joined.contains("Officer"));
         assertTrue(joined.contains("Created at"));
     }
+
+    @Test
+    void wrapField_truncatesAfterMaxLines() {
+        String label = "Info";
+        String value = "Word ".repeat(100); // forces > 5 lines
+        List<String> lines = Case.wrapField(label, value, WIDTH);
+
+        assertEquals(Case.MAX_VERBOSE_LINES_PER_FIELD, lines.size());
+        assertTrue(lines.get(lines.size() - 1).endsWith("..."));
+    }
+
+    @Test
+    void wrapField_emptyValue_returnsPrefixOnly() {
+        String label = "Info";
+        String value = "";
+        List<String> lines = Case.wrapField(label, value, WIDTH);
+
+        assertEquals(1, lines.size());
+        assertEquals("Info      : ", lines.get(0));
+    }
+
 }

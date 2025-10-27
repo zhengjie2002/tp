@@ -27,7 +27,7 @@ public abstract class Case {
      * Used to constrain field values in summary and verbose outputs, ensuring consistent formatting
      * and preventing overflow in fixed-width terminal views. Also governs truncation and wraparound logic.
      */
-    private static final int MAX_DISPLAY_WIDTH_CHARACTERS = 100;
+    static final int MAX_DISPLAY_WIDTH_CHARACTERS = 100;
 
     /**
      * The fixed width allocated for field labels in verbose listings.
@@ -35,7 +35,15 @@ public abstract class Case {
      * Labels are left-aligned and padded to this width, followed by a colon and space.
      * This ensures all wrapped field values align vertically for readability.
      */
-    private static final int MAX_LABEL_WIDTH = 10;
+    static final int MAX_LABEL_WIDTH = 10;
+
+    /**
+     * The maximum number of lines allowed per field in verbose display mode.
+     * <p>
+     * Used to prevent excessively long fields from flooding the output. If a field wraps
+     * beyond this limit, the final visible line is suffixed with {@code "..."}.
+     */
+    static final int MAX_VERBOSE_LINES_PER_FIELD = 5;
 
     /** The type of case. */
     protected CaseType type;
@@ -324,24 +332,31 @@ public abstract class Case {
     /**
      * Formats a label-value pair for display, wrapping the value if it exceeds the given width.
      * <p>
-     * If the value fits within the available width, a single formatted line is returned.
-     * Otherwise, the value is wrapped across multiple lines using {@link #wrapWords(String, String, int)}.
+     * The label is left-aligned using {@link #formatPrefix(String)} and the value is wrapped using
+     * {@link #wrapWords(String, String, int)} to fit within the available width.
+     * If the wrapped output exceeds {@code MAX_VERBOSE_LINES_PER_FIELD}, it is truncated to that limit
+     * and the final line is suffixed with {@code "..."} to indicate truncation.
      *
      * @param label the field label (e.g., "Title", "Info")
      * @param value the field value to display
      * @param width the maximum number of characters allowed per line
-     * @return a list of formatted lines representing the label and value
+     * @return a list of formatted lines representing the label and wrapped value
      */
     public static List<String> wrapField(String label, String value, int width) {
         String prefix = formatPrefix(label);
         int available = width - prefix.length();
 
-        // For fields that do not exceed the maximum display character limit
-        if (value.length() <= available) {
-            return List.of(prefix + value);
+        List<String> wrapped = wrapWords(prefix, value, available);
+
+        // Limit the number of lines per field for verbose printing
+        if (wrapped.size() > MAX_VERBOSE_LINES_PER_FIELD) {
+            List<String> limited = new ArrayList<>(wrapped.subList(0, MAX_VERBOSE_LINES_PER_FIELD));
+            String last = limited.get(MAX_VERBOSE_LINES_PER_FIELD - 1);
+            limited.set(MAX_VERBOSE_LINES_PER_FIELD - 1, last + "...");
+            return limited;
         }
-        // For fields that exceed the maximum display character limit
-        return wrapWords(prefix, value, available);
+
+        return wrapped;
     }
 
     /**
