@@ -198,10 +198,9 @@ public abstract class Case {
      */
     public String[] getMultiLineVerboseDisplay() {
         List<String> lines = new ArrayList<>();
-
         lines.add(formatCaseIDHeader());
-        lines.add(formatStatus());
 
+        addFormattedLine(lines, "Status", getStatusString());
         addFormattedLine(lines, "Category", categoryString);
         addFormattedLine(lines, "Title", title);
         addFormattedLine(lines, "Date", date);
@@ -226,26 +225,31 @@ public abstract class Case {
     }
 
     /**
-     * Constructs the status line indicating whether the case is open or closed.
-     * Format: {@code "Status  : Open"} or {@code "Status  : Closed"}
+     * Returns the status of the case as a plain string.
+     * <p>
+     * Possible values are {@code "[Open["} or {@code "[Closed]"} depending on the case state.
      *
-     * @return the formatted status string
+     * @return the status string
      */
-    private String formatStatus() {
-        return "Status  : " + (this.isOpen ? "Open" : "Closed");
+    private String getStatusString() {
+        return this.isOpen ? "Open" : "Closed";
     }
 
     /**
      * Formats a labeled line with truncated content.
      * If the value is {@code null}, an empty string is used.
-     * Format: {@code "Label   : value"}
+     * Format: {@code "Label      : value"} — with the label padded to 10 characters.
      *
      * @param label the label to display (e.g., "Title", "Date")
      * @param value the value to display, which will be truncated
-     * @return the formatted line
+     * @return the formatted line with aligned colon
      */
     private String formatLine(String label, String value) {
-        return label + "  : " + truncate(value);
+        if (value == null) {
+            return "";
+        }
+        String paddedLabel = String.format("%-10s", label); // pad to 10 characters
+        return paddedLabel + " : " + truncate(value);
     }
 
     private void addFormattedLine(List<String> lines, String label, String value) {

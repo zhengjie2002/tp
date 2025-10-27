@@ -83,7 +83,7 @@ public class ListCommand extends Command {
         List<String> outputLines = new ArrayList<>();
 
         outputLines.add(generateCaseCountMessage(count));
-        if (!isVerbose) {
+        if (!isVerbose && !matchingCases.isEmpty()) {
             outputLines.add(generateListTableHeaderMessage());
         }
         List<String> formattedCaseLines = formatCases(matchingCases);
