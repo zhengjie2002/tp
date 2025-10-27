@@ -486,7 +486,7 @@ public class Parser {
         if (!validator.isValidCaseId(remainder)) {
             throw new InvalidDeleteCommandException();
         }
-        return new DeleteCommand(remainder.toLowerCase());
+        return new DeleteCommand(remainder);
     }
 
     private static Command parseSettingCommand(String remainder) {
