@@ -16,17 +16,7 @@ import seedu.sgsafe.utils.command.CommandType;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.EditCommand;
-import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
-import seedu.sgsafe.utils.exceptions.EmptyCommandException;
-import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
-import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
-import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
-import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
-import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
-import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
-
-import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
-import seedu.sgsafe.utils.exceptions.UnknownCommandException;
+import seedu.sgsafe.utils.exceptions.*;
 
 /**
  * Unit tests for {@link Parser}, verifying correct command parsing and exception handling.
@@ -267,5 +257,37 @@ class ParserTest {
                 String.format("add --title CaseTitle --date 2025-12-12 --info %s --victim JohnDoe --officer JaneDoe",
                         longInfo);
         assertThrows(InputLengthExceededException.class, () -> Parser.parseInput(input));
+    }
+
+    // ----------- TESTS FOR DELETE COMMANDS ----------- //
+    @Test
+    void parseInput_deleteValid_returnsDeleteCommand() {
+        String input = "delete abcdef";
+        Command command = Parser.parseInput(input);
+        assertEquals(CommandType.DELETE, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_delete_throwsInvalidDeleteCommandException() {
+        String input = "delete";
+        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+    }
+
+    @Test
+    void parseInput_deleteTooShortCaseId_throwsInvalidDeleteCommandException() {
+        String input = "delete abc";
+        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+    }
+
+    @Test
+    void parseInput_deleteTooLongCaseId_throwsInvalidDeleteCommandException() {
+        String input = "delete abc1234";
+        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+    }
+
+    @Test
+    void parseInput_deleteAdditionalArguments_throwsInvalidDeleteCommandException() {
+        String input = "delete abc123 456";
+        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
     }
 }
