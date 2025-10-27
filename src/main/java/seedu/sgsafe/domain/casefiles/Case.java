@@ -310,6 +310,8 @@ public abstract class Case {
     private String getStatusString() {
         return this.isOpen ? "Open" : "Closed";
     }
+    
+    //@@ author
 
     /**
      * Adds a wrapped field to the given list if the value is non-null and non-empty.
@@ -470,8 +472,6 @@ public abstract class Case {
 
         return new LineState(line, currentLength);
     }
-
-    //@@ author
 
     public void setClosed() {
         this.isOpen = false;

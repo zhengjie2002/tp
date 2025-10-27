@@ -106,5 +106,4 @@ public class CaseTest {
         assertEquals(1, lines.size());
         assertEquals("Info      : ", lines.get(0));
     }
-
 }
