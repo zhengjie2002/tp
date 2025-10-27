@@ -20,6 +20,10 @@ import java.util.ArrayList;
  * Each case contains metadata such as title, date, victim, officer, and status.
  */
 public abstract class Case {
+
+    private static int MAX_DISPLAY_WIDTH_CHARACTERS = 100;
+    private static int MAX_LABEL_WIDTH = 10;
+
     /** The type of case. */
     protected CaseType type;
 
@@ -215,7 +219,8 @@ public abstract class Case {
     public String getDisplayLine() {
         String status = this.isOpen ? "[Open]" : "[Closed]";
         String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
-        return String.format("%-8s %-16s %-6s %-10s %s", status, categoryString, this.id, dateString, this.title);
+        String titleString = truncate(this.title);
+        return String.format("%-8s %-16s %-6s %-10s %s", status, categoryString, this.id, dateString, titleString);
     }
 
     /**
@@ -236,19 +241,18 @@ public abstract class Case {
         lines.add(formatCaseIDHeader());
         String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
 
-        addFormattedLine(lines, "Status", getStatusString());
-        addFormattedLine(lines, "Category", categoryString);
-        addFormattedLine(lines, "Title", title);
-        addFormattedLine(lines, "Date", dateString);
-        addFormattedLine(lines, "Info", info);
-        addFormattedLine(lines, "Created at", createdAt.toString());
-        addFormattedLine(lines, "Updated at", updatedAt.toString());
-        addFormattedLine(lines, "Victim", victim);
-        addFormattedLine(lines, "Officer", officer);
+        addWrappedField(lines, "Status", getStatusString());
+        addWrappedField(lines, "Category", categoryString);
+        addWrappedField(lines, "Title", title);
+        addWrappedField(lines, "Date", dateString);
+        addWrappedField(lines, "Info", info);
+        addWrappedField(lines, "Created at", createdAt.toString());
+        addWrappedField(lines, "Updated at", updatedAt.toString());
+        addWrappedField(lines, "Victim", victim);
+        addWrappedField(lines, "Officer", officer);
 
         return lines.toArray(new String[0]);
     }
-
 
     /**
      * Constructs the header line for the verbose display.
@@ -272,23 +276,6 @@ public abstract class Case {
     }
 
     /**
-     * Formats a labeled line with truncated content.
-     * If the value is {@code null}, an empty string is used.
-     * Format: {@code "Label      : value"} — with the label padded to 10 characters.
-     *
-     * @param label the label to display (e.g., "Title", "Date")
-     * @param value the value to display, which will be truncated
-     * @return the formatted line with aligned colon
-     */
-    private String formatLine(String label, String value) {
-        if (value == null) {
-            return "";
-        }
-        String paddedLabel = String.format("%-10s", label); // pad to 10 characters
-        return paddedLabel + " : " + truncate(value);
-    }
-
-    /**
      * Appends a formatted line to the given list if the value is not {@code null}.
      * <p>
      * This method formats the provided label and value using {@link #formatLine(String, String)},
@@ -301,11 +288,80 @@ public abstract class Case {
      * @param label the label to display (e.g., "Victim", "Officer")
      * @param value the value associated with the label; ignored if {@code null}
      */
-    private void addFormattedLine(List<String> lines, String label, String value) {
-        if (value != null) {
-            String formatted = formatLine(label, value);
-            lines.add(formatted);
+    private void addWrappedField(List<String> lines, String label, String value) {
+        if (value != null && !value.isEmpty()) {
+            lines.addAll(wrapField(label, value, MAX_DISPLAY_WIDTH_CHARACTERS));
         }
+    }
+
+    public static List<String> wrapField(String label, String value, int width) {
+        String prefix = formatPrefix(label);
+        int available = width - prefix.length();
+
+        // For fields that do not exceed the maximum display character limit
+        if (value.length() <= available) {
+            return List.of(prefix + value);
+        }
+        // For fields that exceed the maximum display character limit
+        return wrapWords(prefix, value, available);
+    }
+
+    private static String formatPrefix(String label) {
+        return String.format("%-" + MAX_LABEL_WIDTH + "s: ", label); // e.g., "Title      : "
+    }
+
+    private record LineState(StringBuilder line, int currentLength) {
+    }
+
+    private static List<String> wrapWords(String prefix, String value, int available) {
+        List<String> lines = new ArrayList<>();
+        String[] words = value.split(" ");
+        StringBuilder line = new StringBuilder(prefix);
+        int currentLength = 0;
+
+        for (String word : words) {
+            word = handleLongWord(word, available, prefix, lines, line);
+            LineState state = tryAddWord(word, line, currentLength, available, prefix, lines);
+            line = state.line;
+            currentLength = state.currentLength;
+        }
+
+        lines.add(line.toString());
+        return lines;
+    }
+
+    private static String handleLongWord(String word, int available, String prefix,
+                                         List<String> lines, StringBuilder line) {
+        while (word.length() > available) {
+            int chunkLength = available - 1; // leave space for dash
+            String chunk = word.substring(0, chunkLength) + "-";
+            lines.add(line.toString() + chunk);
+            word = word.substring(chunkLength);
+            line.setLength(0);
+            line.append(" ".repeat(prefix.length())); // indent
+        }
+        return word;
+    }
+
+    private static LineState tryAddWord(String word, StringBuilder line, int currentLength,
+                                        int available, String prefix, List<String> lines) {
+        // If word doesn't fit, flush current line
+        if (currentLength + word.length() > available) {
+            lines.add(line.toString());
+            line = new StringBuilder(" ".repeat(prefix.length()));
+            currentLength = 0;
+        }
+
+        // Add space if not first word
+        if (currentLength > 0) {
+            line.append(" ");
+            currentLength++;
+        }
+
+        line.append(word);
+        currentLength += word.length();
+
+        return new LineState(line, currentLength);
     }
 
     /**
@@ -317,7 +373,7 @@ public abstract class Case {
      * @return the truncated string
      */
     private String truncate(String input) {
-        return input.length() <= 100 ? input : input.substring(0, 100) + "...";
+        return input.length() <= MAX_DISPLAY_WIDTH_CHARACTERS ? input : input.substring(0, MAX_DISPLAY_WIDTH_CHARACTERS) + "...";
     }
 
     //@@ author
