@@ -19,6 +19,7 @@ import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
 
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
@@ -265,5 +266,37 @@ class ParserTest {
         assertEquals("SomeInfo", ((AddCommand) command).getCaseInfo());
         assertEquals("JohnDoe", ((AddCommand) command).getCaseVictim());
         assertEquals("JaneDoe", ((AddCommand) command).getCaseOfficer());
+    }
+
+    // ----------- TESTS FOR DELETE COMMANDS ----------- //
+    @Test
+    void parseInput_deleteValid_returnsDeleteCommand() {
+        String input = "delete abcdef";
+        Command command = Parser.parseInput(input);
+        assertEquals(CommandType.DELETE, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_delete_throwsInvalidDeleteCommandException() {
+        String input = "delete";
+        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+    }
+
+    @Test
+    void parseInput_deleteTooShortCaseId_throwsInvalidDeleteCommandException() {
+        String input = "delete abc";
+        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+    }
+
+    @Test
+    void parseInput_deleteTooLongCaseId_throwsInvalidDeleteCommandException() {
+        String input = "delete abc1234";
+        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+    }
+
+    @Test
+    void parseInput_deleteAdditionalArguments_throwsInvalidDeleteCommandException() {
+        String input = "delete abc123 456";
+        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
     }
 }

@@ -3,12 +3,15 @@ package seedu.sgsafe.domain.casefiles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
+import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CaseManagerTest {
 
@@ -67,5 +70,33 @@ class CaseManagerTest {
         assertEquals("Broken window", caseList.get(2).getInfo());
         assertEquals("Alice", caseList.get(2).getVictim());
         assertNull(caseList.get(2).getOfficer());
+    }
+
+    // ----------- TESTS FOR DELETE COMMANDS ----------- //
+
+    @Test
+    void deleteCase_withValidCommand_deletesCaseSuccessfully() throws Exception {
+        caseList.add(new TheftCase("000000", "Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee"));
+        CaseManager.deleteCase("000000");
+        assertEquals(1, caseList.size());
+        assertEquals("Burglary", caseList.get(0).getTitle());
+        assertEquals("2023-10-05", caseList.get(0).getDate());
+        assertEquals("Broken window", caseList.get(0).getInfo());
+        assertEquals("Alice", caseList.get(0).getVictim());
+        assertEquals("Officer Lee", caseList.get(0).getOfficer());
+        assertTrue(caseList.get(0).isDeleted());
+    }
+
+    @Test
+    void deleteCase_withInvalidCommand_throwsCaseNotFoundException() {
+        caseList.add(new TheftCase("000000", "Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee"));
+        assertThrows(CaseNotFoundException.class, () -> CaseManager.deleteCase("000001"));
+    }
+
+    @Test
+    void deleteCase_withRepeatedDeletes_throwsCaseNotFoundException() throws Exception {
+        caseList.add(new TheftCase("000000", "Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee"));
+        CaseManager.deleteCase("000000");
+        assertThrows(CaseNotFoundException.class, () -> CaseManager.deleteCase("000000"));
     }
 }
