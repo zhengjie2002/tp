@@ -9,10 +9,12 @@ organised digital workflow that enhances operational efficiency for the public s
 ## Table of Contents
 
 - [Quick Start](#quick-start)
+- [Case Categories](#case-categories)
 - [Features](#features)
     - [Adding a case: `add`](#adding-a-case-add)
     - [Listing cases: `list`](#listing-cases-list)
     - [Closing a case: `close`](#closing-a-case-close)
+    - [Opening a case: `open`](#opening-a-case-open)
     - [Updating a case: `edit`](#editing-a-case-edit)
     - [Deleting a case: `delete`](#deleting-a-case-delete)
     - [Exiting the program: `bye`](#exiting-the-program-bye)
@@ -35,6 +37,33 @@ organised digital workflow that enhances operational efficiency for the public s
 
 ---
 
+## Case Categories
+> **Notes:**
+>
+> * The category tag for the add command should be from the list below. 
+> If the category is not in the list, type 'others' as the category. 
+> * Some categories have additional tags attributed to them, which can be edited using the `edit` feature.
+  Additional tags, if any, are indicated in brackets.
+> * For more information on how to add and edit categories, 
+> refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
+
+**`CATEGORY` tags:**
+* Burglary 
+* Scam 
+* Theft (Stolen object)
+* Arson 
+* Property 
+* Vandalism 
+* Rape 
+* Voyeurism 
+* Accident (Vehicle type, Vehicle plate, Road name)
+* Speeding (Vehicle type, Vehicle plate, Road name, Speed limit, Exceeded speed)
+* Assault 
+* Murder (Weapon, Number of victims, Robbery)
+* Others (Custom category)
+
+---
+
 ## Features
 
 > **Notes about the command format:**
@@ -51,15 +80,16 @@ organised digital workflow that enhances operational efficiency for the public s
 > * Optional parameters are enclosed in square brackets.\
     >   e.g., `--title TITLE [--victim VICTIM]` means the victim parameter is optional.
 > * The double-dash `--` is a reserved prefix used to identify flags, so it cannot be used as part of an input value.
-
+> * You cannot use the character | in your input as well as it is used in the save file format.
 ---
 
 ### Adding a case: `add`
 
 Adds a new case to the case management system.
 
-**Format:** `add --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]`
+**Format:** `add --category CATEGORY --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]`
 
+* `CATEGORY`: The category of the case
 * `TITLE`: The title or summary of the case
 * `DATE`: The date the case was recorded or occurred
 * `INFO`: Additional information or notes about the case
@@ -67,65 +97,79 @@ Adds a new case to the case management system.
 * `OFFICER`: (Optional) The name(s) of the officer assigned
 
 > ℹ️ Note: The above are stored as strings (except date). No special formatting is required for those inputs.\
+> ℹ️ Note: For accepted CATEGORY tags, refer to [Case Categories](#case-categories).\
 > ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using
 > the settings command below.\
 > ⚠️ Warning: A maximum of 5000 characters is allowed for all the fields.
 
 **Examples:**
 
-* `add --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith`
-* `add --info Burglary at 123 Main St --date 2024-02-20 --title Burglary case`
+* `add --category Theft --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith`
+* `add --category Burglary --info Burglary at 123 Main St --date 2024-02-20 --title Burglary case`
 
 ---
 
-### Listing cases: `list`
+### Listing Cases: `list`
 
-Displays all cases in the system.
+Displays all cases in the system, with optional filters and formatting modes.
 
-**Format:** `list [--status STATUS] [--mode MODE]`
+#### **Format:** `list --status <open|closed|all> --mode <summary|verbose>`
 
-**Optional Flags:**
+#### Flags
+- `--status` (optional): Filters cases by their status.
+  - `open`: Show only open cases.
+  - `closed`: Show only closed cases.
+  - `all`: Show all cases (default).
+- `--mode` (optional): Controls the level of detail in the output.
+  - `summary`: One-line display per case.
+  - `verbose`: Multi-line display with labeled fields.
 
-- `--status STATUS`: `open`, `closed`, or `all` (default: all)
-- `--mode MODE`: `summary` or `verbose` (default: summary)
+#### Summary Mode Output
+Each case is shown in a single line with:
+- Status: `[Open]` or `[Closed]`
+- Category (e.g., `Theft`, `Scam`)
+- Case ID (6-character hexadecimal)
+- Date
+- Title
 
-**Examples:**
-
-- `list` — Lists all cases in summary mode
-- `list --status open` — Lists only open cases in summary mode
-- `list --status closed --mode verbose` — Lists closed cases with full details
-- `list --mode verbose` — Lists all cases with detailed output
-
-**Summary Mode Output:**
-
+Example:
 ```
-____________________________________________________________
-You currently have 1 case
-1. [O] 2024-01-15 Theft case
-____________________________________________________________
-```
-
-**Verbose Mode Output:**
-
-```
-You currently have 2 cases in total
-==== CASE ID 000001 ====
-Status  : Open
-Title   : Robbery
-Date    : 2025-10-01
-Info    : Masked suspect entered the premises and demanded cash...
-Victim  : John Doe
-Officer : Officer Tan
-==== CASE ID 000002 ====
-Status  : Closed
-Title   : Fraud
-Date    : 2025-10-02
-Info    : Email scam targeting elderly victims...
-Victim  : Jane Doe
-Officer : Officer Lim
+STATUS   CATEGORY         ID     DATE       TITLE
+[Open]   Theft            0001a3 2025-10-14 Robbery
+[Closed] Scam             0001a4 2025-10-15 Fraud
+[Closed] Traffic accident 0001a5 2025-10-15 Fraud
 ```
 
-> ℹ️ In verbose mode, the `info` field is truncated to 100 characters with `...` if too long.
+#### Verbose Mode Output
+Each case is shown in multiple lines with:
+- Status
+- Category (e.g., `Theft`, `Scam`)
+- Case ID
+- Date
+- Title
+- Info
+- The time the case was created
+- The last updated time of the case
+- Victim (if available)
+- Officer (if available)
+
+Example:
+```
+You currently have 1 case in total
+======== CASE ID 000000 ========
+Status     : Open
+Category   : Murder
+Title      : TITLE
+Date       : 22/04/2023
+Info       : Masked suspect entered victim's bedroom
+Created at : 2025-10-27T18:28:25.170780500
+Updated at : 2025-10-27T18:28:25.170780500
+Victim     : Jane Doe
+Officer    : Officer John Lee
+```
+
+> Note: Deleted cases are excluded from all listings.
+
 
 ---
 
@@ -133,15 +177,31 @@ Officer : Officer Lim
 
 Marks a case as closed.
 
-**Format:** `close INDEX`
+**Format:** `close ID`
 
-* Closes the case at the specified `INDEX`.
-* The index refers to the index number shown in the displayed case list.
-* The index **must be a positive integer** 1, 2, 3, … and the case must exist
+* Closes the case with the specified `ID`.
+* The id refers to the id of the case itself.
+* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
 
 **Examples:**
 
-* `list` followed by `close 2` closes the 2nd case in the list.
+* `close 000003` closes the case with the id 000003 in the list.
+
+---
+
+### Opening a case: `open`
+
+Marks a case as open.
+
+**Format:** `open ID`
+
+* Reopens the case with the specified `ID`.
+* The id refers to the id of the case itself.
+* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
+
+**Examples:**
+
+* `open 000003` opens the case with the id 000003 in the list.
 
 ---
 
@@ -173,7 +233,7 @@ Updates the details of an existing case.
 
 * Deletes the case with the specified ID.
 * The id refers to the id of the case itself.
-* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist
+* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
 
 **Examples:**
 
@@ -226,15 +286,16 @@ in the next iteration of SGSafe. Stay turned.
 
 ## Command Summary
 
-| Action          | Format                                                                                         | Example                                                                                                   |
-|-----------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| **Add case**    | `add --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]`              | `add --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith` |
-| **List cases**  | `list`                                                                                         | `list`                                                                                                    |
-| **Close case**  | `close INDEX`                                                                                  | `close 2`                                                                                                 |
-| **Edit case**   | `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]` | `edit 1 --victim Jane Smith --officer Officer Lee`                                                        |
-| **Delete case** | `delete ID`                                                                                    | `delete 00beef`                                                                                           |
-| **Setting**     | `setting --type TYPE --value VALUE`                                                            | `setting --type dateinput --value dd-MM-yyyy`                                                             |
-| **Exit**        | `bye`                                                                                          | `bye`                                                                                                     |
+| Action          | Format                                                                                                | Example                                                                                                                    |
+|-----------------|-------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| **Add case**    | `add --category CATEGORY --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]` | `add --category Theft --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith` |
+| **List cases**  | `list`                                                                                                | `list`                                                                                                                     |
+| **Close case**  | `close ID`                                                                                            | `close 000003`                                                                                                             |
+| **Open case**   | `open ID`                                                                                             | `open 000003`                                                                                                              |
+| **Edit case**   | `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]`        | `edit 1 --victim Jane Smith --officer Officer Lee`                                                                         |
+| **Delete case** | `delete ID`                                                                                           | `delete 00beef`                                                                                                            |
+| **Setting**     | `setting --type TYPE --value VALUE`                                                                   | `setting --type dateinput --value dd-MM-yyyy`                                                                              |
+| **Exit**        | `bye`                                                                                                 | `bye`                                                                                                                      |
 
 ## Coming Soon
 

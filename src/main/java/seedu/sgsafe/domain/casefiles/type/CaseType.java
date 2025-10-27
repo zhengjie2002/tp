@@ -6,7 +6,5 @@ public enum CaseType {
     FINANCIAL,
     SEXUAL,
     TRAFFIC,
-    CYBER,
-    DRUG,
     OTHERS
 }

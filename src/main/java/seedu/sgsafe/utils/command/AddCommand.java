@@ -1,18 +1,21 @@
 package seedu.sgsafe.utils.command;
 
+import seedu.sgsafe.domain.casefiles.type.financial.BurglaryCase;
 import seedu.sgsafe.domain.casefiles.type.financial.ScamCase;
 import seedu.sgsafe.domain.casefiles.type.property.ArsonCase;
 import seedu.sgsafe.domain.casefiles.type.property.VandalismCase;
+import seedu.sgsafe.domain.casefiles.type.sexual.RapeCase;
+import seedu.sgsafe.domain.casefiles.type.sexual.VoyeurismCase;
 import seedu.sgsafe.domain.casefiles.type.traffic.AccidentCase;
 import seedu.sgsafe.domain.casefiles.type.traffic.SpeedingCase;
-import seedu.sgsafe.domain.casefiles.Case;
-import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.domain.casefiles.type.violent.AssaultCase;
 import seedu.sgsafe.domain.casefiles.type.violent.MurderCase;
 import seedu.sgsafe.domain.casefiles.type.OthersCase;
 import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
 import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
 import seedu.sgsafe.utils.exceptions.InvalidCategoryException;
+import seedu.sgsafe.domain.casefiles.Case;
+import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.ui.Display;
 
 import java.time.LocalDate;
@@ -126,8 +129,11 @@ public class AddCommand extends Command {
         switch (caseCategory) {
         case "scam" -> newCase = new ScamCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "theft" -> newCase = new TheftCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "burglary" -> newCase = new BurglaryCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "arson" -> newCase = new ArsonCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "vandalism" -> newCase = new VandalismCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "rape" -> newCase = new RapeCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "voyeurism" -> newCase = new VoyeurismCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "speeding" -> newCase = new SpeedingCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "accident" -> newCase = new AccidentCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "assault" -> newCase = new AssaultCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);

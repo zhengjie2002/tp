@@ -26,6 +26,7 @@ import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidSettingCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
+import  seedu.sgsafe.utils.exceptions.InvalidCharacterException;
 import seedu.sgsafe.utils.settings.Settings;
 
 import java.time.LocalDate;
@@ -60,7 +61,7 @@ public class Parser {
     private static final int MAX_INPUT_LENGTH = 5000;
 
     // Placeholder for escaped flag sequences
-    private static final String ESCAPED_FLAG_PLACEHOLDER = "\u0000ESCAPED_FLAG\u0000";
+    private static final String ESCAPED_FLAG_PLACEHOLDER = "<<<ESCAPED_DOUBLE_DASH>>>";
 
     /**
      * Parses raw user input into a {@link Command} object.
@@ -78,6 +79,9 @@ public class Parser {
         userInput = cleanUserInput(userInput);
         String keyword = getKeywordFromUserInput(userInput);
         String remainder = getRemainderFromUserInput(userInput);
+        if(remainder.contains("|")) {
+            throw new InvalidCharacterException();
+        }
 
         return switch (keyword) {
         case "list" -> parseListCommand(remainder);

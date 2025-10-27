@@ -49,4 +49,21 @@ public abstract class TrafficCase extends Case {
             this.roadName = (String) newValues.get("road-name");
         }
     }
+
+    @Override
+    public List<String> getAdditionalFields() {
+        List<String> additionalFields = super.getAdditionalFields();
+        additionalFields.add("vehicle-type");
+        additionalFields.add("vehicle-plate");
+        additionalFields.add("road-name");
+        return additionalFields;
+    }
+
+    @Override
+    public String toSaveString() {
+        return super.toSaveString()
+                + "|vehicle-type:" + (this.vehicleType  == null ? "" : this.vehicleType)
+                + "|vehicle-plate:" + (this.vehiclePlate == null ? "" : this.vehiclePlate)
+                + "|road-name:" + (this.roadName == null ? "" : this.roadName);
+    }
 }

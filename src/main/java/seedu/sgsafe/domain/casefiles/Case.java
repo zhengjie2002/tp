@@ -3,12 +3,14 @@ package seedu.sgsafe.domain.casefiles;
 import seedu.sgsafe.domain.casefiles.type.CaseType;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 import seedu.sgsafe.utils.settings.Settings;
+import seedu.sgsafe.utils.storage.Storage;
 import seedu.sgsafe.utils.ui.DateFormatter;
 
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public abstract class Case {
     private boolean isDeleted;
 
     /** Metadata timestamp for auditing of when the case is created. */
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     /** Metadata timestamp for auditing of when the case is updated. */
     private LocalDateTime updatedAt;
@@ -157,37 +159,63 @@ public abstract class Case {
         return this.isDeleted;
     }
 
-    public void setDeleted() {
-        this.isDeleted = true;
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    /**
+     * Sets the createdAt timestamp.
+     *
+     * @param createdAt the {@link LocalDateTime} that createdAt should be set to.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
+     * Sets the updatedAt timestamp.
+     *
+     * @param updatedAt the {@link LocalDateTime} that updatedAt should be set to.
+     */
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public List<String> getAdditionalFields() {
+        return new ArrayList<>();
     }
 
     //@@ author xelisce
 
     /**
-     * Returns a formatted summary line representing this case for display purposes.
+     * Constructs a formatted summary line for this case, suitable for display in summary listings.
      * <p>
      * The output includes:
      * <ul>
-     *   <li>Status indicator: {@code [O]} for open, {@code [C]} for closed</li>
+     *   <li>Status indicator: {@code [Open]} or {@code [Closed]}</li>
      *   <li>Category of the case</li>
      *   <li>Case ID: a unique 6-character hexadecimal string</li>
-     *   <li>Date and title of the case</li>
-     *   <li>Optional victim and officer details, if present</li>
+     *   <li>Date of the case (formatted)</li>
+     *   <li>Title of the case</li>
      * </ul>
+     * <p>
+     * Fields are padded for alignment using fixed-width formatting.
+     * Optional victim and officer details are excluded in summary mode.
      * <p>
      * Example output:
      * <pre>
-     * [O] #0001a3 2025-10-14 Robbery | Victim: Alice | Officer: Officer Tan
-     * [C] #0001a4 2025-10-15 Fraud
+     * [Open]   Theft            0001a3 2025-10-14 Theft from DBS in broad daylight
+     * [Closed] Scam             0001a4 2025-10-15 Fraud involving MFA
+     * [Closed] Traffic accident 0001a4 2025-10-15 Accident at the Nicolson Highway
      * </pre>
      *
-     * @return a display-friendly string summarizing the case
+     * @return a display-friendly summary string representing this case
      */
     public String getDisplayLine() {
         String status = this.isOpen ? "[Open]" : "[Closed]";
         String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
-        return String.format("%-8s %-9s %-6s %-10s %s", status, categoryString, this.id, dateString, this.title);
+        return String.format("%-8s %-16s %-6s %-10s %s", status, categoryString, this.id, dateString, this.title);
     }
 
     /**
@@ -235,7 +263,7 @@ public abstract class Case {
     /**
      * Returns the status of the case as a plain string.
      * <p>
-     * Possible values are {@code "[Open["} or {@code "[Closed]"} depending on the case state.
+     * Possible values are {@code "[Open]"} or {@code "[Closed]"} depending on the case state.
      *
      * @return the status string
      */
@@ -260,6 +288,19 @@ public abstract class Case {
         return paddedLabel + " : " + truncate(value);
     }
 
+    /**
+     * Appends a formatted line to the given list if the value is not {@code null}.
+     * <p>
+     * This method formats the provided label and value using {@link #formatLine(String, String)},
+     * then adds the result to the specified list. If the value is {@code null}, the method does nothing.
+     * <p>
+     * This is typically used to conditionally include optional fields (e.g., victim or officer)
+     * in verbose case displays.
+     *
+     * @param lines the list to which the formatted line will be added
+     * @param label the label to display (e.g., "Victim", "Officer")
+     * @param value the value associated with the label; ignored if {@code null}
+     */
     private void addFormattedLine(List<String> lines, String label, String value) {
         if (value != null) {
             String formatted = formatLine(label, value);
@@ -332,5 +373,31 @@ public abstract class Case {
             this.officer = (String) newValues.get("officer");
         }
         this.updatedAt = LocalDateTime.now();
+    }
+
+    /**
+     * Converts this object's data fields into a single comma-separated string suitable for saving.
+     * <p>
+     * If any string field (e.g. {@code title}, {@code date}, etc.) is {@code null}, it will be replaced
+     * with an empty string in the output. The {@code isDeleted} field is represented as {@code "1"} if true
+     * and {@code "0"} if false.
+     * </p>
+     *
+     * @return a formatted string containing all of this object's field values
+     */
+    public String toSaveString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Storage.getSaveDatePattern());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Storage.getSaveDateTimePattern());
+        return "id:" + this.id
+                + "|category:" + this.category.toString()
+                + "|title:" + (this.title == null ? "" : this.title)
+                + "|date:" + (this.date == null ? "" : this.date.format(dateFormatter))
+                + "|info:" + (this.info == null ? "" : this.info)
+                + "|victim:" + (this.victim == null ? "" : this.victim)
+                + "|officer:" + (this.officer == null ? "" : this.officer)
+                + "|is-deleted:" + (this.isDeleted ? "1" : "0")
+                + "|is-open:" + (this.isOpen ? "1" : "0")
+                + "|created-at:" + (this.createdAt == null ? "" : this.createdAt.format(dateTimeFormatter))
+                + "|updated-at:" + (this.updatedAt == null ? "" : this.updatedAt.format(dateTimeFormatter));
     }
 }
