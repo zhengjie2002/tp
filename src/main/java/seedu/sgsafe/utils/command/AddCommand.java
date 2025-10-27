@@ -11,7 +11,6 @@ import seedu.sgsafe.domain.casefiles.type.OthersCase;
 import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
 import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
 import seedu.sgsafe.utils.exceptions.InvalidCategoryException;
-import seedu.sgsafe.utils.storage.Storage;
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.ui.Display;
@@ -120,7 +119,7 @@ public class AddCommand extends Command {
 
     // @@author zhengjie2002
     @Override
-    public void execute(Storage storage) {
+    public void execute() {
         String id = generateHexId();
         Case newCase;
 
@@ -140,6 +139,5 @@ public class AddCommand extends Command {
 
         CaseManager.addCase(newCase);
         Display.printMessage("New case added:", newCase.getDisplayLine());
-        storage.saveToFile();
     }
 }

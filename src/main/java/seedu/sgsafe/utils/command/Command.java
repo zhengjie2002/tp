@@ -1,7 +1,5 @@
 package seedu.sgsafe.utils.command;
 
-import seedu.sgsafe.utils.storage.Storage;
-
 public abstract class Command {
     protected CommandType commandType;
 
@@ -14,5 +12,5 @@ public abstract class Command {
     }
 
     // Abstract method to be implemented by subclasses to execute the command
-    public abstract void execute(Storage storage);
+    public abstract void execute();
 }

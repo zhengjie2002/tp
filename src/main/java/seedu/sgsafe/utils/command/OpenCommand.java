@@ -2,7 +2,6 @@ package seedu.sgsafe.utils.command;
 
 import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
-import seedu.sgsafe.utils.storage.Storage;
 import seedu.sgsafe.utils.ui.Display;
 
 /**
@@ -22,11 +21,10 @@ public class OpenCommand extends Command {
     }
 
     @Override
-    public void execute(Storage storage) {
+    public void execute() {
         try {
             String displayLine = CaseManager.openCase(caseId);
             Display.printMessage("Case reopened:", displayLine);
-            storage.saveToFile();
         } catch (CaseNotFoundException e) {
             Display.printMessage(e.getMessage());
         }

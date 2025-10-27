@@ -6,7 +6,6 @@ import java.util.List;
 
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
-import seedu.sgsafe.utils.storage.Storage;
 import seedu.sgsafe.utils.ui.Display;
 
 /**
@@ -53,7 +52,7 @@ public class ListCommand extends Command {
      * formatted using {@link #getCaseDescriptions(ArrayList)}, and printed via {@link Display#printMessage(String[])}.
      */
     @Override
-    public void execute(Storage storage) {
+    public void execute() {
         ArrayList<Case> caseList = CaseManager.getCaseList();
         String[] caseDescriptions = getCaseDescriptions(caseList);
         Display.printMessage(caseDescriptions);

@@ -69,7 +69,8 @@ public class SGSafe {
     private static void handleUserCommand(String userInput) {
         try {
             Command command = Parser.parseInput(userInput);
-            command.execute(storage);
+            command.execute();
+            storage.saveToFile();
         } catch (InvalidCommandException e) {
             Display.printMessage(e.getErrorMessage());
         }
