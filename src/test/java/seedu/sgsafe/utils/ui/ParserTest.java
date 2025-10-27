@@ -261,13 +261,15 @@ class ParserTest {
 
     @Test
     void parseInput_addValidWithEscape_returnsAddCommand() {
+        Settings.setInputDateFormat("yyyy-MM-dd");
+        LocalDate dateToVerify = LocalDate.of(2025, 12, 12);
         Command command = Parser.parseInput(
                 "  add --category theft --title   CaseTitle\\--longinfo   --date   2025-12-12   --info   SomeInfo   " +
                         "--victim   JohnDoe   --officer   JaneDoe  ");
         assertEquals(CommandType.ADD, command.getCommandType());
         assertEquals("theft", ((AddCommand) command).getCaseCategory());
         assertEquals("CaseTitle--longinfo", ((AddCommand) command).getCaseTitle());
-        assertEquals("2025-12-12", ((AddCommand) command).getCaseDate());
+        assertEquals(dateToVerify, ((AddCommand) command).getCaseDate());
         assertEquals("SomeInfo", ((AddCommand) command).getCaseInfo());
         assertEquals("JohnDoe", ((AddCommand) command).getCaseVictim());
         assertEquals("JaneDoe", ((AddCommand) command).getCaseOfficer());
