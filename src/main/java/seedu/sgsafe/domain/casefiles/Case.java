@@ -21,8 +21,21 @@ import java.util.ArrayList;
  */
 public abstract class Case {
 
-    private static int MAX_DISPLAY_WIDTH_CHARACTERS = 100;
-    private static int MAX_LABEL_WIDTH = 10;
+    /**
+     * The maximum number of characters allowed in a single display line.
+     * <p>
+     * Used to constrain field values in summary and verbose outputs, ensuring consistent formatting
+     * and preventing overflow in fixed-width terminal views. Also governs truncation and wraparound logic.
+     */
+    private static final int MAX_DISPLAY_WIDTH_CHARACTERS = 100;
+
+    /**
+     * The fixed width allocated for field labels in verbose listings.
+     * <p>
+     * Labels are left-aligned and padded to this width, followed by a colon and space.
+     * This ensures all wrapped field values align vertically for readability.
+     */
+    private static final int MAX_LABEL_WIDTH = 10;
 
     /** The type of case. */
     protected CaseType type;
@@ -224,15 +237,12 @@ public abstract class Case {
     }
 
     /**
-     * Constructs a detailed, multi-line string representation of this case for display purposes.
+     * Constructs a detailed, multi-line string representation of this case for verbose display.
      * <p>
-     * The output begins with a header line in the format {@code ==== CASE ID 000000 ====}, followed by
-     * key-value lines for each non-null field. Each value is truncated to 100 characters and suffixed
-     * with {@code "..."} if it exceeds that length. Optional fields such as {@code victim} and {@code officer}
-     * are only included if they are non-null.
-     * <p>
-     * This method avoids stacking function calls and delegates conditional formatting and addition
-     * to a helper method for clarity and maintainability.
+     * The output begins with a header line in the format {@code ==== CASE ID 000000 ====},
+     * followed by wrapped key-value lines for each non-null field.
+     * Long values are wrapped across multiple lines using {@link #addWrappedField(List, String, String)}.
+     * Optional fields such as {@code victim} and {@code officer} are only included if present.
      *
      * @return an array of strings representing the verbose, multi-line display of the case
      */
@@ -276,17 +286,16 @@ public abstract class Case {
     }
 
     /**
-     * Appends a formatted line to the given list if the value is not {@code null}.
+     * Adds a wrapped field to the given list if the value is non-null and non-empty.
      * <p>
-     * This method formats the provided label and value using {@link #formatLine(String, String)},
-     * then adds the result to the specified list. If the value is {@code null}, the method does nothing.
-     * <p>
+     * The field is formatted using {@link #wrapField(String, String, int)} to ensure
+     * long values are wrapped across multiple lines with proper indentation.
      * This is typically used to conditionally include optional fields (e.g., victim or officer)
      * in verbose case displays.
      *
-     * @param lines the list to which the formatted line will be added
+     * @param lines the list to which the formatted lines will be added
      * @param label the label to display (e.g., "Victim", "Officer")
-     * @param value the value associated with the label; ignored if {@code null}
+     * @param value the value associated with the label; ignored if {@code null} or empty
      */
     private void addWrappedField(List<String> lines, String label, String value) {
         if (value != null && !value.isEmpty()) {
@@ -294,6 +303,17 @@ public abstract class Case {
         }
     }
 
+    /**
+     * Formats a label-value pair for display, wrapping the value if it exceeds the given width.
+     * <p>
+     * If the value fits within the available width, a single formatted line is returned.
+     * Otherwise, the value is wrapped across multiple lines using {@link #wrapWords(String, String, int)}.
+     *
+     * @param label the field label (e.g., "Title", "Info")
+     * @param value the field value to display
+     * @param width the maximum number of characters allowed per line
+     * @return a list of formatted lines representing the label and value
+     */
     public static List<String> wrapField(String label, String value, int width) {
         String prefix = formatPrefix(label);
         int available = width - prefix.length();
@@ -306,13 +326,39 @@ public abstract class Case {
         return wrapWords(prefix, value, available);
     }
 
+    /**
+     * Formats a label into a fixed-width prefix for alignment in verbose listings.
+     * <p>
+     * The label is left-aligned and padded to {@code MAX_LABEL_WIDTH}, followed by a colon and space.
+     * Example: {@code "Title      : "}
+     *
+     * @param label the label to format
+     * @return the formatted prefix string
+     */
     private static String formatPrefix(String label) {
-        return String.format("%-" + MAX_LABEL_WIDTH + "s: ", label); // e.g., "Title      : "
+        return String.format("%-" + MAX_LABEL_WIDTH + "s: ", label);
     }
 
+    /**
+     * Immutable record representing the current state of a line being wrapped.
+     *
+     * @param line          the current line buffer
+     * @param currentLength the number of characters currently used in the line (excluding prefix padding)
+     */
     private record LineState(StringBuilder line, int currentLength) {
     }
 
+    /**
+     * Wraps a value into multiple lines if necessary, preserving indentation.
+     * <p>
+     * Splits the value into words and places them into lines of at most {@code available} characters.
+     * Long unbreakable words are delegated to {@link #handleLongWord(String, int, String, List, StringBuilder)}.
+     *
+     * @param prefix    the formatted label prefix (e.g., "Title      : ")
+     * @param value     the value to wrap
+     * @param available the maximum number of characters available per line (excluding prefix)
+     * @return a list of wrapped lines
+     */
     private static List<String> wrapWords(String prefix, String value, int available) {
         List<String> lines = new ArrayList<>();
         String[] words = value.split(" ");
@@ -330,10 +376,23 @@ public abstract class Case {
         return lines;
     }
 
+    /**
+     * Handles words that exceed the available width by splitting them into chunks.
+     * <p>
+     * Each chunk is truncated to {@code available - 1} characters and suffixed with a dash ("-").
+     * Remaining characters are placed on subsequent lines with proper indentation.
+     *
+     * @param word   the word to process
+     * @param available the maximum number of characters available per line
+     * @param prefix the formatted label prefix (used for indentation)
+     * @param lines  the list of lines to append to
+     * @param line   the current line buffer
+     * @return the remaining portion of the word that fits within the available width
+     */
     private static String handleLongWord(String word, int available, String prefix,
                                          List<String> lines, StringBuilder line) {
         while (word.length() > available) {
-            int chunkLength = available - 1; // leave space for dash
+            int chunkLength = available - 1; // leave one character's space for dash
             String chunk = word.substring(0, chunkLength) + "-";
             lines.add(line.toString() + chunk);
             word = word.substring(chunkLength);
@@ -343,6 +402,21 @@ public abstract class Case {
         return word;
     }
 
+    /**
+     * Attempts to add a word to the current line, wrapping to a new line if necessary.
+     * <p>
+     * If the word does not fit within the available width, the current line is flushed
+     * to {@code lines}, and a new indented line is started. Spaces are inserted between
+     * words as needed.
+     *
+     * @param word          the word to add
+     * @param line          the current line buffer
+     * @param currentLength the number of characters currently used in the line
+     * @param available     the maximum number of characters available per line
+     * @param prefix        the formatted label prefix (used for indentation)
+     * @param lines         the list of lines to append to
+     * @return a {@link LineState} containing the updated line buffer and character count
+     */
     private static LineState tryAddWord(String word, StringBuilder line, int currentLength,
                                         int available, String prefix, List<String> lines) {
         // If word doesn't fit, flush current line
@@ -365,18 +439,22 @@ public abstract class Case {
     }
 
     /**
-     * Truncates the input string to a maximum of 100 characters.
+     * Truncates the input string to a maximum of {@code MAX_DISPLAY_WIDTH_CHARACTERS}.
+     * <p>
      * If the input is {@code null}, returns an empty string.
-     * If the input exceeds 100 characters, appends {@code "..."}.
+     * If the input exceeds the maximum display width, the result is truncated and suffixed with {@code "..."}.
+     * This method is typically used to ensure summary lines remain within a readable width.
      *
      * @param input the string to truncate
-     * @return the truncated string
+     * @return the truncated string, or an empty string if input is {@code null}
      */
     private String truncate(String input) {
-        return input.length() <= MAX_DISPLAY_WIDTH_CHARACTERS ? input : input.substring(0, MAX_DISPLAY_WIDTH_CHARACTERS) + "...";
+        return input.length() <=
+                MAX_DISPLAY_WIDTH_CHARACTERS ? input : input.substring(0, MAX_DISPLAY_WIDTH_CHARACTERS) + "...";
     }
 
     //@@ author
+
     public void setClosed() {
         this.isOpen = false;
         updatedAt = LocalDateTime.now();
