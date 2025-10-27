@@ -60,7 +60,7 @@ public class Parser {
     private static final int MAX_INPUT_LENGTH = 5000;
 
     // Placeholder for escaped flag sequences
-    private static final String ESCAPED_FLAG_PLACEHOLDER = "\u0000ESCAPED_FLAG\u0000";
+    private static final String ESCAPED_FLAG_PLACEHOLDER = "<<<ESCAPED_DOUBLE_DASH>>>";
 
     /**
      * Parses raw user input into a {@link Command} object.
