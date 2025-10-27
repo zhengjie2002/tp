@@ -61,7 +61,7 @@
 	[O] #000001 [Traffic accident] 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
-	Case found: [O] #000001 [Traffic accident] 05-06-2018 Robbery
+	Case found: [O] #000001 [Traffic accident] 05/06/2018 Robbery
 	
 	Fields that can be edited: --title, --date, --info, --victim, --officer, --vehicle-type, --vehicle-plate, --road-name
 	
@@ -86,14 +86,14 @@
 	[C] #000000 [Murder] 23/06/2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
 	____________________________________________________________
 	____________________________________________________________
-	New case added:
-	[O] #000002 [Murder] 05-06-2022 Shop Theft -- jewellery
+	The date input format is invalid.
+	Please enter the date in the format: dd/MM/yyyy.
+	You may change this in the settings.
 	____________________________________________________________
 	____________________________________________________________
-	You currently have 3 cases in total
-	[C] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 [Traffic accident] 05-06-2018 Robbery
-	[O] #000002 [Murder] 05-06-2022 Shop Theft -- jewellery
+	You currently have 2 cases in total
+	[C] #000000 [Murder] 23/06/2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[O] #000001 [Traffic accident] 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
 	Thanks for using SGSafe :)
