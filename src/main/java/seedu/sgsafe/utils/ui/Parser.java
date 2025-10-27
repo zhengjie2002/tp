@@ -170,7 +170,7 @@ public class Parser {
         List<String> validFlags = List.of("status", "mode");
 
         if (!validator.haveValidFlags(flagValues, validFlags)) {
-            throw new IncorrectFlagException();
+            throw new InvalidListCommandException();
         }
 
         CaseListingMode listingMode = parseListStatus(flagValues.get("status"));
@@ -204,7 +204,7 @@ public class Parser {
         case "open" -> CaseListingMode.OPEN_ONLY;
         case "closed" -> CaseListingMode.CLOSED_ONLY;
         case "all" -> CaseListingMode.ALL;
-        default -> throw new IncorrectFlagException();
+        default -> throw new InvalidListCommandException();
         };
     }
 
@@ -231,7 +231,7 @@ public class Parser {
         return switch (mode.toLowerCase()) {
         case "verbose" -> true;
         case "summary" -> false;
-        default -> throw new IncorrectFlagException();
+        default -> throw new InvalidListCommandException();
         };
     }
 

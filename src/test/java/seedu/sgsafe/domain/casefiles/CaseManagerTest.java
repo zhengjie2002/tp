@@ -79,11 +79,12 @@ class CaseManagerTest {
 
     @Test
     void deleteCase_withValidCommand_deletesCaseSuccessfully() throws Exception {
-        caseList.add(new TheftCase("000000", "Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee"));
+        LocalDate date = LocalDate.of(2023, 10, 5);
+        caseList.add(new TheftCase("000000", "Burglary", date, "Broken window", "Alice", "Officer Lee"));
         CaseManager.deleteCase("000000");
         assertEquals(1, caseList.size());
         assertEquals("Burglary", caseList.get(0).getTitle());
-        assertEquals("2023-10-05", caseList.get(0).getDate());
+        assertEquals(date, caseList.get(0).getDate());
         assertEquals("Broken window", caseList.get(0).getInfo());
         assertEquals("Alice", caseList.get(0).getVictim());
         assertEquals("Officer Lee", caseList.get(0).getOfficer());
@@ -92,13 +93,15 @@ class CaseManagerTest {
 
     @Test
     void deleteCase_withInvalidCommand_throwsCaseNotFoundException() {
-        caseList.add(new TheftCase("000000", "Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee"));
+        LocalDate date = LocalDate.of(2023, 10, 5);
+        caseList.add(new TheftCase("000000", "Burglary", date, "Broken window", "Alice", "Officer Lee"));
         assertThrows(CaseNotFoundException.class, () -> CaseManager.deleteCase("000001"));
     }
 
     @Test
     void deleteCase_withRepeatedDeletes_throwsCaseNotFoundException() throws Exception {
-        caseList.add(new TheftCase("000000", "Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee"));
+        LocalDate date = LocalDate.of(2023, 10, 5);
+        caseList.add(new TheftCase("000000", "Burglary", date, "Broken window", "Alice", "Officer Lee"));
         CaseManager.deleteCase("000000");
         assertThrows(CaseNotFoundException.class, () -> CaseManager.deleteCase("000000"));
     }

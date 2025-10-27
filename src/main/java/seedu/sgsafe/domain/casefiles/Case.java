@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * Represents a case file in the SGSafe system.
@@ -184,54 +185,98 @@ public abstract class Case {
      * @return a display-friendly string summarizing the case
      */
     public String getDisplayLine() {
-        String status = this.isOpen ? "[O]" : "[C]";
-        String victimLine = (this.victim == null) ? "" : (" | Victim: " + this.victim);
-        String officerLine = (this.officer == null) ? "" : (" | Officer: " + this.officer);
-        String dateLine = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
-        return status + " #" + this.id + " " + "[" + categoryString + "] " +
-                dateLine + " " + this.title + victimLine + officerLine;
+        String status = this.isOpen ? "[Open]" : "[Closed]";
+        String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
+        return String.format("%-8s %-9s %-6s %-10s %s", status, categoryString, this.id, dateString, this.title);
     }
 
     /**
-     * Returns a verbose, multi-line representation of this case for detailed display.
+     * Constructs a detailed, multi-line string representation of this case for display purposes.
      * <p>
-     * The header line uses the format {@code ==== CASE ID 000000 ====}.
-     * The {@code info} field is capped at 100 characters; if longer, it is truncated and suffixed with {@code "..."}.
+     * The output begins with a header line in the format {@code ==== CASE ID 000000 ====}, followed by
+     * key-value lines for each non-null field. Each value is truncated to 100 characters and suffixed
+     * with {@code "..."} if it exceeds that length. Optional fields such as {@code victim} and {@code officer}
+     * are only included if they are non-null.
+     * <p>
+     * This method avoids stacking function calls and delegates conditional formatting and addition
+     * to a helper method for clarity and maintainability.
      *
-     * @return an array of strings representing the verbose display of the case
+     * @return an array of strings representing the verbose, multi-line display of the case
      */
     public String[] getMultiLineVerboseDisplay() {
-        String header = "======== CASE ID " + this.id + " ========";
-        String statusLine = "Status  : " + (this.isOpen ? "Open" : "Closed");
+        List<String> lines = new ArrayList<>();
+        lines.add(formatCaseIDHeader());
         String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
-        String truncatedInfo = truncateInfo(this.info);
 
-        return new String[]{
-            header,
-            statusLine,
-            "Title   : " + (title == null ? "" : title),
-            "Date    : " + dateString,
-            "Info    : " + truncatedInfo,
-            "Victim  : " + (victim == null ? "" : victim),
-            "Officer : " + (officer == null ? "" : officer),
-            "Created at: " + createdAt.toString(),
-            "Updated at: " + updatedAt.toString()
-        };
+        addFormattedLine(lines, "Status", getStatusString());
+        addFormattedLine(lines, "Category", categoryString);
+        addFormattedLine(lines, "Title", title);
+        addFormattedLine(lines, "Date", dateString);
+        addFormattedLine(lines, "Info", info);
+        addFormattedLine(lines, "Created at", createdAt.toString());
+        addFormattedLine(lines, "Updated at", updatedAt.toString());
+        addFormattedLine(lines, "Victim", victim);
+        addFormattedLine(lines, "Officer", officer);
+
+        return lines.toArray(new String[0]);
+    }
+
+
+    /**
+     * Constructs the header line for the verbose display.
+     * Format: {@code "======== CASE ID 000000 ========"}
+     *
+     * @return the formatted header string
+     */
+    private String formatCaseIDHeader() {
+        return "======== CASE ID " + this.id + " ========";
     }
 
     /**
-     * Truncates the given info string to a maximum of 100 characters.
-     * If the input exceeds the limit, it is shortened and suffixed with {@code "..."}.
-     * If the input is {@code null}, an empty string is returned.
+     * Returns the status of the case as a plain string.
+     * <p>
+     * Possible values are {@code "[Open["} or {@code "[Closed]"} depending on the case state.
      *
-     * @param info the original info string
-     * @return a truncated version of the info string, capped at 100 characters
+     * @return the status string
      */
-    private static String truncateInfo(String info) {
-        if (info == null) {
+    private String getStatusString() {
+        return this.isOpen ? "Open" : "Closed";
+    }
+
+    /**
+     * Formats a labeled line with truncated content.
+     * If the value is {@code null}, an empty string is used.
+     * Format: {@code "Label      : value"} — with the label padded to 10 characters.
+     *
+     * @param label the label to display (e.g., "Title", "Date")
+     * @param value the value to display, which will be truncated
+     * @return the formatted line with aligned colon
+     */
+    private String formatLine(String label, String value) {
+        if (value == null) {
             return "";
         }
-        return info.length() > 100 ? info.substring(0, 100) + "..." : info;
+        String paddedLabel = String.format("%-10s", label); // pad to 10 characters
+        return paddedLabel + " : " + truncate(value);
+    }
+
+    private void addFormattedLine(List<String> lines, String label, String value) {
+        if (value != null) {
+            String formatted = formatLine(label, value);
+            lines.add(formatted);
+        }
+    }
+
+    /**
+     * Truncates the input string to a maximum of 100 characters.
+     * If the input is {@code null}, returns an empty string.
+     * If the input exceeds 100 characters, appends {@code "..."}.
+     *
+     * @param input the string to truncate
+     * @return the truncated string
+     */
+    private String truncate(String input) {
+        return input.length() <= 100 ? input : input.substring(0, 100) + "...";
     }
 
     //@@ author
