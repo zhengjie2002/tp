@@ -19,4 +19,19 @@ list
 list --status closed
 add --category murder --title Shop Theft \-- jewellery --info Clementi --date 05-06-2022
 list
+list --mode verbose --status open
+list --mode verbose --status closed
+list --mode verbose --status all
+list --mode verbose --status
+list --mode verbose
+list --mode summary --status open
+list --mode summary --status closed
+list --mode summary --status all
+list --mode summary --status
+list --mode summary
+list --status open
+list --status closed
+list --status all
+list --status
+list
 bye

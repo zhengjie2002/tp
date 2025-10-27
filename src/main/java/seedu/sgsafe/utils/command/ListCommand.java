@@ -101,7 +101,7 @@ public class ListCommand extends Command {
      * @return a formatted header string for the case list table
      */
     private String generateListTableHeaderMessage() {
-        return String.format("%-8s %-9s %-6s %-10s %s", "STATUS", "CATEGORY", "ID", "DATE", "TITLE");
+        return String.format("%-8s %-16s %-6s %-10s %s", "STATUS", "CATEGORY", "ID", "DATE", "TITLE");
     }
 
     /**
