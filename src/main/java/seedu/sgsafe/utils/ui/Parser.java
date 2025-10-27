@@ -45,7 +45,7 @@ public class Parser {
     private static final String FLAG_PREFIX = "--";
 
     // List of valid flags to be taken as input from the user
-    private static final List<String> VALID_FLAGS = List.of("title", "date", "info", "victim", "officer");
+    private static final List<String> VALID_FLAGS = List.of("category", "title", "date", "info", "victim", "officer");
 
     // Validator instance for input validation
     private static final Validator validator = new Validator();
@@ -231,13 +231,13 @@ public class Parser {
      * Parses the {@code add} command and validates its arguments.
      * <p>
      * This method extracts flags and their values from the input, ensuring that required fields
-     * (title, date, and info) are present.
+     * (category, title, date, and info) are present.
      *
      * @param remainder the portion of the input following the {@code add} keyword
      * @return a valid {@link AddCommand} if arguments are invalid
      */
     private static Command parseAddCommand(String remainder) {
-        List<String> requiredFlags = List.of("title", "date", "info");
+        List<String> requiredFlags = List.of("category", "title", "date", "info");
 
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidAddCommandException();
@@ -250,8 +250,8 @@ public class Parser {
             throw new InvalidAddCommandException();
         }
 
-        return new AddCommand(flagValues.get("title"), flagValues.get("date"), flagValues.get("info"),
-                flagValues.get("victim"), flagValues.get("officer"));
+        return new AddCommand(flagValues.get("category"), flagValues.get("title"), flagValues.get("date"),
+                flagValues.get("info"), flagValues.get("victim"), flagValues.get("officer"));
     }
 
     /**
