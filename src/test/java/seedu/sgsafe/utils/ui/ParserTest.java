@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.CommandType;
@@ -23,6 +25,7 @@ import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
 
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
+import seedu.sgsafe.utils.settings.Settings;
 
 /**
  * Unit tests for {@link Parser}, verifying correct command parsing and exception handling.
@@ -202,8 +205,9 @@ class ParserTest {
 
     @Test
     void parseInput_addValid_returnsAddCommand() {
+        Settings.setInputDateFormat("dd/MM/yyyy");
         Command command = Parser.parseInput(
-                "add --category Theft --title CaseTitle --date 2025-12-12 " +
+                "add --category Theft --title CaseTitle --date 12/02/2022 " +
                         "--info SomeInfo --victim JohnDoe --officer JaneDoe");
         assertEquals(CommandType.ADD, command.getCommandType());
     }
@@ -211,22 +215,24 @@ class ParserTest {
     @Test
     void parseInput_addMissingCompulsoryFlag_throwsInvalidAddCommandException() {
         assertThrows(InvalidAddCommandException.class,
-                () -> Parser.parseInput("add --title CaseTitle --date 2025-12-12"));
+                () -> Parser.parseInput("add --title CaseTitle --date 12/01/2022"));
         assertThrows(InvalidAddCommandException.class,
                 () -> Parser.parseInput("add --title CaseTitle --info SomeInfo --officer JaneDoe"));
         assertThrows(InvalidAddCommandException.class,
-                () -> Parser.parseInput("add  --date 2025-12-12 --victim JohnDoe --officer JaneDoe"));
+                () -> Parser.parseInput("add  --date 12/01/2022 --victim JohnDoe --officer JaneDoe"));
     }
 
     @Test
     void parseInput_addWithExtraWhitespace_returnsAddCommand() {
+        Settings.setInputDateFormat("dd/MM/yyyy");
+        LocalDate date = LocalDate.of(2022, 01, 12);
         Command command = Parser.parseInput(
-                "  add   --category  Others --title   CaseTitle   --date   2025-12-12   " +
+                "  add   --category  Others --title   CaseTitle   --date   12/01/2022   " +
                         "--info   SomeInfo   --victim   JohnDoe   --officer   JaneDoe  ");
         assertEquals(CommandType.ADD, command.getCommandType());
         assertEquals("others", ((AddCommand) command).getCaseCategory());
         assertEquals("CaseTitle", ((AddCommand) command).getCaseTitle());
-        assertEquals("2025-12-12", ((AddCommand) command).getCaseDate());
+        assertEquals(date, ((AddCommand) command).getCaseDate());
         assertEquals("SomeInfo", ((AddCommand) command).getCaseInfo());
         assertEquals("JohnDoe", ((AddCommand) command).getCaseVictim());
         assertEquals("JaneDoe", ((AddCommand) command).getCaseOfficer());
@@ -235,7 +241,7 @@ class ParserTest {
     @Test
     void parseInput_addWithDuplicateFlags_throwDuplicateFlagException() {
         assertThrows(DuplicateFlagException.class,
-                () -> Parser.parseInput("add --title CaseTitle --date 2025-12-12 --title CaseTitle2"));
+                () -> Parser.parseInput("add --title CaseTitle --date 12/01/2022 --title CaseTitle2"));
     }
 
     @Test
@@ -249,20 +255,22 @@ class ParserTest {
         StringBuilder longInfo = new StringBuilder();
         longInfo.append("a".repeat(8000));
         String input =
-                String.format("add --title CaseTitle --date 2025-12-12 --info %s --victim JohnDoe --officer JaneDoe",
+                String.format("add --title CaseTitle --date 12/01/2022 --info %s --victim JohnDoe --officer JaneDoe",
                         longInfo);
         assertThrows(InputLengthExceededException.class, () -> Parser.parseInput(input));
     }
 
     @Test
     void parseInput_addValidWithEscape_returnsAddCommand() {
+        Settings.setInputDateFormat("yyyy-MM-dd");
+        LocalDate dateToVerify = LocalDate.of(2025, 12, 12);
         Command command = Parser.parseInput(
                 "  add --category theft --title   CaseTitle\\--longinfo   --date   2025-12-12   --info   SomeInfo   " +
                         "--victim   JohnDoe   --officer   JaneDoe  ");
         assertEquals(CommandType.ADD, command.getCommandType());
         assertEquals("theft", ((AddCommand) command).getCaseCategory());
         assertEquals("CaseTitle--longinfo", ((AddCommand) command).getCaseTitle());
-        assertEquals("2025-12-12", ((AddCommand) command).getCaseDate());
+        assertEquals(dateToVerify, ((AddCommand) command).getCaseDate());
         assertEquals("SomeInfo", ((AddCommand) command).getCaseInfo());
         assertEquals("JohnDoe", ((AddCommand) command).getCaseVictim());
         assertEquals("JaneDoe", ((AddCommand) command).getCaseOfficer());

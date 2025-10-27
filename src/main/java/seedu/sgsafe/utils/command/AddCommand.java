@@ -15,6 +15,7 @@ import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
 import seedu.sgsafe.utils.exceptions.InvalidCategoryException;
 import seedu.sgsafe.utils.ui.Display;
 
+import java.time.LocalDate;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -37,7 +38,7 @@ public class AddCommand extends Command {
     private final String caseTitle;
 
     // Date of the case
-    private final String caseDate;
+    private final LocalDate caseDate;
 
     // Additional information about the case
     private final String caseInfo;
@@ -57,7 +58,7 @@ public class AddCommand extends Command {
      * @param caseVictim  The name of the victim involved in the case. Can be null.
      * @param caseOfficer The name of the officer handling the case. Can be null.
      */
-    public AddCommand(String caseCategory, String caseTitle, String caseDate,
+    public AddCommand(String caseCategory, String caseTitle, LocalDate caseDate,
                       String caseInfo, String caseVictim, String caseOfficer) {
         this.commandType = CommandType.ADD;
         this.caseCategory = caseCategory.toLowerCase();
@@ -77,7 +78,7 @@ public class AddCommand extends Command {
         return caseTitle;
     }
 
-    public String getCaseDate() {
+    public LocalDate getCaseDate() {
         return caseDate;
     }
 

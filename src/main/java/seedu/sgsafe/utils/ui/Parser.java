@@ -10,19 +10,25 @@ import seedu.sgsafe.utils.command.EditPromptCommand;
 import seedu.sgsafe.utils.command.DeleteCommand;
 
 import seedu.sgsafe.utils.command.OpenCommand;
+import seedu.sgsafe.utils.command.SettingCommand;
+import seedu.sgsafe.utils.command.SettingType;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidSettingCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
+import seedu.sgsafe.utils.settings.Settings;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,9 +70,9 @@ public class Parser {
      *
      * @param userInput the full input string entered by the user
      * @return a {@link Command} representing the parsed action
-     * @throws EmptyCommandException   if the input is empty or contains only whitespace
-     * @throws UnknownCommandException if the command keyword is not recognized
-     * @throws InvalidListCommandException    if the {@code list} command contains unexpected arguments
+     * @throws EmptyCommandException       if the input is empty or contains only whitespace
+     * @throws UnknownCommandException     if the command keyword is not recognized
+     * @throws InvalidListCommandException if the {@code list} command contains unexpected arguments
      */
     public static Command parseInput(String userInput) {
         userInput = cleanUserInput(userInput);
@@ -80,6 +86,7 @@ public class Parser {
         case "close" -> parseCloseCommand(remainder);
         case "open" -> parseOpenCommand(remainder);
         case "delete" -> parseDeleteCommand(remainder);
+        case "setting" -> parseSettingCommand(remainder);
         default -> throw new UnknownCommandException(keyword);
         };
     }
@@ -133,6 +140,7 @@ public class Parser {
         }
     }
 
+    //@@ author xelisce
     /**
      * Parses the {@code list} command and validates its optional {@code --status} and {@code --mode} flags.
      * <p>
@@ -227,6 +235,8 @@ public class Parser {
         };
     }
 
+    //@@ author
+
     /**
      * Parses the {@code add} command and validates its arguments.
      * <p>
@@ -238,6 +248,7 @@ public class Parser {
      */
     private static Command parseAddCommand(String remainder) {
         List<String> requiredFlags = List.of("category", "title", "date", "info");
+        LocalDate date;
 
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidAddCommandException();
@@ -250,7 +261,14 @@ public class Parser {
             throw new InvalidAddCommandException();
         }
 
-        return new AddCommand(flagValues.get("category"), flagValues.get("title"), flagValues.get("date"),
+        try {
+            date = DateFormatter.parseDate(flagValues.get("date"), Settings.getInputDateFormat());
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Invalid date format detected");
+            throw new InvalidDateInputException();
+        }
+
+        return new AddCommand(flagValues.get("category"), flagValues.get("title"), date,
                 flagValues.get("info"), flagValues.get("victim"), flagValues.get("officer"));
     }
 
@@ -266,7 +284,7 @@ public class Parser {
      * @param remainder the portion of the input following the {@code close} keyword
      * @return a valid {@link CloseCommand} if the argument is a valid caseId
      * @throws InvalidCloseCommandException if the argument is missing
-     * @throws InvalidCaseIdException if the caseId format is wrong
+     * @throws InvalidCaseIdException       if the caseId format is wrong
      */
     private static Command parseCloseCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
@@ -290,7 +308,7 @@ public class Parser {
      * @param remainder the portion of the input following the {@code open} keyword
      * @return a valid {@link OpenCommand} if the argument is a valid caseId
      * @throws InvalidOpenCommandException if the argument is missing
-     * @throws InvalidCaseIdException if the caseId format is wrong
+     * @throws InvalidCaseIdException      if the caseId format is wrong
      */
     private static Command parseOpenCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
@@ -410,5 +428,34 @@ public class Parser {
             throw new InvalidDeleteCommandException();
         }
         return new DeleteCommand(remainder.toLowerCase());
+    }
+
+    private static Command parseSettingCommand(String remainder) {
+        List<String> requiredFlags = List.of("type", "value");
+        List<String> validFlags = List.of("type", "value");
+
+
+        if (validator.inputIsEmpty(remainder)) {
+            throw new InvalidSettingCommandException(false);
+        }
+
+        Map<String, String> flagValues = extractFlagValues(remainder);
+
+        if (!validator.haveAllRequiredFlags(flagValues, requiredFlags) ||
+                !validator.haveValidFlags(flagValues, validFlags)) {
+            throw new InvalidSettingCommandException(false);
+        }
+
+        SettingType settingType = parseSettingType(flagValues.get("type"));
+
+        return new SettingCommand(settingType, flagValues.get("value"));
+    }
+
+    private static SettingType parseSettingType(String typeString) {
+        try {
+            return SettingType.valueOf(typeString.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidSettingCommandException(true);
+        }
     }
 }

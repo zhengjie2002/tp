@@ -5,11 +5,13 @@ import java.util.Map;
 
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 
+import java.time.LocalDate;
+
 public class SpeedingCase extends TrafficCase {
     private String speedLimit;
     private String exceededSpeed;
 
-    public SpeedingCase(String id, String title, String date, String info, String victim, String officer) {
+    public SpeedingCase(String id, String title, LocalDate date, String info, String victim, String officer) {
         super(id, title, date, info, victim, officer);
         this.category = CaseCategory.SPEEDING;
         this.categoryString = "Speeding";

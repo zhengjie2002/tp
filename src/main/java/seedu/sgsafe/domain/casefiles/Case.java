@@ -2,6 +2,10 @@ package seedu.sgsafe.domain.casefiles;
 
 import seedu.sgsafe.domain.casefiles.type.CaseType;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
+import seedu.sgsafe.utils.settings.Settings;
+import seedu.sgsafe.utils.ui.DateFormatter;
+
+import java.time.LocalDate;
 
 import java.time.LocalDateTime;
 
@@ -29,7 +33,7 @@ public abstract class Case {
     private String title;
 
     /** The date the case was recorded or occurred. */
-    private String date;
+    private LocalDate date;
 
     /** Additional information or notes about the case. */
     private String info;
@@ -63,7 +67,7 @@ public abstract class Case {
      * @param victim  the name of the victim involved
      * @param officer the name of the officer assigned
      */
-    public Case(String id, String title, String date, String info, String victim, String officer) {
+    public Case(String id, String title, LocalDate date, String info, String victim, String officer) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -90,7 +94,7 @@ public abstract class Case {
      *
      * @return the date of the case
      */
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -157,6 +161,8 @@ public abstract class Case {
         this.updatedAt = LocalDateTime.now();
     }
 
+    //@@ author xelisce
+
     /**
      * Returns a formatted summary line representing this case for display purposes.
      * <p>
@@ -181,8 +187,9 @@ public abstract class Case {
         String status = this.isOpen ? "[O]" : "[C]";
         String victimLine = (this.victim == null) ? "" : (" | Victim: " + this.victim);
         String officerLine = (this.officer == null) ? "" : (" | Officer: " + this.officer);
+        String dateLine = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
         return status + " #" + this.id + " " + "[" + categoryString + "] " +
-                this.date + " " + this.title + victimLine + officerLine;
+                dateLine + " " + this.title + victimLine + officerLine;
     }
 
     /**
@@ -196,13 +203,14 @@ public abstract class Case {
     public String[] getMultiLineVerboseDisplay() {
         String header = "======== CASE ID " + this.id + " ========";
         String statusLine = "Status  : " + (this.isOpen ? "Open" : "Closed");
+        String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
         String truncatedInfo = truncateInfo(this.info);
 
-        return new String[] {
+        return new String[]{
             header,
             statusLine,
             "Title   : " + (title == null ? "" : title),
-            "Date    : " + (date == null ? "" : date),
+            "Date    : " + dateString,
             "Info    : " + truncatedInfo,
             "Victim  : " + (victim == null ? "" : victim),
             "Officer : " + (officer == null ? "" : officer),
@@ -226,6 +234,7 @@ public abstract class Case {
         return info.length() > 100 ? info.substring(0, 100) + "..." : info;
     }
 
+    //@@ author
     public void setClosed() {
         this.isOpen = false;
         updatedAt = LocalDateTime.now();
@@ -265,9 +274,9 @@ public abstract class Case {
         if (newValues.containsKey("title")) {
             this.title = newValues.get("title");
         }
-        if (newValues.containsKey("date")) {
-            this.date = newValues.get("date");
-        }
+        //if (newValues.containsKey("date")) {
+        //    this.date = newValues.get("date");
+        //}
         if (newValues.containsKey("info")) {
             this.info = newValues.get("info");
         }
