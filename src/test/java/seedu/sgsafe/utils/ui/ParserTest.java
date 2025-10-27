@@ -19,6 +19,7 @@ import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
+import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
@@ -148,6 +149,21 @@ class ParserTest {
     @Test
     void parseInput_wrongCaseId_throwsInvalidCaseIdException() {
         assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("edit WrongcaseId --title newTitle"));
+    }
+
+    @Test
+    void parseInput_invalidDateFormat_throwsIncorrectFlagException() {
+        assertThrows(InvalidDateInputException.class, () -> Parser.parseInput("edit 000001 --date 32-13-20"));
+    }
+
+    @Test
+    void parseInput_nonIntegerValueForSpeedLimit_throwsInvalidEditCommandException() {
+        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit 000001 --speed-limit fast"));
+    }
+
+    @Test
+    void parseInput_negativeValueForVictimNumber_throwsInvalidEditCommandException() {
+        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit 000001 --number-of-victims -50"));
     }
 
     // ----------- TESTS FOR CLOSE COMMANDS ----------- //

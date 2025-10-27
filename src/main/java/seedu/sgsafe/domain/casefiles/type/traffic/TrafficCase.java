@@ -17,6 +17,18 @@ public abstract class TrafficCase extends Case {
         super(id, title, date, info, victim, officer);
         this.type = CaseType.TRAFFIC;
     }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public String getVehiclePlate() {
+        return vehiclePlate;
+    }
+
+    public String getRoadName() {
+        return roadName;
+    }
     
     @Override
     public List<String> getValidEditFlags() {
@@ -25,16 +37,16 @@ public abstract class TrafficCase extends Case {
     }
     
     @Override
-    public void update(Map<String, String> newValues) {
+    public void update(Map<String, Object> newValues) {
         super.update(newValues);
         if (newValues.containsKey("vehicle-type")) {
-            this.vehicleType = newValues.get("vehicleType");
+            this.vehicleType = (String) newValues.get("vehicle-type");
         }
         if (newValues.containsKey("vehicle-plate")) {
-            this.vehiclePlate = newValues.get("vehiclePlate");
+            this.vehiclePlate = (String) newValues.get("vehicle-plate");
         }
         if (newValues.containsKey("road-name")) {
-            this.roadName = newValues.get("roadName");
+            this.roadName = (String) newValues.get("road-name");
         }
     }
 

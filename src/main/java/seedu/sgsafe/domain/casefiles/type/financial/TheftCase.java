@@ -16,16 +16,20 @@ public class TheftCase extends FinancialCase {
         this.categoryString = "Theft";
     }
 
+    public String getStolenObject () {
+        return stolenObject;
+    }
+
     @Override
     public List<String> getValidEditFlags() {
         return List.of("title", "date", "info", "victim", "officer", "stolen-object");
     }
 
     @Override
-    public void update(Map<String, String> newValues) {
+    public void update(Map<String, Object> newValues) {
         super.update(newValues);
         if (newValues.containsKey("stolen-object")) {
-            this.stolenObject = newValues.get("stolenObject");
+            this.stolenObject = (String) newValues.get("stolen-object");
         }
     }
 

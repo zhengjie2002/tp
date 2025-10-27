@@ -16,6 +16,7 @@ import seedu.sgsafe.domain.casefiles.type.traffic.SpeedingCase;
 import seedu.sgsafe.domain.casefiles.type.violent.AssaultCase;
 import seedu.sgsafe.domain.casefiles.type.violent.MurderCase;
 import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
+import seedu.sgsafe.utils.ui.Parser;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -98,7 +99,10 @@ public class Storage {
         // update the case based on the additional fields found
         List<String> additionalFields = newCase.getAdditionalFields();
         fields.keySet().retainAll(additionalFields);
-        newCase.update(fields);
+
+        //// Convert the raw string map (fields) to the typed map (typedFields)
+        Map<String, Object> typedFields = Parser.convertFlagValueTypes(fields);
+        newCase.update(typedFields);
 
         // update timestamps
         newCase.setCreatedAt(createdAt);

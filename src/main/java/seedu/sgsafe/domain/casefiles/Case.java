@@ -356,21 +356,21 @@ public abstract class Case {
      *
      * @param newValues a map containing field names and their new values
      */
-    public void update(Map<String, String> newValues) {
+    public void update(Map<String, Object> newValues) {
         if (newValues.containsKey("title")) {
-            this.title = newValues.get("title");
+            this.title = (String) newValues.get("title");
         }
-        //if (newValues.containsKey("date")) {
-        //    this.date = newValues.get("date");
-        //}
+        if (newValues.containsKey("date")) {
+            this.date = (LocalDate) newValues.get("date");
+        }
         if (newValues.containsKey("info")) {
-            this.info = newValues.get("info");
+            this.info = (String) newValues.get("info");
         }
         if (newValues.containsKey("victim")) {
-            this.victim = newValues.get("victim");
+            this.victim = (String) newValues.get("victim");
         }
         if (newValues.containsKey("officer")) {
-            this.officer = newValues.get("officer");
+            this.officer = (String) newValues.get("officer");
         }
         this.updatedAt = LocalDateTime.now();
     }

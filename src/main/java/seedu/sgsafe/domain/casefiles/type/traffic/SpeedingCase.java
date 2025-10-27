@@ -8,13 +8,21 @@ import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 import java.time.LocalDate;
 
 public class SpeedingCase extends TrafficCase {
-    private String speedLimit;
-    private String exceededSpeed;
+    private Integer speedLimit;
+    private Integer exceededSpeed;
 
     public SpeedingCase(String id, String title, LocalDate date, String info, String victim, String officer) {
         super(id, title, date, info, victim, officer);
         this.category = CaseCategory.SPEEDING;
         this.categoryString = "Speeding";
+    }
+
+    public Integer getSpeedLimit() {
+        return speedLimit;
+    }
+
+    public Integer getExceededSpeed() {
+        return exceededSpeed;
     }
 
     @Override
@@ -25,14 +33,13 @@ public class SpeedingCase extends TrafficCase {
     }
 
     @Override
-    public void update(Map<String, String> newValues) {
+    public void update(Map<String, Object> newValues) {
         super.update(newValues);
-
-        if (newValues.containsKey("speed-limit")) {
-            this.speedLimit = newValues.get("speedLimit");
+        if (newValues.containsKey("speed-limit") && newValues.get("speed-limit") != null) {
+            this.speedLimit = (Integer) newValues.get("speed-limit");
         }
-        if (newValues.containsKey("exceeded-speed")) {
-            this.exceededSpeed = newValues.get("exceededSpeed");
+        if (newValues.containsKey("exceeded-speed") && newValues.get("exceeded-speed") != null) {
+            this.exceededSpeed = (Integer) newValues.get("exceeded-speed");
         }
     }
 
