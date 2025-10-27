@@ -7,6 +7,7 @@ import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.command.DeleteCommand;
+import seedu.sgsafe.utils.command.ReadCommand;
 
 import seedu.sgsafe.utils.command.OpenCommand;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
@@ -19,6 +20,7 @@ import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidReadCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
 
@@ -76,6 +78,7 @@ public class Parser {
         case "close" -> parseCloseCommand(remainder);
         case "open" -> parseOpenCommand(remainder);
         case "delete" -> parseDeleteCommand(remainder);
+        case "read" -> parseReadCommand(remainder);
         default -> throw new UnknownCommandException(keyword);
         };
     }
@@ -386,5 +389,17 @@ public class Parser {
             throw new InvalidDeleteCommandException();
         }
         return new DeleteCommand(remainder.toLowerCase());
+    }
+
+    /**
+     * Parses the 'read' command input, validates its format, and constructs a ReadCommand object.
+     * Throws an InvalidReadCommandException if the input is missing or incorrectly formatted.
+     */
+
+    private static Command parseReadCommand(String remainder) {
+        if (!validator.isValidCaseId(remainder)) {
+            throw new InvalidReadCommandException();
+        }
+        return new ReadCommand(remainder);
     }
 }

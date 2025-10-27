@@ -2,6 +2,7 @@ package seedu.sgsafe.domain.casefiles;
 
 import seedu.sgsafe.domain.casefiles.type.CaseType;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
+import seedu.sgsafe.utils.ui.Display;
 
 import java.util.Map;
 
@@ -246,5 +247,28 @@ public abstract class Case {
         if (newValues.containsKey("officer")) {
             this.officer = newValues.get("officer");
         }
+    }
+
+    /**
+     * Returns a detailed, full-line representation of this case for reading purposes.
+     * <p>
+     * Similar to {@link #getMultiLineVerboseDisplay()}, but without truncating the {@code info} field.
+     *
+     * @return an array of strings representing the complete case details
+     */
+    public String[] getReadCaseDisplay() {
+        String header = "======== CASE ID " + this.id + " ========";
+        String statusLine = "Status  : " + (this.isOpen ? "Open" : "Closed");
+
+        return new String[] {
+            header,
+            statusLine,
+            "Title   : " + (title == null ? "" : title),
+            "Category: " + (categoryString == null ? "" : categoryString),
+            "Date    : " + (date == null ? "" : date),
+            "Victim  : " + (victim == null ? "" : victim),
+            "Officer : " + (officer == null ? "" : officer),
+            Display.formatIndentedText("Info    : ", info, 80)
+        };
     }
 }
