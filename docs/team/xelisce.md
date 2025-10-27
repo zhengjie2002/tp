@@ -50,6 +50,10 @@ Given below are my contributions to the project.
         * Documented implementation details of `ListCommand`.
         * Explained formatting logic, conditional field inclusion, and category integration.
         * Described rationale for soft-deletion filtering and test coverage strategy.
+    * Added comprehensive Javadoc comments for all core classes and methods I authored:
+        * `Display`, `Parser`, `Validator`, `Command`, `ListCommand`, `Case`, and `CaseManager`.
+    * Documented formatting logic, flag behavior, and conditional field inclusion.
+    * Ensured all public methods have clear descriptions, parameter annotations, and example outputs where relevant.
 
 * **Community**:
     * Reviewed PRs (with non-trivial review comments). Examples: [#18](https://github.com/AY2526S1-CS2113-W13-3/tp/pull/18), [#27](https://github.com/AY2526S1-CS2113-W13-3/tp/pull/27), [#37](https://github.com/AY2526S1-CS2113-W13-3/tp/pull/37)
