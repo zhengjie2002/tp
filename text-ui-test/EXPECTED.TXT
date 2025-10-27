@@ -63,7 +63,7 @@
 	____________________________________________________________
 	Case found: [O] #000001 [Traffic accident] 05-06-2018 Robbery
 	
-	Fields that can be edited: --title, --date, --info, --victim, --officer, --vehicleType, --vehiclePlate, --roadName
+	Fields that can be edited: --title, --date, --info, --victim, --officer, --vehicle-type, --vehicle-plate, --road-name
 	
 	Usage: edit 000001 --<flag> <value>
 	Example: edit 000001 --location home --date 2024-01-01
