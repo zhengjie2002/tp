@@ -1,0 +1,61 @@
+@startuml
+title Architecture Diagram
+
+skinparam backgroundColor #ffffff
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+skinparam arrowThickness 1
+skinparam defaultFontName Consolas
+
+' External actor and artifact
+actor "User" as user
+artifact "Data file" as datafile #a6e7a6
+
+' Application boundary
+package " " as App {
+  component "Display" as Display
+  component "Parser" as Parser
+  component "Validator" as Validator
+  component "Commons Library" as Commons #d2b4de
+  component "Storage" as Storage
+  component "Settings" as Settings
+  component "Case Manager" as CaseManager
+  component "Command" as Command
+  component "Main" as Main
+  component "Case" as Case
+}
+
+' User interactions
+Display --> user : shows output
+
+' Main flow
+user --> Main : interacts with
+Main --> Parser : passes user input
+Parser --> Validator : validates parsed data
+Validator --> Command : creates validated commands
+Command --> CaseManager : executes operations
+Main --> Storage : reads/writes cases
+
+' Case Manager dependencies
+CaseManager --> Case : manage cases
+CaseManager --> Storage : reads/writes cases
+
+' Storage dependencies
+Storage --> datafile : persists to
+datafile --> Storage : loads from
+
+' Settings usage
+Command --> Settings : update user's preferences
+Settings --> Display : display updated setting
+
+' Display usage
+CaseManager --> Display : display case
+Parser --> Display : display parsing errors
+Validator --> Display : display validation errors
+
+note top of Storage
+Double confirm if this should
+come from main or case manager
+end note
+
+@enduml

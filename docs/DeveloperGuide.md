@@ -5,6 +5,8 @@
 1. [Acknowledgements](#acknowledgements)
 2. [Setting up, Getting Started](#setting-up-getting-started)
 3. [Design & Implementation](#design--implementation)
+    - [Architecture](#architecture)
+    - [Overall logic](#overall-logic)
 4. [Appendix A: Product Scope](#appendix-a-product-scope)
     - [Target user profile](#target-user-profile)
     - [Value proposition](#value-proposition)
@@ -26,16 +28,17 @@ original source as well}
 
 ## Design & implementation
 
-{Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
+### Architecture
 
 ### Overall logic
 
 The main code flow is as follows:
+
 1. Print welcome message
 2. Initialize CaseManager with saved info from `data.txt` if it exists
 3. Read user input from System.in
-4. Parse user input to obtain a Command object that contains the 
-information necessary to execute the command
+4. Parse user input to obtain a Command object that contains the
+   information necessary to execute the command
 5. execute user command
 6. until the command is to exit the program, repeat steps 3 to 5
 7. Save the updated list of commands to `data.txt`
@@ -43,13 +46,15 @@ information necessary to execute the command
 
 ### UI Component
 
-The API of this component is primarily specified in `Display.java`, with parsing functionality in `Parser.java` and validation in `Validator.java`.
+The API of this component is primarily specified in `Display.java`, with parsing functionality in `Parser.java` and
+validation in `Validator.java`.
 
 ---
 
 #### Structure of the UI Component
 
-The UI consists of three main parts: `Display`, `Parser`, and `Validator`. All these work together to handle user interaction through a console-based command-line interface.
+The UI consists of three main parts: `Display`, `Parser`, and `Validator`. All these work together to handle user
+interaction through a console-based command-line interface.
 
 The UI component uses standard input/output streams. The interaction flow is managed in the `SGSafe` main class.
 
@@ -67,11 +72,14 @@ The UI component:
 
 #### Key Classes
 
-**Display**: Handles all user-facing output with formatted messages, including welcome/goodbye messages and command results.
+**Display**: Handles all user-facing output with formatted messages, including welcome/goodbye messages and command
+results.
 
-**Parser**: Interprets raw input and creates structured `Command` objects by extracting keywords, validating flags, and enforcing input constraints.
+**Parser**: Interprets raw input and creates structured `Command` objects by extracting keywords, validating flags, and
+enforcing input constraints.
 
-**Validator**: Provides utility methods to validate flags, check required fields, and verify case ID format (6-character hexadecimal).
+**Validator**: Provides utility methods to validate flags, check required fields, and verify case ID format (6-character
+hexadecimal).
 
 #### Interaction Flow
 
@@ -104,13 +112,13 @@ The UI component:
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priorities | Version | As a ...           | I want to ...           | So that I can ...                                 |
-|------------|---------|--------------------|-------------------------|---------------------------------------------------|
-| ***        | v1.0    | front-desk officer | create case             | record cases into the system                      |
-| ***        | v1.0    | front-desk officer | edit case details       | edit cases that are typed wrongly                 |
-| ***        | v1.0    | front-desk officer | mark case as closed     | close cases that have been attended to            |
-| ***        | v1.0    | front-desk officer | delete case             | delete duplicates                                 |
-| ***        | v1.0    | front-desk officer | list all cases          | see all the cases that are currently being worked on |
+| Priorities | Version | As a ...           | I want to ...       | So that I can ...                                    |
+|------------|---------|--------------------|---------------------|------------------------------------------------------|
+| ***        | v1.0    | front-desk officer | create case         | record cases into the system                         |
+| ***        | v1.0    | front-desk officer | edit case details   | edit cases that are typed wrongly                    |
+| ***        | v1.0    | front-desk officer | mark case as closed | close cases that have been attended to               |
+| ***        | v1.0    | front-desk officer | delete case         | delete duplicates                                    |
+| ***        | v1.0    | front-desk officer | list all cases      | see all the cases that are currently being worked on |
 
 ---
 
@@ -118,8 +126,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 - Should work on any mainstream OS as long as it has Java 17 or above installed.
 - Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-- A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-{More to be added}
+- A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be
+  able to accomplish most of the tasks faster using commands than using the mouse.
+  {More to be added}
 
 ---
 
