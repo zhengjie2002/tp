@@ -4,6 +4,8 @@ import seedu.sgsafe.domain.casefiles.type.financial.BurglaryCase;
 import seedu.sgsafe.domain.casefiles.type.financial.ScamCase;
 import seedu.sgsafe.domain.casefiles.type.property.ArsonCase;
 import seedu.sgsafe.domain.casefiles.type.property.VandalismCase;
+import seedu.sgsafe.domain.casefiles.type.sexual.RapeCase;
+import seedu.sgsafe.domain.casefiles.type.sexual.VoyeurismCase;
 import seedu.sgsafe.domain.casefiles.type.traffic.AccidentCase;
 import seedu.sgsafe.domain.casefiles.type.traffic.SpeedingCase;
 import seedu.sgsafe.domain.casefiles.Case;
@@ -129,6 +131,8 @@ public class AddCommand extends Command {
         case "burglary" -> newCase = new BurglaryCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "arson" -> newCase = new ArsonCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "vandalism" -> newCase = new VandalismCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "rape" -> newCase = new RapeCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "Voyeurism" -> newCase = new VoyeurismCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "speeding" -> newCase = new SpeedingCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "accident" -> newCase = new AccidentCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "assault" -> newCase = new AssaultCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);

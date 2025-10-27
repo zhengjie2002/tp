@@ -9,10 +9,12 @@ organised digital workflow that enhances operational efficiency for the public s
 ## Table of Contents
 
 - [Quick Start](#quick-start)
+- [Case Categories](#case-categories)
 - [Features](#features)
   - [Adding a case: `add`](#adding-a-case-add)
   - [Listing cases: `list`](#listing-cases-list)
   - [Closing a case: `close`](#closing-a-case-close)
+  - [Opening a case: `open`](#opening-a-case-open)
   - [Updating a case: `edit`](#editing-a-case-edit)
   - [Deleting a case: `delete`](#deleting-a-case-delete)
   - [Exiting the program: `bye`](#exiting-the-program-bye)
@@ -31,6 +33,25 @@ organised digital workflow that enhances operational efficiency for the public s
 5. Type commands in the command line and press Enter to execute them. Refer to the [Command Summary](#command-summary)
    section
    below for a quick overview of available commands.
+
+---
+
+## Case Categories
+
+| Type          | Type Tags                                            | Category  | Category Tags                       |
+|---------------|------------------------------------------------------|-----------|-------------------------------------|
+| **Financial** |                                                      | Scam      |                                     |
+|               |                                                      | Theft     | - Stolen Object                     |
+| **Property**  |                                                      | Arson     |                                     |
+|               |                                                      | Vandalism |                                     |
+| **Sexual**    |                                                      | Rape      |                                     |
+|               |                                                      | Voyeurism |                                     |
+| **Traffic**   | - Vehicle type<br/> - Vehicle plate<br/> - Road name | Speeding  | - Speed limit<br/> - Exceeded speed |
+|               |                                                      | Accident  |                                     |
+| **Violent**   |                                                      | Assault   |                                     |
+|               |                                                      | Murder    | - Weapon<br/> - Number of victims   |
+|               |                                                      | Robbery   |                                     |
+| **Others**    | - Custom Category                                    | Others    |                                     |
 
 ---
 
@@ -57,8 +78,9 @@ organised digital workflow that enhances operational efficiency for the public s
 
 Adds a new case to the case management system.
 
-**Format:** `add --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]`
+**Format:** `add --category CATEGORY --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]`
 
+* `CATEGORY`: The category of the case
 * `TITLE`: The title or summary of the case
 * `DATE`: The date the case was recorded or occurred
 * `INFO`: Additional information or notes about the case
@@ -70,8 +92,8 @@ Adds a new case to the case management system.
 
 **Examples:**
 
-* `add --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith`
-* `add --info Burglary at 123 Main St --date 2024-02-20 --title Burglary case`
+* `add --category Theft --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith`
+* `add --category Burglary --info Burglary at 123 Main St --date 2024-02-20 --title Burglary case`
 
 ---
 
@@ -126,15 +148,31 @@ Officer : Officer Lim
 
 Marks a case as closed.
 
-**Format:** `close INDEX`
+**Format:** `close ID`
 
-* Closes the case at the specified `INDEX`.
-* The index refers to the index number shown in the displayed case list.
-* The index **must be a positive integer** 1, 2, 3, … and the case must exist
+* Closes the case with the specified `ID`.
+* The id refers to the id of the case itself.
+* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
 
 **Examples:**
 
-* `list` followed by `close 2` closes the 2nd case in the list.
+* `close 000003` closes the case with the id 000003 in the list.
+
+---
+
+### Opening a case: `open`
+
+Marks a case as open.
+
+**Format:** `open ID`
+
+* Reopens the case with the specified `ID`.
+* The id refers to the id of the case itself.
+* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
+
+**Examples:**
+
+* `open 000003` opens the case with the id 000003 in the list.
 
 ---
 
@@ -164,7 +202,7 @@ Updates the details of an existing case.
 
 * Deletes the case with the specified ID.
 * The id refers to the id of the case itself.
-* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist
+* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
 
 **Examples:**
 
@@ -195,14 +233,15 @@ in the next iteration of SGSafe. Stay turned.
 
 ## Command Summary
 
-| Action          | Format                                                                                         | Example                                                                                                   |
-|-----------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| **Add case**    | `add --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]`              | `add --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith` |
-| **List cases**  | `list`                                                                                         | `list`                                                                                                    |
-| **Close case**  | `close INDEX`                                                                                  | `close 2`                                                                                                 |
-| **Edit case**   | `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]` | `edit 1 --victim Jane Smith --officer Officer Lee`                                                        |
-| **Delete case** | `delete ID`                                                                                    | `delete 00beef`                                                                                           |
-| **Exit**        | `bye`                                                                                          | `bye`                                                                                                     |
+| Action          | Format                                                                                                | Example                                                                                                                    |
+|-----------------|-------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| **Add case**    | `add --category CATEGORY --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]` | `add --category Theft --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith` |
+| **List cases**  | `list`                                                                                                | `list`                                                                                                                     |
+| **Close case**  | `close ID`                                                                                            | `close 000003`                                                                                                             |
+| **Open case**   | `open ID`                                                                                             | `open 000003`                                                                                                              |
+| **Edit case**   | `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]`        | `edit 1 --victim Jane Smith --officer Officer Lee`                                                                         |
+| **Delete case** | `delete ID`                                                                                           | `delete 00beef`                                                                                                            |
+| **Exit**        | `bye`                                                                                                 | `bye`                                                                                                                      |
 
 ## Coming Soon
 - Data transfer between computers
