@@ -326,7 +326,7 @@ class ParserTest {
         assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
     }
 
-  // ----------- TESTS FOR READ COMMANDS ----------- //
+    // ----------- TESTS FOR READ COMMANDS ----------- //
 
     @Test
     void parseInput_readValid_returnsReadCommand() {

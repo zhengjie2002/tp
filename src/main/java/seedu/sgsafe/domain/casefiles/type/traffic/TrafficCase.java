@@ -23,32 +23,33 @@ public abstract class TrafficCase extends Case {
         return vehicleType;
     }
 
-    public String getvehiclePlate() {
+    public String getVehiclePlate() {
         return vehicleType;
     }
 
-    public String getroadName() {
+    public String getRoadName() {
         return vehicleType;
     }
 
     @Override
     public String[] getReadCaseDisplay() {
-        String header = "======== CASE ID " + this.getId() + " ========";
-        String statusLine = "Status  : " + (this.isOpen() ? "Open" : "Closed");
+        // Get base display lines from parent Case class
+        List<String> displayList = getBaseDisplayLines();
 
-        return new String[] {
-            header,
-            statusLine,
-            "Title   : " + (this.getTitle() == null ? "" : this.getTitle()),
-            "Category: " + (this.getCategory() == null ? "" : this.getCategory()),
-            "Date    : " + (this.getDate() == null ? "" : this.getDate()),
-            "Victim  : " + (this.getVictim() == null ? "" : this.getVictim()),
-            "Officer : " + (this.getOfficer() == null ? "" : this.getOfficer()),
-            "Vehicle Type  : " + (this.vehicleType == null ? "" : this.vehicleType),
-            "Vehicle Plate : " + (this.vehiclePlate == null ? "" : this.vehiclePlate),
-            "Road Name      : " + (this.roadName == null ? "" : this.roadName),
-            Display.formatIndentedText("Info    : ", this.getInfo(), 80)
-        };
+        // Add TrafficCase specific fields
+        displayList.add("\t" + Case.formatLineNoTruncate("Vehicle Type",
+                this.vehicleType == null ? "" : this.vehicleType));
+        displayList.add("\t" + Case.formatLineNoTruncate("Vehicle Plate",
+                this.vehiclePlate == null ? "" : this.vehiclePlate));
+        displayList.add("\t" + Case.formatLineNoTruncate("Road Name",
+                this.roadName == null ? "" : this.roadName));
+
+        // Display info
+        displayList.add("\t" + Display.formatIndentedText("Info :", getInfo(), 55));
+
+        return displayList.toArray(new String[0]);
+    }
+
 
     @Override
     public List<String> getValidEditFlags() {

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -377,26 +378,50 @@ public abstract class Case {
     }
 
     /**
-     * Returns a detailed, full-line representation of this case for reading purposes.
-     * <p>
-     * Similar to {@link #getMultiLineVerboseDisplay()}, but without truncating the {@code info} field.
+     * Formats a labeled line without truncating the value.
+     * Behaves like {@link #formatLine(String, String)} but prints the full content.
      *
-     * @return an array of strings representing the complete case details
+     * @param label the label to display
+     * @param value the value to display
+     * @return a formatted line with label and full value
+     */
+    public static String formatLineNoTruncate(String label, String value) {
+        if (value == null) {
+            return "";
+        }
+        String paddedLabel = String.format("%-17s", label); // same padding as the original
+        return paddedLabel + " : " + value;
+    }
+
+    /**
+     * Returns the base display lines common to all case types,
+     * excluding the Info field (so subclasses can safely add their own fields before Info).
+     */
+    protected List<String> getBaseDisplayLines() {
+        return new ArrayList<>(Arrays.asList(
+                "\t" + formatLineNoTruncate("Title", title),
+                "\t" + formatLineNoTruncate("Case ID", id),
+                "\t" + formatLineNoTruncate("Status", isOpen ? "Open" : "Closed"),
+                "\t" + formatLineNoTruncate("Category", category == null ? "" : getCategory().toString()),
+                "\t" + formatLineNoTruncate("Date", date == null ? "" : getDate().toString()),
+                "\t" + formatLineNoTruncate("Victim", victim == null ? "" : getVictim()),
+                "\t" + formatLineNoTruncate("Officer", officer == null ? "" : getOfficer()),
+                "\t" + formatLineNoTruncate("Created at", createdAt == null ? "" : createdAt.toString()),
+                "\t" + formatLineNoTruncate("Updated at", updatedAt == null ? "" : updatedAt.toString())
+        ));
+    }
+
+
+    /**
+     * Default implementation of getReadCaseDisplay for case categories without unique fields.
+     * Subclasses should override this method to add more details before the Info line.
      */
     public String[] getReadCaseDisplay() {
-        String header = "======== CASE ID " + this.id + " ========";
-        String statusLine = "Status  : " + (this.isOpen ? "Open" : "Closed");
+        List<String> displayList = getBaseDisplayLines();
+        displayList.add("\t" + Display.formatIndentedText("Info :", getInfo(), 55));
 
-        return new String[] {
-            header,
-            statusLine,
-            "Title   : " + (title == null ? "" : title),
-            "Category: " + (categoryString == null ? "" : categoryString),
-            "Date    : " + (date == null ? "" : date),
-            "Victim  : " + (victim == null ? "" : victim),
-            "Officer : " + (officer == null ? "" : officer),
-            Display.formatIndentedText("Info    : ", info, 80)
-        };
+
+        return displayList.toArray(new String[0]);
     }
 
     /**

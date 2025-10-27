@@ -3,6 +3,7 @@ package seedu.sgsafe.domain.casefiles.type.violent;
 import java.util.List;
 import java.util.Map;
 
+import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 import seedu.sgsafe.utils.ui.Display;
 
@@ -28,22 +29,18 @@ public class MurderCase extends ViolentCase {
 
     @Override
     public String[] getReadCaseDisplay() {
-        String header = "======== CASE ID " + this.getId() + " ========";
-        String statusLine = "Status  : " + (this.isOpen() ? "Open" : "Closed");
+        List<String> displayList = getBaseDisplayLines();
 
-        return new String[] {
-            header,
-            statusLine,
-            "Title   : " + (this.getTitle() == null ? "" : this.getTitle()),
-            "Category: " + (this.getCategory() == null ? "" : this.getCategory()),
-            "Date    : " + (this.getDate() == null ? "" : this.getDate()),
-            "Victim  : " + (this.getVictim() == null ? "" : this.getVictim()),
-            "Officer : " + (this.getOfficer() == null ? "" : this.getOfficer()),
-            "Weapon  : " + (this.weapon == null ? "" : this.weapon),
-            "Number of Victims: " + (this.numberOfVictims == 0 ? "" : this.numberOfVictims),
-            Display.formatIndentedText("Info    : ", this.getInfo(), 80)
-        };
-      
+        displayList.add("\t" + Case.formatLineNoTruncate("Weapon", this.weapon == null ? "" : this.weapon));
+        displayList.add("\t" + Case.formatLineNoTruncate("Number of Victims",
+                this.numberOfVictims == null ? "" : this.numberOfVictims.toString()));
+
+        displayList.add("\t" + Display.formatIndentedText("Info :", getInfo(), 55));
+
+        return displayList.toArray(new String[0]);
+    }
+
+    @Override
     public List<String> getValidEditFlags() {
         return List.of("title", "date", "info", "victim", "officer", "weapon", "number-of-victims");
     }

@@ -3,6 +3,7 @@ package seedu.sgsafe.domain.casefiles.type.traffic;
 import java.util.List;
 import java.util.Map;
 
+import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 import seedu.sgsafe.utils.ui.Display;
 
@@ -28,24 +29,25 @@ public class SpeedingCase extends TrafficCase {
 
     @Override
     public String[] getReadCaseDisplay() {
-        String header = "======== CASE ID " + this.getId() + " ========";
-        String statusLine = "Status  : " + (this.isOpen() ? "Open" : "Closed");
+        List<String> displayList = getBaseDisplayLines();
 
-        return new String[] {
-            header,
-            statusLine,
-            "Title   : " + (this.getTitle() == null ? "" : this.getTitle()),
-            "Category: " + (this.getCategory() == null ? "" : this.getCategory()),
-            "Date    : " + (this.getDate() == null ? "" : this.getDate()),
-            "Victim  : " + (this.getVictim() == null ? "" : this.getVictim()),
-            "Officer : " + (this.getOfficer() == null ? "" : this.getOfficer()),
-            "Vehicle Type  : " + (this.getVehicleType() == null ? "" : this.getVehicleType()),
-            "Vehicle Plate : " + (this.getVehicleType() == null ? "" : this.getVehicleType()),
-            "Road Name      : " + (this.getroadName() == null ? "" : this.getroadName()),
-            "Speed Limit  : " + (this.speedLimit == 0 ? "" : this.speedLimit),
-            "Exceeded Speed : " + (this.exceededSpeed == 0 ? "" : this.exceededSpeed),
-            Display.formatIndentedText("Info    : ", this.getInfo(), 80)
-        };
+        displayList.add("\t" + Case.formatLineNoTruncate("Vehicle Type",
+                this.getVehicleType() == null ? "" : this.getVehicleType()));
+        displayList.add("\t" + Case.formatLineNoTruncate("Vehicle Plate",
+                this.getVehiclePlate() == null ? "" : this.getVehiclePlate()));
+        displayList.add("\t" + Case.formatLineNoTruncate("Road Name",
+                this.getRoadName() == null ? "" : this.getRoadName()));
+        displayList.add("\t" + Case.formatLineNoTruncate("Speed Limit",
+                this.speedLimit == null ? "" : this.speedLimit.toString()));
+        displayList.add("\t" + Case.formatLineNoTruncate("Exceeded Speed",
+                this.exceededSpeed == null ? "" : this.exceededSpeed.toString()));
+
+        displayList.add("\t" + Display.formatIndentedText("Info :", getInfo(), 55));
+
+        return displayList.toArray(new String[0]);
+    }
+
+    @Override
     public List<String> getValidEditFlags() {
         return List.of("title", "date", "info", "victim", "officer",
                 "vehicle-type", "vehicle-plate", "road-name",

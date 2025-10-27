@@ -55,7 +55,7 @@ public class Display {
             return label;
         }
         StringBuilder out = new StringBuilder(label + "\n");
-        String indent = "\t";
+        String indent = "\t\t\t";
         int max = width - indent.length();
         String[] words = text.split("\\s+");
         StringBuilder line = new StringBuilder(indent);

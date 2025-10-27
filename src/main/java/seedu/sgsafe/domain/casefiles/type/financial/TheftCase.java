@@ -3,6 +3,7 @@ package seedu.sgsafe.domain.casefiles.type.financial;
 import java.util.List;
 import java.util.Map;
 
+import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 import seedu.sgsafe.utils.ui.Display;
 
@@ -23,20 +24,16 @@ public class TheftCase extends FinancialCase {
 
     @Override
     public String[] getReadCaseDisplay() {
-        String header = "======== CASE ID " + this.getId() + " ========";
-        String statusLine = "Status  : " + (this.isOpen() ? "Open" : "Closed");
+        List<String> displayList = getBaseDisplayLines();
 
-        return new String[] {
-            header,
-            statusLine,
-            "Title   : " + (this.getTitle() == null ? "" : this.getTitle()),
-            "Category: " + (this.getCategory() == null ? "" : this.getCategory()),
-            "Date    : " + (this.getDate() == null ? "" : this.getDate()),
-            "Victim  : " + (this.getVictim() == null ? "" : this.getVictim()),
-            "Officer : " + (this.getOfficer() == null ? "" : this.getOfficer()),
-            "Stolen Object : " + (this.stolenObject == null ? "" : this.stolenObject),
-            Display.formatIndentedText("Info    : ", this.getInfo(), 80)
-        };
+        displayList.add("\t" + Case.formatLineNoTruncate("Vehicle Type",
+                this.stolenObject == null ? "" : this.stolenObject));
+        displayList.add("\t" + Display.formatIndentedText("Info :", getInfo(), 55));
+
+        return displayList.toArray(new String[0]);
+    }
+
+    @Override
     public List<String> getValidEditFlags() {
         return List.of("title", "date", "info", "victim", "officer", "stolen-object");
     }
