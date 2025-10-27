@@ -1,11 +1,11 @@
 James Gosling
 list
-add --category murder --title Murder at Yishun --info Yishun Ring Road --date 23-06-2020 --victim Lim Ying --officer Tony
+add --category murder --title Murder at Yishun --info Yishun Ring Road --date 23/06/2020 --victim Lim Ying --officer Tony
 add --category murder --title Murder at Clementi --info Nowhere
 list
-add --category murder --title Murder at Jurong --title Murder at Jurong --info Yishun Ring Road --date 05-06-2002
+add --category murder --title Murder at Jurong --title Murder at Jurong --info Yishun Ring Road --date 05/06/2002
 add --category murder --title --title Murder at Yishun --info Yishun Ring Road --date
-add --category accident --title Car accident --info Jurong East Road --date 05-06-2018
+add --category accident --title Car accident --info Jurong East Road --date 05/06/2018
 list --status open
 list --status closed
 list --status all
@@ -18,5 +18,15 @@ close
 list
 list --status closed
 add --category murder --title Shop Theft \-- jewellery --info Clementi --date 05-06-2022
+list
+list --mode summary --status open
+list --mode summary --status closed
+list --mode summary --status all
+list --mode summary --status
+list --mode summary
+list --status open
+list --status closed
+list --status all
+list --status
 list
 bye

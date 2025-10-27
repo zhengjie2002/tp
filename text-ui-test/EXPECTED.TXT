@@ -9,7 +9,7 @@
 	____________________________________________________________
 	____________________________________________________________
 	New case added:
-	[O] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[Open]   Murder           000000 23/06/2020 Murder at Yishun
 	____________________________________________________________
 	____________________________________________________________
 	Your add command format is incorrect.
@@ -19,7 +19,8 @@
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case in total
-	[O] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Open]   Murder           000000 23/06/2020 Murder at Yishun
 	____________________________________________________________
 	____________________________________________________________
 	Your command format is incorrect.
@@ -32,20 +33,22 @@
 	____________________________________________________________
 	____________________________________________________________
 	New case added:
-	[O] #000001 [Traffic accident] 05-06-2018 Car accident
+	[Open]   Traffic accident 000001 05/06/2018 Car accident
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases open
-	[O] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 [Traffic accident] 05-06-2018 Car accident
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Open]   Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Car accident
 	____________________________________________________________
 	____________________________________________________________
 	You currently have no cases closed. Add some now!
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total
-	[O] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 [Traffic accident] 05-06-2018 Car accident
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Open]   Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Car accident
 	____________________________________________________________
 	____________________________________________________________
 	Your command format is incorrect.
@@ -54,14 +57,14 @@
 	____________________________________________________________
 	____________________________________________________________
 	Case closed:
-	[C] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	____________________________________________________________
 	____________________________________________________________
 	Case edited:
-	[O] #000001 [Traffic accident] 05-06-2018 Robbery
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
-	Case found: [O] #000001 [Traffic accident] 05-06-2018 Robbery
+	Case found: [Open]   Traffic accident 000001 05/06/2018 Robbery
 	
 	Fields that can be edited: --title, --date, --info, --victim, --officer, --vehicle-type, --vehicle-plate, --road-name
 	
@@ -78,22 +81,79 @@
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total
-	[C] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 [Traffic accident] 05-06-2018 Robbery
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case closed
-	[C] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	____________________________________________________________
 	____________________________________________________________
-	New case added:
-	[O] #000002 [Murder] 05-06-2022 Shop Theft -- jewellery
+	The date input format is invalid.
+	Please enter the date in the format: dd/MM/yyyy.
+	You may change this in the settings.
 	____________________________________________________________
 	____________________________________________________________
-	You currently have 3 cases in total
-	[C] #000000 [Murder] 23-06-2020 Murder at Yishun | Victim: Lim Ying | Officer: Tony
-	[O] #000001 [Traffic accident] 05-06-2018 Robbery
-	[O] #000002 [Murder] 05-06-2022 Shop Theft -- jewellery
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case open
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case closed
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is an incorrect usage of flag. Use flags like --title TITLE
+	Please see which flag is required for this command.
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case open
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case closed
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is an incorrect usage of flag. Use flags like --title TITLE
+	Please see which flag is required for this command.
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
 	Thanks for using SGSafe :)
