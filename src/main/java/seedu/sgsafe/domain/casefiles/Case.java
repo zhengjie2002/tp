@@ -3,12 +3,14 @@ package seedu.sgsafe.domain.casefiles;
 import seedu.sgsafe.domain.casefiles.type.CaseType;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 import seedu.sgsafe.utils.settings.Settings;
+import seedu.sgsafe.utils.storage.Storage;
 import seedu.sgsafe.utils.ui.DateFormatter;
 
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public abstract class Case {
     private boolean isDeleted;
 
     /** Metadata timestamp for auditing of when the case is created. */
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     /** Metadata timestamp for auditing of when the case is updated. */
     private LocalDateTime updatedAt;
@@ -157,9 +159,31 @@ public abstract class Case {
         return this.isDeleted;
     }
 
-    public void setDeleted() {
-        this.isDeleted = true;
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    /**
+     * Sets the createdAt timestamp.
+     *
+     * @param createdAt the {@link LocalDateTime} that createdAt should be set to.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
+     * Sets the updatedAt timestamp.
+     *
+     * @param updatedAt the {@link LocalDateTime} that updatedAt should be set to.
+     */
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public List<String> getAdditionalFields() {
+        return new ArrayList<>();
     }
 
     //@@ author xelisce
@@ -349,5 +373,31 @@ public abstract class Case {
             this.officer = newValues.get("officer");
         }
         this.updatedAt = LocalDateTime.now();
+    }
+
+    /**
+     * Converts this object's data fields into a single comma-separated string suitable for saving.
+     * <p>
+     * If any string field (e.g. {@code title}, {@code date}, etc.) is {@code null}, it will be replaced
+     * with an empty string in the output. The {@code isDeleted} field is represented as {@code "1"} if true
+     * and {@code "0"} if false.
+     * </p>
+     *
+     * @return a formatted string containing all of this object's field values
+     */
+    public String toSaveString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Storage.getSaveDatePattern());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Storage.getSaveDateTimePattern());
+        return "id:" + this.id
+                + "|category:" + this.category.toString()
+                + "|title:" + (this.title == null ? "" : this.title)
+                + "|date:" + (this.date == null ? "" : this.date.format(dateFormatter))
+                + "|info:" + (this.info == null ? "" : this.info)
+                + "|victim:" + (this.victim == null ? "" : this.victim)
+                + "|officer:" + (this.officer == null ? "" : this.officer)
+                + "|is-deleted:" + (this.isDeleted ? "1" : "0")
+                + "|is-open:" + (this.isOpen ? "1" : "0")
+                + "|created-at:" + (this.createdAt == null ? "" : this.createdAt.format(dateTimeFormatter))
+                + "|updated-at:" + (this.updatedAt == null ? "" : this.updatedAt.format(dateTimeFormatter));
     }
 }

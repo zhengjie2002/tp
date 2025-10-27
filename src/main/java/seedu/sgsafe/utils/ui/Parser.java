@@ -26,6 +26,7 @@ import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidSettingCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
+import  seedu.sgsafe.utils.exceptions.InvalidCharacterException;
 import seedu.sgsafe.utils.settings.Settings;
 
 import java.time.LocalDate;
@@ -78,6 +79,9 @@ public class Parser {
         userInput = cleanUserInput(userInput);
         String keyword = getKeywordFromUserInput(userInput);
         String remainder = getRemainderFromUserInput(userInput);
+        if(remainder.contains("|")) {
+            throw new InvalidCharacterException();
+        }
 
         return switch (keyword) {
         case "list" -> parseListCommand(remainder);
