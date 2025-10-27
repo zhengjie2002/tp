@@ -19,8 +19,6 @@ import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,12 +26,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.List;
 
 public class Storage {
     private static final String SAVE_DATE_PATTERN = "dd/MM/yyyy";
     private static final String SAVE_DATETIME_PATTERN = "dd/MM/yyyy HH:mm:ss";
 
     private final String filename;
+
+    public Storage(String filename) {
+        this.filename = filename;
+    }
 
     public static String getSaveDatePattern() {
         return SAVE_DATE_PATTERN;
@@ -43,17 +46,15 @@ public class Storage {
         return SAVE_DATETIME_PATTERN;
     }
 
-    public Storage(String filename) {
-        this.filename = filename;
-    }
-
     private Map<String, String> getFields(String saveString) {
         Map<String, String> fields = new HashMap<>();
         for (String field : saveString.split("\\|")) {
             String[] splitField = field.split(":", 2);
             String key = splitField[0];
             String value = (splitField[1].isEmpty()) ? null : splitField[1];
-            fields.put(key, value);
+            if(value != null) {
+                fields.put(key, value);
+            }
         }
         return fields;
     }
@@ -91,6 +92,12 @@ public class Storage {
         case OTHERS -> new OthersCase(id, title, date, info, victim, officer);
         default -> throw new IllegalStateException("Unexpected value given as category: " + category);
         };
+
+        // only retrieve the fields that are not initialised in the constructor
+        // update the case based on the additional fields found
+        List<String> additionalFields = newCase.getAdditionalFields();
+        fields.keySet().retainAll(additionalFields);
+        newCase.update(fields);
 
         // update timestamps
         newCase.setCreatedAt(createdAt);

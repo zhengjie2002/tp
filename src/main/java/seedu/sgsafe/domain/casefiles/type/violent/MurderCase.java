@@ -32,4 +32,19 @@ public class MurderCase extends ViolentCase {
             this.numberOfVictims = newValues.get("numberOfVictims");
         }
     }
+
+    @Override
+    public List<String> getAdditionalFields() {
+        List<String> additionalFields = super.getAdditionalFields();
+        additionalFields.add("weapon");
+        additionalFields.add("number-of-victims");
+        return additionalFields;
+    }
+
+    @Override
+    public String toSaveString() {
+        return super.toSaveString()
+                + "|number-of-victims:" + (this.numberOfVictims  == null ? "" : this.numberOfVictims)
+                + "|weapon:" + (this.weapon == null ? "" : this.weapon);
+    }
 }

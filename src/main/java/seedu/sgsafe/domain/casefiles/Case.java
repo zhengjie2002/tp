@@ -182,6 +182,10 @@ public abstract class Case {
         this.updatedAt = updatedAt;
     }
 
+    public List<String> getAdditionalFields() {
+        return new ArrayList<>();
+    }
+
     //@@ author xelisce
 
     /**

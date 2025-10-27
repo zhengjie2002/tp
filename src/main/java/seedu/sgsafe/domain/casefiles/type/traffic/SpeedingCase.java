@@ -35,4 +35,19 @@ public class SpeedingCase extends TrafficCase {
             this.exceededSpeed = newValues.get("exceededSpeed");
         }
     }
+
+    @Override
+    public List<String> getAdditionalFields() {
+        List<String> additionalFields = super.getAdditionalFields();
+        additionalFields.add("speed-limit");
+        additionalFields.add("exceeded-speed");
+        return additionalFields;
+    }
+
+    @Override
+    public String toSaveString() {
+        return super.toSaveString()
+                + "|speed-limit:" + (this.speedLimit == null ? "" : this.speedLimit)
+                + "|exceeded-speed:" + (this.exceededSpeed == null ? "" : this.exceededSpeed);
+    }
 }

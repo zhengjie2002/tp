@@ -28,4 +28,17 @@ public class TheftCase extends FinancialCase {
             this.stolenObject = newValues.get("stolenObject");
         }
     }
+
+    @Override
+    public List<String> getAdditionalFields() {
+        List<String> additionalFields = super.getAdditionalFields();
+        additionalFields.add("stolen-object");
+        return additionalFields;
+    }
+
+    @Override
+    public String toSaveString() {
+        return super.toSaveString()
+                + "|stolen-object:" + (this.stolenObject == null ? "" : this.stolenObject);
+    }
 }
