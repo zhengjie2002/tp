@@ -6,7 +6,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Map;
 
 import seedu.sgsafe.domain.casefiles.Case;
@@ -42,7 +45,18 @@ public class EditCommandTest {
         Map<String, String> updates = Map.of("title", "New Title");
         EditCommand command = new EditCommand("999999", updates);
 
-        assertDoesNotThrow(command::execute);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outputStream));
+
+        try {
+            command.execute();
+        } finally {
+            System.setOut(originalOut);
+        }
+
+        String output = outputStream.toString().trim();
+        assertTrue(output.contains("No case found with ID: 999999"));
     }
 
     @Test

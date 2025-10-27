@@ -34,6 +34,10 @@ public class EditCommand extends Command {
         } catch (CaseNotFoundException e) {
             Display.printMessage(e.getMessage());
         } catch (IncorrectFlagException e) {
+            if (e.getInvalidFlags() == null || e.getInvalidFlags().isEmpty()) {
+                Display.printMessage("No valid flags were provided to edit the case.");
+                return;
+            }
             Display.printMessage("The case was not edited due to invalid flags: " +
                     String.join(", ", e.getInvalidFlags()));
         }

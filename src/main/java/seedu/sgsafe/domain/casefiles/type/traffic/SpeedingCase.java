@@ -18,18 +18,18 @@ public class SpeedingCase extends TrafficCase {
     @Override
     public List<String> getValidEditFlags() {
         return List.of("title", "date", "info", "victim", "officer",
-                "vehicleType", "vehiclePlate", "roadName",
-                "speedLimit", "exceededSpeed");
+                "vehicle-type", "vehicle-plate", "road-name",
+                "speed-limit", "exceeded-speed");
     }
 
     @Override
     public void update(Map<String, String> newValues) {
         super.update(newValues);
 
-        if (newValues.containsKey("speedLimit")) {
+        if (newValues.containsKey("speed-limit")) {
             this.speedLimit = newValues.get("speedLimit");
         }
-        if (newValues.containsKey("exceededSpeed")) {
+        if (newValues.containsKey("exceeded-speed")) {
             this.exceededSpeed = newValues.get("exceededSpeed");
         }
     }

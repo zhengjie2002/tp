@@ -19,19 +19,19 @@ public abstract class TrafficCase extends Case {
     @Override
     public List<String> getValidEditFlags() {
         return List.of("title", "date", "info", "victim", "officer",
-                       "vehicleType", "vehiclePlate", "roadName");
+                       "vehicle-type", "vehicle-plate", "road-name");
     }
     
     @Override
     public void update(Map<String, String> newValues) {
         super.update(newValues);
-        if (newValues.containsKey("vehicleType")) {
+        if (newValues.containsKey("vehicle-type")) {
             this.vehicleType = newValues.get("vehicleType");
         }
-        if (newValues.containsKey("vehiclePlate")) {
+        if (newValues.containsKey("vehicle-plate")) {
             this.vehiclePlate = newValues.get("vehiclePlate");
         }
-        if (newValues.containsKey("roadName")) {
+        if (newValues.containsKey("road-name")) {
             this.roadName = newValues.get("roadName");
         }
     }

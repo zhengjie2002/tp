@@ -98,6 +98,8 @@ public class CaseManager {
      * @param caseId the 6-character hexadecimal case ID
      * @param newFlagValues map of field names to new values
      * @return the updated case’s display line
+     * @throws CaseNotFoundException   if no case with the given ID exists
+     * @throws IncorrectFlagException  if any flags in {@code newFlagValues} are invalid
      */
     public static String editCase(String caseId, Map<String, String> newFlagValues)
             throws CaseNotFoundException, IncorrectFlagException {

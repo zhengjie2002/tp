@@ -17,7 +17,7 @@ public class MurderCase extends ViolentCase {
 
     @Override
     public List<String> getValidEditFlags() {
-        return List.of("title", "date", "info", "victim", "officer", "weapon", "numberOfVictims");
+        return List.of("title", "date", "info", "victim", "officer", "weapon", "number-of-victims");
     }
 
     @Override
@@ -26,7 +26,7 @@ public class MurderCase extends ViolentCase {
         if (newValues.containsKey("weapon")) {
             this.weapon = newValues.get("weapon");
         }
-        if (newValues.containsKey("numberOfVictims")) {
+        if (newValues.containsKey("number-of-victims")) {
             this.numberOfVictims = newValues.get("numberOfVictims");
         }
     }
