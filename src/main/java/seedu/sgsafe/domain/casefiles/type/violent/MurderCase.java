@@ -5,7 +5,7 @@ import seedu.sgsafe.utils.ui.Display;
 
 public class MurderCase extends ViolentCase {
     private String weapon;
-    private String numberOfVictims;
+    private int numberOfVictims;
 
     public MurderCase(String id, String title, String date, String info, String victim, String officer) {
         super(id, title, date, info, victim, officer);
@@ -27,7 +27,7 @@ public class MurderCase extends ViolentCase {
             "Victim  : " + (this.getVictim() == null ? "" : this.getVictim()),
             "Officer : " + (this.getOfficer() == null ? "" : this.getOfficer()),
             "Weapon  : " + (this.weapon == null ? "" : this.weapon),
-            "Number of Victims: " + (this.numberOfVictims == null ? "" : this.numberOfVictims),
+            "Number of Victims: " + (this.numberOfVictims == 0 ? "" : this.numberOfVictims),
             Display.formatIndentedText("Info    : ", this.getInfo(), 80)
         };
     }

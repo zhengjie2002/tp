@@ -4,8 +4,8 @@ import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 import seedu.sgsafe.utils.ui.Display;
 
 public class SpeedingCase extends TrafficCase {
-    private String speedLimit;
-    private String exceededSpeed;
+    private int speedLimit;
+    private int exceededSpeed;
 
     public SpeedingCase(String id, String title, String date, String info, String victim, String officer) {
         super(id, title, date, info, victim, officer);
@@ -29,8 +29,8 @@ public class SpeedingCase extends TrafficCase {
             "Vehicle Type  : " + (this.getVehicleType() == null ? "" : this.getVehicleType()),
             "Vehicle Plate : " + (this.getVehicleType() == null ? "" : this.getVehicleType()),
             "Road Name      : " + (this.getroadName() == null ? "" : this.getroadName()),
-            "Speed Limit  : " + (this.speedLimit == null ? "" : this.speedLimit),
-            "Exceeded Speed : " + (this.exceededSpeed == null ? "" : this.exceededSpeed),
+            "Speed Limit  : " + (this.speedLimit == 0 ? "" : this.speedLimit),
+            "Exceeded Speed : " + (this.exceededSpeed == 0 ? "" : this.exceededSpeed),
             Display.formatIndentedText("Info    : ", this.getInfo(), 80)
         };
     }
