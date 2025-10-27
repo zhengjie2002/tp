@@ -451,7 +451,7 @@ public class Parser {
             case "exceeded-speed",
                  "number-of-victims", "speed-limit":
                 try {
-                    int intValue = Integer.parseInt(value);
+                    Integer intValue = Integer.parseInt(value);
                     if (intValue < 0) {
                         logger.log(Level.WARNING,"Value for flag '" + flag + "' is negative: " + intValue);
                         throw new InvalidEditCommandException();

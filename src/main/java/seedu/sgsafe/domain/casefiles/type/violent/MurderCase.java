@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 public class MurderCase extends ViolentCase {
     private String weapon;
-    private int numberOfVictims;
+    private Integer numberOfVictims;
 
     public MurderCase(String id, String title, LocalDate date, String info, String victim, String officer) {
         super(id, title, date, info, victim, officer);
@@ -29,7 +29,7 @@ public class MurderCase extends ViolentCase {
             this.weapon = (String) newValues.get("weapon");
         }
         if (newValues.containsKey("number-of-victims") && newValues.get("number-of-victims") != null) {
-            this.numberOfVictims = (int) newValues.get("number-of-victims");
+            this.numberOfVictims = (Integer) newValues.get("number-of-victims");
         }
     }
 }
