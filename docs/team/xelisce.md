@@ -24,7 +24,8 @@ Given below are my contributions to the project.
         * Added a dynamic info sentence indicating how many cases are listed and their status.
         * Refined verbose mode formatting for readability and alignment.
         * Integrated category display and ensured soft-deleted cases are excluded from listings.
-        * Maintained and updated `ListCommandTest` to reflect evolving logic and formatting changes.
+        * Maintained and updated `ListCommandTest` to reflect evolving logic and formatting changes. 
+        * Converted internal numeric case IDs to 6-character hexadecimal strings for consistent display formatting.
 
 * **Foundational Contributions**:
     * Laid the foundation for the `Case` and `CaseManager` classes.
