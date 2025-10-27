@@ -3,6 +3,9 @@ package seedu.sgsafe.domain.casefiles;
 import seedu.sgsafe.domain.casefiles.type.CaseType;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 
+import java.time.LocalDateTime;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,6 +46,12 @@ public abstract class Case {
     /** Indicates whether a case has been deleted. */
     private boolean isDeleted;
 
+    /** Metadata timestamp for auditing of when the case is created. */
+    private final LocalDateTime createdAt;
+
+    /** Metadata timestamp for auditing of when the case is updated. */
+    private LocalDateTime updatedAt;
+
     /**
      * Constructs a {@code Case} object with the specified details.
      * The case is initialized as closed by default.
@@ -63,30 +72,8 @@ public abstract class Case {
         this.officer = officer;
         this.isOpen = true;
         this.isDeleted = false;
-    }
-
-    /**
-     * Constructs a {@code Case} object with the specified details.
-     *
-     * @param id        the case ID in hex form
-     * @param title     the title or summary of the case
-     * @param date      the date the case was recorded or occurred
-     * @param info      additional information or notes about the case
-     * @param victim    the name of the victim involved
-     * @param officer   the name of the officer assigned
-     * @param isOpen    a boolean describing if the case is open or closed
-     * @param isDeleted a boolean describing if the case is deleted
-     */
-    public Case(String id, String title, String date, String info,
-                String victim, String officer, boolean isOpen, boolean isDeleted) {
-        this.id = id;
-        this.title = title;
-        this.date = date;
-        this.info = info;
-        this.victim = victim;
-        this.officer = officer;
-        this.isOpen = isOpen;
-        this.isDeleted = isDeleted;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     /**
@@ -167,6 +154,7 @@ public abstract class Case {
 
     public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
+        this.updatedAt = LocalDateTime.now();
     }
 
     /**
@@ -217,7 +205,9 @@ public abstract class Case {
             "Date    : " + (date == null ? "" : date),
             "Info    : " + truncatedInfo,
             "Victim  : " + (victim == null ? "" : victim),
-            "Officer : " + (officer == null ? "" : officer)
+            "Officer : " + (officer == null ? "" : officer),
+            "Created at: " + createdAt.toString(),
+            "Updated at: " + updatedAt.toString()
         };
     }
 
@@ -238,10 +228,12 @@ public abstract class Case {
 
     public void setClosed() {
         this.isOpen = false;
+        updatedAt = LocalDateTime.now();
     }
 
     public void setOpen() {
         this.isOpen = true;
+        updatedAt = LocalDateTime.now();
     }
 
     public boolean isOpen() {
@@ -249,10 +241,25 @@ public abstract class Case {
     }
 
     /**
-     * Updates the fields of this Case object using the values provided in the map.
-     * Only the fields that appear in newValues will be changed.
+     * Returns the list of valid flags that can be used to edit this case type.
+     * The default implementation returns common flags shared by all case types.
+     * Subclasses with additional fields should override this method.
      *
-     * @param newValues a map containing the fields to update and their new values
+     * @return list of valid flag names for editing
+     */
+    public List<String> getValidEditFlags() {
+        // Default flags for all case types
+        return List.of("title", "date", "info", "victim", "officer");
+    }
+
+    /**
+     * Updates the editable fields of {@code Case} instance using the provided map of new values.
+     * <p>
+     * Each key in {@code newValues} corresponds to a valid editable field (e.g. {@code title}, {@code date},
+     * {@code info}, {@code victim}, {@code officer}). Only fields present in the map are updated; all
+     * others remain unchanged.
+     *
+     * @param newValues a map containing field names and their new values
      */
     public void update(Map<String, String> newValues) {
         if (newValues.containsKey("title")) {
@@ -270,6 +277,7 @@ public abstract class Case {
         if (newValues.containsKey("officer")) {
             this.officer = newValues.get("officer");
         }
+        this.updatedAt = LocalDateTime.now();
     }
 
     /**

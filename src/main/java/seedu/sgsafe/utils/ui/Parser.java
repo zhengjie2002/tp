@@ -6,6 +6,7 @@ import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.command.EditPromptCommand;
 import seedu.sgsafe.utils.command.DeleteCommand;
 
 import seedu.sgsafe.utils.command.OpenCommand;
@@ -52,6 +53,9 @@ public class Parser {
 
     // Maximum allowed length for any input value
     private static final int MAX_INPUT_LENGTH = 5000;
+
+    // Placeholder for escaped flag sequences
+    private static final String ESCAPED_FLAG_PLACEHOLDER = "\u0000ESCAPED_FLAG\u0000";
 
     /**
      * Parses raw user input into a {@link Command} object.
@@ -307,6 +311,7 @@ public class Parser {
      * <p>
      * The input is split based on the defined flag separator regex, and each part is processed
      * to isolate the flag name and its value. The results are stored in a map.
+     * \-- is used as an escape character for -- to use -- in body text.
      *
      * @param input the portion of the input containing flags and their values
      * @return a map of flag names with their corresponding values
@@ -315,7 +320,10 @@ public class Parser {
      */
     private static Map<String, String> extractFlagValues(String input) {
 
-        String[] parts = input.split(FLAG_SEPARATOR_REGEX);
+        // Replace \-- with a placeholder
+        String escapedInput = input.replace("\\--", ESCAPED_FLAG_PLACEHOLDER);
+
+        String[] parts = escapedInput.split(FLAG_SEPARATOR_REGEX);
         Map<String, String> flagValues = new HashMap<>();
 
         for (String part : parts) {
@@ -337,6 +345,9 @@ public class Parser {
             String flag = trimmedPart.substring(0, spaceIndex).trim();
             String value = trimmedPart.substring(spaceIndex + 1).trim();
 
+            // Replace the placeholder back with --
+            value = value.replace(ESCAPED_FLAG_PLACEHOLDER, "--");
+
             if(value.length() > MAX_INPUT_LENGTH){
                 logger.log(Level.WARNING, "Input exceeds character limit");
                 throw new InputLengthExceededException();
@@ -354,8 +365,13 @@ public class Parser {
     }
 
     /**
-     * Parses the 'edit' command input, validates its format, and constructs an EditCommand object.
-     * Throws an InvalidEditCommandException if the input is missing, incorrectly formatted, or contains invalid flags.
+     * Parses the 'edit' command input.
+     * <p>
+     * Supports two modes:
+     * <ol>
+     *   <li>{@code edit <caseId>} - Shows valid flags for the case</li>
+     *   <li>{@code edit <caseId> --flag value} - Directly edits the case</li>
+     * </ol>
      */
     private static Command parseEditCommand(String remainder) {
         if (remainder.isEmpty()) {
@@ -363,22 +379,30 @@ public class Parser {
         }
 
         int firstSpaceIndex = remainder.indexOf(" ");
+
+        // Case 1: Only case ID is provided (e.g. "edit 000000")
         if (firstSpaceIndex == -1) {
-            throw new InvalidEditCommandException();
+            if (!validator.isValidCaseId(remainder)) {
+                throw new InvalidCaseIdException();
+            }
+            return new EditPromptCommand(remainder);
         }
+
+        // Case 2: Flags provided together with case ID (e.g. "edit 000000 --location 123 Street")
         String caseId = remainder.substring(0, firstSpaceIndex);
         if (!validator.isValidCaseId(caseId)) {
             throw new InvalidCaseIdException();
         }
 
         String replacements = remainder.substring(firstSpaceIndex + 1).trim();
-        Map<String, String> flagValues = extractFlagValues(replacements);
 
-        if (!validator.haveValidFlags(flagValues, VALID_FLAGS)){
-            throw new IncorrectFlagException();
+        // Check if replacements start with --
+        if (replacements.startsWith("--")) {
+            Map<String, String> flagValues = extractFlagValues(replacements);
+            return new EditCommand(caseId, flagValues);
+        } else {
+            throw new InvalidEditCommandException();
         }
-
-        return new EditCommand(caseId, flagValues);
     }
 
     /**
