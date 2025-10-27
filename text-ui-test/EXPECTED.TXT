@@ -1,0 +1,161 @@
+	____________________________________________________________
+	Welcome to SGSafe
+	____________________________________________________________
+	____________________________________________________________
+	The command 'James' that you have entered is not recognised.
+	____________________________________________________________
+	____________________________________________________________
+	You currently have no cases in total. Add some now!
+	____________________________________________________________
+	____________________________________________________________
+	New case added:
+	[Open]   Murder           000000 23/06/2020 Murder at Yishun
+	____________________________________________________________
+	____________________________________________________________
+	Your add command format is incorrect.
+	The correct format for an add command is
+	add --category CATEGORY --title TITLE --info INFO --date DATE [--victim VICTIM] [--officer OFFICER]
+	The items in [ ] are optional.
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Open]   Murder           000000 23/06/2020 Murder at Yishun
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is a duplicate flag.
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is an incorrect usage of flag. Use flags like --title TITLE
+	Please see which flag is required for this command.
+	____________________________________________________________
+	____________________________________________________________
+	New case added:
+	[Open]   Traffic accident 000001 05/06/2018 Car accident
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases open
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Open]   Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Car accident
+	____________________________________________________________
+	____________________________________________________________
+	You currently have no cases closed. Add some now!
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Open]   Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Car accident
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is an incorrect usage of flag. Use flags like --title TITLE
+	Please see which flag is required for this command.
+	____________________________________________________________
+	____________________________________________________________
+	Case closed:
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	____________________________________________________________
+	____________________________________________________________
+	Case edited:
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	Case found: [Open]   Traffic accident 000001 05/06/2018 Robbery
+	
+	Fields that can be edited: --title, --date, --info, --victim, --officer, --vehicle-type, --vehicle-plate, --road-name
+	
+	Usage: edit 000001 --<flag> <value>
+	Example: edit 000001 --location home --date 2024-01-01
+	____________________________________________________________
+	____________________________________________________________
+	The case was not edited due to invalid flags: food
+	____________________________________________________________
+	____________________________________________________________
+	Your close command format is incorrect.
+	The correct format for a close command is
+	close <case ID>
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case closed
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	____________________________________________________________
+	____________________________________________________________
+	The date input format is invalid.
+	Please enter the date in the format: dd/MM/yyyy.
+	You may change this in the settings.
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case open
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case closed
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is an incorrect usage of flag. Use flags like --title TITLE
+	Please see which flag is required for this command.
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case open
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 1 case closed
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is an incorrect usage of flag. Use flags like --title TITLE
+	Please see which flag is required for this command.
+	____________________________________________________________
+	____________________________________________________________
+	You currently have 2 cases in total
+	STATUS   CATEGORY         ID     DATE       TITLE
+	[Closed] Murder           000000 23/06/2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	____________________________________________________________
+	____________________________________________________________
+	Thanks for using SGSafe :)
+	We hope to see you again!
+	____________________________________________________________
