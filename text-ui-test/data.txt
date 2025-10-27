@@ -1,0 +1,2 @@
+id:000000|category:MURDER|title:Murder at Yishun|date:23/06/2020|info:Yishun Ring Road|victim:Lim Ying|officer:Tony|is-deleted:0|is-open:0|created-at:28/10/2025 01:16:52|updated-at:28/10/2025 01:16:52|number-of-victims:|weapon:
+id:000001|category:ACCIDENT|title:Robbery|date:05/06/2018|info:Jurong East Road|victim:|officer:|is-deleted:0|is-open:1|created-at:28/10/2025 01:16:52|updated-at:28/10/2025 01:16:52|vehicle-type:|vehicle-plate:|road-name:

@@ -12,154 +12,198 @@ public class HelpCommand extends Command {
     private static final String HELP_TEXT =
             "\n" +
                     "\tSGSAFE HELP MENU\n" +
-                    "\tHere is a list of supported commands and their formats. Use this as a quick reference to add,\n" +
-                    "\tmanage and view cases.\n" +
-                    "\t_________________________________________________________________________________________________\n" +
+                    "\tHere is a list of supported commands and their formats. Use this as a quick refere" +
+                    "nce to add, manage, and view cases.\n" +
+                    "\t______________________________________________________________________________________" +
+                    "____________________________________________\n" +
                     "\n" +
                     "\tADD — Create a new case\n" +
                     "\n" +
                     "\tDescription:\n" +
-                    "\t\tAdds a new case record to the system. Each case must belong to one of the predefined\n " +
-                    "\t\tcategories (e.g. theft, arson, accident, etc.) and include basic information such as\n" +
-                    "\t\t title, date, and information.\n" +
+                    "\t\tAdds a new case record to the system. Each case must belong to one of the predefined\n" +
+                    "\t\tcategories and include basic information such as title, date, and information.\n" +
                     "\n" +
                     "\tUsage:\n" +
-                    "\t\tadd --category <CATEGORY> --title <TITLE> --date <DATE> --info <INFO>\n" +
-                    "\t\t\t[--victim <NAME>] [--officer <NAME>]\n" +
+                    "\t\tadd --category CATEGORY --title TITLE --date DATE --info INFO [--victim VICTIM]" +
+                    " [--officer OFFICER]\n" +
                     "\n" +
                     "\tExamples:\n" +
-                    "\t\tadd --category robbery --title Bank Heist --date 2025-05-04 --info Masked suspects escaped.\n" +
-                    "\t\tadd --category arson --title Factory Fire --date 2024-12-10 --info Caused by electrical\n" +
-                    "\t\tmalfunction. --officer Jane Tan\n" +
-                    "\n" +
-                    "\tValid categories include:\n" +
-                    "\t\tfinancial: scam, theft\n" +
-                    "\t\tproperty: arson, vandalism\n" +
-                    "\t\tsexual: rape, voyeurism\n" +
-                    "\t\ttraffic: accident, speeding\n" +
-                    "\t\tviolent: assault, murder, robbery\n" +
-                    "\t\tothers: others\n" +
-                    "\n" +
-                    "\t\tExample:\n" +
-                    "\t\t\tadd --category theft --title Shoplifting --date 2024-05-01 --info Stolen items from store.\n" +
+                    "\t\tadd --category Theft --title Theft case --date 2024-01-15 --info Stolen wallet " +
+                    "--victim John Doe --officer Officer Smith\n" +
+                    "\t\tadd --category Burglary --info Burglary at 123 Main St --date 2024-02-20 --title " +
+                    "Burglary case\n" +
                     "\n" +
                     "\tNotes:\n" +
-                    "\t\t• The case ID is automatically generated.\n" +
-                    "\t\t• Flags (--flag) can be entered in any order, but must always be followed right after by\n" +
-                    "\t\ttheir values <VALUE>.\n" +
-                    "\t\t• Parameters in [brackets] are optional.\n" +
-                    "\t_________________________________________________________________________________________________\n" +
+                    "\t\t• CATEGORY must be one of the following:\n" +
+                    "\t\t  Burglary, Scam, Theft, Arson, Property, Vandalism, Rape, Voyeurism,\n" +
+                    "\t\t  Accident, Speeding, Assault, Murder, Others\n" +
+                    "\t\t• Date format defaults to dd/MM/yyyy. You can change it using the 'setting' command.\n" +
+                    "\t\t• A maximum of 5000 characters is allowed for all fields.\n" +
+                    "\t___________________________________________________________________________________________" +
+                    "_______________________________________\n" +
                     "\n" +
                     "\tLIST — View existing cases\n" +
                     "\n" +
                     "\tDescription:\n" +
-                    "\t\tDisplays case files in the system. You can filter by case status (open, closed, all) and\n" +
-                    "\t\tcontrol output detail using the mode flag.\n" +
+                    "\t\tDisplays all cases currently stored in the system, with optional filters for status " +
+                    "and output detail.\n" +
                     "\n" +
                     "\tUsage:\n" +
-                    "\t\tlist\n" +
-                    "\t\tlist [--status <open|closed|all>] [--mode <summary|verbose>]\n" +
+                    "\t\tlist [--status open|closed|all] [--mode summary|verbose]\n" +
                     "\n" +
                     "\tExamples:\n" +
                     "\t\tlist\n" +
-                    "\t\t\tLists all cases in summary mode (default).\n" +
                     "\t\tlist --status closed\n" +
-                    "\t\t\tLists only closed cases in summary mode.\n" +
                     "\t\tlist --status all --mode verbose\n" +
-                    "\t\t\tShows all cases with full details.\n" +
                     "\n" +
                     "\tFlags:\n" +
-                    "\t\t--status <value>    Filters which cases to show.\n" +
-                    "\t\t\topen   → Only open cases\n" +
-                    "\t\t\tclosed → Only closed cases\n" +
-                    "\t\t\tall    → All cases (default)\n" +
+                    "\t\t--status value    Filters cases by their status.\n" +
+                    "\t\t\topen   → Show only open cases\n" +
+                    "\t\t\tclosed → Show only closed cases\n" +
+                    "\t\t\tall    → Show all cases (default)\n" +
                     "\n" +
-                    "\t\t--mode <value>    Controls display format.\n" +
+                    "\t\t--mode value      Controls the output detail level.\n" +
                     "\t\t\tsummary → One line per case (default)\n" +
-                    "\t\t\tverbose → Detailed multi-line view\n" +
-                    "\t_________________________________________________________________________________________________\n" +
+                    "\t\t\tverbose → Detailed multi-line output\n" +
+                    "\t________________________________________________________________________________________" +
+                    "__________________________________________\n" +
+                    "\n" +
+                    "\tREAD — Display full details of a specific case\n" +
+                    "\n" +
+                    "\tDescription:\n" +
+                    "\t\tShows all available details for a specific case, including both the common base fields and" +
+                    " any additional fields\n" +
+                    "\t\tunique to the case category.\n" +
+                    "\t\tThis provides the most complete view of a case record.\n" +
+                    "\n" +
+                    "\tUsage:\n" +
+                    "\t\tread CASEID\n" +
+                    "\n" +
+                    "\tExamples:\n" +
+                    "\t\tread 00000b\n" +
+                    "\n" +
+                    "\tDisplayed Fields:\n" +
+                    "\t\t• Title\n" +
+                    "\t\t• Case ID\n" +
+                    "\t\t• Status (Open/Closed)\n" +
+                    "\t\t• Category\n" +
+                    "\t\t• Date\n" +
+                    "\t\t• Victim\n" +
+                    "\t\t• Officer\n" +
+                    "\t\t• Created at\n" +
+                    "\t\t• Updated at\n" +
+                    "\t\t• Additional category-specific fields (e.g., Weapon, Road name, Vehicle type, etc.)\n" +
+                    "\t___________________________________________________________________________________________" +
+                    "_______________________________________\n" +
                     "\n" +
                     "\tEDIT — Modify an existing case\n" +
                     "\n" +
                     "\tDescription:\n" +
-                    "\t\tEdits the details of an existing case by specifying the case ID and one or more flags with\n" +
-                    "\t\tnew values.\n" +
-                    "\t\tYou can also view editable fields first.\n" +
+                    "\t\tEdits the details of an existing case by specifying its case ID and one or more fields to " +
+                    "update.\n" +
+                    "\t\tIf no flags are provided, the valid editable fields for that case type will be shown.\n" +
                     "\n" +
                     "\tUsage:\n" +
-                    "\t\tedit <CASE_ID>\n" +
-                    "\t\tedit <CASE_ID> --flag <VALUE> [--flag <VALUE> ...]\n" +
+                    "\t\tedit CASEID\n" +
+                    "\t\tedit CASEID --flag VALUE [--flag VALUE ...]\n" +
                     "\n" +
                     "\tExamples:\n" +
                     "\t\tedit 000001\n" +
                     "\t\t\tDisplays a list of editable fields for the case.\n" +
                     "\t\tedit 000001 --title Updated Title --date 2024-02-10\n" +
-                    "\t\t\tUpdates title and date for case 000001.\n" +
+                    "\t\t\tUpdates the title and date of case 000001.\n" +
                     "\n" +
                     "\tNotes:\n" +
-                    "\t\t• All flags must match the case type’s valid editable fields.\n" +
-                    "\t\t• Invalid flags will cancel the update and show an error message.\n" +
-                    "\t\t• Use 'list' first to find a case ID.\n" +
-                    "\t_________________________________________________________________________________________________\n" +
+                    "\t\t• All flags must correspond to valid editable fields for that case type.\n" +
+                    "\t\t• Invalid flags will cancel the update and display an error message.\n" +
+                    "\t\t• Use 'list' to check the case ID of the case before editing.\n" +
+                    "\t____________________________________________________________________________________________" +
+                    "______________________________________\n" +
                     "\n" +
                     "\tCLOSE — Mark a case as closed\n" +
                     "\n" +
                     "\tDescription:\n" +
-                    "\t\tChanges the status of an existing open case to 'closed'.\n" +
+                    "\t\tMarks a case as closed. Closed cases remain in the system but are shown as [C].\n" +
                     "\n" +
                     "\tUsage:\n" +
-                    "\t\tclose <CASE_ID>\n" +
+                    "\t\tclose CASEID\n" +
                     "\n" +
                     "\tExamples:\n" +
-                    "\t\tclose 000002\n" +
-                    "\t_________________________________________________________________________________________________\n" +
+                    "\t\tclose 000003\n" +
                     "\n" +
-                    "\tOPEN — Reopen a previously closed case\n" +
+                    "\tNotes:\n" +
+                    "\t\t• The case ID must be exactly 6 hexadecimal digits (e.g., 000001, 00beef).\n" +
+                    "\t___________________________________________________________________________________" +
+                    "_______________________________________________\n" +
+                    "\n" +
+                    "\tOPEN — Reopen a closed case\n" +
                     "\n" +
                     "\tDescription:\n" +
-                    "\t\tReopens a case that was previously marked as closed. The case becomes visible again in the\n" +
-                    "\t\topen mode when listing.\n" +
+                    "\t\tReopens a previously closed case, changing its status back to [O].\n" +
                     "\n" +
                     "\tUsage:\n" +
-                    "\t\topen <CASE_ID>\n" +
+                    "\t\topen CASEID\n" +
                     "\n" +
                     "\tExamples:\n" +
-                    "\t\topen 000002\n" +
-                    "\t_________________________________________________________________________________________________\n" +
+                    "\t\topen 000003\n" +
+                    "\t___________________________________________________________________________________________" +
+                    "_______________________________________\n" +
                     "\n" +
-                    "\tDELETE — Remove a case permanently\n" +
+                    "\tDELETE — Delete a case\n" +
                     "\n" +
                     "\tDescription:\n" +
-                    "\t\tDeletes a case from the system. Deleted cases cannot be recovered. Make sure to double-check\n" +
-                    "\t\tbefore using this command.\n" +
+                    "\t\tPermanently deletes the specified case by its case ID. This action cannot be undone.\n" +
                     "\n" +
                     "\tUsage:\n" +
-                    "\t\tdelete <CASE_ID>\n" +
+                    "\t\tdelete CASEID\n" +
                     "\n" +
                     "\tExamples:\n" +
-                    "\t\tdelete 000004\n" +
-                    "\t_________________________________________________________________________________________________\n" +
+                    "\t\tdelete 00012a\n" +
                     "\n" +
-                    "\tHELP — Display this help message\n" +
+                    "\tNotes:\n" +
+                    "\t\t• The case ID must be exactly 6 hexadecimal digits.\n" +
+                    "\t____________________________________________________________________________________" +
+                    "______________________________________________\n" +
+                    "\n" +
+                    "\tSETTING — Configure program settings\n" +
                     "\n" +
                     "\tDescription:\n" +
-                    "\t\tShows a list of all available commands, their formats, and usage examples.\n" +
+                    "\t\tAllows customisation of input and output date formats for the program.\n" +
+                    "\n" +
+                    "\tUsage:\n" +
+                    "\t\tsetting --type TYPE --value VALUE\n" +
+                    "\n" +
+                    "\tExamples:\n" +
+                    "\t\tsetting --type dateinput --value dd-MM-yyyy\n" +
+                    "\t\tsetting --type dateoutput --value dd/MM/yyyy\n" +
+                    "\n" +
+                    "\tNotes:\n" +
+                    "\t\t• TYPE must be either 'dateinput' or 'dateoutput'.\n" +
+                    "\t\t• VALUE must be a valid Java DateTimeFormatter pattern.\n" +
+                    "\t\t• Default format is dd/MM/yyyy.\n" +
+                    "\t_______________________________________________________________________________________" +
+                    "___________________________________________\n" +
+                    "\n" +
+                    "\tHELP — Display this help menu\n" +
+                    "\n" +
+                    "\tDescription:\n" +
+                    "\t\tDisplays a list of all available commands with usage information and examples.\n" +
                     "\n" +
                     "\tUsage:\n" +
                     "\t\thelp\n" +
-                    "\t_________________________________________________________________________________________________\n" +
+                    "\t_________________________________________________________________________________________" +
+                    "_________________________________________\n" +
                     "\n" +
                     "\tBYE — Exit the program\n" +
                     "\n" +
                     "\tDescription:\n" +
-                    "\t\tTerminates the application safely. No further input will be accepted.\n" +
+                    "\t\tSafely terminates the program. All unsaved data will be written before exit.\n" +
                     "\n" +
                     "\tUsage:\n" +
                     "\t\tbye\n" +
-                    "\t_________________________________________________________________________________________________\n" +
+                    "\t___________________________________________________________________________________________" +
+                    "_______________________________________\n" +
                     "\tEnd of help.\n";
-
-
 
 
 
