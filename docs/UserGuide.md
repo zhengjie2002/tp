@@ -37,48 +37,29 @@ organised digital workflow that enhances operational efficiency for the public s
 ---
 
 ## Case Categories
-- The category tag for the add command should be from the list below.
-  If the category is not in the list, type 'others' as the category.
-- Some categories have tags attributed to them, which can be edited using the edit command.
-  Click on the category to view their attributed tags, if any.
+> **Notes:**
+>
+> * The category tag for the add command should be from the list below. 
+> If the category is not in the list, type 'others' as the category. 
+> * Some categories have additional tags attributed to them, which can be edited using the `edit` feature.
+  Additional tags, if any, are indicated in brackets.
+> * For more information on how to add and edit categories, 
+> refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
 
-
-- Burglary
-- Scam
-- Theft
-  - Stolen object
-- Arson
-- Property
-- Vandalism
-- Rape
-- Voyeurism
-- <details>
-<summary>Accident</summary>
-  - Vehicle type
-  - Vehicle plate
-  - Road name
-</details>
-- Speeding
-  - Vehicle type
-  - Vehicle plate
-  - Road name
-  - Speed limit
-  - Exceeded speed
-- Assault
-- Murder
-  - Weapon 
-  - Number of victims
-- Robbery
-- Others
-  - Custom category
-
-**Financial Cases** 💰
-
-**Categories:** Scam, Theft  
-**Tags:**  
-Theft:
-- Stolen Object  
-
+**`CATEGORY` tags:**
+* Burglary 
+* Scam 
+* Theft (Stolen object)
+* Arson 
+* Property 
+* Vandalism 
+* Rape 
+* Voyeurism 
+* Accident (Vehicle type, Vehicle plate, Road name)
+* Speeding (Vehicle type, Vehicle plate, Road name, Speed limit, Exceeded speed)
+* Assault 
+* Murder (Weapon, Number of victims, Robbery)
+* Others (Custom category)
 
 ---
 
@@ -115,6 +96,7 @@ Adds a new case to the case management system.
 * `OFFICER`: (Optional) The name(s) of the officer assigned
 
 > ℹ️ Note: The above are stored as strings. No special formatting is required.\
+> ℹ️ Note: For accepted CATEGORY tags, refer to [Case Categories](#case-categories).\
 > ⚠️ Warning: A maximum of 5000 characters is allowed for all the fields.
 
 **Examples:**
