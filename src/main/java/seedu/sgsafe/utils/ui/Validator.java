@@ -69,7 +69,7 @@ public class Validator {
         return false;
     }
 
-
+    //@@author shennontay
     /**
      * Checks whether the provided case ID is a valid 6-character hexadecimal string.
      * <p>
