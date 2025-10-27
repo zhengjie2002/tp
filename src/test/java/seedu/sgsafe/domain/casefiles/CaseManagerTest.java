@@ -3,9 +3,7 @@ package seedu.sgsafe.domain.casefiles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
-import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
-import seedu.sgsafe.utils.ui.Parser;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -79,7 +77,7 @@ class CaseManagerTest {
     @Test
     void deleteCase_withValidCommand_deletesCaseSuccessfully() throws Exception {
         caseList.add(new TheftCase("000000", "Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee"));
-            CaseManager.deleteCase("000000");
+        CaseManager.deleteCase("000000");
         assertEquals(1, caseList.size());
         assertEquals("Burglary", caseList.get(0).getTitle());
         assertEquals("2023-10-05", caseList.get(0).getDate());
