@@ -1,5 +1,6 @@
 package seedu.sgsafe.utils.command;
 
+// @@author xelisce
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,6 +15,7 @@ import seedu.sgsafe.domain.casefiles.type.property.VandalismCase;
 import seedu.sgsafe.domain.casefiles.type.violent.AssaultCase;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -43,7 +45,8 @@ class ListCommandTest {
 
     @Test
     void list_withOneOpenCase_returnsCorrectHeaderAndLine() {
-        caseList.add(new TheftCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
+        LocalDate date = LocalDate.of(2025, 10, 1);
+        caseList.add(new TheftCase("000001", "Robbery", date, "Masked suspect", "John Doe", "Officer Tan"));
 
         ListCommand command = new ListCommand(CaseListingMode.OPEN_ONLY, false);
         String[] output = command.getCaseDescriptions(caseList);
@@ -56,10 +59,11 @@ class ListCommandTest {
 
     @Test
     void list_withMixedCases_filtersByStatusCorrectly() {
-        caseList.add(new TheftCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
-        caseList.add(new ScamCase("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
+        LocalDate date = LocalDate.of(2025, 10, 1);
+        caseList.add(new TheftCase("000001", "Robbery", date, "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new ScamCase("000002", "Fraud", date, "Email scam", "Jane Doe", "Officer Lim"));
 
-        Case closedCase = new AssaultCase("000003", "Trespass", "2025-10-03",
+        Case closedCase = new AssaultCase("000003", "Trespass", date,
                 "Unauthorized entry", "Jake Doe", "Officer Ong");
         closedCase.setClosed();
         caseList.add(closedCase);
@@ -79,10 +83,11 @@ class ListCommandTest {
 
     @Test
     void list_withAllMode_returnsAllCases() {
-        caseList.add(new TheftCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
-        caseList.add(new ScamCase("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
+        LocalDate date = LocalDate.of(2025, 10, 1);
+        caseList.add(new TheftCase("000001", "Robbery", date, "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new ScamCase("000002", "Fraud", date, "Email scam", "Jane Doe", "Officer Lim"));
 
-        Case closedCase = new AssaultCase("000003", "Trespass", "2025-10-03",
+        Case closedCase = new AssaultCase("000003", "Trespass", date,
                 "Unauthorized entry", "Jake Doe", "Officer Ong");
         closedCase.setClosed();
         caseList.add(closedCase);
@@ -97,8 +102,9 @@ class ListCommandTest {
 
     @Test
     void list_withDefaultMode_behavesLikeAll() {
-        caseList.add(new TheftCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
-        caseList.add(new ScamCase("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
+        LocalDate date = LocalDate.of(2025, 10, 1);
+        caseList.add(new TheftCase("000001", "Robbery", date, "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new ScamCase("000002", "Fraud", date, "Email scam", "Jane Doe", "Officer Lim"));
 
         String[] output = new ListCommand(CaseListingMode.DEFAULT, false).getCaseDescriptions(caseList);
         assertEquals("You currently have 2 cases in total", output[0]);
@@ -109,7 +115,8 @@ class ListCommandTest {
 
     @Test
     void list_verboseMode_includesDetailedInfo() {
-        caseList.add(new TheftCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
+        LocalDate date = LocalDate.of(2025, 10, 1);
+        caseList.add(new TheftCase("000001", "Robbery", date, "Masked suspect", "John Doe", "Officer Tan"));
 
         ListCommand command = new ListCommand(CaseListingMode.ALL, true);
         String[] output = command.getCaseDescriptions(caseList);
@@ -119,7 +126,7 @@ class ListCommandTest {
         assertTrue(output[3].contains("Category"));
         assertTrue(output[3].contains("Theft"));
         assertTrue(output[4].contains("Robbery"));
-        assertTrue(output[5].contains("2025-10-01"));
+        assertTrue(output[5].contains("01/10/2025"));
         assertTrue(output[6].contains("Masked suspect"));
         assertTrue(output[9].contains("John Doe"));
         assertTrue(output[10].contains("Officer Tan"));
@@ -127,7 +134,8 @@ class ListCommandTest {
 
     @Test
     void list_summaryMode_omitsDetailedInfo() {
-        caseList.add(new TheftCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
+        LocalDate date = LocalDate.of(2025, 10, 1);
+        caseList.add(new TheftCase("000001", "Robbery", date, "Masked suspect", "John Doe", "Officer Tan"));
 
         ListCommand command = new ListCommand(CaseListingMode.ALL, false);
         String[] output = command.getCaseDescriptions(caseList);
@@ -138,10 +146,11 @@ class ListCommandTest {
 
     @Test
     void list_verboseMixed_includesDetails() {
-        caseList.add(new TheftCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
-        caseList.add(new ScamCase("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
+        LocalDate date = LocalDate.of(2025, 10, 1);
+        caseList.add(new TheftCase("000001", "Robbery", date, "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new ScamCase("000002", "Fraud", date, "Email scam", "Jane Doe", "Officer Lim"));
 
-        Case closedCase = new AssaultCase("000003", "Trespass", "2025-10-03",
+        Case closedCase = new AssaultCase("000003", "Trespass", date,
                 "Unauthorized entry", "Jake Doe", "Officer Ong");
         closedCase.setClosed();
         caseList.add(closedCase);
@@ -167,10 +176,11 @@ class ListCommandTest {
 
     @Test
     void list_summaryMixed_omitsDetails() {
-        caseList.add(new TheftCase("000001", "Robbery", "2025-10-01", "Masked suspect", "John Doe", "Officer Tan"));
-        caseList.add(new ScamCase("000002", "Fraud", "2025-10-02", "Email scam", "Jane Doe", "Officer Lim"));
+        LocalDate date = LocalDate.of(2025, 10, 1);
+        caseList.add(new TheftCase("000001", "Robbery", date, "Masked suspect", "John Doe", "Officer Tan"));
+        caseList.add(new ScamCase("000002", "Fraud", date, "Email scam", "Jane Doe", "Officer Lim"));
 
-        Case closedCase = new AssaultCase("000003", "Trespass", "2025-10-03",
+        Case closedCase = new AssaultCase("000003", "Trespass", date,
                 "Unauthorized entry", "Jake Doe", "Officer Ong");
         closedCase.setClosed();
         caseList.add(closedCase);
@@ -186,8 +196,9 @@ class ListCommandTest {
 
     @Test
     void list_verboseMode_truncatesLongInfo() {
+        LocalDate date = LocalDate.of(2025, 10, 1);
         String longInfo = "X".repeat(150);
-        caseList.add(new ScamCase("000004", "Forgery", "2025-10-04", longInfo, "Alex", "Officer Lee"));
+        caseList.add(new ScamCase("000004", "Forgery", date, longInfo, "Alex", "Officer Lee"));
 
         ListCommand command = new ListCommand(CaseListingMode.ALL, true);
         String[] output = command.getCaseDescriptions(caseList);
@@ -204,7 +215,8 @@ class ListCommandTest {
 
     @Test
     void list_verboseMode_handlesMissingFieldsGracefully() {
-        caseList.add(new VandalismCase("000005", "Vandalism", "2025-10-05", "Graffiti", null, null));
+        LocalDate date = LocalDate.of(2025, 10, 1);
+        caseList.add(new VandalismCase("000005", "Vandalism", date, "Graffiti", null, null));
 
         ListCommand command = new ListCommand(CaseListingMode.ALL, true);
         String[] output = command.getCaseDescriptions(caseList);
@@ -217,7 +229,7 @@ class ListCommandTest {
 
     @Test
     void list_verboseMode_includesCategoryField() {
-        caseList.add(new ScamCase("000006", "Forgery", "2025-10-06", "Fake documents", "Sam", "Officer Teo"));
+        caseList.add(new ScamCase("000006", "Forgery", date, "Fake documents", "Sam", "Officer Teo"));
 
         ListCommand command = new ListCommand(CaseListingMode.ALL, true);
         String[] output = command.getCaseDescriptions(caseList);

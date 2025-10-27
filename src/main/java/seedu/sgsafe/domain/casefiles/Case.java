@@ -2,6 +2,10 @@ package seedu.sgsafe.domain.casefiles;
 
 import seedu.sgsafe.domain.casefiles.type.CaseType;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
+import seedu.sgsafe.utils.settings.Settings;
+import seedu.sgsafe.utils.ui.DateFormatter;
+
+import java.time.LocalDate;
 
 import java.time.LocalDateTime;
 
@@ -30,7 +34,7 @@ public abstract class Case {
     private String title;
 
     /** The date the case was recorded or occurred. */
-    private String date;
+    private LocalDate date;
 
     /** Additional information or notes about the case. */
     private String info;
@@ -64,7 +68,7 @@ public abstract class Case {
      * @param victim  the name of the victim involved
      * @param officer the name of the officer assigned
      */
-    public Case(String id, String title, String date, String info, String victim, String officer) {
+    public Case(String id, String title, LocalDate date, String info, String victim, String officer) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -91,7 +95,7 @@ public abstract class Case {
      *
      * @return the date of the case
      */
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -157,6 +161,8 @@ public abstract class Case {
         this.isDeleted = true;
         this.updatedAt = LocalDateTime.now();
     }
+
+    //@@ author xelisce
 
     /**
      * Returns a formatted summary line representing this case for display purposes.
@@ -271,6 +277,7 @@ public abstract class Case {
         return input.length() <= 100 ? input : input.substring(0, 100) + "...";
     }
 
+    //@@ author
     public void setClosed() {
         this.isOpen = false;
         updatedAt = LocalDateTime.now();
@@ -310,9 +317,9 @@ public abstract class Case {
         if (newValues.containsKey("title")) {
             this.title = newValues.get("title");
         }
-        if (newValues.containsKey("date")) {
-            this.date = newValues.get("date");
-        }
+        //if (newValues.containsKey("date")) {
+        //    this.date = newValues.get("date");
+        //}
         if (newValues.containsKey("info")) {
             this.info = newValues.get("info");
         }

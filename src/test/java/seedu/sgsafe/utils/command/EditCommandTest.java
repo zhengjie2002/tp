@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.time.LocalDate;
 import java.util.Map;
 
 import seedu.sgsafe.domain.casefiles.Case;
@@ -23,8 +24,9 @@ public class EditCommandTest {
     @BeforeEach
     void setUp() {
         CaseManager.getCaseList().clear();
+        LocalDate date = LocalDate.of(2025, 10, 10);
 
-        sampleCase = new Case("000001", "Robbery", "2025-10-10", "Suspect armed", "Alice", "Officer Tan") {};
+        sampleCase = new Case("000001", "Robbery", date, "Suspect armed", "Alice", "Officer Tan") {};
         CaseManager.addCase(sampleCase);
     }
 
