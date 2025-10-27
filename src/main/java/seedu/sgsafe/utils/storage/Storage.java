@@ -4,6 +4,7 @@ import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 import seedu.sgsafe.domain.casefiles.type.OthersCase;
+import seedu.sgsafe.domain.casefiles.type.financial.BurglaryCase;
 import seedu.sgsafe.domain.casefiles.type.financial.ScamCase;
 import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
 import seedu.sgsafe.domain.casefiles.type.property.ArsonCase;
@@ -78,6 +79,7 @@ public class Storage {
         LocalDateTime updatedAt = LocalDateTime.parse(fields.get("updated-at"), dateTimeFormatter);
 
         Case newCase = switch (CaseCategory.valueOf(category)) {
+        case BURGLARY -> new BurglaryCase(id, title, date, info, victim, officer);
         case SCAM -> new ScamCase(id, title, date, info, victim, officer);
         case THEFT -> new TheftCase(id, title, date, info, victim, officer);
         case ARSON -> new ArsonCase(id, title, date, info, victim, officer);
@@ -90,7 +92,6 @@ public class Storage {
         case MURDER -> new MurderCase(id, title, date, info, victim, officer);
         case ROBBERY -> new RobberyCase(id, title, date, info, victim, officer);
         case OTHERS -> new OthersCase(id, title, date, info, victim, officer);
-        default -> throw new IllegalStateException("Unexpected value given as category: " + category);
         };
 
         // only retrieve the fields that are not initialised in the constructor
