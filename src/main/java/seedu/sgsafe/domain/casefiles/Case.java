@@ -165,24 +165,28 @@ public abstract class Case {
     //@@ author xelisce
 
     /**
-     * Returns a formatted summary line representing this case for display purposes.
+     * Constructs a formatted summary line for this case, suitable for display in summary listings.
      * <p>
      * The output includes:
      * <ul>
-     *   <li>Status indicator: {@code [O]} for open, {@code [C]} for closed</li>
+     *   <li>Status indicator: {@code [Open]} or {@code [Closed]}</li>
      *   <li>Category of the case</li>
      *   <li>Case ID: a unique 6-character hexadecimal string</li>
-     *   <li>Date and title of the case</li>
-     *   <li>Optional victim and officer details, if present</li>
+     *   <li>Date of the case (formatted)</li>
+     *   <li>Title of the case</li>
      * </ul>
+     * <p>
+     * Fields are padded for alignment using fixed-width formatting.
+     * Optional victim and officer details are excluded in summary mode.
      * <p>
      * Example output:
      * <pre>
-     * [O] #0001a3 2025-10-14 Robbery | Victim: Alice | Officer: Officer Tan
-     * [C] #0001a4 2025-10-15 Fraud
+     * [Open]   Theft            0001a3 2025-10-14 Theft from DBS in broad daylight
+     * [Closed] Scam             0001a4 2025-10-15 Fraud involving MFA
+     * [Closed] Traffic accident 0001a4 2025-10-15 Accident at the Nicolson Highway
      * </pre>
      *
-     * @return a display-friendly string summarizing the case
+     * @return a display-friendly summary string representing this case
      */
     public String getDisplayLine() {
         String status = this.isOpen ? "[Open]" : "[Closed]";
@@ -235,7 +239,7 @@ public abstract class Case {
     /**
      * Returns the status of the case as a plain string.
      * <p>
-     * Possible values are {@code "[Open["} or {@code "[Closed]"} depending on the case state.
+     * Possible values are {@code "[Open]"} or {@code "[Closed]"} depending on the case state.
      *
      * @return the status string
      */
@@ -260,6 +264,19 @@ public abstract class Case {
         return paddedLabel + " : " + truncate(value);
     }
 
+    /**
+     * Appends a formatted line to the given list if the value is not {@code null}.
+     * <p>
+     * This method formats the provided label and value using {@link #formatLine(String, String)},
+     * then adds the result to the specified list. If the value is {@code null}, the method does nothing.
+     * <p>
+     * This is typically used to conditionally include optional fields (e.g., victim or officer)
+     * in verbose case displays.
+     *
+     * @param lines the list to which the formatted line will be added
+     * @param label the label to display (e.g., "Victim", "Officer")
+     * @param value the value associated with the label; ignored if {@code null}
+     */
     private void addFormattedLine(List<String> lines, String label, String value) {
         if (value != null) {
             String formatted = formatLine(label, value);
