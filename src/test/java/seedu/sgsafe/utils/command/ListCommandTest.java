@@ -229,6 +229,7 @@ class ListCommandTest {
 
     @Test
     void list_verboseMode_includesCategoryField() {
+        LocalDate date = LocalDate.of(2023, 10, 5);
         caseList.add(new ScamCase("000006", "Forgery", date, "Fake documents", "Sam", "Officer Teo"));
 
         ListCommand command = new ListCommand(CaseListingMode.ALL, true);

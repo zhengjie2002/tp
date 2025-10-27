@@ -186,7 +186,8 @@ public abstract class Case {
      */
     public String getDisplayLine() {
         String status = this.isOpen ? "[Open]" : "[Closed]";
-        return String.format("%-8s %-9s %-6s %-10s %s", status, categoryString, this.id, this.date, this.title);
+        String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
+        return String.format("%-8s %-9s %-6s %-10s %s", status, categoryString, this.id, dateString, this.title);
     }
 
     /**
@@ -205,11 +206,12 @@ public abstract class Case {
     public String[] getMultiLineVerboseDisplay() {
         List<String> lines = new ArrayList<>();
         lines.add(formatCaseIDHeader());
+        String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
 
         addFormattedLine(lines, "Status", getStatusString());
         addFormattedLine(lines, "Category", categoryString);
         addFormattedLine(lines, "Title", title);
-        addFormattedLine(lines, "Date", date);
+        addFormattedLine(lines, "Date", dateString);
         addFormattedLine(lines, "Info", info);
         addFormattedLine(lines, "Created at", createdAt.toString());
         addFormattedLine(lines, "Updated at", updatedAt.toString());

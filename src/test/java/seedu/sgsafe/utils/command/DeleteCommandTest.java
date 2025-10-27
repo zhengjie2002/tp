@@ -7,6 +7,7 @@ import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +33,8 @@ public class DeleteCommandTest {
 
     @Test
     void execute_withValidParameters_deletesCase() {
-        caseList.add(new TheftCase("000000", "Burglary", "02/02/1990", "info", "Alice", "john"));
+        LocalDate date = LocalDate.of(1990, 2, 2);
+        caseList.add(new TheftCase("000000", "Burglary", date, "info", "Alice", "john"));
         DeleteCommand deleteCommand = new DeleteCommand("000000");
         deleteCommand.execute();
         assertTrue(caseList.get(0).isDeleted());
