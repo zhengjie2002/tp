@@ -6,24 +6,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
-
-
 import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.CommandType;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.AddCommand;
-import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 
+import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 
@@ -124,35 +121,29 @@ class ParserTest {
     // ----------- TESTS FOR EDIT COMMANDS ----------- //
 
     @Test
-    void parseInput_validEditCommand_returnsEditCommand() {
-        Command command = Parser.parseInput("edit 000000 --title NewTitle --date 2025-10-10");
-        assertEquals(CommandType.EDIT, command.getCommandType());
-
-        EditCommand editCommand = (EditCommand) command;
-
-        Map<String, String> newValues = editCommand.getNewFlagValues();
-        assertEquals("NewTitle", newValues.get("title"));
-        assertEquals("2025-10-10", newValues.get("date"));
-    }
-
-    @Test
     void parseInput_missingFlagValue_throwsInvalidEditCommandException() {
         assertThrows(IncorrectFlagException.class, () -> Parser.parseInput("edit abc123 --date"));
     }
 
     @Test
-    void parseInput_invalidFlag_throwsInvalidEditCommandException() {
-        assertThrows(IncorrectFlagException.class, () -> Parser.parseInput("edit ffffff --invalidFlag newValue"));
+    void parseInput_duplicateFlags_throwsDuplicateFlagException() {
+        assertThrows(DuplicateFlagException.class,
+                () -> Parser.parseInput("edit 000001 --title First --title Second"));
     }
 
     @Test
-    void parseInput_missingCaseId_throwsInvalidEditCommandException() {
-        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit --title newTitle"));
+    void parseInput_missingCaseId_throwsInvalidCaseIdException() {
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("edit --title newTitle"));
     }
 
     @Test
-    void parseInput_wrongCaseId_throwsInvalidEditCommandException() {
-        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit WrongcaseId --title newTitle"));
+    void parseInput_missingInput_throwsInvalidEditCommandException() {
+        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit "));
+    }
+
+    @Test
+    void parseInput_wrongCaseId_throwsInvalidCaseIdException() {
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("edit WrongcaseId --title newTitle"));
     }
 
     // ----------- TESTS FOR CLOSE COMMANDS ----------- //
@@ -175,12 +166,45 @@ class ParserTest {
         assertThrows(InvalidCloseCommandException.class, () -> Parser.parseInput("close   "));
     }
 
+    @Test
+    void parseInput_closeWrongCaseId_throwsInvalidCaseIdException() {
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("close A01"));
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("close 1"));
+    }
+
+    // ----------- TESTS FOR OPEN COMMANDS ----------- //
+
+    @Test
+    void parseInput_openValid_returnsOpenCommand() {
+        Command command = Parser.parseInput("open 000001");
+        assertEquals(CommandType.OPEN, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_openWithWhitespace_returnsOpenCommand() {
+        Command command = Parser.parseInput("   open   000001   ");
+        assertEquals(CommandType.OPEN, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_openMissingArgument_throwsInvalidOpenCommandException() {
+        assertThrows(InvalidOpenCommandException.class, () -> Parser.parseInput("open"));
+        assertThrows(InvalidOpenCommandException.class, () -> Parser.parseInput("open   "));
+    }
+
+    @Test
+    void parseInput_openWrongCaseId_throwsInvalidCaseIdException() {
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("open A01"));
+        assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("open 1"));
+    }
+
     // ----------- TESTS FOR ADD COMMANDS ----------- //
 
     @Test
     void parseInput_addValid_returnsAddCommand() {
         Command command = Parser.parseInput(
-                "add --title CaseTitle --date 2025-12-12 --info SomeInfo --victim JohnDoe --officer JaneDoe");
+                "add --category Theft --title CaseTitle --date 2025-12-12 " +
+                        "--info SomeInfo --victim JohnDoe --officer JaneDoe");
         assertEquals(CommandType.ADD, command.getCommandType());
     }
 
@@ -197,9 +221,10 @@ class ParserTest {
     @Test
     void parseInput_addWithExtraWhitespace_returnsAddCommand() {
         Command command = Parser.parseInput(
-                "  add   --title   CaseTitle   --date   2025-12-12   --info   SomeInfo   --victim   " +
-                        "JohnDoe   --officer   JaneDoe  ");
+                "  add   --category  Others --title   CaseTitle   --date   2025-12-12   " +
+                        "--info   SomeInfo   --victim   JohnDoe   --officer   JaneDoe  ");
         assertEquals(CommandType.ADD, command.getCommandType());
+        assertEquals("others", ((AddCommand) command).getCaseCategory());
         assertEquals("CaseTitle", ((AddCommand) command).getCaseTitle());
         assertEquals("2025-12-12", ((AddCommand) command).getCaseDate());
         assertEquals("SomeInfo", ((AddCommand) command).getCaseInfo());
@@ -227,5 +252,19 @@ class ParserTest {
                 String.format("add --title CaseTitle --date 2025-12-12 --info %s --victim JohnDoe --officer JaneDoe",
                         longInfo);
         assertThrows(InputLengthExceededException.class, () -> Parser.parseInput(input));
+    }
+
+    @Test
+    void parseInput_addValidWithEscape_returnsAddCommand() {
+        Command command = Parser.parseInput(
+                "  add --category theft --title   CaseTitle\\--longinfo   --date   2025-12-12   --info   SomeInfo   " +
+                        "--victim   JohnDoe   --officer   JaneDoe  ");
+        assertEquals(CommandType.ADD, command.getCommandType());
+        assertEquals("theft", ((AddCommand) command).getCaseCategory());
+        assertEquals("CaseTitle--longinfo", ((AddCommand) command).getCaseTitle());
+        assertEquals("2025-12-12", ((AddCommand) command).getCaseDate());
+        assertEquals("SomeInfo", ((AddCommand) command).getCaseInfo());
+        assertEquals("JohnDoe", ((AddCommand) command).getCaseVictim());
+        assertEquals("JaneDoe", ((AddCommand) command).getCaseOfficer());
     }
 }

@@ -1,14 +1,27 @@
 package seedu.sgsafe.domain.casefiles;
 
+import seedu.sgsafe.domain.casefiles.type.CaseType;
+import seedu.sgsafe.domain.casefiles.type.CaseCategory;
+
+import java.time.LocalDateTime;
+
+import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Represents a case file in the SGSafe system.
  * Each case contains metadata such as title, date, victim, officer, and status.
  */
-public class Case {
+public abstract class Case {
+    /** The type of case. */
+    protected CaseType type;
+
+    /** The category of the case. */
+    protected CaseCategory category;
+
+    /** The category name to be printed. */
+    protected String categoryString;
 
     /** The title or summary of the case. */
     private final String id;
@@ -34,6 +47,12 @@ public class Case {
     /** Indicates whether a case has been deleted. */
     private boolean isDeleted;
 
+    /** Metadata timestamp for auditing of when the case is created. */
+    private final LocalDateTime createdAt;
+
+    /** Metadata timestamp for auditing of when the case is updated. */
+    private LocalDateTime updatedAt;
+
     /**
      * Constructs a {@code Case} object with the specified details.
      * The case is initialized as closed by default.
@@ -54,6 +73,8 @@ public class Case {
         this.officer = officer;
         this.isOpen = true;
         this.isDeleted = false;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     /**
@@ -81,6 +102,24 @@ public class Case {
      */
     public String getInfo() {
         return info;
+    }
+
+    /**
+     * Retrieves the type of the case.
+     *
+     * @return the type of the case.
+     */
+    public CaseType getType() {
+        return type;
+    }
+
+    /**
+     * Retrieves the category of the case.
+     *
+     * @return the category of the case.
+     */
+    public CaseCategory getCategory() {
+        return category;
     }
 
     /**
@@ -116,6 +155,7 @@ public class Case {
 
     public void setDeleted() {
         this.isDeleted = true;
+        this.updatedAt = LocalDateTime.now();
     }
 
     /**
@@ -124,6 +164,7 @@ public class Case {
      * The output includes:
      * <ul>
      *   <li>Status indicator: {@code [O]} for open, {@code [C]} for closed</li>
+     *   <li>Category of the case</li>
      *   <li>Case ID: a unique 6-character hexadecimal string</li>
      *   <li>Date and title of the case</li>
      *   <li>Optional victim and officer details, if present</li>
@@ -139,35 +180,40 @@ public class Case {
      */
     public String getDisplayLine() {
         String status = this.isOpen ? "[Open]" : "[Closed]";
-        return String.format("%-8s %-6s %-10s %s", status, this.id, this.date, this.title);
+        return String.format("%-8s %-9s %-6s %-10s %s", status, categoryString, this.id, this.date, this.title);
     }
 
     /**
-     * Returns a verbose, multi-line representation of this case for detailed display.
+     * Constructs a detailed, multi-line string representation of this case for display purposes.
      * <p>
-     * The header line uses the format {@code ==== CASE ID 000000 ====}.
-     * All fields are truncated to 100 characters and suffixed with {@code "..."} if longer.
-     * Optional fields like {@code victim} and {@code officer} are omitted if not present.
+     * The output begins with a header line in the format {@code ==== CASE ID 000000 ====}, followed by
+     * key-value lines for each non-null field. Each value is truncated to 100 characters and suffixed
+     * with {@code "..."} if it exceeds that length. Optional fields such as {@code victim} and {@code officer}
+     * are only included if they are non-null.
+     * <p>
+     * This method avoids stacking function calls and delegates conditional formatting and addition
+     * to a helper method for clarity and maintainability.
      *
-     * @return an array of strings representing the verbose display of the case
+     * @return an array of strings representing the verbose, multi-line display of the case
      */
     public String[] getMultiLineVerboseDisplay() {
         List<String> lines = new ArrayList<>();
+
         lines.add(formatCaseIDHeader());
         lines.add(formatStatus());
-        lines.add(formatLine("Title", title));
-        lines.add(formatLine("Date", date));
-        lines.add(formatLine("Info", info));
 
-        if (victim != null) {
-            lines.add(formatLine("Victim", victim));
-        }
-        if (officer != null) {
-            lines.add(formatLine("Officer", officer));
-        }
+        addFormattedLine(lines, "Category", categoryString);
+        addFormattedLine(lines, "Title", title);
+        addFormattedLine(lines, "Date", date);
+        addFormattedLine(lines, "Info", info);
+        addFormattedLine(lines, "Created at", createdAt.toString());
+        addFormattedLine(lines, "Updated at", updatedAt.toString());
+        addFormattedLine(lines, "Victim", victim);
+        addFormattedLine(lines, "Officer", officer);
 
         return lines.toArray(new String[0]);
     }
+
 
     /**
      * Constructs the header line for the verbose display.
@@ -202,6 +248,13 @@ public class Case {
         return label + "  : " + truncate(value);
     }
 
+    private void addFormattedLine(List<String> lines, String label, String value) {
+        if (value != null) {
+            String formatted = formatLine(label, value);
+            lines.add(formatted);
+        }
+    }
+
     /**
      * Truncates the input string to a maximum of 100 characters.
      * If the input is {@code null}, returns an empty string.
@@ -211,16 +264,17 @@ public class Case {
      * @return the truncated string
      */
     private String truncate(String input) {
-        if (input == null) return "";
         return input.length() <= 100 ? input : input.substring(0, 100) + "...";
     }
 
     public void setClosed() {
         this.isOpen = false;
+        updatedAt = LocalDateTime.now();
     }
 
     public void setOpen() {
         this.isOpen = true;
+        updatedAt = LocalDateTime.now();
     }
 
     public boolean isOpen() {
@@ -228,10 +282,25 @@ public class Case {
     }
 
     /**
-     * Updates the fields of this Case object using the values provided in the map.
-     * Only the fields that appear in newValues will be changed.
+     * Returns the list of valid flags that can be used to edit this case type.
+     * The default implementation returns common flags shared by all case types.
+     * Subclasses with additional fields should override this method.
      *
-     * @param newValues a map containing the fields to update and their new values
+     * @return list of valid flag names for editing
+     */
+    public List<String> getValidEditFlags() {
+        // Default flags for all case types
+        return List.of("title", "date", "info", "victim", "officer");
+    }
+
+    /**
+     * Updates the editable fields of {@code Case} instance using the provided map of new values.
+     * <p>
+     * Each key in {@code newValues} corresponds to a valid editable field (e.g. {@code title}, {@code date},
+     * {@code info}, {@code victim}, {@code officer}). Only fields present in the map are updated; all
+     * others remain unchanged.
+     *
+     * @param newValues a map containing field names and their new values
      */
     public void update(Map<String, String> newValues) {
         if (newValues.containsKey("title")) {
@@ -249,5 +318,6 @@ public class Case {
         if (newValues.containsKey("officer")) {
             this.officer = newValues.get("officer");
         }
+        this.updatedAt = LocalDateTime.now();
     }
 }

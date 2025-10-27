@@ -6,8 +6,10 @@ import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.EditCommand;
+import seedu.sgsafe.utils.command.EditPromptCommand;
 import seedu.sgsafe.utils.command.DeleteCommand;
 
+import seedu.sgsafe.utils.command.OpenCommand;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
@@ -17,6 +19,7 @@ import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
 
@@ -42,7 +45,7 @@ public class Parser {
     private static final String FLAG_PREFIX = "--";
 
     // List of valid flags to be taken as input from the user
-    private static final List<String> VALID_FLAGS = List.of("title", "date", "info", "victim", "officer");
+    private static final List<String> VALID_FLAGS = List.of("category", "title", "date", "info", "victim", "officer");
 
     // Validator instance for input validation
     private static final Validator validator = new Validator();
@@ -50,6 +53,21 @@ public class Parser {
     // Maximum allowed length for any input value
     private static final int MAX_INPUT_LENGTH = 5000;
 
+    // Placeholder for escaped flag sequences
+    private static final String ESCAPED_FLAG_PLACEHOLDER = "\u0000ESCAPED_FLAG\u0000";
+
+    /**
+     * Parses raw user input into a {@link Command} object.
+     * <p>
+     * This method trims the input, extracts the command keyword, and delegates to specialized parsers
+     * based on the keyword. If the input is empty or unrecognized, an appropriate exception is thrown.
+     *
+     * @param userInput the full input string entered by the user
+     * @return a {@link Command} representing the parsed action
+     * @throws EmptyCommandException   if the input is empty or contains only whitespace
+     * @throws UnknownCommandException if the command keyword is not recognized
+     * @throws InvalidListCommandException    if the {@code list} command contains unexpected arguments
+     */
     public static Command parseInput(String userInput) {
         userInput = cleanUserInput(userInput);
         String keyword = getKeywordFromUserInput(userInput);
@@ -60,6 +78,7 @@ public class Parser {
         case "add" -> parseAddCommand(remainder);
         case "edit" -> parseEditCommand(remainder);
         case "close" -> parseCloseCommand(remainder);
+        case "open" -> parseOpenCommand(remainder);
         case "delete" -> parseDeleteCommand(remainder);
         default -> throw new UnknownCommandException(keyword);
         };
@@ -212,13 +231,13 @@ public class Parser {
      * Parses the {@code add} command and validates its arguments.
      * <p>
      * This method extracts flags and their values from the input, ensuring that required fields
-     * (title, date, and info) are present.
+     * (category, title, date, and info) are present.
      *
      * @param remainder the portion of the input following the {@code add} keyword
      * @return a valid {@link AddCommand} if arguments are invalid
      */
     private static Command parseAddCommand(String remainder) {
-        List<String> requiredFlags = List.of("title", "date", "info");
+        List<String> requiredFlags = List.of("category", "title", "date", "info");
 
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidAddCommandException();
@@ -231,27 +250,56 @@ public class Parser {
             throw new InvalidAddCommandException();
         }
 
-        return new AddCommand(flagValues.get("title"), flagValues.get("date"), flagValues.get("info"),
-                flagValues.get("victim"), flagValues.get("officer"));
+        return new AddCommand(flagValues.get("category"), flagValues.get("title"), flagValues.get("date"),
+                flagValues.get("info"), flagValues.get("victim"), flagValues.get("officer"));
     }
 
     /**
      * Parses the {@code close} command and validates its argument.
      * <p>
      * This method expects a string representing the caseId to close.
-     * If the input is empty or not a valid caseId, an {@link InvalidCloseCommandException}
+     * If the input is empty, an {@link InvalidCloseCommandException}
+     * will be thrown.
+     * If the caseId format is wrong, an {@link InvalidCaseIdException}
      * will be thrown.
      *
      * @param remainder the portion of the input following the {@code close} keyword
      * @return a valid {@link CloseCommand} if the argument is a valid caseId
      * @throws InvalidCloseCommandException if the argument is missing
-     * @throws InvalidCaseIdException if the caseId does not exist
+     * @throws InvalidCaseIdException if the caseId format is wrong
      */
     private static Command parseCloseCommand(String remainder) {
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidCloseCommandException();
         }
+        if (!validator.isValidCaseId(remainder)) {
+            throw new InvalidCaseIdException();
+        }
         return new CloseCommand(remainder);
+    }
+
+    /**
+     * Parses the {@code close} command and validates its argument.
+     * <p>
+     * This method expects a string representing the caseId to open.
+     * If the input is empty, an {@link InvalidCloseCommandException}
+     * will be thrown.
+     * If the caseId format is wrong, an {@link InvalidCaseIdException}
+     * will be thrown.
+     *
+     * @param remainder the portion of the input following the {@code open} keyword
+     * @return a valid {@link OpenCommand} if the argument is a valid caseId
+     * @throws InvalidOpenCommandException if the argument is missing
+     * @throws InvalidCaseIdException if the caseId format is wrong
+     */
+    private static Command parseOpenCommand(String remainder) {
+        if (validator.inputIsEmpty(remainder)) {
+            throw new InvalidOpenCommandException();
+        }
+        if (!validator.isValidCaseId(remainder)) {
+            throw new InvalidCaseIdException();
+        }
+        return new OpenCommand(remainder);
     }
 
     /**
@@ -259,6 +307,7 @@ public class Parser {
      * <p>
      * The input is split based on the defined flag separator regex, and each part is processed
      * to isolate the flag name and its value. The results are stored in a map.
+     * \-- is used as an escape character for -- to use -- in body text.
      *
      * @param input the portion of the input containing flags and their values
      * @return a map of flag names with their corresponding values
@@ -267,7 +316,10 @@ public class Parser {
      */
     private static Map<String, String> extractFlagValues(String input) {
 
-        String[] parts = input.split(FLAG_SEPARATOR_REGEX);
+        // Replace \-- with a placeholder
+        String escapedInput = input.replace("\\--", ESCAPED_FLAG_PLACEHOLDER);
+
+        String[] parts = escapedInput.split(FLAG_SEPARATOR_REGEX);
         Map<String, String> flagValues = new HashMap<>();
 
         for (String part : parts) {
@@ -289,6 +341,9 @@ public class Parser {
             String flag = trimmedPart.substring(0, spaceIndex).trim();
             String value = trimmedPart.substring(spaceIndex + 1).trim();
 
+            // Replace the placeholder back with --
+            value = value.replace(ESCAPED_FLAG_PLACEHOLDER, "--");
+
             if(value.length() > MAX_INPUT_LENGTH){
                 logger.log(Level.WARNING, "Input exceeds character limit");
                 throw new InputLengthExceededException();
@@ -306,8 +361,13 @@ public class Parser {
     }
 
     /**
-     * Parses the 'edit' command input, validates its format, and constructs an EditCommand object.
-     * Throws an InvalidEditCommandException if the input is missing, incorrectly formatted, or contains invalid flags.
+     * Parses the 'edit' command input.
+     * <p>
+     * Supports two modes:
+     * <ol>
+     *   <li>{@code edit <caseId>} - Shows valid flags for the case</li>
+     *   <li>{@code edit <caseId> --flag value} - Directly edits the case</li>
+     * </ol>
      */
     private static Command parseEditCommand(String remainder) {
         if (remainder.isEmpty()) {
@@ -315,22 +375,30 @@ public class Parser {
         }
 
         int firstSpaceIndex = remainder.indexOf(" ");
+
+        // Case 1: Only case ID is provided (e.g. "edit 000000")
         if (firstSpaceIndex == -1) {
-            throw new InvalidEditCommandException();
+            if (!validator.isValidCaseId(remainder)) {
+                throw new InvalidCaseIdException();
+            }
+            return new EditPromptCommand(remainder);
         }
+
+        // Case 2: Flags provided together with case ID (e.g. "edit 000000 --location 123 Street")
         String caseId = remainder.substring(0, firstSpaceIndex);
         if (!validator.isValidCaseId(caseId)) {
-            throw new InvalidEditCommandException();
+            throw new InvalidCaseIdException();
         }
 
         String replacements = remainder.substring(firstSpaceIndex + 1).trim();
-        Map<String, String> flagValues = extractFlagValues(replacements);
 
-        if (!validator.haveValidFlags(flagValues, VALID_FLAGS)){
-            throw new IncorrectFlagException();
+        // Check if replacements start with --
+        if (replacements.startsWith("--")) {
+            Map<String, String> flagValues = extractFlagValues(replacements);
+            return new EditCommand(caseId, flagValues);
+        } else {
+            throw new InvalidEditCommandException();
         }
-
-        return new EditCommand(caseId, flagValues);
     }
 
     /**

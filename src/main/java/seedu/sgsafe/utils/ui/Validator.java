@@ -1,9 +1,5 @@
 package seedu.sgsafe.utils.ui;
 
-import seedu.sgsafe.domain.casefiles.Case;
-import seedu.sgsafe.domain.casefiles.CaseManager;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -18,6 +14,8 @@ public class Validator {
 
     // Logger for logging validation events
     private static final Logger logger = Logger.getLogger(Validator.class.getName());
+    // Constant for case ID validation pattern
+    private static final String CASE_ID_REGEX = "^[0-9A-Fa-f]{6}$";
 
     //@@author shennontay
 
@@ -71,23 +69,11 @@ public class Validator {
         return false;
     }
 
-    /**
-     * Checks whether a case with the specified case ID exists in the current case list.
-     * This method retrieves the list of all existing cases from the {@link CaseManager}
-     * and uses a stream to determine if any undeleted case in the list has an ID matching the given
-     * {@code caseId}.
-     *
-     * @param caseId the unique identifier of the case to check.
-     * @return {@code true} if a case with the given ID exists; {@code false} otherwise.
-     */
-    public static boolean caseIdExists(String caseId) {
-        ArrayList<Case> currentCaseList = CaseManager.getCaseList();
-        return currentCaseList.stream()
-                .anyMatch(c -> (c.getId().equals(caseId) && !c.isDeleted()));
-    }
-
+    //@@author shennontay
     /**
      * Checks whether the provided case ID is a valid 6-character hexadecimal string.
+     * <p>
+     * A valid case ID must be exactly six hexadecimal characters (0–9, A–F, a–f).
      *
      * @param caseId the case ID to validate
      * @return {@code true} if the case ID is valid; {@code false} otherwise
@@ -96,9 +82,6 @@ public class Validator {
         if (caseId == null) {
             return false;
         }
-        // Regex explanation:
-        // ^ and $ → start and end of string anchors
-        // [0-9A-Fa-f]{6} → exactly 6 characters of 0-9 or A-F (any case)
-        return caseId.matches("^[0-9A-Fa-f]{6}$");
+        return caseId.matches(CASE_ID_REGEX);
     }
 }

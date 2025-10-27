@@ -2,6 +2,7 @@ package seedu.sgsafe.domain.casefiles;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ class CaseManagerTest {
 
     @Test
     void addCase_withOneValidCommand_addsCaseSuccessfully() {
-        Case newCase = new Case("000000", "Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee");
+        Case newCase = new TheftCase("000000", "Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee");
         CaseManager.addCase(newCase);
 
         assertEquals(1, caseList.size());
@@ -39,13 +40,13 @@ class CaseManagerTest {
     @Test
     void addCase_withThreeValidCommand_addsCaseSuccessfully() {
         Case newCase;
-        newCase = new Case("000000", "Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee");
+        newCase = new TheftCase("000000", "Burglary", "2023-10-05", "Broken window", "Alice", "Officer Lee");
         CaseManager.addCase(newCase);
 
-        newCase = new Case("000001", "Burglary", "2023-10-05", "Broken window", null, null);
+        newCase = new TheftCase("000001", "Burglary", "2023-10-05", "Broken window", null, null);
         CaseManager.addCase(newCase);
 
-        newCase = new Case("000002", "Burglary", "2023-10-05", "Broken window", "Alice", null);
+        newCase = new TheftCase("000002", "Burglary", "2023-10-05", "Broken window", "Alice", null);
         CaseManager.addCase(newCase);
 
         assertEquals(3, caseList.size());

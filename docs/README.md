@@ -2,7 +2,7 @@
 
 [![Java CI](https://github.com/AY2526S1-CS2113-W13-3/tp/workflows/Java%20CI/badge.svg)](https://github.com/AY2526S1-CS2113-W13-3/tp/actions)
 
-![SGSafe Logo](graphics/SGSafeLogo.png)
+![SGSafe Logo](graphics/sgsafelogo.png)
 
 SGSafe is a *Command Line Interface (CLI) based case management system* that is designed specifically for law
 enforcement agencies in Singapore to manage, track and process cases.

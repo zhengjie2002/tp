@@ -5,5 +5,6 @@ public enum CommandType {
     ADD,
     EDIT,
     CLOSE,
+    OPEN,
     DELETE
 }

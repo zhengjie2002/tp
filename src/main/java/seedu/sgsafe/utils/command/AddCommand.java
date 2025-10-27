@@ -1,7 +1,18 @@
 package seedu.sgsafe.utils.command;
 
+import seedu.sgsafe.domain.casefiles.type.financial.ScamCase;
+import seedu.sgsafe.domain.casefiles.type.property.ArsonCase;
+import seedu.sgsafe.domain.casefiles.type.property.VandalismCase;
+import seedu.sgsafe.domain.casefiles.type.traffic.AccidentCase;
+import seedu.sgsafe.domain.casefiles.type.traffic.SpeedingCase;
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.domain.casefiles.type.violent.AssaultCase;
+import seedu.sgsafe.domain.casefiles.type.violent.MurderCase;
+import seedu.sgsafe.domain.casefiles.type.OthersCase;
+import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
+import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
+import seedu.sgsafe.utils.exceptions.InvalidCategoryException;
 import seedu.sgsafe.utils.ui.Display;
 
 import java.util.logging.Logger;
@@ -18,6 +29,9 @@ public class AddCommand extends Command {
 
     // Format string for generating case IDs
     private static final String CASE_ID_FORMAT = "%06x";
+
+    // Category of the case
+    private final String caseCategory;
 
     // Title of the case
     private final String caseTitle;
@@ -43,14 +57,20 @@ public class AddCommand extends Command {
      * @param caseVictim  The name of the victim involved in the case. Can be null.
      * @param caseOfficer The name of the officer handling the case. Can be null.
      */
-    public AddCommand(String caseTitle, String caseDate, String caseInfo, String caseVictim, String caseOfficer) {
+    public AddCommand(String caseCategory, String caseTitle, String caseDate,
+                      String caseInfo, String caseVictim, String caseOfficer) {
         this.commandType = CommandType.ADD;
+        this.caseCategory = caseCategory.toLowerCase();
         this.caseTitle = caseTitle;
         this.caseDate = caseDate;
         this.caseInfo = caseInfo;
         this.caseVictim = caseVictim;
         this.caseOfficer = caseOfficer;
         logger.log(Level.INFO, "AddCommand created");
+    }
+
+    public String getCaseCategory() {
+        return caseCategory;
     }
 
     public String getCaseTitle() {
@@ -100,7 +120,22 @@ public class AddCommand extends Command {
     @Override
     public void execute() {
         String id = generateHexId();
-        Case newCase = new Case(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        Case newCase;
+
+        switch (caseCategory) {
+        case "scam" -> newCase = new ScamCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "theft" -> newCase = new TheftCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "arson" -> newCase = new ArsonCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "vandalism" -> newCase = new VandalismCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "speeding" -> newCase = new SpeedingCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "accident" -> newCase = new AccidentCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "assault" -> newCase = new AssaultCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "murder" -> newCase = new MurderCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "robbery" -> newCase = new RobberyCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "others" -> newCase = new OthersCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        default -> throw new InvalidCategoryException();
+        }
+
         CaseManager.addCase(newCase);
         Display.printMessage("New case added:", newCase.getDisplayLine());
     }
