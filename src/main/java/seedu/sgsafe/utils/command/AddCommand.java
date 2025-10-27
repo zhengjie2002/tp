@@ -133,7 +133,7 @@ public class AddCommand extends Command {
         case "arson" -> newCase = new ArsonCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "vandalism" -> newCase = new VandalismCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "rape" -> newCase = new RapeCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
-        case "Voyeurism" -> newCase = new VoyeurismCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
+        case "voyeurism" -> newCase = new VoyeurismCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "speeding" -> newCase = new SpeedingCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "accident" -> newCase = new AccidentCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
         case "assault" -> newCase = new AssaultCase(id, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer);
