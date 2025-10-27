@@ -60,13 +60,14 @@ public class ListCommand extends Command {
     }
 
     /**
-     * Retrieves and formats the list of case descriptions based on the current {@link CaseListingMode}
+     * Generates a formatted array of case descriptions based on the current {@link CaseListingMode}
      * and verbosity setting.
      * <p>
-     * The output array includes:
+     * The output includes:
      * <ul>
-     *   <li>Index 0: a summary header indicating the number of matching cases</li>
-     *   <li>Subsequent indices:
+     *   <li>A summary line indicating the number of matching cases</li>
+     *   <li>A table header line (only in non-verbose mode)</li>
+     *   <li>Formatted case entries:
      *     <ul>
      *       <li>In summary mode: one line per case via {@link Case#getDisplayLine()}</li>
      *       <li>In verbose mode: multiple lines per case via {@link Case#getMultiLineVerboseDisplay()}</li>
@@ -75,18 +76,33 @@ public class ListCommand extends Command {
      * </ul>
      *
      * @param caseList the full list of cases to filter and format
-     * @return an array of formatted strings representing the filtered cases
+     * @return an array of formatted strings representing the filtered and formatted case descriptions
      */
     String[] getCaseDescriptions(ArrayList<Case> caseList) {
         ArrayList<Case> matchingCases = filterCasesByMode(caseList);
         int count = matchingCases.size();
         List<String> outputLines = new ArrayList<>();
 
-        outputLines.add(generateCaseHeaderMessage(count));
+        outputLines.add(generateCaseCountMessage(count));
+        if (!isVerbose && !matchingCases.isEmpty()) {
+            outputLines.add(generateListTableHeaderMessage());
+        }
         List<String> formattedCaseLines = formatCases(matchingCases);
         outputLines.addAll(formattedCaseLines);
 
         return outputLines.toArray(new String[0]);
+    }
+
+    /**
+     * Generates a header line for the case listing table in summary mode.
+     * <p>
+     * This header aligns with the format produced by {@link Case#getDisplayLine()},
+     * showing column labels for status, ID, date, and title.
+     *
+     * @return a formatted header string for the case list table
+     */
+    private String generateListTableHeaderMessage() {
+        return String.format("%-8s %-9s %-6s %-10s %s", "STATUS", "CATEGORY", "ID", "DATE", "TITLE");
     }
 
     /**
@@ -164,7 +180,7 @@ public class ListCommand extends Command {
      * @param caseCount the number of cases matching the current listing mode
      * @return a formatted summary message describing the case count and status
      */
-    private String generateCaseHeaderMessage(int caseCount) {
+    private String generateCaseCountMessage(int caseCount) {
         String statusLabel = switch (this.listingMode) {
         case OPEN_ONLY -> "open";
         case CLOSED_ONLY -> "closed";

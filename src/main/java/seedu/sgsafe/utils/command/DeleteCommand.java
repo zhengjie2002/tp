@@ -20,6 +20,15 @@ public class DeleteCommand extends Command {
         this.caseId = caseId;
     }
 
+    /**
+     * Getter function for caseId.
+     *
+     * @return caseId
+     */
+    public String getCaseId() {
+        return caseId;
+    }
+
     @Override
     public void execute(Storage storage) {
         try {
