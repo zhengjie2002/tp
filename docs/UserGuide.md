@@ -293,6 +293,8 @@ Fields that you SHOULD NOT EDIT:
 2. category
 3. created-at
 
+You cannot add new cases through editing the file, do not add new lines to the save file.
+
 The date field must be stored in the format dd/mm/yyyy (day/month/year).
 
 The modified-at field must be stored in the format dd/mm/yyyy hh:mm:ss (day/month/year hour:minute:second).
