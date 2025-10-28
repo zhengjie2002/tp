@@ -141,7 +141,7 @@ It also handles validation and persistence by coordinating with Storage.
 1. A `Command.execute()` call triggers an operation on `CaseManager`
 2. `CaseManager` locates or creates the appropriate `Case` object
 3. The `Case` object performs domain‑specific logic or state changes
-4. Results are returned to the `Command`, which then passes them to the `UI` for display
+4. Results are returned to the Command, which then passes them to the UI for display
 
 ---
 
