@@ -2,7 +2,6 @@ package seedu.sgsafe.domain.casefiles;
 
 import seedu.sgsafe.domain.casefiles.type.CaseType;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
-import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.settings.Settings;
 import seedu.sgsafe.utils.storage.Storage;
 import seedu.sgsafe.utils.ui.DateFormatter;
@@ -12,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -22,30 +20,6 @@ import java.util.ArrayList;
  * Each case contains metadata such as title, date, victim, officer, and status.
  */
 public abstract class Case {
-
-    /**
-     * The maximum number of characters allowed in a single display line.
-     * <p>
-     * Used to constrain field values in summary and verbose outputs, ensuring consistent formatting
-     * and preventing overflow in fixed-width terminal views. Also governs truncation and wraparound logic.
-     */
-    static final int MAX_DISPLAY_WIDTH_CHARACTERS = 100;
-
-    /**
-     * The fixed width allocated for field labels in verbose listings.
-     * <p>
-     * Labels are left-aligned and padded to this width, followed by a colon and space.
-     * This ensures all wrapped field values align vertically for readability.
-     */
-    static final int MAX_LABEL_WIDTH = 10;
-
-    /**
-     * The maximum number of lines allowed per field in verbose display mode.
-     * <p>
-     * Used to prevent excessively long fields from flooding the output. If a field wraps
-     * beyond this limit, the final visible line is suffixed with {@code "..."}.
-     */
-    static final int MAX_VERBOSE_LINES_PER_FIELD = 5;
 
     /** The type of case. */
     protected CaseType type;
@@ -213,267 +187,48 @@ public abstract class Case {
         return new ArrayList<>();
     }
 
-    //@@ author xelisce
+    //@@author xelisce
 
     /**
-     * Constructs a formatted summary line for this case, suitable for display in summary listings.
+     * Builds a one‑line summary representation of this case.
      * <p>
-     * The output includes:
-     * <ul>
-     *   <li>Status indicator: {@code [Open]} or {@code [Closed]}</li>
-     *   <li>Category of the case</li>
-     *   <li>Case ID: a unique 6-character hexadecimal string</li>
-     *   <li>Date of the case (formatted)</li>
-     *   <li>Title of the case</li>
-     * </ul>
-     * <p>
-     * Fields are padded for alignment using fixed-width formatting.
-     * Optional victim and officer details are excluded in summary mode.
-     * <p>
-     * Example output:
-     * <pre>
-     * [Open]   Theft            0001a3 2025-10-14 Theft from DBS in broad daylight
-     * [Closed] Scam             0001a4 2025-10-15 Fraud involving MFA
-     * [Closed] Traffic accident 0001a4 2025-10-15 Accident at the Nicolson Highway
-     * </pre>
+     * Includes status, category, ID, date, and title in a fixed‑width format.
      *
-     * @return a display-friendly summary string representing this case
+     * @return a formatted summary line for this case
      */
     public String getDisplayLine() {
-        String status = this.isOpen ? "[Open]" : "[Closed]";
-        String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
-        String titleString = truncate(this.title);
-        return String.format("%-8s %-16s %-6s %-10s %s", status, categoryString, this.id, dateString, titleString);
+        String dateString = DateFormatter.formatDate(date, Settings.getOutputDateFormat());
+        return CaseFormatter.formatCaseSummaryLine(isOpen, categoryString, id, dateString, title);
     }
 
     /**
-     * Truncates the input string to a maximum of {@code MAX_DISPLAY_WIDTH_CHARACTERS}.
+     * Builds a verbose, multi‑line representation of this case.
      * <p>
-     * If the input is {@code null}, returns an empty string.
-     * If the input exceeds the maximum display width, the result is truncated and suffixed with {@code "..."}.
-     * This method is typically used to ensure summary lines remain within a readable width.
+     * Starts with a case ID header, followed by wrapped fields such as
+     * status, category, title, date, info, timestamps, victim, and officer.
      *
-     * @param input the string to truncate
-     * @return the truncated string, or an empty string if input is {@code null}
-     */
-    protected String truncate(String input) {
-        if (input == null) {
-            return "";
-        }
-        return input.length() <=
-                MAX_DISPLAY_WIDTH_CHARACTERS ? input : input.substring(0, MAX_DISPLAY_WIDTH_CHARACTERS) + "...";
-    }
-
-    /**
-     * Constructs a detailed, multi-line string representation of this case for verbose display.
-     * <p>
-     * The output begins with a header line in the format {@code ==== CASE ID 000000 ====},
-     * followed by wrapped key-value lines for each non-null field.
-     * Long values are wrapped across multiple lines using {@link #addWrappedField(List, String, String)}.
-     * Optional fields such as {@code victim} and {@code officer} are only included if present.
-     *
-     * @return an array of strings representing the verbose, multi-line display of the case
+     * @return an array of formatted lines for verbose display
      */
     public String[] getMultiLineVerboseDisplay() {
         List<String> lines = new ArrayList<>();
-        lines.add(formatCaseIDHeader());
-        String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
+        lines.add(CaseFormatter.formatCaseIDHeader(id));
 
-        addWrappedField(lines, "Status", getStatusString());
-        addWrappedField(lines, "Category", categoryString);
-        addWrappedField(lines, "Title", title);
-        addWrappedField(lines, "Date", dateString);
-        addWrappedField(lines, "Info", info);
-        addWrappedField(lines, "Created at", createdAt.toString());
-        addWrappedField(lines, "Updated at", updatedAt.toString());
-        addWrappedField(lines, "Victim", victim);
-        addWrappedField(lines, "Officer", officer);
+        String dateString = DateFormatter.formatDate(date, Settings.getOutputDateFormat());
+        String statusString = CaseFormatter.convertStatusToString(isOpen);
+
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Status", statusString);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Category", categoryString);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Title", title);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Date", dateString);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Info", info);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Created at", createdAt.toString());
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Updated at", updatedAt.toString());
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Victim", victim);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Officer", officer);
 
         return lines.toArray(new String[0]);
     }
-
-    /**
-     * Constructs the header line for the verbose display.
-     * Format: {@code "======== CASE ID 000000 ========"}
-     *
-     * @return the formatted header string
-     */
-    private String formatCaseIDHeader() {
-        return "======== CASE ID " + this.id + " ========";
-    }
-
-    /**
-     * Returns the status of the case as a plain string.
-     * <p>
-     * Possible values are {@code "[Open]"} or {@code "[Closed]"} depending on the case state.
-     *
-     * @return the status string
-     */
-    private String getStatusString() {
-        return this.isOpen ? "Open" : "Closed";
-    }
-    
     //@@ author
-
-    /**
-     * Adds a wrapped field to the given list if the value is non-null and non-empty.
-     * <p>
-     * The field is formatted using {@link #wrapField(String, String, int)} to ensure
-     * long values are wrapped across multiple lines with proper indentation.
-     * This is typically used to conditionally include optional fields (e.g., victim or officer)
-     * in verbose case displays.
-     *
-     * @param lines the list to which the formatted lines will be added
-     * @param label the label to display (e.g., "Victim", "Officer")
-     * @param value the value associated with the label; ignored if {@code null} or empty
-     */
-    private void addWrappedField(List<String> lines, String label, String value) {
-        if (value != null && !value.isEmpty()) {
-            lines.addAll(wrapField(label, value, MAX_DISPLAY_WIDTH_CHARACTERS));
-        }
-    }
-
-    /**
-     * Formats a label-value pair for display, wrapping the value if it exceeds the given width.
-     * <p>
-     * The label is left-aligned using {@link #formatPrefix(String)} and the value is wrapped using
-     * {@link #wrapWords(String, String, int)} to fit within the available width.
-     * If the wrapped output exceeds {@code MAX_VERBOSE_LINES_PER_FIELD}, it is truncated to that limit
-     * and the final line is suffixed with {@code "..."} to indicate truncation.
-     *
-     * @param label the field label (e.g., "Title", "Info")
-     * @param value the field value to display
-     * @param width the maximum number of characters allowed per line
-     * @return a list of formatted lines representing the label and wrapped value
-     */
-    public static List<String> wrapField(String label, String value, int width) {
-        String prefix = formatPrefix(label);
-        int available = width - prefix.length();
-
-        List<String> wrapped = wrapWords(prefix, value, available);
-
-        // Limit the number of lines per field for verbose printing
-        if (wrapped.size() > MAX_VERBOSE_LINES_PER_FIELD) {
-            List<String> limited = new ArrayList<>(wrapped.subList(0, MAX_VERBOSE_LINES_PER_FIELD));
-            String last = limited.get(MAX_VERBOSE_LINES_PER_FIELD - 1);
-            limited.set(MAX_VERBOSE_LINES_PER_FIELD - 1, last + "...");
-            return limited;
-        }
-
-        return wrapped;
-    }
-
-    /**
-     * Formats a label into a fixed-width prefix for alignment in verbose listings.
-     * <p>
-     * The label is left-aligned and padded to {@code MAX_LABEL_WIDTH}, followed by a colon and space.
-     * Example: {@code "Title      : "}
-     *
-     * @param label the label to format
-     * @return the formatted prefix string
-     */
-    protected static String formatPrefix(String label) {
-        return String.format("%-" + MAX_LABEL_WIDTH + "s: ", label);
-    }
-
-    /**
-     * Immutable record representing the current state of a line being wrapped.
-     *
-     * @param line          the current line buffer
-     * @param currentLength the number of characters currently used in the line (excluding prefix padding)
-     */
-    protected record LineState(StringBuilder line, int currentLength) {
-    }
-
-    /**
-     * Wraps a value into multiple lines if necessary, preserving indentation.
-     * <p>
-     * Splits the value into words and places them into lines of at most {@code available} characters.
-     * Long unbreakable words are delegated to {@link #handleLongWord(String, int, String, List, StringBuilder)}.
-     *
-     * @param prefix    the formatted label prefix (e.g., "Title      : ")
-     * @param value     the value to wrap
-     * @param available the maximum number of characters available per line (excluding prefix)
-     * @return a list of wrapped lines
-     */
-    private static List<String> wrapWords(String prefix, String value, int available) {
-        List<String> lines = new ArrayList<>();
-        String[] words = value.split(" ");
-        StringBuilder line = new StringBuilder(prefix);
-        int currentLength = 0;
-
-        for (String word : words) {
-            word = handleLongWord(word, available, prefix, lines, line);
-            LineState state = tryAddWord(word, line, currentLength, available, prefix, lines);
-            line = state.line;
-            currentLength = state.currentLength;
-        }
-
-        lines.add(line.toString());
-        return lines;
-    }
-
-    /**
-     * Handles words that exceed the available width by splitting them into chunks.
-     * <p>
-     * Each chunk is truncated to {@code available - 1} characters and suffixed with a dash ("-").
-     * Remaining characters are placed on subsequent lines with proper indentation.
-     *
-     * @param word   the word to process
-     * @param available the maximum number of characters available per line
-     * @param prefix the formatted label prefix (used for indentation)
-     * @param lines  the list of lines to append to
-     * @param line   the current line buffer
-     * @return the remaining portion of the word that fits within the available width
-     */
-    protected static String handleLongWord(String word, int available, String prefix,
-                                 List<String> lines, StringBuilder line) {
-        while (word.length() > available) {
-            int chunkLength = available - 1; // leave one character's space for dash
-            String chunk = word.substring(0, chunkLength) + "-";
-            lines.add(line.toString() + chunk);
-            word = word.substring(chunkLength);
-            line.setLength(0);
-            line.append(" ".repeat(prefix.length())); // indent
-        }
-        return word;
-    }
-
-    /**
-     * Attempts to add a word to the current line, wrapping to a new line if necessary.
-     * <p>
-     * If the word does not fit within the available width, the current line is flushed
-     * to {@code lines}, and a new indented line is started. Spaces are inserted between
-     * words as needed.
-     *
-     * @param word          the word to add
-     * @param line          the current line buffer
-     * @param currentLength the number of characters currently used in the line
-     * @param available     the maximum number of characters available per line
-     * @param prefix        the formatted label prefix (used for indentation)
-     * @param lines         the list of lines to append to
-     * @return a {@link LineState} containing the updated line buffer and character count
-     */
-    protected static LineState tryAddWord(String word, StringBuilder line, int currentLength,
-                                int available, String prefix, List<String> lines) {
-        // If word doesn't fit, flush current line
-        if (currentLength + word.length() > available) {
-            lines.add(line.toString());
-            line = new StringBuilder(" ".repeat(prefix.length()));
-            currentLength = 0;
-        }
-
-        // Add space if not first word
-        if (currentLength > 0) {
-            line.append(" ");
-            currentLength++;
-        }
-
-        line.append(word);
-        currentLength += word.length();
-
-        return new LineState(line, currentLength);
-    }
 
     public void setClosed() {
         this.isOpen = false;
@@ -529,54 +284,50 @@ public abstract class Case {
         this.updatedAt = LocalDateTime.now();
     }
 
+    //@@author shennontay
     /**
-     * Formats a labeled line without truncating the value.
-     * Behaves like {@link #formatLine(String, String)} but prints the full content.
+     * Builds the common display lines shared by all case types.
+     * <p>
+     * Excludes the {@code Info} field so that subclasses can insert
+     * their own fields before the Info line if needed.
      *
-     * @param label the label to display
-     * @param value the value to display
-     * @return a formatted line with label and full value
-     */
-    public static String formatLineNoTruncate(String label, Object value) {
-        if (value == null) {
-            value = "";
-        } else {
-            value = value.toString();
-        }
-        String paddedLabel = String.format("%-17s", label); // same padding as the original
-        return "\t" + paddedLabel + " : " + value;
-    }
-
-    /**
-     * Returns the base display lines common to all case types,
-     * excluding the Info field (so subclasses can safely add their own fields before Info).
+     * @return a list of formatted display lines for the base fields
      */
     protected List<String> getBaseDisplayLines() {
-        return new ArrayList<>(Arrays.asList(
-                formatLineNoTruncate("Title", title),
-                formatLineNoTruncate("Case ID", id),
-                formatLineNoTruncate("Status", isOpen ? "Open" : "Closed"),
-                formatLineNoTruncate("Category",getCategory()),
-                formatLineNoTruncate("Date", getDate()),
-                formatLineNoTruncate("Victim", getVictim()),
-                formatLineNoTruncate("Officer", getOfficer()),
-                formatLineNoTruncate("Created at", createdAt),
-                formatLineNoTruncate("Updated at", updatedAt)
-        ));
+        List<String> lines = new ArrayList<>();
+
+        String dateString = DateFormatter.formatDate(date, Settings.getOutputDateFormat());
+        String statusString = CaseFormatter.convertStatusToString(isOpen);
+
+        CaseFormatter.addWrappedFieldForRead(lines, "Title", title);
+        CaseFormatter.addWrappedFieldForRead(lines,"Case ID", id);
+        CaseFormatter.addWrappedFieldForRead(lines,"Status", statusString);
+        CaseFormatter.addWrappedFieldForRead(lines,"Category", categoryString);
+        CaseFormatter.addWrappedFieldForRead(lines,"Date", dateString);
+        CaseFormatter.addWrappedFieldForRead(lines,"Victim", getVictim());
+        CaseFormatter.addWrappedFieldForRead(lines,"Officer", getOfficer());
+        CaseFormatter.addWrappedFieldForRead(lines,"Created at", createdAt.toString());
+        CaseFormatter.addWrappedFieldForRead(lines,"Updated at", updatedAt.toString());
+
+        return lines;
     }
 
-
     /**
-     * Default implementation of getReadCaseDisplay for case categories without unique fields.
-     * Subclasses should override this method to add more details before the Info line.
+     * Default implementation of the read‑case display for categories
+     * without additional fields.
+     * <p>
+     * Subclasses may override this method to insert extra details
+     * before the {@code Info} line.
+     *
+     * @return an array of formatted display lines for this case
      */
     public String[] getReadCaseDisplay() {
         List<String> displayList = getBaseDisplayLines();
-        displayList.add(Display.formatIndentedText("Info :", getInfo()));
-
+        CaseFormatter.addWrappedFieldForRead(displayList, "Info :", getInfo());
 
         return displayList.toArray(new String[0]);
     }
+    //@@author
 
     /**
      * Converts this object's data fields into a single comma-separated string suitable for saving.
