@@ -19,6 +19,7 @@ organised digital workflow that enhances operational efficiency for the public s
     - [Deleting a case: `delete`](#deleting-a-case-delete)
     - [Exiting the program: `bye`](#exiting-the-program-bye)
     - [Settings: `setting`](#settings-setting)
+    - [File storage](#file-storage)
 - [FAQ](#faq)
 - [Command Summary](#command-summary)
 - [Coming Soon](#coming-soon)
@@ -268,6 +269,42 @@ format.
 * `setting --type dateinput --value dd-MM-yyyy` means that all input for date must follow dd-MM-yyyy format to be
   considered valid.
 * `setting --type dateoutput --value dd/MM/yyyy` means that all output for date will be printed in dd/MM/yyyy format.
+
+---
+
+### File storage
+
+This is a feature that saves your case info to `data.txt` in the folder that you run the program in. 
+There is no specific command that will execute this function, 
+but it will automatically run every time you run any command.
+
+#### Save file modification (only for advanced users)
+
+_Beware that you may corrupt your data if you modify any data incorrectly, do this at your own risk!_
+
+The data in the save file is stored in this format:
+
+> `key1:value1|key2:value2|key3:value3|...`
+
+each key corresponds to a field, and each line corresponds to a case. An empty value means that the field has not been initialised.
+
+Fields that you SHOULD NOT EDIT:
+1. id
+2. category
+3. created-at
+
+You cannot add new cases through editing the file, do not add new lines to the save file.
+
+The date field must be stored in the format dd/mm/yyyy (day/month/year).
+
+The modified-at field must be stored in the format dd/mm/yyyy hh:mm:ss (day/month/year hour:minute:second).
+
+***Examples***
+- To change the victim in a case from `alice` to `bob`, modify the line in `data.txt` 
+from `...|victim:alice|...` to `...|victim:bob|...`.
+- To change the date in a case from fifth of november 2024 (05/11/2025) to second of january 2025 (02/01/2025),
+modify the line corresponding to the case that you want to edit in `data.txt` from `...|date:05/11/2025|...`
+to `...|date:02/01/2025|...`.
 
 ---
 

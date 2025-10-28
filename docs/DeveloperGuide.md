@@ -49,8 +49,8 @@ The main code flow of `SGSafe`, our main class is as follows:
 3. Read user input from System.in
 4. Parse user input using `Parser` and `Validator` to obtain a `Command` object that contains the information necessary to execute the specific command
 5. Execute user command
-6. Until the command is to exit the program, repeat steps 3 to 5
-7. Save the updated list of commands to `data.txt` using `Storage`
+6. Save the case info to `data.txt` using `Storage`
+7. Until the command is to exit the program, repeat steps 3 to 6
 8. Print exit message using `Display`
 
 #### Overall sequence diagram
@@ -151,6 +151,31 @@ It also handles validation and persistence by coordinating with Storage.
 
 ### Storage Component
 
+The Storage component handles the saving and loading from a human editable text file for data persistence
+
+The API of this component is primarily specified in `Storage`.
+
+#### Responsibilities:
+
+The Storage component:
+- Handles the writing to and reading from the save file
+- Adds saved case files to `CaseManager` on load
+
+#### Interaction flow:
+
+Loading from a save file:
+- When the program starts, `loadCaseManager()` from the storage class is called to initialise the `CaseManager`
+from `SGSafe.main()`
+
+![SequenceDiagramFileLoad.png](images/SequenceDiagramFileLoad.png)
+![SequenceDiagramInitialiseCase.png](images/SequenceDiagramInitialiseCase.png)
+
+Saving to the save file:
+- Every time a command completes, `saveToFile()` is run in the `SGsafe.handleUserCommand()` method.
+This only occurs if the command is successfully run.
+
+![SequenceDiagramFileSave.png](images/SequenceDiagramFileSave.png)
+
 ---
 
 ### Common
@@ -196,7 +221,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ## Appendix C: Non-Functional Requirements
 
 - Should work on any mainstream OS as long as it has Java 17 or above installed.
-- Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+- Should be able to hold up to 1000 cases without a noticeable sluggishness in performance for typical usage.
 - A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 {More to be added}
 
