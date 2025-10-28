@@ -171,7 +171,7 @@ from `SGSafe.main()`
 ![SequenceDiagramInitialiseCase.png](images/SequenceDiagramInitialiseCase.png)
 
 Saving to the save file:
-- Every time a command is run, `saveToFile()` is run in the `SGsafe.handleUserCommand()` method.
+- Every time a command completes, `saveToFile()` is run in the `SGsafe.handleUserCommand()` method.
 This only occurs if the command is successfully run.
 
 ![SequenceDiagramFileSave.png](images/SequenceDiagramFileSave.png)
@@ -221,7 +221,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ## Appendix C: Non-Functional Requirements
 
 - Should work on any mainstream OS as long as it has Java 17 or above installed.
-- Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+- Should be able to hold up to 1000 cases without a noticeable sluggishness in performance for typical usage.
 - A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 {More to be added}
 
