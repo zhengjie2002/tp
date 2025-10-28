@@ -73,7 +73,7 @@ public class CaseFormatter {
             String id,
             String date,
             String title) {
-        String statusString = convertStatusToString(status);
+        String statusString = "[" + convertStatusToString(status) + "]";
         String titleString = truncateWithEllipses(title, MAX_TITLE_WIDTH);
         return String.format(STATUS_FORMAT_STRING,
                 statusString, category, id, date, titleString);

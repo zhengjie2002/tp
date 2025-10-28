@@ -205,7 +205,7 @@ public abstract class Case {
      * Builds a verbose, multi‑line representation of this case.
      * <p>
      * Starts with a case ID header, followed by wrapped fields such as
-     * status, category, title, date, timestamps, victim, and officer, and info
+     * status, category, title, date, info, timestamps, victim, and officer.
      *
      * @return an array of formatted lines for verbose display
      */
@@ -220,11 +220,11 @@ public abstract class Case {
         CaseFormatter.addWrappedFieldForVerbose(lines, "Category", categoryString);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Title", title);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Date", dateString);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Info", info);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Created at", createdAt.toString());
         CaseFormatter.addWrappedFieldForVerbose(lines, "Updated at", updatedAt.toString());
         CaseFormatter.addWrappedFieldForVerbose(lines, "Victim", victim);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Officer", officer);
-        CaseFormatter.addWrappedFieldForVerbose(lines, "Info", info);
 
         return lines.toArray(new String[0]);
     }
