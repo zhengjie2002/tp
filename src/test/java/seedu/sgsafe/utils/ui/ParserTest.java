@@ -13,11 +13,13 @@ import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.command.CommandType;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.AddCommand;
+import seedu.sgsafe.utils.command.ByeCommand;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidByeCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
@@ -277,7 +279,7 @@ class ParserTest {
                         longInfo);
         assertThrows(InputLengthExceededException.class, () -> Parser.parseInput(input));
     }
-
+  
     @Test
     void parseInput_addValidWithEscape_returnsAddCommand() {
         Settings.setInputDateFormat("yyyy-MM-dd");
@@ -356,5 +358,19 @@ class ParserTest {
     void parseInput_readExtraArguments_throwsInvalidReadCommandException() {
         assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read 000000 extraArg"));
         assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read 000000   extraArg"));
+    }
+  
+    // ----------- TESTS FOR BYE COMMANDS ----------- //
+
+    @Test
+    void parseInput_byeCommand_returnsByeCommand() {
+        Command cmd = Parser.parseInput("bye");
+        assertEquals(ByeCommand.class, cmd.getClass());
+    }
+
+    @Test
+    void parseInput_byeCommandWithExtraArgs_throwsInvalidByeCommandException() {
+        assertThrows(InvalidByeCommandException.class,
+                () -> Parser.parseInput("bye now"));
     }
 }

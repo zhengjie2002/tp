@@ -1,9 +1,11 @@
 package seedu.sgsafe.utils.ui;
 
 import seedu.sgsafe.utils.command.AddCommand;
+import seedu.sgsafe.utils.command.ByeCommand;
 import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
+import seedu.sgsafe.utils.command.HelpCommand;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.command.EditPromptCommand;
@@ -17,10 +19,12 @@ import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
+import seedu.sgsafe.utils.exceptions.InvalidByeCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidHelpCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
@@ -92,6 +96,8 @@ public class Parser {
         case "close" -> parseCloseCommand(remainder);
         case "open" -> parseOpenCommand(remainder);
         case "delete" -> parseDeleteCommand(remainder);
+        case "bye" -> parseByeCommand(remainder);
+        case "help" -> parseHelpCommand(remainder);
         case "setting" -> parseSettingCommand(remainder);
         case "read" -> parseReadCommand(remainder);
         default -> throw new UnknownCommandException(keyword);
@@ -531,5 +537,19 @@ public class Parser {
             throw new InvalidReadCommandException();
         }
         return new ReadCommand(remainder);
+    }
+
+    private static Command parseByeCommand(String remainder) {
+        if (!remainder.isEmpty()) {
+            throw new InvalidByeCommandException();
+        }
+        return new ByeCommand();
+    }
+
+    private static Command parseHelpCommand(String remainder) {
+        if (!remainder.isEmpty()) {
+            throw new InvalidHelpCommandException();
+        }
+        return new HelpCommand();
     }
 }

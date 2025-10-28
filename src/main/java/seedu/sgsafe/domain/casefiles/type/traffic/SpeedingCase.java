@@ -3,9 +3,8 @@ package seedu.sgsafe.domain.casefiles.type.traffic;
 import java.util.List;
 import java.util.Map;
 
-import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
-import seedu.sgsafe.utils.ui.Display;
+import seedu.sgsafe.domain.casefiles.CaseFormatter;
 
 import java.time.LocalDate;
 
@@ -27,20 +26,22 @@ public class SpeedingCase extends TrafficCase {
         return exceededSpeed;
     }
 
+    //@@author shennontay
     @Override
     public String[] getReadCaseDisplay() {
         List<String> displayList = getBaseDisplayLines();
 
-        displayList.add(Case.formatLineNoTruncate("Vehicle Type", this.getVehicleType()));
-        displayList.add(Case.formatLineNoTruncate("Vehicle Plate", this.getVehiclePlate()));
-        displayList.add(Case.formatLineNoTruncate("Road Name", this.getRoadName()));
-        displayList.add(Case.formatLineNoTruncate("Speed Limit", this.speedLimit));
-        displayList.add(Case.formatLineNoTruncate("Exceeded Speed", this.exceededSpeed));
+        CaseFormatter.addWrappedFieldForRead(displayList, "Vehicle Type", this.getVehicleType());
+        CaseFormatter.addWrappedFieldForRead(displayList, "Vehicle Plate", this.getVehiclePlate());
+        CaseFormatter.addWrappedFieldForRead(displayList, "Road Name", this.getRoadName());
+        CaseFormatter.addWrappedFieldForRead(displayList, "Speed Limit", String.valueOf(this.speedLimit));
+        CaseFormatter.addWrappedFieldForRead(displayList, "Exceeded Speed", String.valueOf(this.exceededSpeed));
 
-        displayList.add(Display.formatIndentedText("Info :", getInfo()));
+        CaseFormatter.addWrappedFieldForRead(displayList, "Info", getInfo());
 
         return displayList.toArray(new String[0]);
     }
+    //@@author
 
     @Override
     public List<String> getValidEditFlags() {
