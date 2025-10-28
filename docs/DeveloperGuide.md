@@ -112,6 +112,31 @@ The API of this component is primarily specified in `{add relevant classes here}
 
 ### Storage Component
 
+The Storage component handles the saving and loading from a human editable text file for data persistence
+
+The API of this component is primarily specified in `Storage`.
+
+#### Responsibilities:
+
+The Storage component:
+- Handles the writing to and reading from the save file
+- Adds saved case files to `CaseManager` on load
+
+#### Interaction flow:
+
+Loading from a save file:
+- When the program starts, `loadCaseManager()` from the storage class is called to initialise the `CaseManager`
+from `SGSafe.main()`
+
+![SequenceDiagramFileLoad.png](images/SequenceDiagramFileLoad.png)
+![SequenceDiagramInitialiseCase.png](images/SequenceDiagramInitialiseCase.png)
+
+Saving to the save file:
+- Every time a command is run, `saveToFile()` is run in the `SGsafe.handleUserCommand()` method.
+This only occurs if the command is successfully run.
+
+![SequenceDiagramFileSave.png](images/SequenceDiagramFileSave.png)
+
 ---
 
 ### Common
