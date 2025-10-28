@@ -89,7 +89,7 @@ Here are some examples of command keywords and their required arguments:
 5. Results are also displayed via `Display.printMessage()`
 
 ##### Example Interaction Flow
-![Sequence Diagram for List Command Parsing](diagrams/specific/SequenceDiagramUserInputListCommand.puml)
+![SequenceDiagramUserInputListCommand.png](images/SequenceDiagramUserInputListCommand.png)
 The sequence diagram above illustrates how user input is processed to create and execute a `ListCommand`.
 
 ---
