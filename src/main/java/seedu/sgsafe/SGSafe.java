@@ -31,7 +31,6 @@ public class SGSafe {
         
         Display.printWelcomeMessage();
         mainLoop();
-        Display.printGoodbyeMessage();
     }
 
     /**
