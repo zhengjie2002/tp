@@ -43,18 +43,24 @@ Given below is a quick overview of main components and how they interact with ea
 
 #### Overall logic
 
+The main code flow of `SGSafe`, our main class is as follows:
+1. Print welcome message using `Display`
+2. Initialize CaseManager with saved info from `data.txt` if it exists through `Storage`
+3. Read user input from System.in
+4. Parse user input using `Parser` and `Validator` to obtain a `Command` object that contains the information necessary to execute the specific command
+5. Execute user command
+6. Until the command is to exit the program, repeat steps 3 to 5
+7. Save the updated list of commands to `data.txt` using `Storage`
+8. Print exit message using `Display`
+
+#### Overall sequence diagram
+This is the overall sequence diagram, that will be elaborated more on in detail later. 
+It describes the rough workflow of our app. 
+Likewise, the abstract class `Command` mentioned here is meant to be a specific command, depending on what the user input is.
+
 ![Overall Sequence Diagram](images/SequenceDiagramGenericCombined.png)
 
-The main code flow is as follows:
-1. Print welcome message
-2. Initialize CaseManager with saved info from `data.txt` if it exists
-3. Read user input from System.in
-4. Parse user input to obtain a Command object that contains the 
-information necessary to execute the command
-5. execute user command
-6. until the command is to exit the program, repeat steps 3 to 5
-7. Save the updated list of commands to `data.txt`
-8. Print exit message
+---
 
 ### UI Component
 
@@ -100,9 +106,42 @@ The UI component:
 ### CaseFile Component
 
 {Add a high-level description of the CaseFile component here}
-The API of this component is primarily specified in `{add relevant classes here}`.
+
+The API of this component is primarily specified in `CaseManager`.
 
 #### Structure of the CaseFile Component
+
+The CaseFile component consists of two main parts: `Case` and `CaseManager`.
+Together, they represent the domain model for managing case records within the system.
+
+The Case class defines the structure and behavior of individual cases, while the CaseManager orchestrates their lifecycle and provides higher‑level operations.
+
+#### Responsibilities
+
+The CaseFile component:
+
+- **Defines the abstract base class `Case`**, which encapsulates common attributes and behaviors for all case types
+- **Provides extensibility** by allowing specialized case types to inherit from `Case`
+- **Manages collections of cases** through `CaseManager`, which creates, retrieves, updates, and deletes cases
+- **Coordinates persistence** by interacting with the `Storage` component to save and load case data
+- **Supports command execution flows**, since `Command` objects often delegate work to `CaseManager` and its managed `Case` instances
+
+#### Key Classes
+
+**Case**:
+An abstract class that defines the blueprint for all case types. 
+It includes identifiers, metadata (e.g. time it is created at, time it is updated at, title, etc.), and abstract methods that must be implemented by subclasses (e.g. domain‑specific case types).
+
+**CaseManager**:
+A concrete class responsible for managing Case objects. 
+It provides operations such as adding, updating, deleting, and retrieving cases. 
+It also handles validation and persistence by coordinating with Storage.
+
+#### Interaction Flow
+1. A `Command.execute()` call triggers an operation on `CaseManager`
+2. `CaseManager` locates or creates the appropriate `Case` object
+3. The `Case` object performs domain‑specific logic or state changes
+4. Results are returned to the `Command`, which then passes them to the `UI` for display
 
 ---
 
