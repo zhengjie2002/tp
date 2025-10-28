@@ -271,8 +271,12 @@ public abstract class Case {
 
     //@@author shennontay
     /**
-     * Returns the base display lines common to all case types,
-     * excluding the Info field (so subclasses can safely add their own fields before Info).
+     * Builds the common display lines shared by all case types.
+     * <p>
+     * Excludes the {@code Info} field so that subclasses can insert
+     * their own fields before the Info line if needed.
+     *
+     * @return a list of formatted display lines for the base fields
      */
     protected List<String> getBaseDisplayLines() {
         List<String> lines = new ArrayList<>();
@@ -294,8 +298,13 @@ public abstract class Case {
     }
 
     /**
-     * Default implementation of getReadCaseDisplay for case categories without unique fields.
-     * Subclasses should override this method to add more details before the Info line.
+     * Default implementation of the read‑case display for categories
+     * without additional fields.
+     * <p>
+     * Subclasses may override this method to insert extra details
+     * before the {@code Info} line.
+     *
+     * @return an array of formatted display lines for this case
      */
     public String[] getReadCaseDisplay() {
         List<String> displayList = getBaseDisplayLines();
