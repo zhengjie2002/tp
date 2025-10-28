@@ -100,7 +100,7 @@ public class Storage {
         List<String> additionalFields = newCase.getAdditionalFields();
         fields.keySet().retainAll(additionalFields);
 
-        //// Convert the raw string map (fields) to the typed map (typedFields)
+        // convert the raw string map (fields) to the typed map (typedFields)
         Map<String, Object> typedFields = Parser.convertFlagValueTypes(fields);
         newCase.update(typedFields);
 

@@ -31,11 +31,10 @@ public class MurderCase extends ViolentCase {
     public String[] getReadCaseDisplay() {
         List<String> displayList = getBaseDisplayLines();
 
-        displayList.add("\t" + Case.formatLineNoTruncate("Weapon", this.weapon == null ? "" : this.weapon));
-        displayList.add("\t" + Case.formatLineNoTruncate("Number of Victims",
-                this.numberOfVictims == null ? "" : this.numberOfVictims.toString()));
+        displayList.add(Case.formatLineNoTruncate("Weapon", this.weapon));
+        displayList.add(Case.formatLineNoTruncate("Number of Victims", this.numberOfVictims));
 
-        displayList.add("\t" + Display.formatIndentedText("Info :", getInfo(), 55));
+        displayList.add(Display.formatIndentedText("Info :", getInfo()));
 
         return displayList.toArray(new String[0]);
     }

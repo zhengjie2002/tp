@@ -26,9 +26,8 @@ public class TheftCase extends FinancialCase {
     public String[] getReadCaseDisplay() {
         List<String> displayList = getBaseDisplayLines();
 
-        displayList.add("\t" + Case.formatLineNoTruncate("Vehicle Type",
-                this.stolenObject == null ? "" : this.stolenObject));
-        displayList.add("\t" + Display.formatIndentedText("Info :", getInfo(), 55));
+        displayList.add(Case.formatLineNoTruncate("Vehicle Type", this.stolenObject));
+        displayList.add(Display.formatIndentedText("Info :", getInfo()));
 
         return displayList.toArray(new String[0]);
     }

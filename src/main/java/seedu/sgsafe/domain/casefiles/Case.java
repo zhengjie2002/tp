@@ -385,12 +385,14 @@ public abstract class Case {
      * @param value the value to display
      * @return a formatted line with label and full value
      */
-    public static String formatLineNoTruncate(String label, String value) {
+    public static String formatLineNoTruncate(String label, Object value) {
         if (value == null) {
-            return "";
+            value = "";
+        } else {
+            value = value.toString();
         }
         String paddedLabel = String.format("%-17s", label); // same padding as the original
-        return paddedLabel + " : " + value;
+        return "\t" + paddedLabel + " : " + value;
     }
 
     /**
@@ -399,15 +401,15 @@ public abstract class Case {
      */
     protected List<String> getBaseDisplayLines() {
         return new ArrayList<>(Arrays.asList(
-                "\t" + formatLineNoTruncate("Title", title),
-                "\t" + formatLineNoTruncate("Case ID", id),
-                "\t" + formatLineNoTruncate("Status", isOpen ? "Open" : "Closed"),
-                "\t" + formatLineNoTruncate("Category", category == null ? "" : getCategory().toString()),
-                "\t" + formatLineNoTruncate("Date", date == null ? "" : getDate().toString()),
-                "\t" + formatLineNoTruncate("Victim", victim == null ? "" : getVictim()),
-                "\t" + formatLineNoTruncate("Officer", officer == null ? "" : getOfficer()),
-                "\t" + formatLineNoTruncate("Created at", createdAt == null ? "" : createdAt.toString()),
-                "\t" + formatLineNoTruncate("Updated at", updatedAt == null ? "" : updatedAt.toString())
+                formatLineNoTruncate("Title", title),
+                formatLineNoTruncate("Case ID", id),
+                formatLineNoTruncate("Status", isOpen ? "Open" : "Closed"),
+                formatLineNoTruncate("Category",getCategory()),
+                formatLineNoTruncate("Date", getDate()),
+                formatLineNoTruncate("Victim", getVictim()),
+                formatLineNoTruncate("Officer", getOfficer()),
+                formatLineNoTruncate("Created at", createdAt),
+                formatLineNoTruncate("Updated at", updatedAt)
         ));
     }
 
@@ -418,7 +420,7 @@ public abstract class Case {
      */
     public String[] getReadCaseDisplay() {
         List<String> displayList = getBaseDisplayLines();
-        displayList.add("\t" + Display.formatIndentedText("Info :", getInfo(), 55));
+        displayList.add(Display.formatIndentedText("Info :", getInfo()));
 
 
         return displayList.toArray(new String[0]);

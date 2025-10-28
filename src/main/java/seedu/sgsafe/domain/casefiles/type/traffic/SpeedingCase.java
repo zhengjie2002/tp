@@ -31,18 +31,13 @@ public class SpeedingCase extends TrafficCase {
     public String[] getReadCaseDisplay() {
         List<String> displayList = getBaseDisplayLines();
 
-        displayList.add("\t" + Case.formatLineNoTruncate("Vehicle Type",
-                this.getVehicleType() == null ? "" : this.getVehicleType()));
-        displayList.add("\t" + Case.formatLineNoTruncate("Vehicle Plate",
-                this.getVehiclePlate() == null ? "" : this.getVehiclePlate()));
-        displayList.add("\t" + Case.formatLineNoTruncate("Road Name",
-                this.getRoadName() == null ? "" : this.getRoadName()));
-        displayList.add("\t" + Case.formatLineNoTruncate("Speed Limit",
-                this.speedLimit == null ? "" : this.speedLimit.toString()));
-        displayList.add("\t" + Case.formatLineNoTruncate("Exceeded Speed",
-                this.exceededSpeed == null ? "" : this.exceededSpeed.toString()));
+        displayList.add(Case.formatLineNoTruncate("Vehicle Type", this.getVehicleType()));
+        displayList.add(Case.formatLineNoTruncate("Vehicle Plate", this.getVehiclePlate()));
+        displayList.add(Case.formatLineNoTruncate("Road Name", this.getRoadName()));
+        displayList.add(Case.formatLineNoTruncate("Speed Limit", this.speedLimit));
+        displayList.add(Case.formatLineNoTruncate("Exceeded Speed", this.exceededSpeed));
 
-        displayList.add("\t" + Display.formatIndentedText("Info :", getInfo(), 55));
+        displayList.add(Display.formatIndentedText("Info :", getInfo()));
 
         return displayList.toArray(new String[0]);
     }

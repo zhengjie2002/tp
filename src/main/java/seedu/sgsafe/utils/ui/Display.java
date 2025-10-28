@@ -16,6 +16,9 @@ public class Display {
     private static final String GOODBYE_MESSAGE_LINE_1 = "Thanks for using SGSafe :)";
     private static final String GOODBYE_MESSAGE_LINE_2 = "We hope to see you again!";
 
+    /** The width used for indenting long texts in formatted messages. */
+    private static final int indentWidth = 55;
+
     /**
      * Prints the welcome message to the console.
      * This is typically shown when the application starts.
@@ -50,13 +53,13 @@ public class Display {
      * Wraps text so that it starts on the next line after the label,
      * and each subsequent line begins with a tab for indentation.
      */
-    public static String formatIndentedText(String label, String text, int width) {
+    public static String formatIndentedText(String label, String text) {
         if (text == null || text.isEmpty()) {
             return label;
         }
-        StringBuilder out = new StringBuilder(label + "\n");
+        StringBuilder out = new StringBuilder("\t" + label + "\n");
         String indent = "\t\t\t";
-        int max = width - indent.length();
+        int max = indentWidth - indent.length();
         String[] words = text.split("\\s+");
         StringBuilder line = new StringBuilder(indent);
 

@@ -37,15 +37,12 @@ public abstract class TrafficCase extends Case {
         List<String> displayList = getBaseDisplayLines();
 
         // Add TrafficCase specific fields
-        displayList.add("\t" + Case.formatLineNoTruncate("Vehicle Type",
-                this.vehicleType == null ? "" : this.vehicleType));
-        displayList.add("\t" + Case.formatLineNoTruncate("Vehicle Plate",
-                this.vehiclePlate == null ? "" : this.vehiclePlate));
-        displayList.add("\t" + Case.formatLineNoTruncate("Road Name",
-                this.roadName == null ? "" : this.roadName));
+        displayList.add(Case.formatLineNoTruncate("Vehicle Type", this.vehicleType));
+        displayList.add(Case.formatLineNoTruncate("Vehicle Plate", this.vehiclePlate));
+        displayList.add(Case.formatLineNoTruncate("Road Name", this.roadName));
 
         // Display info
-        displayList.add("\t" + Display.formatIndentedText("Info :", getInfo(), 55));
+        displayList.add(Display.formatIndentedText("Info :", getInfo()));
 
         return displayList.toArray(new String[0]);
     }
