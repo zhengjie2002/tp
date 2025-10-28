@@ -19,16 +19,18 @@ class "<$documents>" as File UI_COLOR_T1
 
 ' Relationships
 User ..> UI : enters commands
+
 Casefile -[CASEFILE_COLOR]-> UI
 
 UI -[UI_COLOR]-> Main
 
 Command -[COMMAND_COLOR]-> Casefile : manipulate cases
+Command -[COMMAND_COLOR]-> UI : display information
 
 Main -[#grey]-> Storage
-
 Main -[#grey]-> UI
 Main -[#grey]-> Command : executes
+Main -[#grey]-> Casefile
 Main -[hidden]-> Commons
 
 Storage -[STORAGE_COLOR].> Casefile : serialize/deserialize
