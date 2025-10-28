@@ -189,11 +189,26 @@ public abstract class Case {
 
     //@@author xelisce
 
+    /**
+     * Builds a one‑line summary representation of this case.
+     * <p>
+     * Includes status, category, ID, date, and title in a fixed‑width format.
+     *
+     * @return a formatted summary line for this case
+     */
     public String getDisplayLine() {
         String dateString = DateFormatter.formatDate(date, Settings.getOutputDateFormat());
         return CaseFormatter.formatCaseSummaryLine(isOpen, categoryString, id, dateString, title);
     }
 
+    /**
+     * Builds a verbose, multi‑line representation of this case.
+     * <p>
+     * Starts with a case ID header, followed by wrapped fields such as
+     * status, category, title, date, timestamps, victim, and officer, and info
+     *
+     * @return an array of formatted lines for verbose display
+     */
     public String[] getMultiLineVerboseDisplay() {
         List<String> lines = new ArrayList<>();
         lines.add(CaseFormatter.formatCaseIDHeader(id));
@@ -205,11 +220,11 @@ public abstract class Case {
         CaseFormatter.addWrappedFieldForVerbose(lines, "Category", categoryString);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Title", title);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Date", dateString);
-        CaseFormatter.addWrappedFieldForVerbose(lines, "Info", info);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Created at", createdAt.toString());
         CaseFormatter.addWrappedFieldForVerbose(lines, "Updated at", updatedAt.toString());
         CaseFormatter.addWrappedFieldForVerbose(lines, "Victim", victim);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Officer", officer);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Info", info);
 
         return lines.toArray(new String[0]);
     }
