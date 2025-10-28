@@ -36,7 +36,7 @@ public class CaseFormatter {
     static final String MAX_ID_STRING_WIDTH       = "%-6s";   // 6-char hex ID
     static final String MAX_DATE_STRING_WIDTH     = "%-10s";  // dd/MM/yyyy
     static final String MAX_TITLE_STRING_WIDTH    = "%s";     // do not truncate title here
-    static final int MAX_TITLE_WIDTH              = 10;       // title is truncated separately using this with ellipses
+    static final int MAX_TITLE_WIDTH              = 40;       // title is truncated separately using this with ellipses
 
     /** Composite format string for summary lines. */
     static final String STATUS_FORMAT_STRING =
