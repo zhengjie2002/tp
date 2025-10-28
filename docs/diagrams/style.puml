@@ -9,59 +9,58 @@
 
 'T1 through T4 are shades of the original color from lightest to darkest
 
-
 ' =========================
 ' Distinct colors for system components
 ' =========================
 
-' Display / UI layer — green
-!define DISPLAY_COLOR #1D8900
-!define DISPLAY_COLOR_T1 #83E769
-!define DISPLAY_COLOR_T2 #3FC71B
-!define DISPLAY_COLOR_T3 #166800
-!define DISPLAY_COLOR_T4 #0E4100
-
 ' SGSafe (main orchestrator) — deep indigo
-!define SGSAFE_COLOR #4B0082
-!define SGSAFE_COLOR_T1 #C9A7E0
-!define SGSAFE_COLOR_T2 #8A2BE2
-!define SGSAFE_COLOR_T3 #360062
-!define SGSAFE_COLOR_T4 #240041
+!define MAIN_COLOR #4B0082
+!define MAIN_COLOR_T1 #C9A7E0
+!define MAIN_COLOR_T2 #8A2BE2
+!define MAIN_COLOR_T3 #360062
+!define MAIN_COLOR_T4 #240041
 
-' Parser (command interpreter) — teal
-!define PARSER_COLOR #008080
-!define PARSER_COLOR_T1 #66CCCC
-!define PARSER_COLOR_T2 #20B2AA
-!define PARSER_COLOR_T3 #006666
-!define PARSER_COLOR_T4 #004C4C
+' Display / Parser / Validator layer — green
+!define UI_COLOR #1D8900
+!define UI_COLOR_T1 #83E769
+!define UI_COLOR_T2 #3FC71B
+!define UI_COLOR_T3 #166800
+!define UI_COLOR_T4 #0E4100
 
-' Validator (input checker) — orange
-!define VALIDATOR_COLOR #CC5500
-!define VALIDATOR_COLOR_T1 #FFB380
-!define VALIDATOR_COLOR_T2 #FF7518
-!define VALIDATOR_COLOR_T3 #993D00
-!define VALIDATOR_COLOR_T4 #662900
+' Casefile layer (Case, CaseManager, etc.) — royal blue
+!define CASEFILE_COLOR #0057B7
+!define CASEFILE_COLOR_T1 #66A3E0
+!define CASEFILE_COLOR_T2 #1E90FF
+!define CASEFILE_COLOR_T3 #004080
+!define CASEFILE_COLOR_T4 #002B55
 
-' Command hierarchy — crimson
+' Command layer — crimson
 !define COMMAND_COLOR #9D0012
 !define COMMAND_COLOR_T1 #F97181
 !define COMMAND_COLOR_T2 #E41F36
 !define COMMAND_COLOR_T3 #7B000E
 !define COMMAND_COLOR_T4 #51000A
 
-' Storage / persistence — golden yellow
+' Storage layer — golden yellow
 !define STORAGE_COLOR #A38300
 !define STORAGE_COLOR_T1 #FFE374
 !define STORAGE_COLOR_T2 #EDC520
 !define STORAGE_COLOR_T3 #806600
 !define STORAGE_COLOR_T4 #544400
 
-' Domain Model (Case, CaseManager, etc.) — royal blue
-!define MODEL_COLOR #0057B7
-!define MODEL_COLOR_T1 #66A3E0
-!define MODEL_COLOR_T2 #1E90FF
-!define MODEL_COLOR_T3 #004080
-!define MODEL_COLOR_T4 #002B55
+' Common (settings, etc) — teal
+!define COMMON_COLOR #008080
+!define COMMON_COLOR_T1 #66CCCC
+!define COMMON_COLOR_T2 #20B2AA
+!define COMMON_COLOR_T3 #006666
+!define COMMON_COLOR_T4 #004C4C
+
+' Logic Layer — orange
+!define LOGIC_COLOR #CC5500
+!define LOGIC_COLOR_T1 #FFB380
+!define LOGIC_COLOR_T2 #FF7518
+!define LOGIC_COLOR_T3 #993D00
+!define LOGIC_COLOR_T4 #662900
 
 !define USER_COLOR #000000
 
