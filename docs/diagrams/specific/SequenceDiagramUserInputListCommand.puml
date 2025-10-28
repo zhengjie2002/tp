@@ -1,39 +1,41 @@
+'unused, feel free to take it and use it'
+
 @startuml
 !include ../style.puml
 skinparam ArrowFontStyle plain
 
 actor User as user USER_COLOR
-participant ":SGSafe" as sgsafe SGSAFE_COLOR
-participant ":Parser" as parser PARSER_COLOR
-participant ":Validator" as validator VALIDATOR_COLOR
+participant ":SGSafe" as sgsafe MAIN_COLOR
+participant ":Parser" as parser UI_COLOR
+participant ":Validator" as validator UI_COLOR
 
 user -[USER_COLOR]> sgsafe : "list &#45;&#45;mode verbose &#45;&#45;status closed"
-activate sgsafe SGSAFE_COLOR
+activate sgsafe MAIN_COLOR
 
-sgsafe -[SGSAFE_COLOR]> parser : parseInput("list ...")
-activate parser PARSER_COLOR
+sgsafe -[MAIN_COLOR]> parser : parseInput("list ...")
+activate parser UI_COLOR
 
-parser -[PARSER_COLOR]> parser : parseListCommand(...)
+parser -[UI_COLOR]> parser : parseListCommand(...)
 activate parser
 
-parser -[PARSER_COLOR]> parser : extractFlagValues(...)
+parser -[UI_COLOR]> parser : extractFlagValues(...)
 activate parser
 deactivate parser
 
-parser -[PARSER_COLOR]> validator : haveValidFlags(...)
-activate validator VALIDATOR_COLOR
+parser -[UI_COLOR]> validator : haveValidFlags(...)
+activate validator UI_COLOR
 deactivate validator
 
-parser -[PARSER_COLOR]> parser : parseListStatus(...)
+parser -[UI_COLOR]> parser : parseListStatus(...)
 activate parser
 deactivate parser
 
-parser -[PARSER_COLOR]> parser : parseListMode(...)
+parser -[UI_COLOR]> parser : parseListMode(...)
 activate parser
 deactivate parser
 
 create participant ":ListCommand" as listCmd COMMAND_COLOR
-parser -[PARSER_COLOR]> listCmd : new ListCommand(...)
+parser -[UI_COLOR]> listCmd : new ListCommand(...)
 activate listCmd COMMAND_COLOR
 
 listCmd --> parser : return ListCommand
