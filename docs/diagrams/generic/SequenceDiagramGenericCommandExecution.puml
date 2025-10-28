@@ -1,0 +1,29 @@
+@startuml
+!include ../style.puml
+skinparam ArrowFontStyle plain
+
+participant ":SGSafe" as sgsafe SGSAFE_COLOR
+participant ":Command" as cmd COMMAND_COLOR
+participant ":CaseManager" as caseMgr MODEL_COLOR
+participant ":Storage" as storage STORAGE_COLOR
+participant ":Display" as display DISPLAY_COLOR
+
+activate sgsafe SGSAFE_COLOR
+
+sgsafe -[SGSAFE_COLOR]> cmd : execute()
+activate cmd COMMAND_COLOR
+
+cmd -[COMMAND_COLOR]> caseMgr : perform some operation
+activate caseMgr MODEL_COLOR
+deactivate caseMgr
+
+cmd -[SGSAFE_COLOR]> display : printMessage(...)
+activate display DISPLAY_COLOR
+deactivate display
+deactivate cmd
+
+sgsafe -[SGSAFE_COLOR]> storage : saveToFile()
+activate storage STORAGE_COLOR
+deactivate storage
+
+@enduml
