@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.time.LocalDate;
 
 import seedu.sgsafe.utils.command.CaseListingMode;
