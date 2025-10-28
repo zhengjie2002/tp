@@ -1,2 +1,0 @@
-id:000000|category:THEFT|title:Theft case|date:01/02/2023|info:Stolen wallet|victim:John Doe|officer:Officer Smith|is-deleted:1|is-open:1|created-at:29/10/2025 00:49:54|updated-at:29/10/2025 01:17:36|stolen-object:
-id:000001|category:MURDER|title:TITLE|date:01/02/2023|info:INFO|victim:Jane|officer:|is-deleted:0|is-open:1|created-at:29/10/2025 01:14:49|updated-at:29/10/2025 01:17:36|number-of-victims:|weapon:

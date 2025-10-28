@@ -24,6 +24,11 @@ import java.util.ArrayList;
  */
 class ListCommandTest {
 
+    private static final int NUMBER_OF_PREAMBLE_LINES_SHARED = 1; // case count
+    private static final int NUMBER_OF_PREAMBLE_LINES_VERBOSE = NUMBER_OF_PREAMBLE_LINES_SHARED + 7;
+    private static final int NUMBER_OF_PREAMBLE_LINES_SUMMARY = NUMBER_OF_PREAMBLE_LINES_SHARED + 5 + 1;
+    private static final int NUMBER_OF_LINES_BETWEEN_VERBOSE_MODE = 2; // Created at and updated at
+
     private ArrayList<Case> caseList;
 
     @BeforeEach
@@ -51,10 +56,10 @@ class ListCommandTest {
         ListCommand command = new ListCommand(CaseListingMode.OPEN_ONLY, false);
         String[] output = command.getCaseDescriptions(caseList);
 
-        assertEquals(3, output.length);
+        assertEquals(NUMBER_OF_PREAMBLE_LINES_SUMMARY+1, output.length);
         assertEquals("You currently have 1 case open", output[0]);
-        assertTrue(output[2].contains("[Open]"));
-        assertTrue(output[2].contains("Robbery"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_SUMMARY].contains("[Open]"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_SUMMARY].contains("Robbery"));
     }
 
     @Test
@@ -70,15 +75,15 @@ class ListCommandTest {
 
         String[] openOutput = new ListCommand(CaseListingMode.OPEN_ONLY, false).getCaseDescriptions(caseList);
         assertEquals("You currently have 2 cases open", openOutput[0]);
-        assertEquals(4, openOutput.length);
-        assertTrue(openOutput[2].contains("Robbery"));
-        assertTrue(openOutput[3].contains("Fraud"));
+        assertEquals(NUMBER_OF_PREAMBLE_LINES_SUMMARY + 2, openOutput.length);
+        assertTrue(openOutput[NUMBER_OF_PREAMBLE_LINES_SUMMARY].contains("Robbery"));
+        assertTrue(openOutput[NUMBER_OF_PREAMBLE_LINES_SUMMARY+1].contains("Fraud"));
 
         String[] closedOutput = new ListCommand(CaseListingMode.CLOSED_ONLY, false).getCaseDescriptions(caseList);
         assertEquals("You currently have 1 case closed", closedOutput[0]);
-        assertEquals(3, closedOutput.length);
-        assertTrue(closedOutput[2].contains("Trespass"));
-        assertTrue(closedOutput[2].contains("[Closed]"));
+        assertEquals(NUMBER_OF_PREAMBLE_LINES_SUMMARY+1, closedOutput.length);
+        assertTrue(closedOutput[NUMBER_OF_PREAMBLE_LINES_SUMMARY].contains("Trespass"));
+        assertTrue(closedOutput[NUMBER_OF_PREAMBLE_LINES_SUMMARY].contains("[Closed]"));
     }
 
     @Test
@@ -94,10 +99,10 @@ class ListCommandTest {
 
         String[] output = new ListCommand(CaseListingMode.ALL, false).getCaseDescriptions(caseList);
         assertEquals("You currently have 3 cases in total", output[0]);
-        assertEquals(5, output.length);
-        assertTrue(output[2].contains("Robbery"));
-        assertTrue(output[3].contains("Fraud"));
-        assertTrue(output[4].contains("Trespass"));
+        assertEquals(NUMBER_OF_PREAMBLE_LINES_SUMMARY+3, output.length);
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_SUMMARY].contains("Robbery"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_SUMMARY+1].contains("Fraud"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_SUMMARY+2].contains("Trespass"));
     }
 
     @Test
@@ -108,9 +113,9 @@ class ListCommandTest {
 
         String[] output = new ListCommand(CaseListingMode.DEFAULT, false).getCaseDescriptions(caseList);
         assertEquals("You currently have 2 cases in total", output[0]);
-        assertEquals(4, output.length);
-        assertTrue(output[2].contains("Robbery"));
-        assertTrue(output[3].contains("Fraud"));
+        assertEquals(NUMBER_OF_PREAMBLE_LINES_SUMMARY+2, output.length);
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_SUMMARY].contains("Robbery"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_SUMMARY+1].contains("Fraud"));
     }
 
     @Test
@@ -121,15 +126,21 @@ class ListCommandTest {
         ListCommand command = new ListCommand(CaseListingMode.ALL, true);
         String[] output = command.getCaseDescriptions(caseList);
 
-        assertTrue(output[1].startsWith("======== CASE ID 000001 ========"));
-        assertTrue(output[2].contains("Open"));
-        assertTrue(output[3].contains("Category"));
-        assertTrue(output[3].contains("Theft"));
-        assertTrue(output[4].contains("Robbery"));
-        assertTrue(output[5].contains("01/10/2025"));
-        assertTrue(output[6].contains("Masked suspect"));
-        assertTrue(output[9].contains("John Doe"));
-        assertTrue(output[10].contains("Officer Tan"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_VERBOSE].startsWith("======== CASE ID 000001 ========"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_VERBOSE+1].contains("Open"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_VERBOSE+2].contains("Category"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_VERBOSE+2].contains("Theft"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_VERBOSE+3].contains("Robbery"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_VERBOSE+4].contains("01/10/2025"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_VERBOSE+5].contains("Masked suspect"));
+        assertTrue(
+                output[
+                        NUMBER_OF_PREAMBLE_LINES_VERBOSE+5+NUMBER_OF_LINES_BETWEEN_VERBOSE_MODE+1
+                        ].contains("John Doe"));
+        assertTrue(
+                output[
+                        NUMBER_OF_PREAMBLE_LINES_VERBOSE+5+NUMBER_OF_LINES_BETWEEN_VERBOSE_MODE+2
+                        ].contains("Officer Tan"));
     }
 
     @Test
@@ -140,8 +151,8 @@ class ListCommandTest {
         ListCommand command = new ListCommand(CaseListingMode.ALL, false);
         String[] output = command.getCaseDescriptions(caseList);
 
-        assertEquals(3, output.length);
-        assertTrue(output[2].contains("Robbery"));
+        assertEquals(NUMBER_OF_PREAMBLE_LINES_SUMMARY+1, output.length);
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_SUMMARY].contains("Robbery"));
     }
 
     @Test
@@ -188,10 +199,10 @@ class ListCommandTest {
         ListCommand command = new ListCommand(CaseListingMode.ALL, false);
         String[] output = command.getCaseDescriptions(caseList);
 
-        assertEquals(5, output.length);
-        assertFalse(output[1].contains("Masked suspect"));
-        assertFalse(output[2].contains("Email scam"));
-        assertFalse(output[3].contains("Unauthorized entry"));
+        assertEquals(NUMBER_OF_PREAMBLE_LINES_SUMMARY+3, output.length);
+        assertFalse(output[NUMBER_OF_PREAMBLE_LINES_SUMMARY].contains("Masked suspect"));
+        assertFalse(output[NUMBER_OF_PREAMBLE_LINES_SUMMARY+1].contains("Email scam"));
+        assertFalse(output[NUMBER_OF_PREAMBLE_LINES_SUMMARY+2].contains("Unauthorized entry"));
     }
 
     @Test
@@ -226,10 +237,14 @@ class ListCommandTest {
         ListCommand command = new ListCommand(CaseListingMode.ALL, true);
         String[] output = command.getCaseDescriptions(caseList);
 
-        assertTrue(output[3].startsWith("Category"));
-        assertTrue(output[3].contains("Vandalism"));
-        assertFalse(output[6].contains("Victim  : "));
-        assertFalse(output[7].contains("Officer : "));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_VERBOSE+2].startsWith("Category"));
+        assertTrue(output[NUMBER_OF_PREAMBLE_LINES_VERBOSE+3].contains("Vandalism"));
+        assertFalse(output[
+                NUMBER_OF_PREAMBLE_LINES_VERBOSE+3+NUMBER_OF_LINES_BETWEEN_VERBOSE_MODE
+                ].contains("Victim  : "));
+        assertFalse(output[
+                NUMBER_OF_PREAMBLE_LINES_VERBOSE+3+NUMBER_OF_LINES_BETWEEN_VERBOSE_MODE+1
+                ].contains("Officer : "));
     }
 
     @Test

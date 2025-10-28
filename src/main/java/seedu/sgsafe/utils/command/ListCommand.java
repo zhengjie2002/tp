@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import seedu.sgsafe.domain.casefiles.Case;
+import seedu.sgsafe.domain.casefiles.CaseFormatter;
 import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.ui.Display;
 
@@ -116,7 +117,7 @@ public class ListCommand extends Command {
      * @return a formatted header string for the case list table
      */
     private String generateListTableHeaderMessage() {
-        return String.format("%-8s %-16s %-6s %-10s %s", "STATUS", "CATEGORY", "ID", "DATE", "TITLE");
+        return String.format(CaseFormatter.SUMMARY_FORMAT_STRING, "STATUS", "CATEGORY", "ID", "DATE", "TITLE");
     }
 
     /**

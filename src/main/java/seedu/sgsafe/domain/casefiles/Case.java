@@ -354,4 +354,12 @@ public abstract class Case {
                 + "|created-at:" + (this.createdAt == null ? "" : this.createdAt.format(dateTimeFormatter))
                 + "|updated-at:" + (this.updatedAt == null ? "" : this.updatedAt.format(dateTimeFormatter));
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }
