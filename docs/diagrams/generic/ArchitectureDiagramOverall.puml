@@ -5,39 +5,33 @@
 !include ../style.puml
 
 package "SGSafe Architecture" <<Rectangle>> {
-    class Display DISPLAY_COLOR
-    class UI PARSER_COLOR
+    class UI UI_COLOR
     class Storage STORAGE_COLOR
-    class CaseManager MODEL_COLOR
-    class Case MODEL_COLOR
+    class Casefile CASEFILE_COLOR
     class Command COMMAND_COLOR
     class Main #grey
-    class Commons PARSER_COLOR_T2
+    class Commons COMMON_COLOR_T2
 }
 
 ' External actors/resources
-class "<$user>" as User MODEL_COLOR_T2
-class "<$documents>" as File DISPLAY_COLOR_T1
+class "<$user>" as User CASEFILE_COLOR_T2
+class "<$documents>" as File UI_COLOR_T1
 
 ' Relationships
 User ..> UI : enters commands
-CaseManager -[DISPLAY_COLOR]-> Display
+Casefile -[CASEFILE_COLOR]-> UI
 
-UI -[PARSER_COLOR]-> Main
-CaseManager -[MODEL_COLOR]-> Case
+UI -[UI_COLOR]-> Main
 
-Command -[COMMAND_COLOR]-> CaseManager : manipulate cases
+Command -[COMMAND_COLOR]-> Casefile : manipulate cases
 
-Main -[#grey]-> Display
 Main -[#grey]-> Storage
 
 Main -[#grey]-> UI
-UI -[#grey]-> Command : executes
+Main -[#grey]-> Command : executes
 Main -[hidden]-> Commons
 
-
-
-Storage -[STORAGE_COLOR].> CaseManager : serialize/deserialize
+Storage -[STORAGE_COLOR].> Casefile : serialize/deserialize
 Storage .[STORAGE_COLOR].> File : read/write
 
 @enduml

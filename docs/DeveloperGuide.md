@@ -4,14 +4,21 @@
 
 1. [Acknowledgements](#acknowledgements)
 2. [Setting up, Getting Started](#setting-up-getting-started)
-3. [Design & Implementation](#design--implementation)
-4. [Appendix A: Product Scope](#appendix-a-product-scope)
+3. [Design](#design)
+    - [Architecture](#architecture)
+    - [UI Component](#ui-component)
+    - [CaseFile Component](#casefile-component)
+    - [Command Component](#command-component)
+    - [Storage Component](#storage-component)
+    - [Common](#common)
+4. [Implementation](#implementation)
+5. [Appendix A: Product Scope](#appendix-a-product-scope)
     - [Target user profile](#target-user-profile)
     - [Value proposition](#value-proposition)
-5. [Appendix B: User Stories](#appendix-b-user-stories)
-6. [Appendix C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
-7. [Appendix D: Glossary](#appendix-d-glossary)
-8. [Appendix E: Instructions for Manual Testing](#appendix-e-instructions-for-manual-testing)
+6. [Appendix B: User Stories](#appendix-b-user-stories)
+7. [Appendix C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
+8. [Appendix D: Glossary](#appendix-d-glossary)
+9. [Appendix E: Instructions for Manual Testing](#appendix-e-instructions-for-manual-testing)
 
 ---
 
@@ -24,9 +31,9 @@ original source as well}
 
 ## Setting up, Getting Started
 
-## Design & implementation
+## Design
 
-### Architecture 
+### Architecture
 
 ![Architecture Diagram](images/ArchitectureDiagramOverall.png)
 
@@ -34,7 +41,7 @@ The Architecture Diagram given above explains the high-level design of the App.
 
 Given below is a quick overview of main components and how they interact with each other.
 
-### Overall logic
+#### Overall logic
 
 ![Overall Sequence Diagram](images/SequenceDiagramGenericCombined.png)
 
@@ -51,17 +58,15 @@ information necessary to execute the command
 
 ### UI Component
 
-The API of this component is primarily specified in `Display.java`, with parsing functionality in `Parser.java` and validation in `Validator.java`.
+{Add a high-level description of the UI component here}
 
----
+The API of this component is primarily specified in `{add relevant classes here}`.
 
 #### Structure of the UI Component
 
 The UI consists of three main parts: `Display`, `Parser`, and `Validator`. All these work together to handle user interaction through a console-based command-line interface.
 
 The UI component uses standard input/output streams. The interaction flow is managed in the `SGSafe` main class.
-
----
 
 #### Responsibilities
 
@@ -90,43 +95,30 @@ The UI component:
 5. Results are displayed via `Display.printMessage()`
 6. Exceptions are caught and error messages shown through `Display`
 
-### Model Component
+---
 
-#### Structure of the Model Component
+### CaseFile Component
 
-The Model component represents the **core domain** of SGSafe. It encapsulates the application’s state and business logic, independent of how input is parsed or output is displayed. The Model is designed to be self‑contained, exposing APIs that allow the Logic layer to manipulate and query data without needing to know about persistence or UI details.
+{Add a high-level description of the CaseFile component here}
+The API of this component is primarily specified in `{add relevant classes here}`.
+
+#### Structure of the CaseFile Component
 
 ---
 
-#### Responsibilities
-
-The Model component:
-
-- **Maintains the central state** of the application through `CaseManager`, which stores and manages all `Case` objects
-- **Provides APIs** for adding, deleting, updating, and retrieving cases
-- **Ensures data integrity** by enforcing constraints (e.g., unique case IDs, valid status values)
-- **Supports queries and filtering** for commands like `list` or `find`
-- **Acts as the single source of truth** for the rest of the system — Logic and Storage interact with the Model to read or update state
+### Command Component
 
 ---
 
-#### Key Classes
-
-- **CaseManager**: The main entry point for managing cases. Provides methods to add, delete, update, and retrieve `Case` objects.
-- **Case**: Represents an individual case, with fields such as ID, description, status, and metadata.
-- **Supporting Entities**:
-    - `CaseStatus` (enum): Defines allowed states (e.g., OPEN, CLOSED).
-    - `CaseFilter` or similar utility classes: Encapsulate filtering logic for list/search operations.
+### Storage Component
 
 ---
 
-#### Interaction Flow
+### Common
 
-1. A `Command` object (from the Logic component) calls into `CaseManager` to perform an operation.
-2. `CaseManager` updates or queries its internal collection of `Case` objects.
-3. The result (e.g. an added case, a modified case, a list of cases, or a success flag) is returned to the `Command`.
-4. The `Command` passes results back to the UI for display.
-5. After execution, `SGSafe` triggers `Storage.saveToFile()` to persist the updated Model state.
+---
+
+## Implementation
 
 ---
 
@@ -173,7 +165,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ## Appendix D: Glossary
 
-* *glossary item* - Definition
+* *glossary item* — Definition
 
 ---
 

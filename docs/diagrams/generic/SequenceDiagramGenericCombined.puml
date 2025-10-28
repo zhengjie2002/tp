@@ -3,73 +3,77 @@
 skinparam ArrowFontStyle plain
 
 actor User as user USER_COLOR
-participant ":SGSafe" as sgsafe SGSAFE_COLOR
-participant ":Parser" as parser PARSER_COLOR
-participant ":Validator" as validator VALIDATOR_COLOR
-participant ":Display" as display DISPLAY_COLOR
+participant ":SGSafe" as sgsafe MAIN_COLOR
+participant ":Parser" as parser UI_COLOR
+participant ":Validator" as validator UI_COLOR
+participant ":Display" as display UI_COLOR
 
-activate sgsafe SGSAFE_COLOR
+activate sgsafe MAIN_COLOR
 
-sgsafe -[SGSAFE_COLOR]> display :printWelcomeMessage()
-activate display DISPLAY_COLOR
-deactivate display DISPLAY_COLOR
+sgsafe -[MAIN_COLOR]> display :printWelcomeMessage()
+activate display UI_COLOR
+deactivate display UI_COLOR
 
 loop until userInput == "bye"
     user -[USER_COLOR]> sgsafe : userInput
 
-    sgsafe -[SGSAFE_COLOR]> parser : parseInput(...)
-    activate parser PARSER_COLOR
+    sgsafe -[MAIN_COLOR]> parser : parseInput(...)
+    activate parser UI_COLOR
 
-    parser -[PARSER_COLOR]> parser : parseCommand(...)
-    activate parser
+    parser -[UI_COLOR]> parser : parseCommand(...)
+    activate parser UI_COLOR_T2
 
-    parser -[PARSER_COLOR]> parser : extractFlagValues(...)
-    activate parser
+    parser -[UI_COLOR]> parser : extractFlagValues(...)
+    activate parser UI_COLOR_T1
     deactivate parser
 
-    parser -[PARSER_COLOR]> validator : haveValidFlags(...)
-    activate validator VALIDATOR_COLOR
+    parser -[UI_COLOR]> validator : haveValidFlags(...)
+    activate validator UI_COLOR
     deactivate validator
 
     create participant ":Command" as cmd COMMAND_COLOR
-    parser -[PARSER_COLOR]> cmd : new Command(...)
+    parser -[UI_COLOR]> cmd : new Command(...)
     activate cmd COMMAND_COLOR
 
+    cmd --> parser : return Command
+    deactivate cmd
+
+    parser --> parser : return Command
     deactivate parser
 
     parser --> sgsafe : return Command
     deactivate parser
 
-    sgsafe -[SGSAFE_COLOR]> cmd : execute()
+    sgsafe -[MAIN_COLOR]> cmd : execute()
+    activate cmd COMMAND_COLOR
 
-    participant ":CaseManager" as caseMgr MODEL_COLOR
-    participant ":Case" as case MODEL_COLOR
+    participant ":CaseManager" as caseMgr CASEFILE_COLOR
+    participant ":Case" as case CASEFILE_COLOR
     participant ":Storage" as storage STORAGE_COLOR
 
     cmd -[COMMAND_COLOR]> caseMgr : perform some operation
-    activate caseMgr MODEL_COLOR
+    activate caseMgr CASEFILE_COLOR
 
-    caseMgr -[MODEL_COLOR]> case : perform some operation
-    activate case MODEL_COLOR
+    caseMgr -[CASEFILE_COLOR]> case : perform some operation
+    activate case CASEFILE_COLOR
     deactivate case
     deactivate caseMgr
 
     cmd -[COMMAND_COLOR]> display : printMessage(...)
-    activate display DISPLAY_COLOR
+    activate display UI_COLOR
     deactivate display
     deactivate cmd
 
     destroy cmd
 
-
-    sgsafe -[SGSAFE_COLOR]> storage : saveToFile()
+    sgsafe -[MAIN_COLOR]> storage : saveToFile()
     activate storage STORAGE_COLOR
     deactivate storage
 
 end
 
-sgsafe -[SGSAFE_COLOR]> display :printGoodbyeMessage()
-activate display DISPLAY_COLOR
-deactivate display DISPLAY_COLOR
+sgsafe -[MAIN_COLOR]> display :printGoodbyeMessage()
+activate display UI_COLOR
+deactivate display UI_COLOR
 
 @enduml
