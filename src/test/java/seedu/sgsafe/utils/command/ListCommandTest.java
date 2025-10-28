@@ -195,22 +195,27 @@ class ListCommandTest {
     }
 
     @Test
-    void list_verboseMode_truncatesLongInfo() {
+    void list_verboseMode_wrapsLongInfo() {
         LocalDate date = LocalDate.of(2025, 10, 1);
-        String longInfo = "X".repeat(150);
+        String longInfo = "X".repeat(150); // long unbroken string
         caseList.add(new ScamCase("000004", "Forgery", date, longInfo, "Alex", "Officer Lee"));
 
         ListCommand command = new ListCommand(CaseListingMode.ALL, true);
         String[] output = command.getCaseDescriptions(caseList);
 
-        boolean foundTruncated = false;
+        boolean foundInfoLabel = false;
+        boolean foundWrappedLine = false;
+
         for (String line : output) {
             if (line.startsWith("Info")) {
-                assertTrue(line.endsWith("..."));
-                foundTruncated = true;
+                foundInfoLabel = true;
+            } else if (foundInfoLabel && line.startsWith(" ".repeat(12))) {
+                foundWrappedLine = true;
             }
         }
-        assertTrue(foundTruncated);
+
+        assertTrue(foundInfoLabel, "Expected 'Info' label to appear in verbose output");
+        assertTrue(foundWrappedLine, "Expected long info to wrap onto a new indented line");
     }
 
     @Test

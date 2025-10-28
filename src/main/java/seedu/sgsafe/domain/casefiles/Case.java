@@ -22,6 +22,31 @@ import java.util.ArrayList;
  * Each case contains metadata such as title, date, victim, officer, and status.
  */
 public abstract class Case {
+
+    /**
+     * The maximum number of characters allowed in a single display line.
+     * <p>
+     * Used to constrain field values in summary and verbose outputs, ensuring consistent formatting
+     * and preventing overflow in fixed-width terminal views. Also governs truncation and wraparound logic.
+     */
+    static final int MAX_DISPLAY_WIDTH_CHARACTERS = 100;
+
+    /**
+     * The fixed width allocated for field labels in verbose listings.
+     * <p>
+     * Labels are left-aligned and padded to this width, followed by a colon and space.
+     * This ensures all wrapped field values align vertically for readability.
+     */
+    static final int MAX_LABEL_WIDTH = 10;
+
+    /**
+     * The maximum number of lines allowed per field in verbose display mode.
+     * <p>
+     * Used to prevent excessively long fields from flooding the output. If a field wraps
+     * beyond this limit, the final visible line is suffixed with {@code "..."}.
+     */
+    static final int MAX_VERBOSE_LINES_PER_FIELD = 5;
+
     /** The type of case. */
     protected CaseType type;
 
@@ -217,19 +242,35 @@ public abstract class Case {
     public String getDisplayLine() {
         String status = this.isOpen ? "[Open]" : "[Closed]";
         String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
-        return String.format("%-8s %-16s %-6s %-10s %s", status, categoryString, this.id, dateString, this.title);
+        String titleString = truncate(this.title);
+        return String.format("%-8s %-16s %-6s %-10s %s", status, categoryString, this.id, dateString, titleString);
     }
 
     /**
-     * Constructs a detailed, multi-line string representation of this case for display purposes.
+     * Truncates the input string to a maximum of {@code MAX_DISPLAY_WIDTH_CHARACTERS}.
      * <p>
-     * The output begins with a header line in the format {@code ==== CASE ID 000000 ====}, followed by
-     * key-value lines for each non-null field. Each value is truncated to 100 characters and suffixed
-     * with {@code "..."} if it exceeds that length. Optional fields such as {@code victim} and {@code officer}
-     * are only included if they are non-null.
+     * If the input is {@code null}, returns an empty string.
+     * If the input exceeds the maximum display width, the result is truncated and suffixed with {@code "..."}.
+     * This method is typically used to ensure summary lines remain within a readable width.
+     *
+     * @param input the string to truncate
+     * @return the truncated string, or an empty string if input is {@code null}
+     */
+    protected String truncate(String input) {
+        if (input == null) {
+            return "";
+        }
+        return input.length() <=
+                MAX_DISPLAY_WIDTH_CHARACTERS ? input : input.substring(0, MAX_DISPLAY_WIDTH_CHARACTERS) + "...";
+    }
+
+    /**
+     * Constructs a detailed, multi-line string representation of this case for verbose display.
      * <p>
-     * This method avoids stacking function calls and delegates conditional formatting and addition
-     * to a helper method for clarity and maintainability.
+     * The output begins with a header line in the format {@code ==== CASE ID 000000 ====},
+     * followed by wrapped key-value lines for each non-null field.
+     * Long values are wrapped across multiple lines using {@link #addWrappedField(List, String, String)}.
+     * Optional fields such as {@code victim} and {@code officer} are only included if present.
      *
      * @return an array of strings representing the verbose, multi-line display of the case
      */
@@ -238,19 +279,18 @@ public abstract class Case {
         lines.add(formatCaseIDHeader());
         String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
 
-        addFormattedLine(lines, "Status", getStatusString());
-        addFormattedLine(lines, "Category", categoryString);
-        addFormattedLine(lines, "Title", title);
-        addFormattedLine(lines, "Date", dateString);
-        addFormattedLine(lines, "Info", info);
-        addFormattedLine(lines, "Created at", createdAt.toString());
-        addFormattedLine(lines, "Updated at", updatedAt.toString());
-        addFormattedLine(lines, "Victim", victim);
-        addFormattedLine(lines, "Officer", officer);
+        addWrappedField(lines, "Status", getStatusString());
+        addWrappedField(lines, "Category", categoryString);
+        addWrappedField(lines, "Title", title);
+        addWrappedField(lines, "Date", dateString);
+        addWrappedField(lines, "Info", info);
+        addWrappedField(lines, "Created at", createdAt.toString());
+        addWrappedField(lines, "Updated at", updatedAt.toString());
+        addWrappedField(lines, "Victim", victim);
+        addWrappedField(lines, "Officer", officer);
 
         return lines.toArray(new String[0]);
     }
-
 
     /**
      * Constructs the header line for the verbose display.
@@ -272,57 +312,169 @@ public abstract class Case {
     private String getStatusString() {
         return this.isOpen ? "Open" : "Closed";
     }
+    
+    //@@ author
 
     /**
-     * Formats a labeled line with truncated content.
-     * If the value is {@code null}, an empty string is used.
-     * Format: {@code "Label      : value"} — with the label padded to 10 characters.
-     *
-     * @param label the label to display (e.g., "Title", "Date")
-     * @param value the value to display, which will be truncated
-     * @return the formatted line with aligned colon
-     */
-    private String formatLine(String label, String value) {
-        if (value == null) {
-            return "";
-        }
-        String paddedLabel = String.format("%-10s", label); // pad to 10 characters
-        return paddedLabel + " : " + truncate(value);
-    }
-
-    /**
-     * Appends a formatted line to the given list if the value is not {@code null}.
+     * Adds a wrapped field to the given list if the value is non-null and non-empty.
      * <p>
-     * This method formats the provided label and value using {@link #formatLine(String, String)},
-     * then adds the result to the specified list. If the value is {@code null}, the method does nothing.
-     * <p>
+     * The field is formatted using {@link #wrapField(String, String, int)} to ensure
+     * long values are wrapped across multiple lines with proper indentation.
      * This is typically used to conditionally include optional fields (e.g., victim or officer)
      * in verbose case displays.
      *
-     * @param lines the list to which the formatted line will be added
+     * @param lines the list to which the formatted lines will be added
      * @param label the label to display (e.g., "Victim", "Officer")
-     * @param value the value associated with the label; ignored if {@code null}
+     * @param value the value associated with the label; ignored if {@code null} or empty
      */
-    private void addFormattedLine(List<String> lines, String label, String value) {
-        if (value != null) {
-            String formatted = formatLine(label, value);
-            lines.add(formatted);
+    private void addWrappedField(List<String> lines, String label, String value) {
+        if (value != null && !value.isEmpty()) {
+            lines.addAll(wrapField(label, value, MAX_DISPLAY_WIDTH_CHARACTERS));
         }
     }
 
     /**
-     * Truncates the input string to a maximum of 100 characters.
-     * If the input is {@code null}, returns an empty string.
-     * If the input exceeds 100 characters, appends {@code "..."}.
+     * Formats a label-value pair for display, wrapping the value if it exceeds the given width.
+     * <p>
+     * The label is left-aligned using {@link #formatPrefix(String)} and the value is wrapped using
+     * {@link #wrapWords(String, String, int)} to fit within the available width.
+     * If the wrapped output exceeds {@code MAX_VERBOSE_LINES_PER_FIELD}, it is truncated to that limit
+     * and the final line is suffixed with {@code "..."} to indicate truncation.
      *
-     * @param input the string to truncate
-     * @return the truncated string
+     * @param label the field label (e.g., "Title", "Info")
+     * @param value the field value to display
+     * @param width the maximum number of characters allowed per line
+     * @return a list of formatted lines representing the label and wrapped value
      */
-    private String truncate(String input) {
-        return input.length() <= 100 ? input : input.substring(0, 100) + "...";
+    public static List<String> wrapField(String label, String value, int width) {
+        String prefix = formatPrefix(label);
+        int available = width - prefix.length();
+
+        List<String> wrapped = wrapWords(prefix, value, available);
+
+        // Limit the number of lines per field for verbose printing
+        if (wrapped.size() > MAX_VERBOSE_LINES_PER_FIELD) {
+            List<String> limited = new ArrayList<>(wrapped.subList(0, MAX_VERBOSE_LINES_PER_FIELD));
+            String last = limited.get(MAX_VERBOSE_LINES_PER_FIELD - 1);
+            limited.set(MAX_VERBOSE_LINES_PER_FIELD - 1, last + "...");
+            return limited;
+        }
+
+        return wrapped;
     }
 
-    //@@ author
+    /**
+     * Formats a label into a fixed-width prefix for alignment in verbose listings.
+     * <p>
+     * The label is left-aligned and padded to {@code MAX_LABEL_WIDTH}, followed by a colon and space.
+     * Example: {@code "Title      : "}
+     *
+     * @param label the label to format
+     * @return the formatted prefix string
+     */
+    protected static String formatPrefix(String label) {
+        return String.format("%-" + MAX_LABEL_WIDTH + "s: ", label);
+    }
+
+    /**
+     * Immutable record representing the current state of a line being wrapped.
+     *
+     * @param line          the current line buffer
+     * @param currentLength the number of characters currently used in the line (excluding prefix padding)
+     */
+    protected record LineState(StringBuilder line, int currentLength) {
+    }
+
+    /**
+     * Wraps a value into multiple lines if necessary, preserving indentation.
+     * <p>
+     * Splits the value into words and places them into lines of at most {@code available} characters.
+     * Long unbreakable words are delegated to {@link #handleLongWord(String, int, String, List, StringBuilder)}.
+     *
+     * @param prefix    the formatted label prefix (e.g., "Title      : ")
+     * @param value     the value to wrap
+     * @param available the maximum number of characters available per line (excluding prefix)
+     * @return a list of wrapped lines
+     */
+    private static List<String> wrapWords(String prefix, String value, int available) {
+        List<String> lines = new ArrayList<>();
+        String[] words = value.split(" ");
+        StringBuilder line = new StringBuilder(prefix);
+        int currentLength = 0;
+
+        for (String word : words) {
+            word = handleLongWord(word, available, prefix, lines, line);
+            LineState state = tryAddWord(word, line, currentLength, available, prefix, lines);
+            line = state.line;
+            currentLength = state.currentLength;
+        }
+
+        lines.add(line.toString());
+        return lines;
+    }
+
+    /**
+     * Handles words that exceed the available width by splitting them into chunks.
+     * <p>
+     * Each chunk is truncated to {@code available - 1} characters and suffixed with a dash ("-").
+     * Remaining characters are placed on subsequent lines with proper indentation.
+     *
+     * @param word   the word to process
+     * @param available the maximum number of characters available per line
+     * @param prefix the formatted label prefix (used for indentation)
+     * @param lines  the list of lines to append to
+     * @param line   the current line buffer
+     * @return the remaining portion of the word that fits within the available width
+     */
+    protected static String handleLongWord(String word, int available, String prefix,
+                                 List<String> lines, StringBuilder line) {
+        while (word.length() > available) {
+            int chunkLength = available - 1; // leave one character's space for dash
+            String chunk = word.substring(0, chunkLength) + "-";
+            lines.add(line.toString() + chunk);
+            word = word.substring(chunkLength);
+            line.setLength(0);
+            line.append(" ".repeat(prefix.length())); // indent
+        }
+        return word;
+    }
+
+    /**
+     * Attempts to add a word to the current line, wrapping to a new line if necessary.
+     * <p>
+     * If the word does not fit within the available width, the current line is flushed
+     * to {@code lines}, and a new indented line is started. Spaces are inserted between
+     * words as needed.
+     *
+     * @param word          the word to add
+     * @param line          the current line buffer
+     * @param currentLength the number of characters currently used in the line
+     * @param available     the maximum number of characters available per line
+     * @param prefix        the formatted label prefix (used for indentation)
+     * @param lines         the list of lines to append to
+     * @return a {@link LineState} containing the updated line buffer and character count
+     */
+    protected static LineState tryAddWord(String word, StringBuilder line, int currentLength,
+                                int available, String prefix, List<String> lines) {
+        // If word doesn't fit, flush current line
+        if (currentLength + word.length() > available) {
+            lines.add(line.toString());
+            line = new StringBuilder(" ".repeat(prefix.length()));
+            currentLength = 0;
+        }
+
+        // Add space if not first word
+        if (currentLength > 0) {
+            line.append(" ");
+            currentLength++;
+        }
+
+        line.append(word);
+        currentLength += word.length();
+
+        return new LineState(line, currentLength);
+    }
+
     public void setClosed() {
         this.isOpen = false;
         updatedAt = LocalDateTime.now();
