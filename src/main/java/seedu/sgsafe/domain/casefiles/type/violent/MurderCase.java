@@ -3,18 +3,40 @@ package seedu.sgsafe.domain.casefiles.type.violent;
 import java.util.List;
 import java.util.Map;
 
+import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
+import seedu.sgsafe.utils.ui.Display;
 
 import java.time.LocalDate;
 
 public class MurderCase extends ViolentCase {
     private String weapon;
-    private String numberOfVictims;
+    private Integer numberOfVictims;
 
     public MurderCase(String id, String title, LocalDate date, String info, String victim, String officer) {
         super(id, title, date, info, victim, officer);
         this.category = CaseCategory.MURDER;
         this.categoryString = "Murder";
+    }
+
+    public String getWeapon() {
+        return weapon;
+    }
+
+    public Integer getNumberOfVictims() {
+        return numberOfVictims;
+    }
+
+    @Override
+    public String[] getReadCaseDisplay() {
+        List<String> displayList = getBaseDisplayLines();
+
+        displayList.add(Case.formatLineNoTruncate("Weapon", this.weapon));
+        displayList.add(Case.formatLineNoTruncate("Number of Victims", this.numberOfVictims));
+
+        displayList.add(Display.formatIndentedText("Info :", getInfo()));
+
+        return displayList.toArray(new String[0]);
     }
 
     @Override
@@ -23,13 +45,13 @@ public class MurderCase extends ViolentCase {
     }
 
     @Override
-    public void update(Map<String, String> newValues) {
+    public void update(Map<String, Object> newValues) {
         super.update(newValues);
         if (newValues.containsKey("weapon")) {
-            this.weapon = newValues.get("weapon");
+            this.weapon = (String) newValues.get("weapon");
         }
-        if (newValues.containsKey("number-of-victims")) {
-            this.numberOfVictims = newValues.get("numberOfVictims");
+        if (newValues.containsKey("number-of-victims") && newValues.get("number-of-victims") != null) {
+            this.numberOfVictims = (Integer) newValues.get("number-of-victims");
         }
     }
 

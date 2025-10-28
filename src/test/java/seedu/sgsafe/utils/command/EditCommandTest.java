@@ -25,14 +25,13 @@ public class EditCommandTest {
     void setUp() {
         CaseManager.getCaseList().clear();
         LocalDate date = LocalDate.of(2025, 10, 10);
-
         sampleCase = new Case("000001", "Robbery", date, "Suspect armed", "Alice", "Officer Tan") {};
         CaseManager.addCase(sampleCase);
     }
 
     @Test
     void execute_validEdit_updatesCaseSuccessfully() {
-        Map<String, String> updates = Map.of("title", "Updated Robbery", "officer", "Officer Lee");
+        Map<String, Object> updates = Map.of("title", "Updated Robbery", "officer", "Officer Lee");
         EditCommand command = new EditCommand("000001", updates);
 
         command.execute();
@@ -44,7 +43,7 @@ public class EditCommandTest {
 
     @Test
     void execute_invalidCaseId_printsCaseNotFoundMessage() {
-        Map<String, String> updates = Map.of("title", "New Title");
+        Map<String, Object> updates = Map.of("title", "New Title");
         EditCommand command = new EditCommand("999999", updates);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -63,7 +62,7 @@ public class EditCommandTest {
 
     @Test
     void execute_invalidFlags_doesNotUpdateCase() {
-        Map<String, String> updates = Map.of("wrongFlag", "Something");
+        Map<String, Object> updates = Map.of("wrongFlag", "Something");
         EditCommand command = new EditCommand("000001", updates);
 
         assertDoesNotThrow(command::execute);
@@ -72,8 +71,14 @@ public class EditCommandTest {
     }
 
     @Test
-    void editCase_invalidFlags_throwsIncorrectFlagException() {
-        Map<String, String> updates = Map.of("invalidFlag", "New Value");
+    void execute_invalidFlags_throwsIncorrectFlagException() {
+        Map<String, Object> updates = Map.of("invalidFlag", "New Value");
         assertThrows(IncorrectFlagException.class, () -> CaseManager.editCase("000001", updates));
+    }
+
+    @Test
+    void execute_negativeInt_throwsException() {
+        Map<String, Object> updates = Map.of("date", -20231010);
+        assertThrows(Exception.class, () -> CaseManager.editCase("000001", updates));
     }
 }

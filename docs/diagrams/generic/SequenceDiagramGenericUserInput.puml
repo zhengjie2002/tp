@@ -1,0 +1,40 @@
+@startuml
+!include ../style.puml
+skinparam ArrowFontStyle plain
+
+actor User as user USER_COLOR
+participant ":SGSafe" as sgsafe MAIN_COLOR
+participant ":Parser" as parser UI_COLOR
+participant ":Validator" as validator UI_COLOR
+
+user -[USER_COLOR]> sgsafe : "user input"
+activate sgsafe MAIN_COLOR
+
+sgsafe -[MAIN_COLOR]> parser : parseInput(...)
+activate parser UI_COLOR
+
+parser -[UI_COLOR]> parser : parseCommand(...)
+activate parser
+
+parser -[UI_COLOR]> parser : extractFlagValues(...)
+activate parser
+deactivate parser
+
+parser -[UI_COLOR]> validator : haveValidFlags(...)
+activate validator UI_COLOR
+deactivate validator
+
+create participant ":Command" as newCmd COMMAND_COLOR
+parser -[UI_COLOR]> newCmd : new Command(...)
+activate newCmd COMMAND_COLOR
+
+newCmd --> parser : return Command
+deactivate newCmd
+
+parser --> parser : return Command
+deactivate parser
+
+parser --> sgsafe : return Command
+deactivate parser
+
+@enduml

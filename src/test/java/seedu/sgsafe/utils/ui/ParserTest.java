@@ -19,9 +19,11 @@ import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
+import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidReadCommandException;
 
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
@@ -148,6 +150,21 @@ class ParserTest {
     @Test
     void parseInput_wrongCaseId_throwsInvalidCaseIdException() {
         assertThrows(InvalidCaseIdException.class, () -> Parser.parseInput("edit WrongcaseId --title newTitle"));
+    }
+
+    @Test
+    void parseInput_invalidDateFormat_throwsIncorrectFlagException() {
+        assertThrows(InvalidDateInputException.class, () -> Parser.parseInput("edit 000001 --date 32-13-20"));
+    }
+
+    @Test
+    void parseInput_nonIntegerValueForSpeedLimit_throwsInvalidEditCommandException() {
+        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit 000001 --speed-limit fast"));
+    }
+
+    @Test
+    void parseInput_negativeValueForVictimNumber_throwsInvalidEditCommandException() {
+        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit 000001 --number-of-victims -50"));
     }
 
     // ----------- TESTS FOR CLOSE COMMANDS ----------- //
@@ -307,5 +324,37 @@ class ParserTest {
     void parseInput_deleteAdditionalArguments_throwsInvalidDeleteCommandException() {
         String input = "delete abc123 456";
         assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+    }
+
+    // ----------- TESTS FOR READ COMMANDS ----------- //
+
+    @Test
+    void parseInput_readValid_returnsReadCommand() {
+        Command command = Parser.parseInput("read 000001");
+        assertEquals(CommandType.READ, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_readWithWhitespace_returnsReadCommand() {
+        Command command = Parser.parseInput("   read   000001   ");
+        assertEquals(CommandType.READ, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_readMissingArgument_throwsInvalidReadCommandException() {
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read"));
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read   "));
+    }
+
+    @Test
+    void parseInput_readWrongCaseId_throwsInvalidReadCommandException() {
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read A01"));
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read 1"));
+    }
+
+    @Test
+    void parseInput_readExtraArguments_throwsInvalidReadCommandException() {
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read 000000 extraArg"));
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read 000000   extraArg"));
     }
 }

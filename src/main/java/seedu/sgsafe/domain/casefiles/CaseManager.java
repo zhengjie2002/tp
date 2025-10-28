@@ -48,7 +48,7 @@ public class CaseManager {
      */
     public static Case getCaseById(String id) {
         return caseList.stream()
-                .filter(c -> (c.getId().equals(id) && !c.isDeleted()))
+                .filter(c -> (c.getId().equals(id.toLowerCase()) && !c.isDeleted()))
                 .findFirst()
                 .orElse(null);
     }
@@ -101,7 +101,7 @@ public class CaseManager {
      * @throws CaseNotFoundException   if no case with the given ID exists
      * @throws IncorrectFlagException  if any flags in {@code newFlagValues} are invalid
      */
-    public static String editCase(String caseId, Map<String, String> newFlagValues)
+    public static String editCase(String caseId, Map<String, Object> newFlagValues)
             throws CaseNotFoundException, IncorrectFlagException {
         // Retrieve the case to edit
         Case caseToEdit = getCaseById(caseId);
@@ -129,7 +129,7 @@ public class CaseManager {
      * @param newFlagValues a map of flag names and their corresponding values
      * @return list of invalid flag names; empty if all are valid
      */
-    public static List<String> getInvalidEditFlags(Case targetCase, Map<String, String> newFlagValues) {
+    public static List<String> getInvalidEditFlags(Case targetCase, Map<String, Object> newFlagValues) {
         assert targetCase != null : "Target case must not be null";
         assert newFlagValues != null : "Input flag map must not be null";
 

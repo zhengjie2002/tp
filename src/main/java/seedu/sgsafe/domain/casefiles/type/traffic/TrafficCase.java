@@ -5,6 +5,7 @@ import java.util.Map;
 
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.type.CaseType;
+import seedu.sgsafe.utils.ui.Display;
 
 import java.time.LocalDate;
 
@@ -17,7 +18,36 @@ public abstract class TrafficCase extends Case {
         super(id, title, date, info, victim, officer);
         this.type = CaseType.TRAFFIC;
     }
-    
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public String getVehiclePlate() {
+        return vehicleType;
+    }
+
+    public String getRoadName() {
+        return vehicleType;
+    }
+
+    @Override
+    public String[] getReadCaseDisplay() {
+        // Get base display lines from parent Case class
+        List<String> displayList = getBaseDisplayLines();
+
+        // Add TrafficCase specific fields
+        displayList.add(Case.formatLineNoTruncate("Vehicle Type", this.vehicleType));
+        displayList.add(Case.formatLineNoTruncate("Vehicle Plate", this.vehiclePlate));
+        displayList.add(Case.formatLineNoTruncate("Road Name", this.roadName));
+
+        // Display info
+        displayList.add(Display.formatIndentedText("Info :", getInfo()));
+
+        return displayList.toArray(new String[0]);
+    }
+
+
     @Override
     public List<String> getValidEditFlags() {
         return List.of("title", "date", "info", "victim", "officer",
@@ -25,16 +55,16 @@ public abstract class TrafficCase extends Case {
     }
     
     @Override
-    public void update(Map<String, String> newValues) {
+    public void update(Map<String, Object> newValues) {
         super.update(newValues);
         if (newValues.containsKey("vehicle-type")) {
-            this.vehicleType = newValues.get("vehicleType");
+            this.vehicleType = (String) newValues.get("vehicle-type");
         }
         if (newValues.containsKey("vehicle-plate")) {
-            this.vehiclePlate = newValues.get("vehiclePlate");
+            this.vehiclePlate = (String) newValues.get("vehicle-plate");
         }
         if (newValues.containsKey("road-name")) {
-            this.roadName = newValues.get("roadName");
+            this.roadName = (String) newValues.get("road-name");
         }
     }
 
