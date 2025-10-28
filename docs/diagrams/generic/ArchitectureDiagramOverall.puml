@@ -19,9 +19,9 @@ class "<$documents>" as File UI_COLOR_T1
 
 ' Relationships
 User ..> UI : enters commands
-Casefile -[UI_COLOR]-> UI
+Casefile -[CASEFILE_COLOR]-> UI
 
-UI -[COMMON_COLOR]-> Main
+UI -[UI_COLOR]-> Main
 
 Command -[COMMAND_COLOR]-> Casefile : manipulate cases
 

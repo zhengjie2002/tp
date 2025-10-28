@@ -21,10 +21,10 @@ loop until userInput == "bye"
     activate parser UI_COLOR
 
     parser -[UI_COLOR]> parser : parseCommand(...)
-    activate parser
+    activate parser UI_COLOR_T2
 
     parser -[UI_COLOR]> parser : extractFlagValues(...)
-    activate parser
+    activate parser UI_COLOR_T1
     deactivate parser
 
     parser -[UI_COLOR]> validator : haveValidFlags(...)
@@ -35,12 +35,17 @@ loop until userInput == "bye"
     parser -[UI_COLOR]> cmd : new Command(...)
     activate cmd COMMAND_COLOR
 
+    cmd --> parser : return Command
+    deactivate cmd
+
+    parser --> parser : return Command
     deactivate parser
 
     parser --> sgsafe : return Command
     deactivate parser
 
     sgsafe -[MAIN_COLOR]> cmd : execute()
+    activate cmd COMMAND_COLOR
 
     participant ":CaseManager" as caseMgr CASEFILE_COLOR
     participant ":Case" as case CASEFILE_COLOR
@@ -60,7 +65,6 @@ loop until userInput == "bye"
     deactivate cmd
 
     destroy cmd
-
 
     sgsafe -[MAIN_COLOR]> storage : saveToFile()
     activate storage STORAGE_COLOR
