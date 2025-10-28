@@ -3,9 +3,8 @@ package seedu.sgsafe.domain.casefiles.type.violent;
 import java.util.List;
 import java.util.Map;
 
-import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
-import seedu.sgsafe.utils.ui.Display;
+import seedu.sgsafe.domain.casefiles.CaseFormatter;
 
 import java.time.LocalDate;
 
@@ -27,17 +26,20 @@ public class MurderCase extends ViolentCase {
         return numberOfVictims;
     }
 
+    //@@author shennontay
     @Override
     public String[] getReadCaseDisplay() {
         List<String> displayList = getBaseDisplayLines();
 
-        displayList.add(Case.formatLineNoTruncate("Weapon", this.weapon));
-        displayList.add(Case.formatLineNoTruncate("Number of Victims", this.numberOfVictims));
+        CaseFormatter.addWrappedFieldForRead(displayList, "Weapon", this.weapon);
+        CaseFormatter.addWrappedFieldForRead(
+                displayList, "Number of Victims", String.valueOf(this.numberOfVictims));
 
-        displayList.add(Display.formatIndentedText("Info :", getInfo()));
+        CaseFormatter.addWrappedFieldForRead(displayList, "Info", getInfo());
 
         return displayList.toArray(new String[0]);
     }
+    //@@author
 
     @Override
     public List<String> getValidEditFlags() {

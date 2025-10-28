@@ -5,7 +5,7 @@ import java.util.Map;
 
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.type.CaseType;
-import seedu.sgsafe.utils.ui.Display;
+import seedu.sgsafe.domain.casefiles.CaseFormatter;
 
 import java.time.LocalDate;
 
@@ -31,22 +31,23 @@ public abstract class TrafficCase extends Case {
         return vehicleType;
     }
 
+    //@@author shennontay
     @Override
     public String[] getReadCaseDisplay() {
         // Get base display lines from parent Case class
         List<String> displayList = getBaseDisplayLines();
 
         // Add TrafficCase specific fields
-        displayList.add(Case.formatLineNoTruncate("Vehicle Type", this.vehicleType));
-        displayList.add(Case.formatLineNoTruncate("Vehicle Plate", this.vehiclePlate));
-        displayList.add(Case.formatLineNoTruncate("Road Name", this.roadName));
+        CaseFormatter.addWrappedFieldForRead(displayList, "Vehicle Type", this.vehicleType);
+        CaseFormatter.addWrappedFieldForRead(displayList, "Vehicle Plate", this.vehiclePlate);
+        CaseFormatter.addWrappedFieldForRead(displayList, "Road Name", this.roadName);
 
         // Display info
-        displayList.add(Display.formatIndentedText("Info :", getInfo()));
+        CaseFormatter.addWrappedFieldForRead(displayList, "Info", getInfo());
 
         return displayList.toArray(new String[0]);
     }
-
+    //@@author
 
     @Override
     public List<String> getValidEditFlags() {
