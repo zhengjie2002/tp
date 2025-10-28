@@ -50,7 +50,7 @@ The main code flow of `SGSafe`, our main class is as follows:
 4. Parse user input using `Parser` and `Validator` to obtain a `Command` object that contains the information necessary to execute the specific command
 5. Execute user command
 6. Save the case info to `data.txt` using `Storage`
-7. Until the command is to exit the program, repeat steps 3 to 5
+7. Until the command is to exit the program, repeat steps 3 to 6
 8. Print exit message using `Display`
 
 #### Overall sequence diagram
