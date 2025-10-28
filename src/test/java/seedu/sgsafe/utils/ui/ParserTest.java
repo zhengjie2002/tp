@@ -23,6 +23,7 @@ import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidReadCommandException;
 
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
@@ -323,5 +324,37 @@ class ParserTest {
     void parseInput_deleteAdditionalArguments_throwsInvalidDeleteCommandException() {
         String input = "delete abc123 456";
         assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+    }
+
+    // ----------- TESTS FOR READ COMMANDS ----------- //
+
+    @Test
+    void parseInput_readValid_returnsReadCommand() {
+        Command command = Parser.parseInput("read 000001");
+        assertEquals(CommandType.READ, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_readWithWhitespace_returnsReadCommand() {
+        Command command = Parser.parseInput("   read   000001   ");
+        assertEquals(CommandType.READ, command.getCommandType());
+    }
+
+    @Test
+    void parseInput_readMissingArgument_throwsInvalidReadCommandException() {
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read"));
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read   "));
+    }
+
+    @Test
+    void parseInput_readWrongCaseId_throwsInvalidReadCommandException() {
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read A01"));
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read 1"));
+    }
+
+    @Test
+    void parseInput_readExtraArguments_throwsInvalidReadCommandException() {
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read 000000 extraArg"));
+        assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read 000000   extraArg"));
     }
 }
