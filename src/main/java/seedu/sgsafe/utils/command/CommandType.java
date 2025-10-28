@@ -8,5 +8,7 @@ public enum CommandType {
     OPEN,
     DELETE,
     BYE,
-    HELP
+    HELP,
+    SETTING,
+    READ
 }

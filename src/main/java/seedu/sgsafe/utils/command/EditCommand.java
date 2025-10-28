@@ -4,6 +4,7 @@ import java.util.Map;
 
 import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
+import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.ui.Display;
 
 /**
@@ -16,18 +17,13 @@ public class EditCommand extends Command {
     private final String caseId;
 
     // Map of new field values, where the key is the flag (e.g. "title", "date")
-    private final Map<String, String> newFlagValues;
+    private final Map<String, Object> newFlagValues;
 
     // Constructor that sets the case number and new field values
-    public EditCommand(String caseId, Map<String, String> newFlagValues) {
+    public EditCommand(String caseId, Map<String, Object> newFlagValues) {
         this.commandType = CommandType.EDIT;
         this.caseId = caseId;
         this.newFlagValues = newFlagValues;
-    }
-
-    // Returns the map of new field values
-    public Map<String, String> getNewFlagValues() {
-        return newFlagValues;
     }
 
     @Override
@@ -37,6 +33,13 @@ public class EditCommand extends Command {
             Display.printMessage("Case edited:", displayLine);
         } catch (CaseNotFoundException e) {
             Display.printMessage(e.getMessage());
+        } catch (IncorrectFlagException e) {
+            if (e.getInvalidFlags() == null || e.getInvalidFlags().isEmpty()) {
+                Display.printMessage("No valid flags were provided to edit the case.");
+                return;
+            }
+            Display.printMessage("The case was not edited due to invalid flags: " +
+                    String.join(", ", e.getInvalidFlags()));
         }
     }
 }

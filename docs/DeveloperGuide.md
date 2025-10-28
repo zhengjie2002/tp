@@ -4,28 +4,46 @@
 
 1. [Acknowledgements](#acknowledgements)
 2. [Setting up, Getting Started](#setting-up-getting-started)
-3. [Design & Implementation](#design--implementation)
-4. [Appendix A: Product Scope](#appendix-a-product-scope)
+3. [Design](#design)
+    - [Architecture](#architecture)
+    - [UI Component](#ui-component)
+    - [CaseFile Component](#casefile-component)
+    - [Command Component](#command-component)
+    - [Storage Component](#storage-component)
+    - [Common](#common)
+4. [Implementation](#implementation)
+5. [Appendix A: Product Scope](#appendix-a-product-scope)
     - [Target user profile](#target-user-profile)
     - [Value proposition](#value-proposition)
-5. [Appendix B: User Stories](#appendix-b-user-stories)
-6. [Appendix C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
-7. [Appendix D: Glossary](#appendix-d-glossary)
-8. [Appendix E: Instructions for Manual Testing](#appendix-e-instructions-for-manual-testing)
+6. [Appendix B: User Stories](#appendix-b-user-stories)
+7. [Appendix C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
+8. [Appendix D: Glossary](#appendix-d-glossary)
+9. [Appendix E: Instructions for Manual Testing](#appendix-e-instructions-for-manual-testing)
 
+---
 
 ## Acknowledgements
 
 {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the
 original source as well}
 
+---
+
 ## Setting up, Getting Started
 
-## Design & implementation
+## Design
 
-{Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
+### Architecture
 
-### Overall logic
+![Architecture Diagram](images/ArchitectureDiagramOverall.png)
+
+The Architecture Diagram given above explains the high-level design of the App.
+
+Given below is a quick overview of main components and how they interact with each other.
+
+#### Overall logic
+
+![Overall Sequence Diagram](images/SequenceDiagramGenericCombined.png)
 
 The main code flow is as follows:
 1. Print welcome message
@@ -40,7 +58,9 @@ information necessary to execute the command
 
 ### UI Component
 
-The API of this component is primarily specified in `Display.java`, with parsing functionality in `Parser.java` and validation in `Validator.java`.
+{Add a high-level description of the UI component here}
+
+The API of this component is primarily specified in `{add relevant classes here}`.
 
 #### Structure of the UI Component
 
@@ -75,6 +95,33 @@ The UI component:
 5. Results are displayed via `Display.printMessage()`
 6. Exceptions are caught and error messages shown through `Display`
 
+---
+
+### CaseFile Component
+
+{Add a high-level description of the CaseFile component here}
+The API of this component is primarily specified in `{add relevant classes here}`.
+
+#### Structure of the CaseFile Component
+
+---
+
+### Command Component
+
+---
+
+### Storage Component
+
+---
+
+### Common
+
+---
+
+## Implementation
+
+---
+
 ## Appendix A: Product scope
 
 ### Target user profile
@@ -88,7 +135,9 @@ The UI component:
 ### Value proposition
 
 - manage and track cases faster than a typical mouse/GUI driven app
-    
+
+---
+
 ## Appendix B: User Stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
@@ -101,13 +150,24 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | ***        | v1.0    | front-desk officer | delete case             | delete duplicates                                 |
 | ***        | v1.0    | front-desk officer | list all cases          | see all the cases that are currently being worked on |
 
+
+
+---
+
 ## Appendix C: Non-Functional Requirements
 
-{Give non-functional requirements}
+- Should work on any mainstream OS as long as it has Java 17 or above installed.
+- Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+- A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+{More to be added}
+
+---
 
 ## Appendix D: Glossary
 
-* *glossary item* - Definition
+* *glossary item* — Definition
+
+---
 
 ## Appendix E: Instructions for manual testing
 
