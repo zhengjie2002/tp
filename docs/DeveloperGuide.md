@@ -90,6 +90,7 @@ Here are some examples of command keywords and their required arguments:
 
 ##### Example Interaction Flow
 ![SequenceDiagramUserInputListCommand.png](images/SequenceDiagramUserInputListCommand.png)
+
 The sequence diagram above illustrates how user input is processed to create and execute a `ListCommand`.
 
 ---
