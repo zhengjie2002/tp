@@ -71,16 +71,14 @@ The UI component is responsible for all interactions with the user. It reads use
 
 **Validator**: Provides utility methods to validate flags, check required fields, and verify case ID format.
 
-**Parser**: Interprets raw input and creates corresponding `Command` objects by extracting keywords, validating flags, and enforcing input constraints.
-
-The parser class serves to determine the type of command object to create based on user input. The parser class extracts the keyword to identify the command type, then calls methods from `Validator` to check if the required arguments are present in the input.
+**Parser**: The parser class serves to determine the type of command object to create based on user input. The parser class extracts the keyword to identify the command type, then calls methods from `Validator` to check if the required arguments are present in the input.
 
 Here are some examples of command keywords and their required arguments:
 |keyword|Command Type|Required Arguments|
 |-|-|-|
 |add|AddCommand|`title`, `category`, `date`, `info`|
 |read|ReadCommand||
-|delete|DeleteCommand|`id`|
+|delete|DeleteCommand|`case id`|
 
 #### Interaction Flow
 
