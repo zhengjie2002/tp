@@ -1,0 +1,43 @@
+@startuml
+!include <office/Concepts/globe_internet>
+!include <office/Concepts/documents>
+!include <office/Users/user>
+!include ../style.puml
+
+package "SGSafe Architecture" <<Rectangle>> {
+    class Display DISPLAY_COLOR
+    class UI PARSER_COLOR
+    class Storage STORAGE_COLOR
+    class CaseManager MODEL_COLOR
+    class Case MODEL_COLOR
+    class Command COMMAND_COLOR
+    class Main #grey
+    class Commons PARSER_COLOR_T2
+}
+
+' External actors/resources
+class "<$user>" as User MODEL_COLOR_T2
+class "<$documents>" as File DISPLAY_COLOR_T1
+
+' Relationships
+User ..> UI : enters commands
+CaseManager -[DISPLAY_COLOR]-> Display
+
+UI -[PARSER_COLOR]-> Main
+CaseManager -[MODEL_COLOR]-> Case
+
+Command -[COMMAND_COLOR]-> CaseManager : manipulate cases
+
+Main -[#grey]-> Display
+Main -[#grey]-> Storage
+
+Main -[#grey]-> UI
+UI -[#grey]-> Command : executes
+Main -[hidden]-> Commons
+
+
+
+Storage -[STORAGE_COLOR].> CaseManager : serialize/deserialize
+Storage .[STORAGE_COLOR].> File : read/write
+
+@enduml

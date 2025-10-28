@@ -3,7 +3,9 @@ package seedu.sgsafe.domain.casefiles.type.traffic;
 import java.util.List;
 import java.util.Map;
 
+import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
+import seedu.sgsafe.utils.ui.Display;
 
 import java.time.LocalDate;
 
@@ -23,6 +25,21 @@ public class SpeedingCase extends TrafficCase {
 
     public Integer getExceededSpeed() {
         return exceededSpeed;
+    }
+
+    @Override
+    public String[] getReadCaseDisplay() {
+        List<String> displayList = getBaseDisplayLines();
+
+        displayList.add(Case.formatLineNoTruncate("Vehicle Type", this.getVehicleType()));
+        displayList.add(Case.formatLineNoTruncate("Vehicle Plate", this.getVehiclePlate()));
+        displayList.add(Case.formatLineNoTruncate("Road Name", this.getRoadName()));
+        displayList.add(Case.formatLineNoTruncate("Speed Limit", this.speedLimit));
+        displayList.add(Case.formatLineNoTruncate("Exceeded Speed", this.exceededSpeed));
+
+        displayList.add(Display.formatIndentedText("Info :", getInfo()));
+
+        return displayList.toArray(new String[0]);
     }
 
     @Override

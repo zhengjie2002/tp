@@ -8,6 +8,7 @@ import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.command.EditPromptCommand;
 import seedu.sgsafe.utils.command.DeleteCommand;
+import seedu.sgsafe.utils.command.ReadCommand;
 
 import seedu.sgsafe.utils.command.OpenCommand;
 import seedu.sgsafe.utils.command.SettingCommand;
@@ -23,6 +24,7 @@ import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidReadCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidSettingCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
@@ -91,6 +93,7 @@ public class Parser {
         case "open" -> parseOpenCommand(remainder);
         case "delete" -> parseDeleteCommand(remainder);
         case "setting" -> parseSettingCommand(remainder);
+        case "read" -> parseReadCommand(remainder);
         default -> throw new UnknownCommandException(keyword);
         };
     }
@@ -516,5 +519,17 @@ public class Parser {
         } catch (IllegalArgumentException e) {
             throw new InvalidSettingCommandException(true);
         }
+    }
+
+    /**
+     * Parses the 'read' command input, validates its format, and constructs a ReadCommand object.
+     * Throws an InvalidReadCommandException if the input is missing or incorrectly formatted.
+     */
+
+    private static Command parseReadCommand(String remainder) {
+        if (!validator.isValidCaseId(remainder)) {
+            throw new InvalidReadCommandException();
+        }
+        return new ReadCommand(remainder);
     }
 }

@@ -1,0 +1,111 @@
+' Solution below adapted from https://github.com/se-edu/addressbook-level3/blob/master/docs/diagrams/style.puml'
+
+/'
+ 'Commonly used styles and colors across diagrams.
+ 'Refer to https://plantuml-documentation.readthedocs.io/en/latest for a more
+ 'comprehensive list of skinparams.
+ '/
+
+
+'T1 through T4 are shades of the original color from lightest to darkest
+
+
+' =========================
+' Distinct colors for system components
+' =========================
+
+' Display / UI layer — green
+!define DISPLAY_COLOR #1D8900
+!define DISPLAY_COLOR_T1 #83E769
+!define DISPLAY_COLOR_T2 #3FC71B
+!define DISPLAY_COLOR_T3 #166800
+!define DISPLAY_COLOR_T4 #0E4100
+
+' SGSafe (main orchestrator) — deep indigo
+!define SGSAFE_COLOR #4B0082
+!define SGSAFE_COLOR_T1 #C9A7E0
+!define SGSAFE_COLOR_T2 #8A2BE2
+!define SGSAFE_COLOR_T3 #360062
+!define SGSAFE_COLOR_T4 #240041
+
+' Parser (command interpreter) — teal
+!define PARSER_COLOR #008080
+!define PARSER_COLOR_T1 #66CCCC
+!define PARSER_COLOR_T2 #20B2AA
+!define PARSER_COLOR_T3 #006666
+!define PARSER_COLOR_T4 #004C4C
+
+' Validator (input checker) — orange
+!define VALIDATOR_COLOR #CC5500
+!define VALIDATOR_COLOR_T1 #FFB380
+!define VALIDATOR_COLOR_T2 #FF7518
+!define VALIDATOR_COLOR_T3 #993D00
+!define VALIDATOR_COLOR_T4 #662900
+
+' Command hierarchy — crimson
+!define COMMAND_COLOR #9D0012
+!define COMMAND_COLOR_T1 #F97181
+!define COMMAND_COLOR_T2 #E41F36
+!define COMMAND_COLOR_T3 #7B000E
+!define COMMAND_COLOR_T4 #51000A
+
+' Storage / persistence — golden yellow
+!define STORAGE_COLOR #A38300
+!define STORAGE_COLOR_T1 #FFE374
+!define STORAGE_COLOR_T2 #EDC520
+!define STORAGE_COLOR_T3 #806600
+!define STORAGE_COLOR_T4 #544400
+
+' Domain Model (Case, CaseManager, etc.) — royal blue
+!define MODEL_COLOR #0057B7
+!define MODEL_COLOR_T1 #66A3E0
+!define MODEL_COLOR_T2 #1E90FF
+!define MODEL_COLOR_T3 #004080
+!define MODEL_COLOR_T4 #002B55
+
+!define USER_COLOR #000000
+
+skinparam Package {
+    BackgroundColor #FFFFFF
+    BorderThickness 1
+    FontSize 16
+}
+
+skinparam Class {
+    FontColor #FFFFFF
+    FontSize 15
+    BorderThickness 1
+    BorderColor #FFFFFF
+    StereotypeFontColor #FFFFFF
+    FontName Arial
+}
+
+skinparam Actor {
+    BorderColor USER_COLOR
+    Color USER_COLOR
+    FontName Arial
+}
+
+skinparam Sequence {
+    MessageAlign center
+    BoxFontSize 15
+    BoxPadding 0
+    BoxFontColor #FFFFFF
+    FontName Arial
+}
+
+skinparam Participant {
+    FontColor #FFFFFFF
+    Padding 20
+}
+
+skinparam ArrowFontStyle bold
+skinparam MinClassWidth 50
+skinparam ParticipantPadding 10
+skinparam Shadowing false
+skinparam DefaultTextAlignment center
+skinparam packageStyle Rectangle
+
+hide footbox
+hide members
+hide circle

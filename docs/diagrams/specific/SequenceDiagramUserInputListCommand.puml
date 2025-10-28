@@ -1,0 +1,48 @@
+@startuml
+!include ../style.puml
+skinparam ArrowFontStyle plain
+
+actor User as user USER_COLOR
+participant ":SGSafe" as sgsafe SGSAFE_COLOR
+participant ":Parser" as parser PARSER_COLOR
+participant ":Validator" as validator VALIDATOR_COLOR
+
+user -[USER_COLOR]> sgsafe : "list &#45;&#45;mode verbose &#45;&#45;status closed"
+activate sgsafe SGSAFE_COLOR
+
+sgsafe -[SGSAFE_COLOR]> parser : parseInput("list ...")
+activate parser PARSER_COLOR
+
+parser -[PARSER_COLOR]> parser : parseListCommand(...)
+activate parser
+
+parser -[PARSER_COLOR]> parser : extractFlagValues(...)
+activate parser
+deactivate parser
+
+parser -[PARSER_COLOR]> validator : haveValidFlags(...)
+activate validator VALIDATOR_COLOR
+deactivate validator
+
+parser -[PARSER_COLOR]> parser : parseListStatus(...)
+activate parser
+deactivate parser
+
+parser -[PARSER_COLOR]> parser : parseListMode(...)
+activate parser
+deactivate parser
+
+create participant ":ListCommand" as listCmd COMMAND_COLOR
+parser -[PARSER_COLOR]> listCmd : new ListCommand(...)
+activate listCmd COMMAND_COLOR
+
+listCmd --> parser : return ListCommand
+deactivate listCmd
+
+parser --> parser : return ListCommand
+deactivate parser
+
+parser --> sgsafe : return ListCommand
+deactivate parser
+
+@enduml
