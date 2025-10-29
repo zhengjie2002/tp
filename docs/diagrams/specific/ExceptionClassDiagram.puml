@@ -1,0 +1,44 @@
+@startuml ExceptionHierarchy
+hide circle
+skinparam classAttributeIconSize 0
+scale max 1024 width
+
+class RuntimeException <<Java>> {
+}
+
+class InvalidCommandException <<abstract>> {
+    - errorMessage: String[]
+    # InvalidCommandException(errorMessage: String...)
+    + getErrorMessages(): String[]
+}
+
+class InvalidCaseIdException {
+}
+
+class EmptyCommandException {
+}
+
+class InvalidSettingCommandException {
+    + InvalidSettingCommandException(Boolean isTypeErrror)
+    - {static} buildMessage(boolean isTypeError): String[]
+}
+
+class IncorrectFlagException {
+    - invalidFlags: List<String>
+    + IncorrectFlagException()
+    + IncorrectFlagException(invalidFlags: List<String>)
+    + getInvalidFlags(): List<String>
+}
+
+RuntimeException <|-- InvalidCommandException
+InvalidCommandException <|-- InvalidCaseIdException
+InvalidCommandException <|-- InvalidSettingCommandException
+InvalidCommandException <|-- IncorrectFlagException
+InvalidCommandException <|-- EmptyCommandException
+
+note left of InvalidCommandException
+Some irrelevant private variables (throughout this diagram}
+have been omitted for clarity
+end note
+
+@enduml
