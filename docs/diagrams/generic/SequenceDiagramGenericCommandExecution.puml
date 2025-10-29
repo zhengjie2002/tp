@@ -3,7 +3,7 @@
 skinparam ArrowFontStyle plain
 
 participant ":SGSafe" as sgsafe MAIN_COLOR
-participant ":Parser" as parser UI_COLOR
+participant "<<class>>\n:Parser" as parser UI_COLOR
 
 activate sgsafe MAIN_COLOR
 
@@ -19,7 +19,7 @@ deactivate cmd
 parser --[UI_COLOR]> sgsafe : return Command
 deactivate parser
 
-participant ":Display" as display UI_COLOR
+participant "<<class>>\n:Display" as display UI_COLOR
 
 sgsafe -[MAIN_COLOR]> cmd : execute()
 activate cmd COMMAND_COLOR
@@ -44,7 +44,7 @@ caseMgr --[CASEFILE_COLOR]> cmd : return result
 
 deactivate caseMgr
 
-cmd -[UI_COLOR]> display : printDisplay(...)
+cmd -[UI_COLOR]> display : printMessage(...)
 activate display UI_COLOR
 display --[UI_COLOR]> cmd
 deactivate display

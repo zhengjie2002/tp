@@ -5,7 +5,7 @@ scale max 1024 width
 left to right direction
 
 ' Abstract base class
-abstract class Command <<abstract>> {
+abstract class "{abstract} \n Command" {
     # CommandType commandType
     + {abstract} execute(): void
     + getCommandType(): CommandType
@@ -26,13 +26,13 @@ enum CommandType <<enumeration>> {
 }
 
 ' Setting Type Enum
-enum SettingType <<enumeration>> {
+enum "{enumeration} \n SettingType"  {
     DATEINPUT
     DATEOUTPUT
 }
 
 ' Case Listing Mode Enum
-enum CaseListingMode {
+enum "{enumeration} \n CaseListingMode" {
     ALL
     DEFAULT
     OPEN_ONLY
@@ -120,25 +120,25 @@ class ByeCommand {
 }
 
 ' Inheritance relationships
-Command <|-- AddCommand
-Command <|-- EditCommand
-Command <|-- EditPromptCommand
-Command <|-- DeleteCommand
-Command <|-- ReadCommand
-Command <|-- ListCommand
-Command <|-- OpenCommand
-Command <|-- CloseCommand
-Command <|-- SettingCommand
-Command <|-- HelpCommand
-Command <|-- ByeCommand
+"{abstract} \n Command" <|-- AddCommand
+"{abstract} \n Command" <|-- EditCommand
+"{abstract} \n Command" <|-- EditPromptCommand
+"{abstract} \n Command" <|-- DeleteCommand
+"{abstract} \n Command" <|-- ReadCommand
+"{abstract} \n Command" <|-- ListCommand
+"{abstract} \n Command" <|-- OpenCommand
+"{abstract} \n Command" <|-- CloseCommand
+"{abstract} \n Command" <|-- SettingCommand
+"{abstract} \n Command" <|-- HelpCommand
+"{abstract} \n Command" <|-- ByeCommand
 
 ' Associations with enums
-Command ..> CommandType
-SettingCommand ..> SettingType
-ListCommand ..> CaseListingMode
+"{abstract} \n Command" ..> CommandType
+SettingCommand ..> "{enumeration} \n SettingType"
+ListCommand ..> "{enumeration} \n CaseListingMode"
 
 ' Notes
-note right of Command
+note right of "{abstract} \n Command"
     Abstract base class implementing
     the Command Pattern.
     All commands must implement
