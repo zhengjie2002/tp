@@ -10,8 +10,13 @@ import seedu.sgsafe.domain.casefiles.CaseFormatter;
 import java.time.LocalDate;
 
 public abstract class TrafficCase extends Case {
+    /** The type of vehicle (eg car, van, motorcycle) the driver was driving. */
     private String vehicleType;
+
+    /** The vehicle plate number. */
     private String vehiclePlate;
+
+    /** The name of the road where the incident occurred. */
     private String roadName;
 
     public TrafficCase(String id, String title, LocalDate date, String info, String victim, String officer) {
