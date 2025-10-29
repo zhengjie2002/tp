@@ -29,11 +29,11 @@ public abstract class TrafficCase extends Case {
     }
 
     public String getVehiclePlate() {
-        return vehicleType;
+        return vehiclePlate;
     }
 
     public String getRoadName() {
-        return vehicleType;
+        return roadName;
     }
 
     //@@author shennontay
