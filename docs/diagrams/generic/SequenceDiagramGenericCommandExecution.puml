@@ -2,28 +2,45 @@
 !include ../style.puml
 skinparam ArrowFontStyle plain
 
+'participant ":Storage" as storage STORAGE_COLOR
+'participant ":Display" as display UI_COLOR
+
 participant ":SGSafe" as sgsafe MAIN_COLOR
-participant ":Command" as cmd COMMAND_COLOR
-participant ":CaseManager" as caseMgr CASEFILE_COLOR
-participant ":Storage" as storage STORAGE_COLOR
-participant ":Display" as display UI_COLOR
+participant ":Parser" as parser UI_COLOR
 
 activate sgsafe MAIN_COLOR
+
+
+sgsafe -[UI_COLOR]> parser : parseInput(...)
+activate parser UI_COLOR
+
+create participant ":Command" as cmd COMMAND_COLOR
+
+parser -[UI_COLOR]> cmd : new Command(...)
+activate cmd COMMAND_COLOR
+cmd --[UI_COLOR]> parser : return
+deactivate cmd
+parser --[UI_COLOR]> sgsafe : return Command
+deactivate parser
 
 sgsafe -[MAIN_COLOR]> cmd : execute()
 activate cmd COMMAND_COLOR
 
+participant ":CaseManager" as caseMgr CASEFILE_COLOR
 cmd -[COMMAND_COLOR]> caseMgr : perform some operation
 activate caseMgr CASEFILE_COLOR
+
+
+
 deactivate caseMgr
-
-cmd -[MAIN_COLOR]> display : printMessage(...)
-activate display UI_COLOR
-deactivate display
-deactivate cmd
-
-sgsafe -[MAIN_COLOR]> storage : saveToFile()
-activate storage STORAGE_COLOR
-deactivate storage
+'
+'cmd -[MAIN_COLOR]> display : printMessage(...)
+'activate display UI_COLOR
+'deactivate display
+'deactivate cmd
+'
+'sgsafe -[MAIN_COLOR]> storage : saveToFile()
+'activate storage STORAGE_COLOR
+'deactivate storage
 
 @enduml
