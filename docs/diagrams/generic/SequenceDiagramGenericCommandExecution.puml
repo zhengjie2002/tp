@@ -7,7 +7,6 @@ participant ":Parser" as parser UI_COLOR
 
 activate sgsafe MAIN_COLOR
 
-
 sgsafe -[UI_COLOR]> parser : parseInput(...)
 activate parser UI_COLOR
 
@@ -15,7 +14,7 @@ create participant ":Command" as cmd COMMAND_COLOR
 
 parser -[UI_COLOR]> cmd : new Command(...)
 activate cmd COMMAND_COLOR
-cmd --[UI_COLOR]> parser : return
+cmd --[UI_COLOR]> parser :
 deactivate cmd
 parser --[UI_COLOR]> sgsafe : return Command
 deactivate parser
@@ -37,26 +36,30 @@ participant ":Case" as case CASEFILE_COLOR
 
 caseMgr -[CASEFILE_COLOR]> case : perform some operation
 
+activate case CASEFILE_COLOR
+case --[CASEFILE_COLOR]> caseMgr
+deactivate case
+
 caseMgr --[CASEFILE_COLOR]> cmd : return result
 
 deactivate caseMgr
 
-cmd --[UI_COLOR]> display : printDisplay(...)
+cmd -[UI_COLOR]> display : printDisplay(...)
 activate display UI_COLOR
+display --[UI_COLOR]> cmd
 deactivate display
-
 
 deactivate display UI_COLOR
 
-
+cmd --[MAIN_COLOR]> sgsafe :
 
 destroy cmd
 
-deactivate caseMgr
+deactivate sgsafe
 
-'note left of someSelfFunction()
-'  someSelfFunction() represents any internal
-'  function calls the Command might make to itself
-'  during execution.
-'end note
+note right of cmd
+  someSelfFunction() represents any internal
+  function calls the Command might make to itself
+  during execution.
+end note
 @enduml
