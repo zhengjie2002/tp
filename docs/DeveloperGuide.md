@@ -97,16 +97,30 @@ The sequence diagram above illustrates how user input is processed to create and
 
 ### CaseFile Component
 
-{Add a high-level description of the CaseFile component here}
+The CaseFile component is in charge of how case records are stored, organized, and managed in SGSafe.
+It acts as the main part of the system’s data model, defining what information each case contains and how cases are handled.
+The component’s main functions are provided through the CaseManager class, which other parts of the 
+system (like Command and Storage) use to access or update case data.
 
 The API of this component is primarily specified in `CaseManager`.
 
 #### Structure of the CaseFile Component
 
+![CaseFile Diagram](images/ClassDiagramCasefile.png)
+
 The CaseFile component consists of two main parts: `Case` and `CaseManager`.
 Together, they represent the domain model for managing case records within the system.
 
-The Case class defines the structure and behavior of individual cases, while the CaseManager orchestrates their lifecycle and provides higher‑level operations.
+The `Case` class defines the structure and behavior of individual cases, 
+encapsulating shared attributes such as case ID, case title, case info etc.
+Specialised subclasses (e.g., `FinancialCase`, `TrafficCase`, `ViolentCase`) 
+extend `Case` to implement category specific attributes and methods.
+
+The `CaseManager` class is responsible for managing `Case` objects.
+It provides high-level operations such as adding, updating, deleting, and retrieving cases.
+
+Additionally, `Case` interacts with the `CaseFormatter` class 
+to produce formatted representations of case data for display.
 
 #### Responsibilities
 
@@ -122,7 +136,8 @@ The CaseFile component:
 
 **Case**:
 An abstract class that defines the blueprint for all case types. 
-It includes identifiers, metadata (e.g. time it is created at, time it is updated at, title, etc.), and abstract methods that must be implemented by subclasses (e.g. domain‑specific case types).
+It includes identifiers, metadata (e.g. time it is created at, time it is updated at, title, etc.), 
+and abstract methods that must be implemented by subclasses (e.g. domain‑specific case types).
 
 **CaseManager**:
 A concrete class responsible for managing Case objects. 

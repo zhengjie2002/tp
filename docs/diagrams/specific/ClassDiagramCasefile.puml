@@ -1,0 +1,190 @@
+@startuml
+skinparam classAttributeIconSize 0
+left to right direction
+abstract class Case {
+    - id: String
+    - title: String
+    - date: String
+    - info: String
+    - victim: String
+    - officer: String
+    - isOpen: boolean
+    - isDeleted: boolean
+    - createdAt: LocalDateTime
+    - updatedAt: LocalDateTime
+    # category: CaseCategory
+    # type: CaseType
+    # categoryString: String
+
+    + getTitle(): String
+    + getDate(): String
+    + getInfo(): String
+    + getId(): String
+    + getCategory(): CaseCategory
+    + getType(): CaseType
+    + getVictim(): String
+    + getOfficer(): String
+    + isDeleted(): boolean
+    + setDeleted(isDeleted: boolean)
+    + setCreatedAt(createdAt: LocalDateTime): void
+    + setUpdatedAt(updatedAt: LocalDateTime): void
+    + getAdditionalFields(): List<String>
+    + getDisplayLine(): String
+    + getMultiLineVerboseDisplay(): String[]
+    + setClosed(): void
+    + setOpen(): void
+    + isOpen(): boolean
+    + getValidEditFlags(): List<String>
+    + update(newValues: Map<String, Object>): void
+    # getBaseDisplayLines(): List<String>
+    + getReadCaseDisplay(): String[]
+    + toSaveString(): String
+}
+
+abstract class FinancialCase extends Case {
+    {abstract}
+}
+class TheftCase extends FinancialCase {
+    - stolenObject: String
+}
+class ScamCase extends FinancialCase
+class BurglaryCase extends FinancialCase
+
+abstract class PropertyCase extends Case
+class ArsonCase extends PropertyCase
+class VandalismCase extends PropertyCase
+
+abstract class SexualCase extends Case
+class RapeCase extends SexualCase
+class VoyeurismCase extends SexualCase
+
+abstract class TrafficCase extends Case {
+    - vehicleType: String
+    - vehiclePlate: String
+    - roadName: String
+}
+class AccidentCase extends TrafficCase {
+    - speedLimit: Integer
+    - exceededSpeed: Integer
+}
+class SpeedingCase extends TrafficCase
+
+abstract class ViolentCase extends Case
+class AssaultCase extends ViolentCase
+class MurderCase extends ViolentCase {
+    - weapon: String
+    - numberOfVictims: Integer
+}
+class RobberyCase extends ViolentCase
+
+class OthersCase extends Case {
+    - customCategory: String
+}
+
+class CaseManager {
+    - getCaseListSize(): int
+    + getCaseList(): ArrayList<Case>
+    + addCase(newCase: Case)
+    + getCaseById(id: String): Case
+    + closeCase(caseId: String): String
+    + openCase(caseId: String): String
+    + editCase(caseId: String, newFlagValues: Map<String, Object>): String
+    + getInvalidEditFlags(targetCase: Case, newFlagValues: Map<String, Object>): List<String>
+    + deleteCase(caseId: String): String
+}
+
+class CaseFormatter {
+    + convertStatusToString(isOpen: boolean): String
+    + formatCaseSummaryLine(status: boolean, category: String, id: String, date: String, title: String): String
+    + formatCaseIDHeader(id: String): String
+    + truncateWithEllipses(input: String, maximumLength: int): String
+    + addWrappedFieldForRead(lines: List<String>, label: String, value: String)
+    + addWrappedFieldForVerbose(lines: List<String>, label: String, value: String): void
+    + wrapField(verbose: boolean, label: String, value: String, width: int): List<String>
+    - wrapWords(prefix: String, value: String, available: int): List<String>
+    # formatPrefix(label: String, verbose: boolean): String
+    # handleLongWord(word: String, available: int, prefix: String, lines: List<String>, line: StringBuilder): String
+    # tryAddWord(word: String, line: StringBuilder, currentLength: int, available: int, prefix: String, lines: List<String>): LineState
+}
+
+enum CaseCategory <<enumeration>> {
+    FINANCIAL
+    PROPERTY
+    SEXUAL
+    TRAFFIC
+    VIOLENT
+    OTHERS
+}
+
+enum CaseType <<enumeration>> {
+    SCAM
+    THEFT
+    ARSON
+    VANDALISM
+    SPEEDING
+    ACCIDENT
+}
+
+CaseManager --> Case :manages >
+Case --> CaseCategory: uses >
+Case --> CaseType: uses >
+CaseFormatter <-- Case: uses <
+
+hide enum circle
+hide class circle
+hide abstract circle
+@enduml
+
+
+
+
+
+
+@startuml
+left to right direction
+!include ../style.puml
+
+package "Casefiles" <<Rectangle>> {
+    abstract class Case CASEFILE_COLOR
+
+    abstract class FinancialCase CASEFILE_COLOR extends Case
+    class TheftCase CASEFILE_COLOR extends FinancialCase
+    class ScamCase CASEFILE_COLOR extends FinancialCase
+    class BurglaryCase CASEFILE_COLOR extends FinancialCase
+
+    abstract class PropertyCase CASEFILE_COLOR extends Case
+    class ArsonCase CASEFILE_COLOR extends PropertyCase
+    class VandalismCase CASEFILE_COLOR extends PropertyCase
+
+    abstract class SexualCase CASEFILE_COLOR extends Case
+    class RapeCase CASEFILE_COLOR extends SexualCase
+    class VoyeurismCase CASEFILE_COLOR extends SexualCase
+
+    abstract class TrafficCase CASEFILE_COLOR extends Case
+    class AccidentCase CASEFILE_COLOR extends TrafficCase
+    class SpeedingCase CASEFILE_COLOR extends TrafficCase
+
+    abstract class ViolentCase CASEFILE_COLOR extends Case
+    class AssaultCase CASEFILE_COLOR extends ViolentCase
+    class MurderCase CASEFILE_COLOR extends ViolentCase
+    class RobberyCase CASEFILE_COLOR extends ViolentCase
+
+    class OthersCase CASEFILE_COLOR extends Case
+
+    class CaseManager CASEFILE_COLOR
+    class CaseFormatter CASEFILE_COLOR
+
+    enum CaseCategory <<enumeration>> CASEFILE_COLOR
+    enum CaseType <<enumeration>> CASEFILE_COLOR
+}
+
+CaseManager --> Case :manages >
+Case --> CaseCategory: uses >
+Case --> CaseType: uses >
+CaseFormatter <-- Case: uses <
+
+hide enum circle
+hide class circle
+hide abstract circle
+@enduml
+
