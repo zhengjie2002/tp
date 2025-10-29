@@ -63,43 +63,35 @@ Likewise, the abstract class `Command` mentioned here is meant to be a specific 
 ---
 
 ### UI Component
-
-{Add a high-level description of the UI component here}
-
-The API of this component is primarily specified in `{add relevant classes here}`.
-
-#### Structure of the UI Component
-
-The UI consists of three main parts: `Display`, `Parser`, and `Validator`. All these work together to handle user interaction through a console-based command-line interface.
-
-The UI component uses standard input/output streams. The interaction flow is managed in the `SGSafe` main class.
-
-#### Responsibilities
-
-The UI component:
-
-- **Displays formatted output** to the user using `Display`, which wraps messages in visual dividers
-- **Parses user commands** using `Parser` to convert raw input into `Command` objects
-- **Validates input** using `Validator` to ensure data integrity before execution
-- **Keeps a reference to the Command component**, as it relies on Commands to execute user actions
-- **Depends on classes in the Domain component**, as it displays `Case` objects from `CaseManager`
+The UI component is responsible for all interactions with the user. It reads user input from the console and displays messages back to the user.
 
 #### Key Classes
 
 **Display**: Handles all user-facing output with formatted messages, including welcome/goodbye messages and command results.
 
-**Parser**: Interprets raw input and creates structured `Command` objects by extracting keywords, validating flags, and enforcing input constraints.
+**Validator**: Provides utility methods to validate flags, check required fields, and verify case ID format.
 
-**Validator**: Provides utility methods to validate flags, check required fields, and verify case ID format (6-character hexadecimal).
+**Parser**: The parser class serves to determine the type of command object to create based on user input. The parser class extracts the keyword to identify the command type, then calls methods from `Validator` to check if the required arguments are present in the input.
+
+Here are some examples of command keywords and their required arguments:
+|keyword|Command Type|Required Arguments|
+|-|-|-|
+|add|AddCommand|`title`, `category`, `date`, `info`|
+|read|ReadCommand||
+|delete|DeleteCommand|`case id`|
 
 #### Interaction Flow
 
 1. `SGSafe.mainLoop()` reads user input from console
-2. `Parser.parseInput()` validates input and creates the appropriate `Command` object
-3. `Command.execute()` is called to perform the action
-4. Commands interact with `CaseManager` to modify or retrieve `Case` objects
-5. Results are displayed via `Display.printMessage()`
-6. Exceptions are caught and error messages shown through `Display`
+2. `Parser.parseInput()` extracts the command keyword from the input, then calls `Parser.parseXCommand()`, where X is the appropriate command type
+3. `parseXCommand()`calls methods in `Validator` to check input validity, then creates the appropriate `XCommand` object to perform the action
+4. Any exceptions caught or error messages are shown through `Display.printMessage()`
+5. Results are also displayed via `Display.printMessage()`
+
+##### Example Interaction Flow
+![SequenceDiagramUserInputListCommand.png](images/SequenceDiagramUserInputListCommand.png)
+
+The sequence diagram above illustrates how user input is processed to create and execute a `ListCommand`.
 
 ---
 
