@@ -30,43 +30,88 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.List;
 
+/**
+ * The {@code Storage} class handles the persistence (saving and loading)
+ * of {@link Case} objects from and to a text file.
+ * <p>
+ * Each case is serialized into a string format that uses key-value pairs separated by
+ * a pipe character ("|"), with each key and value separated by a colon (":").
+ * <p>
+ * This class also provides date and datetime patterns used for consistent formatting.
+ */
 public class Storage {
+    /** The date pattern used for saving and parsing case dates (e.g., 29/10/2025). */
     private static final String SAVE_DATE_PATTERN = "dd/MM/yyyy";
+
+    /** The date-time pattern used for saving and parsing timestamps (e.g., 29/10/2025 13:45:22). */
     private static final String SAVE_DATETIME_PATTERN = "dd/MM/yyyy HH:mm:ss";
 
+    /** The filename where cases are stored. */
     private final String filename;
 
+    /**
+     * Constructs a {@code Storage} object with the specified filename.
+     *
+     * @param filename the name of the file used to save and load case data
+     */
     public Storage(String filename) {
         this.filename = filename;
     }
 
+    /**
+     * Returns the save date pattern.
+     *
+     * @return the pattern used for saving and parsing dates
+     */
     public static String getSaveDatePattern() {
         return SAVE_DATE_PATTERN;
     }
 
+    /**
+     * Returns the save date-time pattern.
+     *
+     * @return the pattern used for saving and parsing date-times
+     */
     public static String getSaveDateTimePattern() {
         return SAVE_DATETIME_PATTERN;
     }
 
+    /**
+     * Parses a serialized save string into a map of field names and their corresponding values.
+     * Fields are separated by {@code |}, and key-value pairs are separated by {@code :}.
+     *
+     * @param saveString the serialized string representation of a case
+     * @return a map containing field names as keys and their string values
+     */
     private Map<String, String> getFields(String saveString) {
         Map<String, String> fields = new HashMap<>();
         for (String field : saveString.split("\\|")) {
             String[] splitField = field.split(":", 2);
             String key = splitField[0];
             String value = (splitField[1].isEmpty()) ? null : splitField[1];
-            if(value != null) {
+            if (value != null) {
                 fields.put(key, value);
             }
         }
         return fields;
     }
 
+    /**
+     * Converts a serialized save string into a corresponding {@link Case} object.
+     * <p>
+     * The method uses the {@code category} field to determine which subclass of {@link Case}
+     * to instantiate (e.g., {@link TheftCase}, {@link MurderCase}, etc.).
+     *
+     * @param line a line of text representing a serialized case
+     * @return a {@code Case} object reconstructed from the save string
+     */
     private Case getCaseFromSaveString(String line) {
         Map<String, String> fields = getFields(line);
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getSaveDatePattern());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(getSaveDateTimePattern());
 
+        // Parse base attributes
         String id = fields.get("id");
         String title = fields.get("title");
         LocalDate date = LocalDate.parse(fields.get("date"), dateFormatter);
@@ -79,6 +124,7 @@ public class Storage {
         LocalDateTime createdAt = LocalDateTime.parse(fields.get("created-at"), dateTimeFormatter);
         LocalDateTime updatedAt = LocalDateTime.parse(fields.get("updated-at"), dateTimeFormatter);
 
+        // Instantiate the appropriate subclass of Case
         Case newCase = switch (CaseCategory.valueOf(category)) {
         case BURGLARY -> new BurglaryCase(id, title, date, info, victim, officer);
         case SCAM -> new ScamCase(id, title, date, info, victim, officer);
@@ -95,20 +141,17 @@ public class Storage {
         case OTHERS -> new OthersCase(id, title, date, info, victim, officer);
         };
 
-        // only retrieve the fields that are not initialised in the constructor
-        // update the case based on the additional fields found
+        // Only retain additional fields that are specific to the subclass
         List<String> additionalFields = newCase.getAdditionalFields();
         fields.keySet().retainAll(additionalFields);
 
-        // convert the raw string map (fields) to the typed map (typedFields)
+        // Convert field values to appropriate data types
         Map<String, Object> typedFields = Parser.convertFlagValueTypes(fields);
         newCase.update(typedFields);
 
-        // update timestamps
+        // Set timestamps and status flags
         newCase.setCreatedAt(createdAt);
         newCase.setUpdatedAt(updatedAt);
-
-        // update booleans
         newCase.setDeleted(isDeleted);
         if (isOpen) {
             newCase.setOpen();
@@ -119,13 +162,19 @@ public class Storage {
         return newCase;
     }
 
+    /**
+     * Loads all cases from the file into the {@link CaseManager}.
+     * <p>
+     * Each non-empty line in the file represents a serialized {@link Case} object.
+     * If the file does not exist, this method does nothing.
+     */
     public void loadCaseManager() {
         File file = new File(this.filename);
         if (file.exists()) {
             try (Scanner s = new Scanner(file)) {
                 while (s.hasNextLine()) {
                     String line = s.nextLine();
-                    if(!line.trim().isEmpty()) {
+                    if (!line.trim().isEmpty()) {
                         Case newCase = getCaseFromSaveString(line);
                         CaseManager.addCase(newCase);
                     }
@@ -136,10 +185,16 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves all cases currently managed by {@link CaseManager} to the file.
+     * <p>
+     * Each case is written to the file in its serialized string format,
+     * with one line per case.
+     */
     public void saveToFile() {
         ArrayList<Case> cases = CaseManager.getCaseList();
         try (FileWriter fw = new FileWriter(this.filename)) {
-            for(Case c : cases) {
+            for (Case c : cases) {
                 fw.append(c.toSaveString());
                 fw.append(System.lineSeparator());
             }
