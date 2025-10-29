@@ -183,6 +183,26 @@ public abstract class Case {
         this.updatedAt = updatedAt;
     }
 
+    /**
+     * Initializes the metadata fields of this object using data loaded from a saved source.
+     * <p>
+     * This method sets the object's open and deleted status, as well as its creation
+     * and last update timestamps.
+     * </p>
+     *
+     * @param isOpen     {@code true} if the object is currently open; {@code false} otherwise.
+     * @param isDeleted  {@code true} if the object has been marked as deleted; {@code false} otherwise.
+     * @param createdAt  the timestamp representing when the object was originally created.
+     * @param updatedAt  the timestamp representing the last time the object was updated.
+     */
+    public void initialiseMetadataFromSave(boolean isOpen, boolean isDeleted,
+                                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.isOpen = isOpen;
+        this.isDeleted = isDeleted;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public List<String> getAdditionalFields() {
         return new ArrayList<>();
     }
