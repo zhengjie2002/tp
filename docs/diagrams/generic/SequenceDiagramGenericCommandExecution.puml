@@ -2,9 +2,6 @@
 !include ../style.puml
 skinparam ArrowFontStyle plain
 
-'participant ":Storage" as storage STORAGE_COLOR
-'participant ":Display" as display UI_COLOR
-
 participant ":SGSafe" as sgsafe MAIN_COLOR
 participant ":Parser" as parser UI_COLOR
 
@@ -23,24 +20,43 @@ deactivate cmd
 parser --[UI_COLOR]> sgsafe : return Command
 deactivate parser
 
+participant ":Display" as display UI_COLOR
+
 sgsafe -[MAIN_COLOR]> cmd : execute()
 activate cmd COMMAND_COLOR
+
+cmd -[COMMAND_COLOR]> cmd : someSelfFunction()
+activate cmd COMMAND_COLOR_T1
+deactivate cmd
 
 participant ":CaseManager" as caseMgr CASEFILE_COLOR
 cmd -[COMMAND_COLOR]> caseMgr : perform some operation
 activate caseMgr CASEFILE_COLOR
 
+participant ":Case" as case CASEFILE_COLOR
 
+caseMgr -[CASEFILE_COLOR]> case : perform some operation
+
+caseMgr --[CASEFILE_COLOR]> cmd : return result
 
 deactivate caseMgr
-'
-'cmd -[MAIN_COLOR]> display : printMessage(...)
-'activate display UI_COLOR
-'deactivate display
-'deactivate cmd
-'
-'sgsafe -[MAIN_COLOR]> storage : saveToFile()
-'activate storage STORAGE_COLOR
-'deactivate storage
 
+cmd --[UI_COLOR]> display : printDisplay(...)
+activate display UI_COLOR
+deactivate display
+
+
+deactivate display UI_COLOR
+
+
+
+destroy cmd
+
+deactivate caseMgr
+
+'note left of someSelfFunction()
+'  someSelfFunction() represents any internal
+'  function calls the Command might make to itself
+'  during execution.
+'end note
 @enduml
