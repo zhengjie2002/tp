@@ -1,9 +1,8 @@
 package seedu.sgsafe.utils.command;
 
-import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.ui.Display;
-import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 
 public class ReadCommand extends Command {
     private final String caseId;
@@ -15,10 +14,14 @@ public class ReadCommand extends Command {
 
     @Override
     public void execute() {
-        Case targetCase = CaseManager.getCaseById(caseId);
-        if (targetCase == null) {
-            throw new InvalidCaseIdException();
+        String [] display = null;
+        try {
+            display = CaseManager.readCase(caseId);
+        } catch (CaseNotFoundException e) {
+            Display.printMessage(e.getMessage());
         }
-        Display.printMessage(targetCase.getReadCaseDisplay());
+        if (display != null) {
+            Display.printMessage(display);
+        }
     }
 }
