@@ -1,0 +1,167 @@
+@startuml CommandClassDiagram
+hide circle
+skinparam classAttributeIconSize 0
+
+' Abstract base class
+abstract class Command <<abstract>> {
+    # CommandType commandType
+    + {abstract} execute(): void
+    + getCommandType(): CommandType
+}
+
+' Command Type Enum
+enum CommandType <<enumeration>> {
+    ADD
+    EDIT
+    DELETE
+    READ
+    LIST
+    OPEN
+    CLOSE
+    SETTING
+    HELP
+    BYE
+}
+
+' Setting Type Enum
+enum SettingType <<enumeration>> {
+    DATEINPUT
+    DATEOUTPUT
+}
+
+' Case Listing Mode Enum
+enum CaseListingMode {
+    ALL
+    DEFAULT
+    OPEN_ONLY
+    CLOSED_ONLY
+}
+
+' Concrete Command Classes
+class AddCommand {
+
+    - String caseTitle
+    - String caseCategory
+    - LocalDate caseDate
+    - String caseInfo
+    - String caseVictim
+    - String caseOfficer
+    + AddCommand(caseCategory, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer)
+    + execute(): void
+    - generateHexId(): String
+}
+
+class EditCommand {
+    - String caseId
+    - newFlagValues : Map<String, Object>
+    + EditCommand(caseId, newFlagValues)
+    + execute(): void
+}
+
+class EditPromptCommand {
+    - String caseId
+    + EditPromptCommand(caseId)
+    + execute(): void
+}
+
+class DeleteCommand {
+    - String caseId
+    + DeleteCommand(caseId)
+    + execute(): void
+}
+
+class ReadCommand {
+    - String caseId
+    + ReadCommand(caseId)
+    + execute(): void
+}
+
+class ListCommand {
+    - CaseListingMode listingMode
+    - boolean isVerbose
+    + ListCommand(mode, isVerbose)
+    + execute(): void
+    - generateListTabTableHeaderMessage(): String
+    - formatCases(): List<String>
+    - filterCasesByMode(): ArrayList<Case>
+    - generateCaseCountMessage(): String
+    getCaseDescriptions(): String[]
+}
+
+class OpenCommand {
+    - String caseId
+    + OpenCommand(caseId)
+    + execute(): void
+}
+
+class CloseCommand {
+    - String caseId
+    + CloseCommand(caseId)
+    + execute(): void
+}
+
+class SettingCommand {
+    - SettingType settingType
+    - String newDateFormat
+    + SettingCommand(settingType, newDateFormat)
+    + execute(): void
+}
+
+class HelpCommand {
+    + HelpCommand()
+    + execute(): void
+}
+
+class ByeCommand {
+    + ByeCommand()
+    + execute(): void
+}
+
+' Inheritance relationships
+Command <|-- AddCommand
+Command <|-- EditCommand
+Command <|-- EditPromptCommand
+Command <|-- DeleteCommand
+Command <|-- ReadCommand
+Command <|-- ListCommand
+Command <|-- OpenCommand
+Command <|-- CloseCommand
+Command <|-- SettingCommand
+Command <|-- HelpCommand
+Command <|-- ByeCommand
+
+' Associations with enums
+Command ..> CommandType
+SettingCommand ..> SettingType
+ListCommand ..> CaseListingMode
+
+' Notes
+note right of Command
+    Abstract base class implementing
+    the Command Pattern.
+    All commands must implement
+    the execute() method.
+end note
+
+note right of CommandType
+    Defines all supported
+    command types in the system
+end note
+
+note bottom of ListCommand
+    Filters case listings based
+    on the specified mode
+end note
+
+note bottom of SettingCommand
+    Modifies application settings
+    based on the setting type
+end note
+
+note bottom of ReadCommand
+    To view all details of a specific case
+    that is identified by its unique ID
+end note
+
+
+@enduml
