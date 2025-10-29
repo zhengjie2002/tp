@@ -8,6 +8,9 @@ import seedu.sgsafe.domain.casefiles.CaseFormatter;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a case involving murder.
+ */
 public class MurderCase extends ViolentCase {
     private String weapon;
     private Integer numberOfVictims;

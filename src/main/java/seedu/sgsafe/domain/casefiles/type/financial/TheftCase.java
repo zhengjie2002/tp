@@ -8,6 +8,9 @@ import seedu.sgsafe.domain.casefiles.CaseFormatter;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a case involving a theft.
+ */
 public class TheftCase extends FinancialCase {
     private String stolenObject;
 

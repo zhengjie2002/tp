@@ -39,7 +39,7 @@ public class CaseManager {
         caseList.add(newCase);
     }
 
-
+    //@@author shennontay
     /**
      * Finds and returns a {@link Case} object from the case list using its unique ID.
      *
@@ -52,6 +52,7 @@ public class CaseManager {
                 .findFirst()
                 .orElse(null);
     }
+    //@@author
 
     /**
      * Closes an existing case in the case list.

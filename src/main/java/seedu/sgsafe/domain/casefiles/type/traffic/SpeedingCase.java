@@ -8,6 +8,9 @@ import seedu.sgsafe.domain.casefiles.CaseFormatter;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a case involving speeding offences.
+ */
 public class SpeedingCase extends TrafficCase {
     private Integer speedLimit;
     private Integer exceededSpeed;

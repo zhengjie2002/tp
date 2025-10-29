@@ -260,6 +260,11 @@ public abstract class Case {
         updatedAt = LocalDateTime.now();
     }
 
+    /**
+     * Returns whether this case is currently open.
+     *
+     * @return {@code true} if the case is open; {@code false} otherwise
+     */
     public boolean isOpen() {
         return this.isOpen;
     }
