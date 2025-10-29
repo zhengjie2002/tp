@@ -150,14 +150,7 @@ public class Storage {
         newCase.update(typedFields);
 
         // Set timestamps and status flags
-        newCase.setCreatedAt(createdAt);
-        newCase.setUpdatedAt(updatedAt);
-        newCase.setDeleted(isDeleted);
-        if (isOpen) {
-            newCase.setOpen();
-        } else {
-            newCase.setClosed();
-        }
+        newCase.initialiseMetadataFromSave(isOpen, isDeleted, createdAt, updatedAt);
 
         return newCase;
     }
