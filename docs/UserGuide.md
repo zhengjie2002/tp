@@ -59,7 +59,8 @@ organised digital workflow that enhances operational efficiency for the public s
 * Accident (Vehicle type, Vehicle plate, Road name)
 * Speeding (Vehicle type, Vehicle plate, Road name, Speed limit, Exceeded speed)
 * Assault 
-* Murder (Weapon, Number of victims, Robbery)
+* Murder (Weapon, Number of victims)
+* Robbery
 * Others (Custom category)
 
 ---
