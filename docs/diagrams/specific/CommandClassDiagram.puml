@@ -1,6 +1,8 @@
 @startuml CommandClassDiagram
 hide circle
 skinparam classAttributeIconSize 0
+scale max 1024 width
+left to right direction
 
 ' Abstract base class
 abstract class Command <<abstract>> {
@@ -46,7 +48,7 @@ class AddCommand {
     - String caseInfo
     - String caseVictim
     - String caseOfficer
-    + AddCommand(caseCategory, caseTitle, caseDate, caseInfo, caseVictim, caseOfficer)
+    + AddCommand(caseCategory, caseTitle, caseDate, \n caseInfo, caseVictim, caseOfficer)
     + execute(): void
     - generateHexId(): String
 }
