@@ -241,7 +241,6 @@ Loading from a save file:
   from `SGSafe.main()`
 
 ![SequenceDiagramFileLoad.png](images/SequenceDiagramFileLoad.png)
-![SequenceDiagramInitialiseCase.png](images/SequenceDiagramInitialiseCase.png)
 
 Saving to the save file:
 

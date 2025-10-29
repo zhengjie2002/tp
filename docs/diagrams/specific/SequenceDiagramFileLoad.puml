@@ -6,7 +6,7 @@ autoactivate on
 participant ":Storage" as S STORAGE_COLOR
 participant ":CaseManager" as CM CASEFILE_COLOR
 participant ":Case" as C CASEFILE_COLOR
-
+participant ":Parser" as P UI_COLOR
 -[MAIN_COLOR]> S : loadCaseManager()
 
 opt save file exists
@@ -15,7 +15,13 @@ opt save file exists
         create C
         S -[STORAGE_COLOR]> C
         return new case
-        ref over S, C : initialise case
+        S -[STORAGE_COLOR]> P : convertFlagValueTypes(...)
+        return
+        S -[STORAGE_COLOR]> C : update(fields)
+        return
+        S -[STORAGE_COLOR]> C : inititialiseMetadataFromSave(...)
+        return
+
         return new case
         S -[STORAGE_COLOR]> CM : addCase(new case)
         return
