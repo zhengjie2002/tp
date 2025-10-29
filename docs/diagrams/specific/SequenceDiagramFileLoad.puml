@@ -1,0 +1,26 @@
+@startuml
+!include ../style.puml
+
+skinparam sequenceReferenceBackgroundColor #ffffff
+autoactivate on
+participant ":Storage" as S STORAGE_COLOR
+participant ":CaseManager" as CM CASEFILE_COLOR
+participant ":Case" as C CASEFILE_COLOR
+
+-[MAIN_COLOR]> S : loadCaseManager()
+
+opt save file exists
+    loop for line in savefile
+        S -[STORAGE_COLOR]> S : getCaseFromSaveString(line)
+        create C
+        S -[STORAGE_COLOR]> C
+        return new case
+        ref over S, C : initialise case
+        return new case
+        S -[STORAGE_COLOR]> CM : addCase(new case)
+        return
+    end loop
+end opt
+
+return
+@enduml

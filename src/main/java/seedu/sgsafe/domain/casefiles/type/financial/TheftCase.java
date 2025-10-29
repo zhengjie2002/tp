@@ -3,9 +3,8 @@ package seedu.sgsafe.domain.casefiles.type.financial;
 import java.util.List;
 import java.util.Map;
 
-import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
-import seedu.sgsafe.utils.ui.Display;
+import seedu.sgsafe.domain.casefiles.CaseFormatter;
 
 import java.time.LocalDate;
 
@@ -22,15 +21,17 @@ public class TheftCase extends FinancialCase {
         return stolenObject;
     }
 
+    //@@author shennontay
     @Override
     public String[] getReadCaseDisplay() {
         List<String> displayList = getBaseDisplayLines();
 
-        displayList.add(Case.formatLineNoTruncate("Vehicle Type", this.stolenObject));
-        displayList.add(Display.formatIndentedText("Info :", getInfo()));
+        CaseFormatter.addWrappedFieldForRead(displayList, "Vehicle Type", this.stolenObject);
+        CaseFormatter.addWrappedFieldForRead(displayList, "Info", getInfo());
 
         return displayList.toArray(new String[0]);
     }
+    //@@author
 
     @Override
     public List<String> getValidEditFlags() {
