@@ -19,6 +19,11 @@
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case in total
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Open]   Murder           000000 23/06/2020 Murder at Yishun
 	____________________________________________________________
@@ -37,6 +42,11 @@
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases open
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Open]   Murder           000000 23/06/2020 Murder at Yishun
 	[Open]   Traffic accident 000001 05/06/2018 Car accident
@@ -46,6 +56,11 @@
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Open]   Murder           000000 23/06/2020 Murder at Yishun
 	[Open]   Traffic accident 000001 05/06/2018 Car accident
@@ -81,12 +96,22 @@
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	[Open]   Traffic accident 000001 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case closed
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	____________________________________________________________
@@ -97,22 +122,42 @@
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	[Open]   Traffic accident 000001 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case open
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Open]   Traffic accident 000001 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case closed
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	[Open]   Traffic accident 000001 05/06/2018 Robbery
@@ -124,22 +169,42 @@
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	[Open]   Traffic accident 000001 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case open
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Open]   Traffic accident 000001 05/06/2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 1 case closed
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	[Open]   Traffic accident 000001 05/06/2018 Robbery
@@ -151,6 +216,11 @@
 	____________________________________________________________
 	____________________________________________________________
 	You currently have 2 cases in total
+	---
+	Note: Only very basic case details are shown here.
+	For more in depth information about the case (e.g. Info, Victim, Officer)
+	run: list --mode verbose
+	---
 	STATUS   CATEGORY         ID     DATE       TITLE
 	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	[Open]   Traffic accident 000001 05/06/2018 Robbery

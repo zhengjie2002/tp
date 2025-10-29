@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import seedu.sgsafe.domain.casefiles.Case;
+import seedu.sgsafe.domain.casefiles.CaseFormatter;
 import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.ui.Display;
 
@@ -84,7 +85,22 @@ public class ListCommand extends Command {
 
         outputLines.add(generateCaseCountMessage(count));
         if (!isVerbose && !matchingCases.isEmpty()) {
+            // Add explanatory message as separate lines with a divider
+            outputLines.add("---");
+            outputLines.add("Note: Only very basic case details are shown here.");
+            outputLines.add("For more in depth information about the case (e.g. Info, Victim, Officer)");
+            outputLines.add("run: list --mode verbose");
+            outputLines.add("---");
             outputLines.add(generateListTableHeaderMessage());
+        } else if (isVerbose && !matchingCases.isEmpty()) {
+            // Add explanatory message as separate lines with a divider
+            outputLines.add("---");
+            outputLines.add("Note: Only basic case details (e.g. Title) are shown here and is truncated if too long.");
+            outputLines.add("For full case information (e.g. case-specific details like murder weapon),");
+            outputLines.add("use the read command");
+            outputLines.add("To see how to use the read command, run: help read");
+            outputLines.add("To use the read command, run: read <caseID>");
+            outputLines.add("---");
         }
         List<String> formattedCaseLines = formatCases(matchingCases);
         outputLines.addAll(formattedCaseLines);
@@ -101,7 +117,7 @@ public class ListCommand extends Command {
      * @return a formatted header string for the case list table
      */
     private String generateListTableHeaderMessage() {
-        return String.format("%-8s %-16s %-6s %-10s %s", "STATUS", "CATEGORY", "ID", "DATE", "TITLE");
+        return String.format(CaseFormatter.SUMMARY_FORMAT_STRING, "STATUS", "CATEGORY", "ID", "DATE", "TITLE");
     }
 
     /**

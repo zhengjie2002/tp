@@ -39,7 +39,7 @@ public class CaseFormatter {
     static final int MAX_TITLE_WIDTH              = 40;       // title is truncated separately using this with ellipses
 
     /** Composite format string for summary lines. */
-    static final String STATUS_FORMAT_STRING =
+    public static final String SUMMARY_FORMAT_STRING =
             MAX_STATUS_STRING_WIDTH + " "
                     + MAX_CATEGORY_STRING_WIDTH + " "
                     + MAX_ID_STRING_WIDTH + " "
@@ -75,7 +75,7 @@ public class CaseFormatter {
             String title) {
         String statusString = "[" + convertStatusToString(status) + "]";
         String titleString = truncateWithEllipses(title, MAX_TITLE_WIDTH);
-        return String.format(STATUS_FORMAT_STRING,
+        return String.format(SUMMARY_FORMAT_STRING,
                 statusString, category, id, date, titleString);
     }
 
@@ -101,13 +101,20 @@ public class CaseFormatter {
         if (input == null) {
             return "";
         }
-        return input.length() <=
-                maximumLength ? input : input.substring(0, maximumLength) + "...";
+        if (maximumLength <= 0) {
+            return "...";
+        }
+        return input.length() <= maximumLength
+                ? input
+                : input.substring(0, maximumLength) + "...";
     }
 
     //@@author shennontay
     /** Adds a wrapped field for the read command output. */
     public static void addWrappedFieldForRead(List<String> lines, String label, String value) {
+        if (lines == null || label == null) {
+            return;
+        }
         if (value != null && !value.isEmpty()) {
             List<String> fieldLines = wrapField(false, label, value, MAX_DISPLAY_WIDTH_CHARACTERS);
             lines.addAll(fieldLines);
@@ -118,6 +125,9 @@ public class CaseFormatter {
     //@@author xelisce
     /** Adds a wrapped field for the verbose command output. */
     public static void addWrappedFieldForVerbose(List<String> lines, String label, String value) {
+        if (lines == null || label == null) {
+            return;
+        }
         if (value != null && !value.isEmpty()) {
             List<String> fieldLines = wrapField(true, label, value, MAX_DISPLAY_WIDTH_CHARACTERS);
             lines.addAll(fieldLines);

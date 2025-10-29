@@ -136,6 +136,12 @@ Each case is shown in a single line with:
 
 Example:
 ```
+You currently have 3 cases in total
+---
+Note: Only very basic case details are shown here.
+For more in depth information about the case (e.g. Info, Victim, Officer)
+run: list --mode verbose
+---
 STATUS   CATEGORY         ID     DATE       TITLE
 [Open]   Theft            0001a3 2025-10-14 Robbery
 [Closed] Scam             0001a4 2025-10-15 Fraud
@@ -158,6 +164,13 @@ Each case is shown in multiple lines with:
 Example:
 ```
 You currently have 1 case in total
+---
+Note: Only basic case details (e.g. Title) are shown here and is truncated if too long.
+For full case information (e.g. case-specific details like murder weapon),
+use the read command
+To see how to use the read command, run: help read
+To use the read command, run: read <caseID>
+---
 ======== CASE ID 000000 ========
 Status     : Open
 Category   : Murder
@@ -170,7 +183,9 @@ Victim     : Jane Doe
 Officer    : Officer John Lee
 ```
 
-> Note: Deleted cases are excluded from all listings.
+> Note: 
+> - Deleted cases are excluded from all listings.
+> - More specific case information (e.g. murder weapon) can only be accessed from read. This is an intentional design choice as we do not want to clutter the list command with unnecessary details.
 
 
 ---
