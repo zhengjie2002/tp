@@ -167,4 +167,14 @@ public class CaseManager {
         caseToDelete.setDeleted(true);
         return caseToDelete.getDisplayLine();
     }
+
+    public static ArrayList<Case> findCasesByKeyword(String keyword) {
+        ArrayList<Case> casesFound = new ArrayList<>();
+        for (Case c : caseList) {
+            if(c.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                casesFound.add(c);
+            }
+        }
+        return casesFound;
+    }
 }
