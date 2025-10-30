@@ -105,7 +105,7 @@ public class Storage {
      * @param line a line of text representing a serialized case
      * @return a {@code Case} object reconstructed from the save string
      */
-    private Case getCaseFromSaveString(String line) {
+    public Case getCaseFromSaveString(String line) {
         Map<String, String> fields = getFields(line);
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getSaveDatePattern());
