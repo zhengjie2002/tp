@@ -462,7 +462,11 @@ public class Parser {
                 break;
 
             case "exceeded-speed",
-                 "number-of-victims", "speed-limit":
+                 "number-of-victims",
+                 "speed-limit",
+                 "monetary-damage",
+                 "financial-value",
+                 "number-of-casualties":
                 try {
                     Integer intValue = Integer.parseInt(value);
                     if (intValue < 0) {

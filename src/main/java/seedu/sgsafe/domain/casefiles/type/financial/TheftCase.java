@@ -12,6 +12,7 @@ import java.time.LocalDate;
  * Represents a case involving a theft.
  */
 public class TheftCase extends FinancialCase {
+    /** The object stolen by the thief. */
     private String stolenObject;
 
     public TheftCase(String id, String title, LocalDate date, String info, String victim, String officer) {
@@ -29,7 +30,8 @@ public class TheftCase extends FinancialCase {
     public String[] getReadCaseDisplay() {
         List<String> displayList = getBaseDisplayLines();
 
-        CaseFormatter.addWrappedFieldForRead(displayList, "Vehicle Type", this.stolenObject);
+        CaseFormatter.addWrappedFieldForRead(displayList, "Financial Value", String.valueOf(this.getFinancialValue()));
+        CaseFormatter.addWrappedFieldForRead(displayList, "Stolen Object", this.stolenObject);
         CaseFormatter.addWrappedFieldForRead(displayList, "Info", getInfo());
 
         return displayList.toArray(new String[0]);
@@ -38,7 +40,7 @@ public class TheftCase extends FinancialCase {
 
     @Override
     public List<String> getValidEditFlags() {
-        return List.of("title", "date", "info", "victim", "officer", "stolen-object");
+        return List.of("title", "date", "info", "victim", "officer", "financial-value", "stolen-object");
     }
 
     @Override

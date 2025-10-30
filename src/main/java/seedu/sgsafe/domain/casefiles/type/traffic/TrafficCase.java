@@ -16,8 +16,13 @@ import java.time.LocalDate;
  * such as {@link SpeedingCase} and {@link AccidentCase}.
  */
 public abstract class TrafficCase extends Case {
+    /** The type of vehicle (eg car, van, motorcycle) the driver was driving. */
     private String vehicleType;
+
+    /** The vehicle plate number. */
     private String vehiclePlate;
+
+    /** The name of the road where the incident occurred. */
     private String roadName;
 
     public TrafficCase(String id, String title, LocalDate date, String info, String victim, String officer) {
@@ -30,11 +35,11 @@ public abstract class TrafficCase extends Case {
     }
 
     public String getVehiclePlate() {
-        return vehicleType;
+        return vehiclePlate;
     }
 
     public String getRoadName() {
-        return vehicleType;
+        return roadName;
     }
 
     //@@author shennontay
