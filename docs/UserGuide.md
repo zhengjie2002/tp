@@ -226,20 +226,33 @@ Marks a case as open.
 
 Updates the details of an existing case.
 
-**Format:** `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]`
+**Format:** `edit ID [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]`
 
-* Updates the case at the specified `INDEX`.
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
+* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
+* Editing the case requires and one or more valid flags and their new values.
+* If no flags are provided, the valid editable fields for that case type will be shown instead.
 
 **Examples:**
 
-* `edit 1 --victim Jane Smith --officer Officer Lee` updates the victim and officer of the 1st case in the list.
-* `edit 3 --title Updated title --date 2024-03-01` updates the title and date of the 3rd case in the list.
+1. `edit 000001` : displays a list of all editable fields for the case.
 
-> ℹ️ Note: The above are stored as strings (except date). No special formatting is required for those inputs.\
-> ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using
-> the settings command below.\
+Example output:
+ ```
+  Case found: [Open]   Traffic accident 000001 05/06/2018 Car accident
+
+  Fields that can be edited: --title, --date, --info, --victim, --officer, --vehicle-type, --vehicle-plate, --road-name
+```
+
+2. `edit 000001 --title Drunk Driving --road-name Adam Road --date 03/04/2025` : edits the title, road name, and date of the case
+
+Example output:
+ ```
+  Case edited:
+  [Open]   Traffic accident 000001 03/04/2025 Drunk Driving
+```
+
+> ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using the settings command below.\
+> ℹ️ Note: Not all edited fields will show up in the return message after a successful edit. To view the updated case in full detail, use the `read` command.\
 > ⚠️ Warning: A maximum of 5000 characters is allowed for all the fields.
 
 ---
@@ -289,6 +302,47 @@ format.
   considered valid.
 * `setting --type dateoutput --value dd/MM/yyyy` means that all output for date will be printed in dd/MM/yyyy format.
 
+---
+
+### Viewing the help menu: `help`
+
+Displays a list of all available commands along with their descriptions and usage examples.
+
+**Format:** `help`
+
+* Shows a complete help menu of supported commands.
+* Use this if you're unsure how to use a command or want a refresher.
+* Can be run anytime
+
+---
+
+### Reading a case: `read`
+
+Displays the full details of a specific case, including any category-specific fields. Fields that are not filled by the user will be shown as empty.
+
+**Format:** `read ID`
+
+* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
+
+**Example:**
+
+Input: `read 000001`
+
+Example output:
+```
+  Title             : Murder at Yishun
+  Case ID           : 000000
+  Status            : Closed
+  Category          : Murder
+  Date              : 23/06/2020
+  Victim            : Lim Ying
+  Officer           : Tony
+  Created at        : 2025-10-30T16:37:05
+  Updated at        : 2025-10-30T16:37:06
+  Weapon            : 
+  Number of Victims : 
+  Info              : Yishun Ring Road
+```
 ---
 
 ### File storage
@@ -348,11 +402,12 @@ in the next iteration of SGSafe. Stay turned.
 | **List cases**  | `list`                                                                                                | `list`                                                                                                                     |
 | **Close case**  | `close ID`                                                                                            | `close 000003`                                                                                                             |
 | **Open case**   | `open ID`                                                                                             | `open 000003`                                                                                                              |
-| **Edit case**   | `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]`        | `edit 1 --victim Jane Smith --officer Officer Lee`                                                                         |
+| **Edit case**   | `edit ID [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]`           | `edit 000001 --victim Jane Smith --officer Officer Lee`                                                                    |
 | **Delete case** | `delete ID`                                                                                           | `delete 00beef`                                                                                                            |
+| **Read Case**   | `read ID`                                                                                             | `read 000001`                                                                                                              |
 | **Setting**     | `setting --type TYPE --value VALUE`                                                                   | `setting --type dateinput --value dd-MM-yyyy`                                                                              |
 | **Exit**        | `bye`                                                                                                 | `bye`                                                                                                                      |
-
+| **Help**        | `help`                                                                                                | `help`                                                                                                                     |
 ## Coming Soon
 
 - Data transfer between computers
