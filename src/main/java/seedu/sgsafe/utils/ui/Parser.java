@@ -82,9 +82,9 @@ public class Parser {
      * @throws InvalidListCommandException if the {@code list} command contains unexpected arguments
      */
     public static Command parseInput(String userInput) {
-        userInput = cleanUserInput(userInput);
-        String keyword = getKeywordFromUserInput(userInput);
-        String remainder = getRemainderFromUserInput(userInput);
+        String cleanedUserInput = cleanUserInput(userInput);
+        String keyword = getKeywordFromUserInput(cleanedUserInput);
+        String remainder = getRemainderFromUserInput(cleanedUserInput);
         if(remainder.contains("|")) {
             throw new InvalidCharacterException();
         }
@@ -100,7 +100,7 @@ public class Parser {
         case "help" -> parseHelpCommand(remainder);
         case "setting" -> parseSettingCommand(remainder);
         case "read" -> parseReadCommand(remainder);
-        default -> throw new UnknownCommandException(keyword);
+        default -> throw new UnknownCommandException(userInput, keyword);
         };
     }
 
