@@ -9,7 +9,6 @@ organised digital workflow that enhances operational efficiency for the public s
 ## Table of Contents
 
 - [Quick Start](#quick-start)
-- [Case Categories](#case-categories)
 - [Features](#features)
     - [Adding a case: `add`](#adding-a-case-add)
     - [Listing cases: `list`](#listing-cases-list)
@@ -20,6 +19,7 @@ organised digital workflow that enhances operational efficiency for the public s
     - [Exiting the program: `bye`](#exiting-the-program-bye)
     - [Settings: `setting`](#settings-setting)
     - [File storage](#file-storage)
+    - [Case Categories](#case-categories)
 - [FAQ](#faq)
 - [Command Summary](#command-summary)
 - [Coming Soon](#coming-soon)
@@ -35,34 +35,6 @@ organised digital workflow that enhances operational efficiency for the public s
 5. Type commands in the command line and press Enter to execute them. Refer to the [Command Summary](#command-summary)
    section
    below for a quick overview of available commands.
-
----
-
-## Case Categories
-> **Notes:**
->
-> * The category tag for the add command should be from the list below. 
-> If the category is not in the list, type 'others' as the category. 
-> * Some categories have additional tags attributed to them, which can be edited using the `edit` feature.
-  Additional tags, if any, are indicated in brackets.
-> * For more information on how to add and edit categories, 
-> refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
-
-**`CATEGORY` tags:**
-* Burglary 
-* Scam 
-* Theft (Stolen object)
-* Arson 
-* Property 
-* Vandalism 
-* Rape 
-* Voyeurism 
-* Accident (Vehicle type, Vehicle plate, Road name)
-* Speeding (Vehicle type, Vehicle plate, Road name, Speed limit, Exceeded speed)
-* Assault 
-* Murder (Weapon, Number of victims)
-* Robbery
-* Others (Custom category)
 
 ---
 
@@ -326,6 +298,38 @@ modify the line corresponding to the case that you want to edit in `data.txt` fr
 to `...|date:02/01/2025|...`.
 
 ---
+
+## Case Categories
+> **Notes:**
+>
+> * The category tag for the add command should be from the "Categories" column below.
+    > If the category is not in the list, type 'others' as the category.
+> * Some categories have additional tags attributed to them, which can be edited using the `edit` feature.
+> * Attributes are stored as strings unless otherwise stated using (integer),
+    > in which case only numerical positive whole numbers will be accepted as input.
+> * For more information on how to add and edit categories,
+    > refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
+
+**`CATEGORY` tags:**
+
+| Categories | Edit Tags (if any)                                                                                                                                                        |
+|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| burglary   | `--financial-value FINANCIAL-VALUE`(integer), `--location LOCATION`                                                                                                       |
+| scam       | `--financial-value FINANCIAL-VALUE`(integer)                                                                                                                              |
+| theft      | `--financial-value FINANCIAL-VALUE`(integer), `--stolen-object STOLEN-OBJECT`                                                                                             |
+| arson      | `--location LOCATION`, `--monetary-damage MONETARY-DAMAGE`(integer)                                                                                                       |
+| vandalism  | `--location LOCATION`, `--monetary-damage MONETARY-DAMAGE`(integer)                                                                                                       |
+| rape       |                                                                                                                                                                           |
+| voyeurism  |                                                                                                                                                                           |
+| accident   | `--vehicle-type VEHICLE-TYPE`, `--vehicle-plate VEHICLE-PLATE`, `--road-name ROAD-NAME`, `--number-of-casualties NUMBER-OF-CASUALTIES`(integer)                           |
+| speeding   | `--vehicle-type VEHICLE-TYPE`, `--vehicle-plate VEHICLE-PLATE`, `--road-name ROAD-NAME`, `--speed-limit SPEED-LIMIT`(integer), `--exceeded-speed EXCEEDED-SPEED`(integer) |
+| assault    | `--weapon WEAPON`, `--number-of-victims NUMBER-OF-VICTIMS`(integer)                                                                                                       |
+| murder     | `--weapon WEAPON`, `--number-of-victims NUMBER-OF-VICTIMS`(integer)                                                                                                       |
+| robbery    | `--weapon WEAPON`, `--number-of-victims NUMBER-OF-VICTIMS`(integer)                                                                                                       |
+| others     | `--custom-category CUSTOM-CATEGORY`                                                                                                                                       |
+
+---
+
 
 ## FAQ
 
