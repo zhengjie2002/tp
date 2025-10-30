@@ -1,5 +1,6 @@
 package seedu.sgsafe.utils.command;
 
+import seedu.sgsafe.domain.casefiles.CaseFormatter;
 import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.ui.Display;
@@ -32,9 +33,13 @@ public class DeleteCommand extends Command {
     public void execute() {
         try {
             String caseToDelete = CaseManager.deleteCase(this.caseId);
-            Display.printMessage("Case deleted:", caseToDelete);
+            Display.printMessage("Case deleted:", generateListTableHeaderMessage(),  caseToDelete);
         } catch (CaseNotFoundException e) {
             Display.printMessage(e.getMessage());
         }
+    }
+
+    private String generateListTableHeaderMessage() {
+        return String.format(CaseFormatter.SUMMARY_FORMAT_STRING, "STATUS", "CATEGORY", "ID", "DATE", "TITLE");
     }
 }
