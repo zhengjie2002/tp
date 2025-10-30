@@ -1,6 +1,8 @@
 package seedu.sgsafe.utils.ui;
+// @@author zhengjie2002
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -38,5 +40,20 @@ public class DateFormatter {
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
         return date.format(formatter);
+    }
+
+    /**
+     * Formats a LocalDateTime object into a string representation using the specified date-time format.
+     *
+     * @param dateTime        The LocalDateTime object to be formatted.
+     * @param dateTimeFormat  The format to use for the date-time string, following the DateTimeFormatter pattern.
+     * @return A string representation of the formatted date-time.
+     */
+    public static String formatDateTime(LocalDateTime dateTime, String dateTimeFormat) {
+        if (dateTime == null) {
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimeFormat);
+        return dateTime.format(formatter);
     }
 }
