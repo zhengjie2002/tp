@@ -11,11 +11,13 @@
     - [Command Component](#command-component)
     - [Storage Component](#storage-component)
     - [Commons](#Commons)
-4. [Implementation](#implementation)
-5. [Appendix A: Product Scope](#appendix-a-product-scope)
+
+[//]: # (4. [Implementation]&#40;#implementation&#41;)
+
+4. [Appendix A: Product Scope](#appendix-a-product-scope)
     - [Target user profile](#target-user-profile)
     - [Value proposition](#value-proposition)
-6. [Appendix B: User Stories](#appendix-b-user-stories)
+5. [Appendix B: User Stories](#appendix-b-user-stories)
 7. [Appendix C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
 8. [Appendix D: Glossary](#appendix-d-glossary)
 9. [Appendix E: Instructions for Manual Testing](#appendix-e-instructions-for-manual-testing)
@@ -24,12 +26,16 @@
 
 ## Acknowledgements
 
-{list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the
-original source as well}
+- The feature for setting of date and time is designed with inspiration from the
+  [article](https://www.baeldung.com/java-datetimeformatter), although all implementation code was entirely done on own
+  own.
 
 ---
 
 ## Setting up, Getting Started
+
+Refer to the section [Appendix E: Instructions for Manual Testing](#appendix-e-instructions-for-manual-testing) to set
+up your development environment and get started with the project.
 
 ## Design
 
@@ -43,13 +49,8 @@ Given below is a quick overview of main components and how they interact with ea
 
 #### Overall logic
 
-![Overall Sequence Diagram](images/SequenceDiagramGenericCombined.png)
-
 The main code flow is as follows:
 
-1. Print welcome message
-2. Initialize CaseManager with saved info from `data.txt` if it exists
-   The main code flow of `SGSafe`, our main class is as follows:
 1. Print welcome message using `Display`
 2. Initialize CaseManager with saved info from `data.txt` if it exists through `Storage`
 3. Read user input from System.in
@@ -72,7 +73,9 @@ input is.
 ---
 
 ### UI Component
-The UI component is responsible for all interactions with the user. It reads user input from the console and displays messages back to the user.
+
+The UI component is responsible for all interactions with the user. It reads user input from the console and displays
+messages back to the user.
 
 #### Key Classes
 
@@ -81,7 +84,9 @@ results.
 
 **Validator**: Provides utility methods to validate flags, check required fields, and verify case ID format.
 
-**Parser**: The parser class serves to determine the type of command object to create based on user input. The parser class extracts the keyword to identify the command type, then calls methods from `Validator` to check if the required arguments are present in the input.
+**Parser**: The parser class serves to determine the type of command object to create based on user input. The parser
+class extracts the keyword to identify the command type, then calls methods from `Validator` to check if the required
+arguments are present in the input.
 
 Here are some examples of command keywords and their required arguments:
 |keyword|Command Type|Required Arguments|
@@ -93,8 +98,10 @@ Here are some examples of command keywords and their required arguments:
 #### Interaction Flow
 
 1. `SGSafe.mainLoop()` reads user input from console
-2. `Parser.parseInput()` extracts the command keyword from the input, then calls `Parser.parseXCommand()`, where X is the appropriate command type
-3. `parseXCommand()`calls methods in `Validator` to check input validity, then creates the appropriate `XCommand` object to perform the action
+2. `Parser.parseInput()` extracts the command keyword from the input, then calls `Parser.parseXCommand()`, where X is
+   the appropriate command type
+3. `parseXCommand()`calls methods in `Validator` to check input validity, then creates the appropriate `XCommand` object
+   to perform the action
 4. Any exceptions caught or error messages are shown through `Display.printMessage()`
 5. Results are also displayed via `Display.printMessage()`
 
@@ -109,8 +116,9 @@ The sequence diagram above illustrates how user input is processed to create and
 ### CaseFile Component
 
 The CaseFile component is in charge of how case records are stored, organized, and managed in SGSafe.
-It acts as the main part of the system’s data model, defining what information each case contains and how cases are handled.
-The component’s main functions are provided through the CaseManager class, which other parts of the 
+It acts as the main part of the system’s data model, defining what information each case contains and how cases are
+handled.
+The component’s main functions are provided through the CaseManager class, which other parts of the
 system (like Command and Storage) use to access or update case data.
 
 The API of this component is primarily specified in `CaseManager`.
@@ -122,9 +130,9 @@ The API of this component is primarily specified in `CaseManager`.
 The CaseFile component consists of two main parts: `Case` and `CaseManager`.
 Together, they represent the domain model for managing case records within the system.
 
-The `Case` class defines the structure and behavior of individual cases, 
+The `Case` class defines the structure and behavior of individual cases,
 encapsulating shared attributes such as case ID, case title, case info etc.
-Specialised subclasses (e.g., `FinancialCase`, `TrafficCase`, `ViolentCase`) 
+Specialised subclasses (e.g., `FinancialCase`, `TrafficCase`, `ViolentCase`)
 extend `Case` to implement category specific attributes and methods.
 
 The `CaseManager` class is responsible for managing `Case` objects.
@@ -185,7 +193,7 @@ commands.
 
 > ℹ️ Note: Only non-trivial fields and methods are shown in the above diagram.\
 > ℹ️ UML Info: Due to the limitation of plantUML, the diagram is shown top down for best visibility, instead of the
-> usual left to right. 
+> usual left to right.
 
 ![CommandClassDiagram](images/CommandClassDiagram.png)
 
@@ -287,9 +295,13 @@ Here are some key points about the exception class structure:
 - Since `InvalidCommandException` inherits from Java's Exception class, we can treat this as a standard checked
   expression and catch it using try-catch blocks. It can also be implicitly upcasted to Exception type.
 
----
+[//]: # ()
 
-## Implementation
+[//]: # (---)
+
+[//]: # ()
+
+[//]: # (## Implementation)
 
 ---
 
@@ -297,15 +309,17 @@ Here are some key points about the exception class structure:
 
 ### Target user profile
 
-- police officer who needs to manage a significant number of cases
-- prefers desktop apps over other types of apps
-- can type fast
-- prefers typing to using the mouse
-- comfortable using CLI apps
+- Police officer who needs to manage a significant number of cases
+- Prefers desktop apps over other types of apps
+- Can type fast
+- Prefers typing to using the mouse
+- Comfortable using CLI apps
 
 ### Value proposition
 
-- manage and track cases faster than a typical mouse/GUI driven app
+- Manage and track cases faster than a typical mouse/GUI driven app
+- Lightweight and fast to launch
+- Simple to use and learn yet powerful enough to get basic task done well
 
 ---
 
@@ -313,13 +327,22 @@ Here are some key points about the exception class structure:
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priorities | Version | As a ...           | I want to ...       | So that I can ...                                    |
-|------------|---------|--------------------|---------------------|------------------------------------------------------|
-| ***        | v1.0    | front-desk officer | create case         | record cases into the system                         |
-| ***        | v1.0    | front-desk officer | edit case details   | edit cases that are typed wrongly                    |
-| ***        | v1.0    | front-desk officer | mark case as closed | close cases that have been attended to               |
-| ***        | v1.0    | front-desk officer | delete case         | delete duplicates                                    |
-| ***        | v1.0    | front-desk officer | list all cases      | see all the cases that are currently being worked on |
+| Priorities | Version | As a ...                  | I want to ...                                        | So that I can ...                                          |
+|------------|---------|---------------------------|------------------------------------------------------|------------------------------------------------------------|
+| ***        | v1.0    | front-desk officer        | create case                                          | record cases into the system                               |
+| ***        | v1.0    | front-desk officer        | edit case details                                    | edit cases that are typed wrongly                          |
+| ***        | v1.0    | front-desk officer        | mark case as closed                                  | close cases that have been attended to                     |
+| ***        | v1.0    | front-desk officer        | delete case                                          | delete duplicates                                          |
+| ***        | v1.0    | front-desk officer        | list all cases                                       | see all the cases that are currently being worked on       |
+| **         | v2.0    | police officer            | reopen case                                          | reopen closed cases when new leads arise                   |
+| **         | v2.0    | analytical police officer | list all the display  verbose                        | view details of the cases to get a quick summary           |
+| **         | v2.0    | police chief              | read all the details of one case                     | understand the entire case information                     |
+| **         | v2.0    | police officer            | control how I type/view dates in the system          | have it personalized to my preference                      |
+| **         | v2.0    | organised police officer  | set category tags for each of the cases              | sort cases with details relevant to each case              |
+| **         | v2.0    | police officer            | add additional information about a case              | record information relevant to that category for that case |
+| **         | v2.0    | police officer            | find relevant cases based on keywords in their title | quickly locate the case I want                             |
+| *          | v2.0    | new police officer        | view a user guide on the command line                | get familiarized with how to use the application           |
+| *          | v2.0    | police officer            | view when a case is created/edited                   | trace back to when changes were made                       |
 
 ---
 
@@ -335,10 +358,113 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ## Appendix D: Glossary
 
-* *glossary item* — Definition
+* *Mainstream OS* — Windows, Linux, Unix, MacOS
+* *Police officer* — Any user of SGSafe who is involved in managing cases, including front-desk officers, field
+  officers,
+  and police chiefs.
+* *Case* — A record of an incident or investigation that needs to be tracked and managed within SGSafe.
+* *Case ID* — A unique identifier assigned to each case for easy reference and management.
+* *Verbose mode* — A display mode that provides detailed information about each case when listing cases.
+* *Data persistence* — The ability of the application to save case data to a file so that it is retained across
+  sessions.
+* *Front-desk officer* — A police officer who is responsible for initially recording and managing cases.
 
 ---
 
 ## Appendix E: Instructions for manual testing
 
-{Give instructions on how to do a manual product testing e.g., how to load sample data to be used for testing}
+Given below are the instructions for manual testing of SGSafe.
+
+### Launch and Startup
+
+1. Ensure you have Java 17 installed on your system.
+2. Download the SGSafe JAR file from the [releases page](link_to_releases). Please the file in an empty folder.
+3. Open a terminal or command prompt.
+4. Navigate to the directory where the JAR file is located.
+5. Run the application using the command:
+   ```java -jar SGSafe.jar```
+6. Verify that the welcome message is displayed.
+
+### Add Cases
+
+1. Test case: Add a new case with all required fields.
+    - Input: `add --category murder --title Murder --info At Yishun road --date 05/02/2025`
+    - Expected Output: Confirmation message with case ID.
+
+2. Test case: Add a new case with some required fields missing.
+    - Input: `add --title Murder --info At Yishun road --date 05/02/2025`
+    - Expected Output: An error stating that required fields are missing.
+
+3. Test case: Add a new case with incorrect use of flags.
+    - Input: `add --category --title Murder --info At Yishun road --date 05/02/2025`
+    - Expected Output: An error stating that there is an incorrect use of flags.
+
+### List Cases
+
+1. Test case: List case in normal mode
+    - Input: `list`
+    - Expected Output: All cases being listed out, but there is only information about status, category, ID, date,
+      title.
+
+2. Test case: List case with status filer
+    - Input: `list --status closes`
+    - Expected Output: All the cases that have been closed will be listed out.
+    -
+3. Test case: List case with verbose mode
+    - Input: `list --mode verbose`
+    - Expected Output: More information will be shown per case.
+
+### Closing Cases
+
+1. Test case: Closing a case
+    - Input: `close 000001` (use a valid case ID from your list)
+    - Expected: Case marked as closed with confirmation message.
+
+2. Test case: Closing a non-existent case
+    - Input: `close 999999` (use a non-valid case ID from your list)
+    - Expected: Error message indicating case ID does not exist.
+
+### Opening Cases
+
+1. Test case: Opening a closed case
+    - Input: `open 000001` (use a valid closed case ID)
+    - Expected: Case marked as open with confirmation message.
+
+2. Test case: Opening a non-existent case
+    - Input: `open 999999` (use a non-valid case ID from your list)
+    - Expected: Error message indicating case ID does not exist.
+
+### Editing Cases
+
+1. Test case: Editing a case with valid fields
+    - Input: `edit 000001 --title Updated title --victim Jane Doe` (use a valid closed case ID)
+    - Expected: Case updated successfully with new values.
+
+2. Test case: Editing a case without providing any fields
+    - Input: `edit 000001`
+    - Expected: Error message indicating at least one field must be provided.
+
+### Deleting Cases
+
+1. Test case: Deleting an existing case
+    - Input: `delete 000001` (use a valid case ID)
+    - Expected: Case deleted successfully.
+
+### Settings
+
+1. Test case: Changing date input format
+    - Input: `setting --type dateinput --value dd-MM-yyyy`
+    - Expected: Date input format updated successfully.
+
+2. Test case: Changing date output format
+    - Input: `setting --type dateoutput --value yyyy/MM/dd`
+    - Expected: Date output format updated successfully.
+
+### File Storage
+
+1. Test case: Data persistence across sessions
+    - Input: Add a case, exit the application, restart it, then list cases.
+    - Expected: Previously added case is still present after restart.
+
+The above test cases are non exhaustive and meant to cover the main functionalities of SGSafe.
+Please see the user guide for more details on how to use SGSafe and explore additional commands and features.
