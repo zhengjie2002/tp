@@ -216,6 +216,30 @@
 	Please see which flag is required for this command.
 	____________________________________________________________
 	____________________________________________________________
+	Date input format successfully updated to: dd/MM/yyyy
+	____________________________________________________________
+	____________________________________________________________
+	Date output format successfully updated to: dd-MM-yyyy
+	____________________________________________________________
+	____________________________________________________________
+	Your command format is incorrect.
+	There is an incorrect usage of flag. Use flags like --title TITLE
+	Please see which flag is required for this command.
+	____________________________________________________________
+	____________________________________________________________
+	Invalid date format. Reverted to previous format: dd/MM/yyyy
+	____________________________________________________________
+	____________________________________________________________
+	Invalid date format. Reverted to previous format: dd-MM-yyyy
+	____________________________________________________________
+	____________________________________________________________
+	Timestamp output format successfully updated to: dd-MM-yyyy HH-mm-ss
+	____________________________________________________________
+	____________________________________________________________
+	There are unknown or invalid characters in your format string.
+	Please refer to the documentation for valid format patterns.
+	____________________________________________________________
+	____________________________________________________________
 	You currently have 2 cases in total
 	---
 	Note: Only very basic case details are shown here.
@@ -223,8 +247,8 @@
 	run: list --mode verbose
 	---
 	STATUS   CATEGORY         ID     DATE       TITLE
-	[Closed] Murder           000000 23/06/2020 Murder at Yishun
-	[Open]   Traffic accident 000001 05/06/2018 Robbery
+	[Closed] Murder           000000 23-06-2020 Murder at Yishun
+	[Open]   Traffic accident 000001 05-06-2018 Robbery
 	____________________________________________________________
 	____________________________________________________________
 	Thanks for using SGSafe :)

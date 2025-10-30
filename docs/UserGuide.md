@@ -274,13 +274,14 @@ format.
 
 **Format:** `setting --type TYPE --value VALUE`
 > ℹ️ Note: Type can only be `dateinput` representing the input format and `dateoutput` representing the format where the
-> date will be printed.\
+> date will be printed and `timestampotuput` representing the format where the date time (for updatedAt and createdAt) will  
+> be printed when the user uses verbose printing or read command.\
 > ⚠️ Warning: The value must be a valid date format, according to Java's DateFormatter. Stray characters that are not 
 > date and time-related will flag as an error.
 > For more information, please refer
 > to [Java DateTimeFormatter](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html).
 > ⚠️ Warning: Note that month is capitalised in the date-time-formatter. `MM` represents month while `mm` represents minutes.
-> The default input and output format is `dd/MM/yyyy`
+> The default input and output format is `dd/MM/yyyy` and the default timestamp output format is `dd/MM/yyyy HH:mm:ss`.
 > ⚠️ Warning: If the input format has repeated characters (e.g., `dd-MM-yyyy-dd`), the user is expected to key in the same 
 > day for both `dd`.
 
@@ -289,6 +290,8 @@ format.
 * `setting --type dateinput --value dd-MM-yyyy` means that all inputs for date must follow dd-MM-yyyy format to be
   considered valid.
 * `setting --type dateoutput --value dd/MM/yyyy` means that all output for date will be printed in dd/MM/yyyy format.
+* `setting --type datetimeoutput --value dd/MM/yyyy HH:mm:ss` means that all output for timestamp  will be 
+printed in dd/MM/yyyy HH:mm:ss format.
 
 ---
 
