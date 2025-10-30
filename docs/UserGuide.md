@@ -106,8 +106,8 @@ Adds a new case to the case management system.
 
 **Examples:**
 
-* `add --category Theft --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith`
-* `add --category Burglary --info Burglary at 123 Main St --date 2024-02-20 --title Burglary case`
+* `add --category Theft --title Theft case --date 15/10/2024 --info Stolen wallet --victim John Doe --officer Officer Smith`
+* `add --category Burglary --info Burglary at 123 Main St --date 20/02/2024 --title Burglary case`
 
 ---
 
@@ -143,9 +143,9 @@ For more in depth information about the case (e.g. Info, Victim, Officer)
 run: list --mode verbose
 ---
 STATUS   CATEGORY         ID     DATE       TITLE
-[Open]   Theft            0001a3 2025-10-14 Robbery
-[Closed] Scam             0001a4 2025-10-15 Fraud
-[Closed] Traffic accident 0001a5 2025-10-15 Fraud
+[Open]   Theft            0001a3 14/10/2025 Robbery
+[Closed] Scam             0001a4 15/10/2025 Fraud
+[Closed] Traffic accident 0001a5 15/10/2025 Fraud
 ```
 
 #### Verbose Mode Output
@@ -235,7 +235,7 @@ Updates the details of an existing case.
 **Examples:**
 
 * `edit 1 --victim Jane Smith --officer Officer Lee` updates the victim and officer of the 1st case in the list.
-* `edit 3 --title Updated title --date 2024-03-01` updates the title and date of the 3rd case in the list.
+* `edit 3 --title Updated title --date 01/03/2024` updates the title and date of the 3rd case in the list.
 
 > ℹ️ Note: The above are stored as strings (except date). No special formatting is required for those inputs.\
 > ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using
@@ -268,7 +268,7 @@ Exits the program.
 
 ### Settings: `setting`
 
-This is a function to perform user defined setting for the program. User can set the date input format and output
+This is a function to perform user-defined setting for the program. User can set the date input format and output
 format.
 
 **Format:** `setting --type TYPE --value VALUE`
@@ -277,7 +277,7 @@ format.
 > ⚠️ Warning: The value must be a valid date format according to Java's DateFormatter.
 > For more information, please refer
 > to [Java DateTimeFormatter](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html).
-> ⚠️ Warning: Note that month is capitalised in the date-time-formatter.
+> ⚠️ Warning: Note that month is capitalised in the date-time-formatter. `MM` represents month while `mm` represents minutes.
 > The default input and output format is `dd/MM/yyyy`
 
 **Examples:**
@@ -311,9 +311,9 @@ Fields that you SHOULD NOT EDIT:
 
 You cannot add new cases through editing the file, do not add new lines to the save file.
 
-The date field must be stored in the format dd/mm/yyyy (day/month/year).
+The date field must be stored in the format dd/MM/yyyy (day/month/year).
 
-The modified-at field must be stored in the format dd/mm/yyyy hh:mm:ss (day/month/year hour:minute:second).
+The modified-at field must be stored in the format dd/MM/yyyy hh:mm:ss (day/month/year hour:minute:second).
 
 ***Examples***
 - To change the victim in a case from `alice` to `bob`, modify the line in `data.txt` 
