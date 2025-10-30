@@ -3,7 +3,7 @@
 SGSafe is a *Command Line Interface (CLI) based case management system* that is designed specifically for law
 enforcement agencies in Singapore to manage, track and process cases. Built with the diverse needs of police personnel
 in mind, this application allows frontline officers to efficiently manage and process cases from creation to closure. By
-providing an easy to use yet efficient interface, SGSafe transforms traditional case management processes into an
+providing an easy-to-use yet efficient interface, SGSafe transforms traditional case management processes into an
 organised digital workflow that enhances operational efficiency for the public sector.
 
 ## Table of Contents
@@ -19,6 +19,7 @@ organised digital workflow that enhances operational efficiency for the public s
     - [Deleting a case: `delete`](#deleting-a-case-delete)
     - [Exiting the program: `bye`](#exiting-the-program-bye)
     - [Settings: `setting`](#settings-setting)
+    - [File storage](#file-storage)
 - [FAQ](#faq)
 - [Command Summary](#command-summary)
 - [Coming Soon](#coming-soon)
@@ -59,7 +60,8 @@ organised digital workflow that enhances operational efficiency for the public s
 * Accident (Vehicle type, Vehicle plate, Road name)
 * Speeding (Vehicle type, Vehicle plate, Road name, Speed limit, Exceeded speed)
 * Assault 
-* Murder (Weapon, Number of victims, Robbery)
+* Murder (Weapon, Number of victims)
+* Robbery
 * Others (Custom category)
 
 ---
@@ -80,7 +82,7 @@ organised digital workflow that enhances operational efficiency for the public s
 > * Optional parameters are enclosed in square brackets.\
     >   e.g., `--title TITLE [--victim VICTIM]` means the victim parameter is optional.
 > * The double-dash `--` is a reserved prefix used to identify flags, so it cannot be used as part of an input value.
-
+> * You cannot use the character | in your input as well as it is used in the save file format.
 ---
 
 ### Adding a case: `add`
@@ -104,59 +106,87 @@ Adds a new case to the case management system.
 
 **Examples:**
 
-* `add --category Theft --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith`
-* `add --category Burglary --info Burglary at 123 Main St --date 2024-02-20 --title Burglary case`
+* `add --category Theft --title Theft case --date 15/10/2024 --info Stolen wallet --victim John Doe --officer Officer Smith`
+* `add --category Burglary --info Burglary at 123 Main St --date 20/02/2024 --title Burglary case`
 
 ---
 
-### Listing cases: `list`
+### Listing Cases: `list`
 
-Displays all cases in the system.
+Displays all cases in the system, with optional filters and formatting modes.
 
-**Format:** `list [--status STATUS] [--mode MODE]`
+#### **Format:** `list --status <open|closed|all> --mode <summary|verbose>`
 
-**Optional Flags:**
+#### Flags
+- `--status` (optional): Filters cases by their status.
+  - `open`: Show only open cases.
+  - `closed`: Show only closed cases.
+  - `all`: Show all cases (default).
+- `--mode` (optional): Controls the level of detail in the output.
+  - `summary`: One-line display per case.
+  - `verbose`: Multi-line display with labeled fields.
 
-- `--status STATUS`: `open`, `closed`, or `all` (default: all)
-- `--mode MODE`: `summary` or `verbose` (default: summary)
+#### Summary Mode Output
+Each case is shown in a single line with:
+- Status: `[Open]` or `[Closed]`
+- Category (e.g., `Theft`, `Scam`)
+- Case ID (6-character hexadecimal)
+- Date
+- Title
 
-**Examples:**
-
-- `list` — Lists all cases in summary mode
-- `list --status open` — Lists only open cases in summary mode
-- `list --status closed --mode verbose` — Lists closed cases with full details
-- `list --mode verbose` — Lists all cases with detailed output
-
-**Summary Mode Output:**
-
+Example:
 ```
-____________________________________________________________
-You currently have 1 case
-1. [O] 2024-01-15 Theft case
-____________________________________________________________
-```
-
-**Verbose Mode Output:**
-
-```
-You currently have 2 cases in total
-==== CASE ID 000001 ====
-Status  : Open
-Title   : Robbery
-Date    : 2025-10-01
-Info    : Masked suspect entered the premises and demanded cash...
-Victim  : John Doe
-Officer : Officer Tan
-==== CASE ID 000002 ====
-Status  : Closed
-Title   : Fraud
-Date    : 2025-10-02
-Info    : Email scam targeting elderly victims...
-Victim  : Jane Doe
-Officer : Officer Lim
+You currently have 3 cases in total
+---
+Note: Only very basic case details are shown here.
+For more in depth information about the case (e.g. Info, Victim, Officer)
+run: list --mode verbose
+---
+STATUS   CATEGORY         ID     DATE       TITLE
+[Open]   Theft            0001a3 14/10/2025 Robbery
+[Closed] Scam             0001a4 15/10/2025 Fraud
+[Closed] Traffic accident 0001a5 15/10/2025 Fraud
 ```
 
-> ℹ️ In verbose mode, the `info` field is truncated to 100 characters with `...` if too long.
+#### Verbose Mode Output
+Each case is shown in multiple lines with:
+- Status
+- Category (e.g., `Theft`, `Scam`)
+- Case ID
+- Date
+- Title
+- Info
+- The time the case was created
+- The last updated time of the case
+- Victim (if available)
+- Officer (if available)
+
+Example:
+```
+You currently have 1 case in total
+---
+Note: Only basic case details (e.g. Title) are shown here and is truncated if too long.
+For full case information (e.g. case-specific details like murder weapon),
+use the read command
+To see how to use the read command, run: help read
+To use the read command, run: read <caseID>
+---
+======== CASE ID 000000 ========
+Status     : Open
+Category   : Murder
+Title      : TITLE
+Date       : 22/04/2023
+Info       : Masked suspect entered victim's bedroom
+Created at : 2025-10-27T18:28:25.170780500
+Updated at : 2025-10-27T18:28:25.170780500
+Victim     : Jane Doe
+Officer    : Officer John Lee
+```
+
+> Note: 
+> - Deleted cases are excluded from all listings.
+> - More specific case information (e.g. murder weapon) can only be accessed from read. This is an intentional design choice as we do not want to clutter the list command with unnecessary details.
+
 
 ---
 
@@ -205,8 +235,9 @@ Updates the details of an existing case.
 **Examples:**
 
 * `edit 1 --victim Jane Smith --officer Officer Lee` updates the victim and officer of the 1st case in the list.
-* `edit 3 --title Updated title --date 2024-03-01` updates the title and date of the 3rd case in the list.
+* `edit 3 --title Updated title --date 01/03/2024` updates the title and date of the 3rd case in the list.
 
+> ℹ️ Note: A closed case cannot be edited. To edit the case, reopen the case using [`open`](#opening-a-case-open) command.\
 > ℹ️ Note: The above are stored as strings (except date). No special formatting is required for those inputs.\
 > ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using
 > the settings command below.\
@@ -238,23 +269,62 @@ Exits the program.
 
 ### Settings: `setting`
 
-This is a function to perform user defined setting for the program. User can set the date input format and output
+This is a function to perform user-defined setting for the program. User can set the date input format and output
 format.
 
 **Format:** `setting --type TYPE --value VALUE`
 > ℹ️ Note: Type can only be `dateinput` representing the input format and `dateoutput` representing the format where the
 > date will be printed.\
-> ⚠️ Warning: The value must be a valid date format according to Java's DateFormatter.
+> ⚠️ Warning: The value must be a valid date format, according to Java's DateFormatter. Stray characters that are not 
+> date and time-related will flag as an error.
 > For more information, please refer
 > to [Java DateTimeFormatter](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html).
-> ⚠️ Warning: Note that month is capitalised in the date-time-formatter.
+> ⚠️ Warning: Note that month is capitalised in the date-time-formatter. `MM` represents month while `mm` represents minutes.
 > The default input and output format is `dd/MM/yyyy`
+> ⚠️ Warning: If the input format has repeated characters (e.g., `dd-MM-yyyy-dd`), the user is expected to key in the same 
+> day for both `dd`.
 
 **Examples:**
 
-* `setting --type dateinput --value dd-MM-yyyy` means that all input for date must follow dd-MM-yyyy format to be
+* `setting --type dateinput --value dd-MM-yyyy` means that all inputs for date must follow dd-MM-yyyy format to be
   considered valid.
 * `setting --type dateoutput --value dd/MM/yyyy` means that all output for date will be printed in dd/MM/yyyy format.
+
+---
+
+### File storage
+
+This is a feature that saves your case info to `data.txt` in the folder that you run the program in. 
+There is no specific command that will execute this function, 
+but it will automatically run every time you run any command.
+
+#### Save file modification (only for advanced users)
+
+_Beware that you may corrupt your data if you modify any data incorrectly, do this at your own risk!_
+
+The data in the save file is stored in this format:
+
+> `key1:value1|key2:value2|key3:value3|...`
+
+each key corresponds to a field, and each line corresponds to a case. An empty value means that the field has not been initialised.
+
+Fields that you SHOULD NOT EDIT:
+1. id
+2. category
+3. created-at
+
+You cannot add new cases through editing the file, do not add new lines to the save file.
+
+The date field must be stored in the format dd/MM/yyyy (day/month/year).
+
+The modified-at field must be stored in the format dd/MM/yyyy hh:mm:ss (day/month/year hour:minute:second).
+
+***Examples***
+- To change the victim in a case from `alice` to `bob`, modify the line in `data.txt` 
+from `...|victim:alice|...` to `...|victim:bob|...`.
+- To change the date in a case from fifth of november 2024 (05/11/2025) to second of january 2025 (02/01/2025),
+modify the line corresponding to the case that you want to edit in `data.txt` from `...|date:05/11/2025|...`
+to `...|date:02/01/2025|...`.
 
 ---
 

@@ -3,12 +3,14 @@ package seedu.sgsafe.domain.casefiles;
 import seedu.sgsafe.domain.casefiles.type.CaseType;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
 import seedu.sgsafe.utils.settings.Settings;
+import seedu.sgsafe.utils.storage.Storage;
 import seedu.sgsafe.utils.ui.DateFormatter;
 
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
  * Each case contains metadata such as title, date, victim, officer, and status.
  */
 public abstract class Case {
+
     /** The type of case. */
     protected CaseType type;
 
@@ -52,7 +55,7 @@ public abstract class Case {
     private boolean isDeleted;
 
     /** Metadata timestamp for auditing of when the case is created. */
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     /** Metadata timestamp for auditing of when the case is updated. */
     private LocalDateTime updatedAt;
@@ -127,6 +130,15 @@ public abstract class Case {
     }
 
     /**
+     * Retrieves the category of the case in the print format.
+     *
+     * @return the categoryString of the case.
+     */
+    public String getCategoryString() {
+        return categoryString;
+    }
+
+    /**
      * Retrieves the name of the victim involved in the case.
      *
      * @return the name of the victim, or null if not specified
@@ -157,129 +169,96 @@ public abstract class Case {
         return this.isDeleted;
     }
 
-    public void setDeleted() {
-        this.isDeleted = true;
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
         this.updatedAt = LocalDateTime.now();
     }
 
-    //@@ author xelisce
-
     /**
-     * Returns a formatted summary line representing this case for display purposes.
-     * <p>
-     * The output includes:
-     * <ul>
-     *   <li>Status indicator: {@code [O]} for open, {@code [C]} for closed</li>
-     *   <li>Category of the case</li>
-     *   <li>Case ID: a unique 6-character hexadecimal string</li>
-     *   <li>Date and title of the case</li>
-     *   <li>Optional victim and officer details, if present</li>
-     * </ul>
-     * <p>
-     * Example output:
-     * <pre>
-     * [O] #0001a3 2025-10-14 Robbery | Victim: Alice | Officer: Officer Tan
-     * [C] #0001a4 2025-10-15 Fraud
-     * </pre>
+     * Sets the createdAt timestamp.
      *
-     * @return a display-friendly string summarizing the case
+     * @param createdAt the {@link LocalDateTime} that createdAt should be set to.
      */
-    public String getDisplayLine() {
-        String status = this.isOpen ? "[Open]" : "[Closed]";
-        String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
-        return String.format("%-8s %-9s %-6s %-10s %s", status, categoryString, this.id, dateString, this.title);
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     /**
-     * Constructs a detailed, multi-line string representation of this case for display purposes.
-     * <p>
-     * The output begins with a header line in the format {@code ==== CASE ID 000000 ====}, followed by
-     * key-value lines for each non-null field. Each value is truncated to 100 characters and suffixed
-     * with {@code "..."} if it exceeds that length. Optional fields such as {@code victim} and {@code officer}
-     * are only included if they are non-null.
-     * <p>
-     * This method avoids stacking function calls and delegates conditional formatting and addition
-     * to a helper method for clarity and maintainability.
+     * Sets the updatedAt timestamp.
      *
-     * @return an array of strings representing the verbose, multi-line display of the case
+     * @param updatedAt the {@link LocalDateTime} that updatedAt should be set to.
+     */
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    /**
+     * Initializes the metadata fields of this object using data loaded from a saved source.
+     * <p>
+     * This method sets the object's open and deleted status, as well as its creation
+     * and last update timestamps.
+     * </p>
+     *
+     * @param isOpen     {@code true} if the object is currently open; {@code false} otherwise.
+     * @param isDeleted  {@code true} if the object has been marked as deleted; {@code false} otherwise.
+     * @param createdAt  the timestamp representing when the object was originally created.
+     * @param updatedAt  the timestamp representing the last time the object was updated.
+     */
+    public void initialiseMetadataFromSave(boolean isOpen, boolean isDeleted,
+                                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.isOpen = isOpen;
+        this.isDeleted = isDeleted;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public List<String> getAdditionalFields() {
+        return new ArrayList<>();
+    }
+
+    //@@author xelisce
+
+    /**
+     * Builds a one‑line summary representation of this case.
+     * <p>
+     * Includes status, category, ID, date, and title in a fixed‑width format.
+     *
+     * @return a formatted summary line for this case
+     */
+    public String getDisplayLine() {
+        String dateString = DateFormatter.formatDate(date, Settings.getOutputDateFormat());
+        return CaseFormatter.formatCaseSummaryLine(isOpen, categoryString, id, dateString, title);
+    }
+
+    /**
+     * Builds a verbose, multi‑line representation of this case.
+     * <p>
+     * Starts with a case ID header, followed by wrapped fields such as
+     * status, category, title, date, info, timestamps, victim, and officer.
+     *
+     * @return an array of formatted lines for verbose display
      */
     public String[] getMultiLineVerboseDisplay() {
         List<String> lines = new ArrayList<>();
-        lines.add(formatCaseIDHeader());
-        String dateString = (date == null ? "" : DateFormatter.formatDate(date, Settings.getOutputDateFormat()));
+        lines.add(CaseFormatter.formatCaseIDHeader(id));
 
-        addFormattedLine(lines, "Status", getStatusString());
-        addFormattedLine(lines, "Category", categoryString);
-        addFormattedLine(lines, "Title", title);
-        addFormattedLine(lines, "Date", dateString);
-        addFormattedLine(lines, "Info", info);
-        addFormattedLine(lines, "Created at", createdAt.toString());
-        addFormattedLine(lines, "Updated at", updatedAt.toString());
-        addFormattedLine(lines, "Victim", victim);
-        addFormattedLine(lines, "Officer", officer);
+        String dateString = DateFormatter.formatDate(date, Settings.getOutputDateFormat());
+        String statusString = CaseFormatter.convertStatusToString(isOpen);
+
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Status", statusString);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Category", categoryString);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Title", title);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Date", dateString);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Info", info);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Created at", createdAt.toString());
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Updated at", updatedAt.toString());
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Victim", victim);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Officer", officer);
 
         return lines.toArray(new String[0]);
     }
-
-
-    /**
-     * Constructs the header line for the verbose display.
-     * Format: {@code "======== CASE ID 000000 ========"}
-     *
-     * @return the formatted header string
-     */
-    private String formatCaseIDHeader() {
-        return "======== CASE ID " + this.id + " ========";
-    }
-
-    /**
-     * Returns the status of the case as a plain string.
-     * <p>
-     * Possible values are {@code "[Open["} or {@code "[Closed]"} depending on the case state.
-     *
-     * @return the status string
-     */
-    private String getStatusString() {
-        return this.isOpen ? "Open" : "Closed";
-    }
-
-    /**
-     * Formats a labeled line with truncated content.
-     * If the value is {@code null}, an empty string is used.
-     * Format: {@code "Label      : value"} — with the label padded to 10 characters.
-     *
-     * @param label the label to display (e.g., "Title", "Date")
-     * @param value the value to display, which will be truncated
-     * @return the formatted line with aligned colon
-     */
-    private String formatLine(String label, String value) {
-        if (value == null) {
-            return "";
-        }
-        String paddedLabel = String.format("%-10s", label); // pad to 10 characters
-        return paddedLabel + " : " + truncate(value);
-    }
-
-    private void addFormattedLine(List<String> lines, String label, String value) {
-        if (value != null) {
-            String formatted = formatLine(label, value);
-            lines.add(formatted);
-        }
-    }
-
-    /**
-     * Truncates the input string to a maximum of 100 characters.
-     * If the input is {@code null}, returns an empty string.
-     * If the input exceeds 100 characters, appends {@code "..."}.
-     *
-     * @param input the string to truncate
-     * @return the truncated string
-     */
-    private String truncate(String input) {
-        return input.length() <= 100 ? input : input.substring(0, 100) + "...";
-    }
-
     //@@ author
+
     public void setClosed() {
         this.isOpen = false;
         updatedAt = LocalDateTime.now();
@@ -290,6 +269,11 @@ public abstract class Case {
         updatedAt = LocalDateTime.now();
     }
 
+    /**
+     * Returns whether this case is currently open.
+     *
+     * @return {@code true} if the case is open; {@code false} otherwise
+     */
     public boolean isOpen() {
         return this.isOpen;
     }
@@ -315,22 +299,101 @@ public abstract class Case {
      *
      * @param newValues a map containing field names and their new values
      */
-    public void update(Map<String, String> newValues) {
+    public void update(Map<String, Object> newValues) {
         if (newValues.containsKey("title")) {
-            this.title = newValues.get("title");
+            this.title = (String) newValues.get("title");
         }
-        //if (newValues.containsKey("date")) {
-        //    this.date = newValues.get("date");
-        //}
+        if (newValues.containsKey("date")) {
+            this.date = (LocalDate) newValues.get("date");
+        }
         if (newValues.containsKey("info")) {
-            this.info = newValues.get("info");
+            this.info = (String) newValues.get("info");
         }
         if (newValues.containsKey("victim")) {
-            this.victim = newValues.get("victim");
+            this.victim = (String) newValues.get("victim");
         }
         if (newValues.containsKey("officer")) {
-            this.officer = newValues.get("officer");
+            this.officer = (String) newValues.get("officer");
         }
         this.updatedAt = LocalDateTime.now();
+    }
+
+    //@@author shennontay
+    /**
+     * Builds the common display lines shared by all case types.
+     * <p>
+     * Excludes the {@code Info} field so that subclasses can insert
+     * their own fields before the Info line if needed.
+     *
+     * @return a list of formatted display lines for the base fields
+     */
+    protected List<String> getBaseDisplayLines() {
+        List<String> lines = new ArrayList<>();
+
+        String dateString = DateFormatter.formatDate(date, Settings.getOutputDateFormat());
+        String statusString = CaseFormatter.convertStatusToString(isOpen);
+
+        CaseFormatter.addWrappedFieldForRead(lines, "Title", title);
+        CaseFormatter.addWrappedFieldForRead(lines,"Case ID", id);
+        CaseFormatter.addWrappedFieldForRead(lines,"Status", statusString);
+        CaseFormatter.addWrappedFieldForRead(lines,"Category", categoryString);
+        CaseFormatter.addWrappedFieldForRead(lines,"Date", dateString);
+        CaseFormatter.addWrappedFieldForRead(lines,"Victim", getVictim());
+        CaseFormatter.addWrappedFieldForRead(lines,"Officer", getOfficer());
+        CaseFormatter.addWrappedFieldForRead(lines,"Created at", createdAt.toString());
+        CaseFormatter.addWrappedFieldForRead(lines,"Updated at", updatedAt.toString());
+
+        return lines;
+    }
+
+    /**
+     * Default implementation of the read‑case display for categories
+     * without additional fields.
+     * <p>
+     * Subclasses may override this method to insert extra details
+     * before the {@code Info} line.
+     *
+     * @return an array of formatted display lines for this case
+     */
+    public String[] getReadCaseDisplay() {
+        List<String> displayList = getBaseDisplayLines();
+        CaseFormatter.addWrappedFieldForRead(displayList, "Info :", getInfo());
+
+        return displayList.toArray(new String[0]);
+    }
+    //@@author
+
+    /**
+     * Converts this object's data fields into a single comma-separated string suitable for saving.
+     * <p>
+     * If any string field (e.g. {@code title}, {@code date}, etc.) is {@code null}, it will be replaced
+     * with an empty string in the output. The {@code isDeleted} field is represented as {@code "1"} if true
+     * and {@code "0"} if false.
+     * </p>
+     *
+     * @return a formatted string containing all of this object's field values
+     */
+    public String toSaveString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Storage.getSaveDatePattern());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Storage.getSaveDateTimePattern());
+        return "id:" + this.id
+                + "|category:" + this.category.toString()
+                + "|title:" + (this.title == null ? "" : this.title)
+                + "|date:" + (this.date == null ? "" : this.date.format(dateFormatter))
+                + "|info:" + (this.info == null ? "" : this.info)
+                + "|victim:" + (this.victim == null ? "" : this.victim)
+                + "|officer:" + (this.officer == null ? "" : this.officer)
+                + "|is-deleted:" + (this.isDeleted ? "1" : "0")
+                + "|is-open:" + (this.isOpen ? "1" : "0")
+                + "|created-at:" + (this.createdAt == null ? "" : this.createdAt.format(dateTimeFormatter))
+                + "|updated-at:" + (this.updatedAt == null ? "" : this.updatedAt.format(dateTimeFormatter));
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

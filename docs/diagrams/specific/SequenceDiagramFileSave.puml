@@ -1,0 +1,20 @@
+@startuml
+!include ../style.puml
+
+autoactivate on
+participant ":Storage" as S STORAGE_COLOR
+participant ":CaseManager" as CM CASEFILE_COLOR
+participant ":Case" as C CASEFILE_COLOR
+
+-[MAIN_COLOR]> S : saveToFile()
+
+S -[STORAGE_COLOR]> CM : getCaseManager
+return caseList
+
+loop for cases in caseList
+S -[STORAGE_COLOR]> C : getSaveString()
+return save string
+end loop
+
+return
+@enduml

@@ -33,6 +33,9 @@ public class DateFormatter {
      * @return A string representation of the formatted date.
      */
     public static String formatDate(LocalDate date, String dateFormat) {
+        if (date == null) {
+            return "";
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
         return date.format(formatter);
     }

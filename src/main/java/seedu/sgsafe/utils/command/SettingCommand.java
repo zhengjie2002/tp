@@ -17,6 +17,14 @@ public class SettingCommand extends Command {
         this.settingType = settingType;
     }
 
+    public String getNewDateFormat() {
+        return newDateFormat;
+    }
+
+    public SettingType getSettingType() {
+        return settingType;
+    }
+
     @Override
     public void execute() {
         if (settingType == SettingType.DATEINPUT) {

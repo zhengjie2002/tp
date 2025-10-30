@@ -17,10 +17,10 @@ public class EditCommand extends Command {
     private final String caseId;
 
     // Map of new field values, where the key is the flag (e.g. "title", "date")
-    private final Map<String, String> newFlagValues;
+    private final Map<String, Object> newFlagValues;
 
     // Constructor that sets the case number and new field values
-    public EditCommand(String caseId, Map<String, String> newFlagValues) {
+    public EditCommand(String caseId, Map<String, Object> newFlagValues) {
         this.commandType = CommandType.EDIT;
         this.caseId = caseId;
         this.newFlagValues = newFlagValues;

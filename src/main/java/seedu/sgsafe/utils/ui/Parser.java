@@ -1,13 +1,16 @@
 package seedu.sgsafe.utils.ui;
 
 import seedu.sgsafe.utils.command.AddCommand;
+import seedu.sgsafe.utils.command.ByeCommand;
 import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
+import seedu.sgsafe.utils.command.HelpCommand;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.EditCommand;
 import seedu.sgsafe.utils.command.EditPromptCommand;
 import seedu.sgsafe.utils.command.DeleteCommand;
+import seedu.sgsafe.utils.command.ReadCommand;
 
 import seedu.sgsafe.utils.command.OpenCommand;
 import seedu.sgsafe.utils.command.SettingCommand;
@@ -16,16 +19,21 @@ import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
+import seedu.sgsafe.utils.exceptions.InvalidByeCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidFormatStringException;
+import seedu.sgsafe.utils.exceptions.InvalidHelpCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidReadCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidSettingCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
+import  seedu.sgsafe.utils.exceptions.InvalidCharacterException;
 import seedu.sgsafe.utils.settings.Settings;
 
 import java.time.LocalDate;
@@ -75,9 +83,12 @@ public class Parser {
      * @throws InvalidListCommandException if the {@code list} command contains unexpected arguments
      */
     public static Command parseInput(String userInput) {
-        userInput = cleanUserInput(userInput);
-        String keyword = getKeywordFromUserInput(userInput);
-        String remainder = getRemainderFromUserInput(userInput);
+        String cleanedUserInput = cleanUserInput(userInput);
+        String keyword = getKeywordFromUserInput(cleanedUserInput);
+        String remainder = getRemainderFromUserInput(cleanedUserInput);
+        if(remainder.contains("|")) {
+            throw new InvalidCharacterException();
+        }
 
         return switch (keyword) {
         case "list" -> parseListCommand(remainder);
@@ -86,8 +97,11 @@ public class Parser {
         case "close" -> parseCloseCommand(remainder);
         case "open" -> parseOpenCommand(remainder);
         case "delete" -> parseDeleteCommand(remainder);
+        case "bye" -> parseByeCommand(remainder);
+        case "help" -> parseHelpCommand(remainder);
         case "setting" -> parseSettingCommand(remainder);
-        default -> throw new UnknownCommandException(keyword);
+        case "read" -> parseReadCommand(remainder);
+        default -> throw new UnknownCommandException(userInput, keyword);
         };
     }
 
@@ -413,11 +427,70 @@ public class Parser {
         // Check if replacements start with --
         if (replacements.startsWith("--")) {
             Map<String, String> flagValues = extractFlagValues(replacements);
-            return new EditCommand(caseId, flagValues);
+            Map<String, Object> typedFlagValues = convertFlagValueTypes(flagValues);
+            return new EditCommand(caseId, typedFlagValues);
         } else {
             throw new InvalidEditCommandException();
         }
     }
+
+    /**
+     * Converts raw flag values from strings to their appropriate types based on flag names.
+     * @param rawValues map of flag names and their string values as input by the user
+     * @return map of flag names and their values converted to appropriate types
+     * @throws InvalidEditCommandException if a value cannot be converted to the expected type
+     */
+    public static Map<String, Object> convertFlagValueTypes(Map<String, String> rawValues) {
+        logger.fine("Starting flag value type conversion.");
+
+        Map<String, Object> typedValues = new HashMap<>();
+        LocalDate parsedDate;
+
+        for (Map.Entry<String, String> entry : rawValues.entrySet()) {
+            String flag = entry.getKey();
+            String value = entry.getValue();
+
+            // Convert based on flag type (e.g. date for "date", integer for "no-of-victims")
+            switch (flag) {
+            case "date":
+                try {
+                    parsedDate = DateFormatter.parseDate(rawValues.get("date"), Settings.getInputDateFormat());
+                    typedValues.put(flag, parsedDate);
+                } catch (Exception e) {
+                    logger.log(Level.WARNING, "Failed to parse date value '" + value + "' for flag '" + flag + "'.");
+                    throw new InvalidDateInputException();
+                }
+                break;
+
+            case "exceeded-speed",
+                 "number-of-victims",
+                 "speed-limit",
+                 "monetary-damage",
+                 "financial-value",
+                 "number-of-casualties":
+                try {
+                    Integer intValue = Integer.parseInt(value);
+                    if (intValue < 0) {
+                        logger.log(Level.WARNING,"Value for flag '" + flag + "' is negative: " + intValue);
+                        throw new InvalidEditCommandException();
+                    }
+                    typedValues.put(flag, intValue);
+                } catch (NumberFormatException e) {
+                    logger.log(Level.WARNING, "Failed to parse integer from non-numeric string '" + value
+                            + "' for flag '" + flag + "'.");
+                    throw new InvalidEditCommandException();
+                }
+                break;
+            default:
+                // All other flags remain as String
+                typedValues.put(flag, value);
+            }
+        }
+
+        logger.fine("Finished flag value type conversion.");
+        return typedValues;
+    }
+
 
     /**
      * Parses the 'delete' command input, validates its format, and constructs an DeleteCommand object.
@@ -427,7 +500,7 @@ public class Parser {
         if (!validator.isValidCaseId(remainder)) {
             throw new InvalidDeleteCommandException();
         }
-        return new DeleteCommand(remainder.toLowerCase());
+        return new DeleteCommand(remainder);
     }
 
     private static Command parseSettingCommand(String remainder) {
@@ -447,6 +520,9 @@ public class Parser {
         }
 
         SettingType settingType = parseSettingType(flagValues.get("type"));
+        if(!validator.isValidDateTimeString(flagValues.get("value"))) {
+            throw new InvalidFormatStringException();
+        }
 
         return new SettingCommand(settingType, flagValues.get("value"));
     }
@@ -457,5 +533,31 @@ public class Parser {
         } catch (IllegalArgumentException e) {
             throw new InvalidSettingCommandException(true);
         }
+    }
+
+    /**
+     * Parses the 'read' command input, validates its format, and constructs a ReadCommand object.
+     * Throws an InvalidReadCommandException if the input is missing or incorrectly formatted.
+     */
+
+    private static Command parseReadCommand(String remainder) {
+        if (!validator.isValidCaseId(remainder)) {
+            throw new InvalidReadCommandException();
+        }
+        return new ReadCommand(remainder);
+    }
+
+    private static Command parseByeCommand(String remainder) {
+        if (!remainder.isEmpty()) {
+            throw new InvalidByeCommandException();
+        }
+        return new ByeCommand();
+    }
+
+    private static Command parseHelpCommand(String remainder) {
+        if (!remainder.isEmpty()) {
+            throw new InvalidHelpCommandException();
+        }
+        return new HelpCommand();
     }
 }

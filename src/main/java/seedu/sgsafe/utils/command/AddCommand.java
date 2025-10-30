@@ -8,14 +8,14 @@ import seedu.sgsafe.domain.casefiles.type.sexual.RapeCase;
 import seedu.sgsafe.domain.casefiles.type.sexual.VoyeurismCase;
 import seedu.sgsafe.domain.casefiles.type.traffic.AccidentCase;
 import seedu.sgsafe.domain.casefiles.type.traffic.SpeedingCase;
-import seedu.sgsafe.domain.casefiles.Case;
-import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.domain.casefiles.type.violent.AssaultCase;
 import seedu.sgsafe.domain.casefiles.type.violent.MurderCase;
 import seedu.sgsafe.domain.casefiles.type.OthersCase;
 import seedu.sgsafe.domain.casefiles.type.financial.TheftCase;
 import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
 import seedu.sgsafe.utils.exceptions.InvalidCategoryException;
+import seedu.sgsafe.domain.casefiles.Case;
+import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.utils.ui.Display;
 
 import java.time.LocalDate;
