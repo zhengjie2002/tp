@@ -373,8 +373,9 @@ Example output:
 ### File storage
 
 This is a feature that saves your case info to `data.txt` in the folder that you run the program in.
-There is no specific command that will execute this function,
-but it will automatically run every time you run any command.
+There is no specific command that will execute this function, but it will automatically run every time 
+you run any command. Take note that your date format settings are not saved between different launches of your 
+application.
 
 #### Save file modification (only for advanced users)
 
@@ -384,20 +385,19 @@ The data in the save file is stored in this format:
 
 > `key1:value1|key2:value2|key3:value3|...`
 
-each key corresponds to a field, and each line corresponds to a case. An empty value means that the field has not been
-initialised.
-
-Fields that you SHOULD NOT EDIT:
-
-1. id
-2. category
-3. created-at
-
-You cannot add new cases through editing the file, do not add new lines to the save file.
-
-The date field must be stored in the format dd/MM/yyyy (day/month/year).
-
-The modified-at field must be stored in the format dd/MM/yyyy hh:mm:ss (day/month/year hour:minute:second).
+- each key corresponds to a field, and each line corresponds to a case. 
+  An empty value means that the field has not been initialised.
+- Fields that you SHOULD NOT EDIT:
+  1. id
+  2. category
+  3. created-at
+- You cannot add new cases through editing the file, do not add or remove lines to the save file.
+- The date field must be stored in the format dd/MM/yyyy (day/month/year).
+- The updated-at field must be stored in the format dd/MM/yyyy hh:mm:ss (day/month/year hour:minute:second).
+- Any extra fields that do not exist in the case's category will be lost if they are added to the save file.
+- The maximum number of characters allowed in these fields are still 5000.
+- You do not have to escape `--` sequences with `\\--`, but you still cannot use the reserved character `|`.
+- Take note that the updated at field will not be automatically updated to the time that you change the text file.
 
 ***Examples***
 
