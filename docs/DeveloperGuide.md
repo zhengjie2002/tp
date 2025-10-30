@@ -10,7 +10,7 @@
     - [CaseFile Component](#casefile-component)
     - [Command Component](#command-component)
     - [Storage Component](#storage-component)
-    - [Common](#common)
+    - [Commons](#Commons)
 4. [Implementation](#implementation)
 5. [Appendix A: Product Scope](#appendix-a-product-scope)
     - [Target user profile](#target-user-profile)
@@ -99,6 +99,7 @@ Here are some examples of command keywords and their required arguments:
 5. Results are also displayed via `Display.printMessage()`
 
 ##### Example Interaction Flow
+
 ![SequenceDiagramUserInputListCommand.png](images/SequenceDiagramUserInputListCommand.png)
 
 The sequence diagram above illustrates how user input is processed to create and execute a `ListCommand`.
@@ -129,7 +130,7 @@ extend `Case` to implement category specific attributes and methods.
 The `CaseManager` class is responsible for managing `Case` objects.
 It provides high-level operations such as adding, updating, deleting, and retrieving cases.
 
-Additionally, `Case` interacts with the `CaseFormatter` class 
+Additionally, `Case` interacts with the `CaseFormatter` class
 to produce formatted representations of case data for display.
 
 #### Responsibilities
@@ -182,9 +183,9 @@ specific command. In addition, each command class may have its own attributes to
 The following diagram illustrates the structure of the command component and some of the noteworthy methods in the
 commands.
 
-
 > ℹ️ Note: Only non-trivial fields and methods are shown in the above diagram.\
-> ℹ️ UML Info: Due to the limitation of plantUML, the diagram is shown top down for best visibility, instead of the usual left to right.
+> ℹ️ UML Info: Due to the limitation of plantUML, the diagram is shown top down for best visibility, instead of the
+> usual left to right. 
 
 ![CommandClassDiagram](images/CommandClassDiagram.png)
 
@@ -208,15 +209,23 @@ The responsibilities of the command component include:
   would have already been performed by the UI component during parsing.
 - The command component interacts with the CaseFile component to manipulate case data as required by the command, and it
   uses the UI component to display results or error messages to the user.
-- The command component catches any error with command execution and throws appropriate exceptions to be handled by the UI
-  component. (example of such errors include trying to edit a non-existent case)
+- The command component catches any error with command execution and throws appropriate exceptions to be handled by the
+  UI component. (example of such errors include trying to edit a non-existent case)
 
-#### Interaction Flow 
-The following activity diagram illustrates a sample activity flow for executing a user command:
-![CommandExecutionActivityDiagram](images/CommandExecutionActivityDiagram.png)
+#### Interaction Flow
+
+The following activity diagram illustrates a sample activity flow from the creation of a command to its execution and
+result display.
+
+![CommandExecutionSequenceDiagram](images/SequenceDiagramGenericCommandExecution.png)
 
 This diagram is an abstract of the [Overall Sequence Diagram](#overall-sequence-diagram) shown earlier, focusing on the
 interactions involving the command component.
+
+> ℹ️ Note: The diagram is a generalisation for all commands. Specific commands may have additional interactions or steps
+> based on their unique requirements.\
+> ℹ️ UML Info: Due to the limitation of plantUML, the lifeline for Command does not end with an X, even though it is
+> destroyed after execution.
 
 ---
 
@@ -251,7 +260,32 @@ Saving to the save file:
 
 ---
 
-### Common
+### Commons
+
+#### Exceptions
+
+SGSafe uses a structured exception hierarchy to handle errors gracefully and provide meaningful feedback to users.
+The `InvalidCommandException` is the base exception class for all exceptions. This class extend Java's Exception class
+
+The structure of the abstract exception class is as such:
+
+![ExceptionClassDiagram](images/ExceptionHierarchy.png)
+
+The diagram above does not show all exception classes, but it illustrates the general structure of the exception
+hierarchy and show key exception classes with unique fields.
+
+Here are some key points about the exception class structure:
+
+- Each exception class has a private field consisting an array of string `errorMessages` This array is meant to contain
+  the messages to be displayed to the user when this exception is thrown.
+- Each exception class has a constructor that takes a variable-length argument list that accepts zero or more String
+  values. This allows callers to pass multiple error messages as separate arguments without wrapping them in an array.
+- Some exception class (inherited from the abstract class) can have additional fields and methods as needed to provide
+  more context about the error.
+- In the main business logic of the application, when the exception is thrown, we can use the getter `getErrorMessage()`
+  method to retrieve the array of string and display it.
+- Since `InvalidCommandException` inherits from Java's Exception class, we can treat this as a standard checked
+  expression and catch it using try-catch blocks. It can also be implicitly upcasted to Exception type.
 
 ---
 

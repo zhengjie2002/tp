@@ -3,7 +3,7 @@
 SGSafe is a *Command Line Interface (CLI) based case management system* that is designed specifically for law
 enforcement agencies in Singapore to manage, track and process cases. Built with the diverse needs of police personnel
 in mind, this application allows frontline officers to efficiently manage and process cases from creation to closure. By
-providing an easy to use yet efficient interface, SGSafe transforms traditional case management processes into an
+providing an easy-to-use yet efficient interface, SGSafe transforms traditional case management processes into an
 organised digital workflow that enhances operational efficiency for the public sector.
 
 ## Table of Contents
@@ -237,6 +237,7 @@ Updates the details of an existing case.
 * `edit 1 --victim Jane Smith --officer Officer Lee` updates the victim and officer of the 1st case in the list.
 * `edit 3 --title Updated title --date 01/03/2024` updates the title and date of the 3rd case in the list.
 
+> ℹ️ Note: A closed case cannot be edited. To edit the case, reopen the case using [`open`](#opening-a-case-open) command.\
 > ℹ️ Note: The above are stored as strings (except date). No special formatting is required for those inputs.\
 > ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using
 > the settings command below.\
@@ -274,15 +275,18 @@ format.
 **Format:** `setting --type TYPE --value VALUE`
 > ℹ️ Note: Type can only be `dateinput` representing the input format and `dateoutput` representing the format where the
 > date will be printed.\
-> ⚠️ Warning: The value must be a valid date format according to Java's DateFormatter.
+> ⚠️ Warning: The value must be a valid date format, according to Java's DateFormatter. Stray characters that are not 
+> date and time-related will flag as an error.
 > For more information, please refer
 > to [Java DateTimeFormatter](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html).
 > ⚠️ Warning: Note that month is capitalised in the date-time-formatter. `MM` represents month while `mm` represents minutes.
 > The default input and output format is `dd/MM/yyyy`
+> ⚠️ Warning: If the input format has repeated characters (e.g., `dd-MM-yyyy-dd`), the user is expected to key in the same 
+> day for both `dd`.
 
 **Examples:**
 
-* `setting --type dateinput --value dd-MM-yyyy` means that all input for date must follow dd-MM-yyyy format to be
+* `setting --type dateinput --value dd-MM-yyyy` means that all inputs for date must follow dd-MM-yyyy format to be
   considered valid.
 * `setting --type dateoutput --value dd/MM/yyyy` means that all output for date will be printed in dd/MM/yyyy format.
 

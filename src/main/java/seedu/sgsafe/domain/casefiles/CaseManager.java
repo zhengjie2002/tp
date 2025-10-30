@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import seedu.sgsafe.utils.exceptions.CaseAlreadyClosedException;
+import seedu.sgsafe.utils.exceptions.CaseCannotBeEditedException;
 import seedu.sgsafe.utils.exceptions.CaseAlreadyOpenException;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
@@ -39,7 +40,7 @@ public class CaseManager {
         caseList.add(newCase);
     }
 
-
+    //@@author shennontay
     /**
      * Finds and returns a {@link Case} object from the case list using its unique ID.
      *
@@ -52,6 +53,7 @@ public class CaseManager {
                 .findFirst()
                 .orElse(null);
     }
+    //@@author
 
     /**
      * Closes an existing case in the case list.
@@ -107,6 +109,11 @@ public class CaseManager {
         Case caseToEdit = getCaseById(caseId);
         if (caseToEdit == null) {
             throw new CaseNotFoundException(caseId);
+        }
+
+        // Chack if case is closed
+        if (!caseToEdit.isOpen()) {
+            throw new CaseCannotBeEditedException(caseId);
         }
 
         // Validate flags before updating

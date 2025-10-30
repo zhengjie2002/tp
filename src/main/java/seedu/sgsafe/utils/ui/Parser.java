@@ -24,6 +24,7 @@ import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidFormatStringException;
 import seedu.sgsafe.utils.exceptions.InvalidHelpCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
@@ -82,9 +83,9 @@ public class Parser {
      * @throws InvalidListCommandException if the {@code list} command contains unexpected arguments
      */
     public static Command parseInput(String userInput) {
-        userInput = cleanUserInput(userInput);
-        String keyword = getKeywordFromUserInput(userInput);
-        String remainder = getRemainderFromUserInput(userInput);
+        String cleanedUserInput = cleanUserInput(userInput);
+        String keyword = getKeywordFromUserInput(cleanedUserInput);
+        String remainder = getRemainderFromUserInput(cleanedUserInput);
         if(remainder.contains("|")) {
             throw new InvalidCharacterException();
         }
@@ -100,7 +101,7 @@ public class Parser {
         case "help" -> parseHelpCommand(remainder);
         case "setting" -> parseSettingCommand(remainder);
         case "read" -> parseReadCommand(remainder);
-        default -> throw new UnknownCommandException(keyword);
+        default -> throw new UnknownCommandException(userInput, keyword);
         };
     }
 
@@ -462,7 +463,11 @@ public class Parser {
                 break;
 
             case "exceeded-speed",
-                 "number-of-victims", "speed-limit":
+                 "number-of-victims",
+                 "speed-limit",
+                 "monetary-damage",
+                 "financial-value",
+                 "number-of-casualties":
                 try {
                     Integer intValue = Integer.parseInt(value);
                     if (intValue < 0) {
@@ -515,6 +520,9 @@ public class Parser {
         }
 
         SettingType settingType = parseSettingType(flagValues.get("type"));
+        if(!validator.isValidDateTimeString(flagValues.get("value"))) {
+            throw new InvalidFormatStringException();
+        }
 
         return new SettingCommand(settingType, flagValues.get("value"));
     }

@@ -2,6 +2,7 @@
 	Welcome to SGSafe
 	____________________________________________________________
 	____________________________________________________________
+	You have entered: James Gosling
 	The command 'James' that you have entered is not recognised.
 	____________________________________________________________
 	____________________________________________________________
@@ -81,7 +82,7 @@
 	____________________________________________________________
 	Case found: [Open]   Traffic accident 000001 05/06/2018 Robbery
 	
-	Fields that can be edited: --title, --date, --info, --victim, --officer, --vehicle-type, --vehicle-plate, --road-name
+	Fields that can be edited: --title, --date, --info, --victim, --officer, --vehicle-type, --vehicle-plate, --road-name, --number-of-casualties
 	
 	Usage: edit 000001 --<flag> <value>
 	Example: edit 000001 --location home --date 2024-01-01

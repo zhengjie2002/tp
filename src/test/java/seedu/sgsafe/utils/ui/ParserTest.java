@@ -14,6 +14,8 @@ import seedu.sgsafe.utils.command.CommandType;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.AddCommand;
 import seedu.sgsafe.utils.command.ByeCommand;
+import seedu.sgsafe.utils.command.SettingCommand;
+import seedu.sgsafe.utils.command.SettingType;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.InputLengthExceededException;
@@ -25,10 +27,12 @@ import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidFormatStringException;
 import seedu.sgsafe.utils.exceptions.InvalidReadCommandException;
 
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidSettingCommandException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.settings.Settings;
 
@@ -279,7 +283,7 @@ class ParserTest {
                         longInfo);
         assertThrows(InputLengthExceededException.class, () -> Parser.parseInput(input));
     }
-  
+
     @Test
     void parseInput_addValidWithEscape_returnsAddCommand() {
         Settings.setInputDateFormat("yyyy-MM-dd");
@@ -307,25 +311,25 @@ class ParserTest {
     @Test
     void parseInput_delete_throwsInvalidDeleteCommandException() {
         String input = "delete";
-        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+        assertThrows(InvalidDeleteCommandException.class, () -> Parser.parseInput(input));
     }
 
     @Test
     void parseInput_deleteTooShortCaseId_throwsInvalidDeleteCommandException() {
         String input = "delete abc";
-        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+        assertThrows(InvalidDeleteCommandException.class, () -> Parser.parseInput(input));
     }
 
     @Test
     void parseInput_deleteTooLongCaseId_throwsInvalidDeleteCommandException() {
         String input = "delete abc1234";
-        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+        assertThrows(InvalidDeleteCommandException.class, () -> Parser.parseInput(input));
     }
 
     @Test
     void parseInput_deleteAdditionalArguments_throwsInvalidDeleteCommandException() {
         String input = "delete abc123 456";
-        assertThrows(InvalidDeleteCommandException.class,() -> Parser.parseInput(input));
+        assertThrows(InvalidDeleteCommandException.class, () -> Parser.parseInput(input));
     }
 
     // ----------- TESTS FOR READ COMMANDS ----------- //
@@ -359,7 +363,7 @@ class ParserTest {
         assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read 000000 extraArg"));
         assertThrows(InvalidReadCommandException.class, () -> Parser.parseInput("read 000000   extraArg"));
     }
-  
+
     // ----------- TESTS FOR BYE COMMANDS ----------- //
 
     @Test
@@ -373,4 +377,76 @@ class ParserTest {
         assertThrows(InvalidByeCommandException.class,
                 () -> Parser.parseInput("bye now"));
     }
+
+    // ----------- TESTS FOR SETTING COMMANDS ----------- //
+
+    @Test
+    void parseInput_settingWithValidInputFormat_returnsSettingCommand() {
+        Command command = Parser.parseInput("setting --type dateinput --value dd/MM/yyyy");
+        assertEquals(CommandType.SETTING, command.getCommandType());
+        assertInstanceOf(SettingCommand.class, command);
+        assertEquals(SettingType.DATEINPUT, ((SettingCommand) command).getSettingType());
+        assertEquals("dd/MM/yyyy", ((SettingCommand) command).getNewDateFormat());
+    }
+
+    @Test
+    void parseInput_settingWithValidOutputFormat_returnsSettingCommand() {
+        Command command = Parser.parseInput("setting --type dateoutput --value yyyy-MM-dd");
+        assertEquals(CommandType.SETTING, command.getCommandType());
+        assertInstanceOf(SettingCommand.class, command);
+        assertEquals(SettingType.DATEOUTPUT, ((SettingCommand) command).getSettingType());
+        assertEquals("yyyy-MM-dd", ((SettingCommand) command).getNewDateFormat());
+    }
+
+    @Test
+    void parseInput_settingMissingTypeFlag_throwsInvalidSettingCommandException() {
+        assertThrows(InvalidSettingCommandException.class,
+                () -> Parser.parseInput("setting --value dd/MM/yyyy"));
+    }
+
+    @Test
+    void parseInput_settingMissingBothFlags_throwsInvalidSettingCommandException() {
+        assertThrows(InvalidSettingCommandException.class,
+                () -> Parser.parseInput("setting"));
+    }
+
+    @Test
+    void parseInput_settingEmptyRemainder_throwsInvalidSettingCommandException() {
+        assertThrows(InvalidSettingCommandException.class,
+                () -> Parser.parseInput("setting   "));
+    }
+
+    @Test
+    void parseInput_settingWithChineseCharacters_throwsInvalidFormatStringException() {
+        assertThrows(InvalidFormatStringException.class,
+                () -> Parser.parseInput("setting --type dateinput --value yyyy年MM月dd日"));
+    }
+
+    @Test
+    void parseInput_settingWithCyrillicCharacters_throwsInvalidFormatStringException() {
+        assertThrows(InvalidFormatStringException.class,
+                () -> Parser.parseInput("setting --type dateoutput --value dd-MM-yyyyг"));
+    }
+
+    @Test
+    void parseInput_settingWithUnicodeSymbols_throwsInvalidFormatStringException() {
+        assertThrows(InvalidFormatStringException.class,
+                () -> Parser.parseInput("setting --type dateinput --value dd★MM★yyyy"));
+    }
+
+    @Test
+    void parseInput_settingWithEmojiCharacters_throwsInvalidFormatStringException() {
+        assertThrows(InvalidFormatStringException.class,
+                () -> Parser.parseInput("setting --type dateoutput --value dd/MM/yyyy😊"));
+    }
+
+    @Test
+    void parseInput_settingExceedingMaxLength_throwsInputLengthExceededException() {
+        String longValue = "yyyy" +
+                "-MM".repeat(2500);
+        assertThrows(InputLengthExceededException.class,
+                () -> Parser.parseInput("setting --type dateinput --value " +
+                        longValue));
+    }
+
 }
