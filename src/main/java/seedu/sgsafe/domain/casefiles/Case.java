@@ -130,6 +130,15 @@ public abstract class Case {
     }
 
     /**
+     * Retrieves the category of the case in the print format.
+     *
+     * @return the categoryString of the case.
+     */
+    public String getCategoryString() {
+        return categoryString;
+    }
+
+    /**
      * Retrieves the name of the victim involved in the case.
      *
      * @return the name of the victim, or null if not specified

@@ -18,10 +18,6 @@ public class TheftCase extends FinancialCase {
         this.categoryString = "Theft";
     }
 
-    public String getCategoryString() {
-        return categoryString;
-    }
-
     public String getStolenObject () {
         return stolenObject;
     }

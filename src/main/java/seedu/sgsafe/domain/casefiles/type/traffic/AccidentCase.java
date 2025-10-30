@@ -28,7 +28,8 @@ public class AccidentCase extends TrafficCase{
         CaseFormatter.addWrappedFieldForRead(displayList, "Vehicle Type", this.getVehicleType());
         CaseFormatter.addWrappedFieldForRead(displayList, "Vehicle Plate", this.getVehiclePlate());
         CaseFormatter.addWrappedFieldForRead(displayList, "Road Name", this.getRoadName());
-        CaseFormatter.addWrappedFieldForRead(displayList, "Number of Casualties", String.valueOf(this.numberOfCasualties));
+        CaseFormatter.addWrappedFieldForRead(displayList,
+                "Number of Casualties", String.valueOf(this.numberOfCasualties));
 
         CaseFormatter.addWrappedFieldForRead(displayList, "Info", getInfo());
 
