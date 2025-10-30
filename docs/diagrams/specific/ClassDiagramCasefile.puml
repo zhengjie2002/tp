@@ -1,4 +1,143 @@
 @startuml
+'https://plantuml.com/class-diagram
+
+@startuml
+skinparam classAttributeIconSize 0
+left to right direction
+abstract class "{abstract} \n Case" {
+    - id: String
+    - title: String
+    - date: String
+    - info: String
+    - victim: String
+    - officer: String
+    - isOpen: boolean
+    - isDeleted: boolean
+    - createdAt: LocalDateTime
+    - updatedAt: LocalDateTime
+    # category: CaseCategory
+    # type: CaseType
+    # categoryString: String
+}
+
+'financial cases
+abstract class "{abstract} \n FinancialCase" extends "{abstract} \n Case" {
+    - financialValue: Integer
+}
+
+"{abstract} \n FinancialCase" <|--"*" TheftCase
+class TheftCase {
+    - stolenObject: String
+}
+
+"{abstract} \n FinancialCase" <|--"*" ScamCase
+class ScamCase
+
+"{abstract} \n FinancialCase" <|--"*" BurglaryCase
+class BurglaryCase {
+    - location: String
+    }
+
+
+'property cases
+abstract class "{abstract} \n PropertyCase" extends "{abstract} \n Case" {
+    - location: String
+    - monetaryDamage: Integer
+}
+
+"{abstract} \n PropertyCase" <|--"*" ArsonCase
+class ArsonCase
+
+"{abstract} \n PropertyCase" <|--"*" VandalismCase
+class VandalismCase
+
+
+'sexual cases
+abstract class "{abstract} \n SexualCase" extends "{abstract} \n Case"
+
+"{abstract} \n SexualCase" <|--"*" RapeCase
+class RapeCase
+
+"{abstract} \n SexualCase" <|--"*" VoyeurismCase
+class VoyeurismCase
+
+
+'traffic cases
+abstract class "{abstract} \n TrafficCase" extends "{abstract} \n Case" {
+    - vehicleType: String
+    - vehiclePlate: String
+    - roadName: String
+}
+
+"{abstract} \n TrafficCase" <|--"*" AccidentCase
+class AccidentCase {
+    - numberOfCasualties: Integer
+}
+
+"{abstract} \n TrafficCase" <|--"*" SpeedingCase
+class SpeedingCase {
+    - speedLimit: Integer
+    - exceededSpeed: Integer
+}
+
+
+'violent cases
+abstract class "{abstract} \n ViolentCase" extends "{abstract} \n Case" {
+    - weapon: String
+    - numberOfVictims: Integer
+}
+
+"{abstract} \n ViolentCase" <|--"*" AssaultCase
+class AssaultCase
+
+"{abstract} \n ViolentCase" <|--"*" MurderCase
+class MurderCase
+
+"{abstract} \n ViolentCase" <|--"*" RobberyCase
+class RobberyCase
+
+
+'others case
+"{abstract} \n Case" <|--"*" OthersCase
+class OthersCase {
+    - customCategory: String
+}
+
+
+class CaseManager
+
+class CaseFormatter
+
+enum CaseCategory <<enumeration>> {
+    FINANCIAL
+    PROPERTY
+    SEXUAL
+    TRAFFIC
+    VIOLENT
+    OTHERS
+}
+
+enum CaseType <<enumeration>> {
+    SCAM
+    THEFT
+    ARSON
+    VANDALISM
+    SPEEDING
+    ACCIDENT
+}
+
+CaseManager --> "{abstract} \n Case" :manages >
+"{abstract} \n Case" --> CaseCategory: uses >
+"{abstract} \n Case" --> CaseType: uses >
+CaseFormatter <-- "{abstract} \n Case": uses <
+
+hide enum circle
+hide class circle
+hide abstract circle
+@enduml
+
+
+@startuml
 skinparam classAttributeIconSize 0
 left to right direction
 abstract class Case {

@@ -9,7 +9,6 @@ organised digital workflow that enhances operational efficiency for the public s
 ## Table of Contents
 
 - [Quick Start](#quick-start)
-- [Case Categories](#case-categories)
 - [Features](#features)
     - [Adding a case: `add`](#adding-a-case-add)
     - [Listing cases: `list`](#listing-cases-list)
@@ -20,6 +19,7 @@ organised digital workflow that enhances operational efficiency for the public s
     - [Exiting the program: `bye`](#exiting-the-program-bye)
     - [Settings: `setting`](#settings-setting)
     - [File storage](#file-storage)
+    - [Case categories](#case-categories)
 - [FAQ](#faq)
 - [Command Summary](#command-summary)
 - [Coming Soon](#coming-soon)
@@ -37,41 +37,6 @@ organised digital workflow that enhances operational efficiency for the public s
    below for a quick overview of available commands.
 
 ---
-
-## Case Categories
-
-> **Notes:**
->
-> * The category tag for the add command should be from the list below. If the category is not in the list, type '
-    others' as the category.
-> * Some categories have additional tags (that allow more types of information) attributed to them, which can be edited
-    using the `edit` feature.
-    Additional tags, if any, are indicated in brackets. Please note that you cannot use the `add` command to set these
-    additional tags; they can only be modified using the `edit` command.
-> * Some of these additional tags are not shown in standard list command and can only be viewed using the `read` command or in
-    verbose mode of the `list` command.
-> * For more information on how to add and edit categories,
-    > refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
-
-**`CATEGORY` tags:**
-
-* Burglary
-* Scam
-* Theft (Stolen object)
-* Arson
-* Property
-* Vandalism
-* Rape
-* Voyeurism
-* Accident (Vehicle type, Vehicle plate, Road name)
-* Speeding (Vehicle type, Vehicle plate, Road name, Speed limit, Exceeded speed)
-* Assault
-* Murder (Weapon, Number of victims)
-* Robbery
-* Others (Custom category)
-
----
-
 ## Features
 
 > **Notes about the command format:**
@@ -409,6 +374,40 @@ The data in the save file is stored in this format:
 
 ---
 
+### Case categories
+> **Notes:**
+>
+> * If the category is not in the list, type 'others' as the category.
+> * Some categories have additional attributes, which can be edited using the `edit` feature.
+> * For more information on how to add and edit categories,
+refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
+
+**`CATEGORY` inputs:** 
+- indicated under `CATEGORY` column
+
+**`edit` tags:**
+- `STRING`: attributes are stored as strings and accept any input
+- `INTEGER`: attributes are stored as integers and only accept positive whole numbers as input.
+
+| `CATEGORY`  | `edit` tags (if any)                                                                                                          |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------|
+| burglary  | `--financial-value INTEGER`, `--location STRING`                                                                              |
+| scam      | `--financial-value INTEGER`                                                                                                   |
+| theft     | `--financial-value INTEGER`, `--stolen-object STRING`                                                                         |
+| arson     | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
+| vandalism | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
+| rape      |                                                                                                                               |
+| voyeurism |                                                                                                                               |
+| accident  | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--number-of-casualties INTEGER`                     |
+| speeding  | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--speed-limit INTEGER` , `--exceeded-speed INTEGER` |
+| assault   | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| murder    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| robbery   | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| others    | `--custom-category STRING`                                                                                                    |
+
+---
+
+
 ## FAQ
 
 **Q**: How do I transfer my data to another computer?
@@ -420,7 +419,8 @@ containing the .jar file of the destination computer.
 file if you are an advanced user and know what you are doing.
 
 **Q**: What happens if a case is marked as closed?
-**A**: Closed cases are still visible in the list but are marked with `[C]` instead of `[O]`.
+**A**: Closed cases are still visible in the list but are marked with `[closed]` instead of `[Open]`.
+
 
 **Q**: Can I edit a closed case?
 **A**: No, closed cases cannot be edited. You will need to reopen the case using the `open` command before you can edit
