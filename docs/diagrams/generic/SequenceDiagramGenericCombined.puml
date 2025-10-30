@@ -4,7 +4,7 @@ skinparam ArrowFontStyle plain
 
 actor User as user USER_COLOR
 participant ":SGSafe" as sgsafe MAIN_COLOR
-participant ":Parser" as parser UI_COLOR
+participant "<<Class>>\n:Parser" as parser UI_COLOR
 participant ":Validator" as validator UI_COLOR
 participant ":Display" as display UI_COLOR
 
@@ -29,19 +29,22 @@ loop until userInput == "bye"
 
     parser -[UI_COLOR]> validator : haveValidFlags(...)
     activate validator UI_COLOR
+
+    return isValid
     deactivate validator
 
-    create participant ":Command" as cmd COMMAND_COLOR
-    parser -[UI_COLOR]> cmd : new Command(...)
+
+    create participant ":XYZCommand" as cmd COMMAND_COLOR
+    parser -[UI_COLOR]> cmd : new XYZCommand(...)
     activate cmd COMMAND_COLOR
 
-    cmd --> parser : return Command
+    cmd --> parser : return XYZCommand
     deactivate cmd
 
-    parser --> parser : return Command
+    parser --> parser : return XYZCommand
     deactivate parser
 
-    parser --> sgsafe : return Command
+    parser --> sgsafe : return XYZCommand
     deactivate parser
 
     sgsafe -[MAIN_COLOR]> cmd : execute()

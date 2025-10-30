@@ -1,5 +1,6 @@
 package seedu.sgsafe.utils.command;
 
+import seedu.sgsafe.domain.casefiles.CaseFormatter;
 import seedu.sgsafe.domain.casefiles.type.financial.BurglaryCase;
 import seedu.sgsafe.domain.casefiles.type.financial.ScamCase;
 import seedu.sgsafe.domain.casefiles.type.property.ArsonCase;
@@ -55,6 +56,7 @@ public class AddCommand extends Command {
     /**
      * Constructs an AddCommand with the specified case details.
      *
+     * @param caseCategory The category of the case. Cannot be null.
      * @param caseTitle   The title of the case. Cannot be null.
      * @param caseDate    The date of the case. Cannot be null.
      * @param caseInfo    Additional information about the case. Cannot be null.
@@ -121,6 +123,14 @@ public class AddCommand extends Command {
     }
 
     // @@author zhengjie2002
+
+    /**
+     * Executes the AddCommand, creating a new case based on the provided details.
+     * Each case type is instantiated according to the specified category.
+     * The case is added to the CaseManager, and a confirmation message is displayed.
+     *
+     * @throws InvalidCategoryException if the case category is invalid.
+     */
     @Override
     public void execute() {
         String id = generateHexId();
@@ -144,6 +154,11 @@ public class AddCommand extends Command {
         }
 
         CaseManager.addCase(newCase);
-        Display.printMessage("New case added:", newCase.getDisplayLine());
+        Display.printMessage("New case added:", generateListTableHeaderMessage(), newCase.getDisplayLine());
     }
+
+    private String generateListTableHeaderMessage() {
+        return String.format(CaseFormatter.SUMMARY_FORMAT_STRING, "STATUS", "CATEGORY", "ID", "DATE", "TITLE");
+    }
+
 }
