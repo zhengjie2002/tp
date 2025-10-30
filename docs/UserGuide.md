@@ -37,7 +37,6 @@ organised digital workflow that enhances operational efficiency for the public s
    below for a quick overview of available commands.
 
 ---
-
 ## Features
 
 > **Notes about the command format:**
@@ -53,8 +52,9 @@ organised digital workflow that enhances operational efficiency for the public s
 >
 > * Optional parameters are enclosed in square brackets.\
     >   e.g., `--title TITLE [--victim VICTIM]` means the victim parameter is optional.
-> * The double-dash `--` is a reserved prefix used to identify flags, so it cannot be used as part of an input value.
-> * You cannot use the character | in your input as well as it is used in the save file format.
+> * The escape character for `--` is `\--`. 
+> For example: `add --category murder --title hello\--world --info hello --date 05/02/2022` will result in the title of be case being `hello--world`
+> * You cannot use the character | in your input as it is used in the save file format.
 ---
 
 ### Adding a case: `add`
@@ -78,8 +78,9 @@ Adds a new case to the case management system.
 
 **Examples:**
 
-* `add --category Theft --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith`
-* `add --category Burglary --info Burglary at 123 Main St --date 2024-02-20 --title Burglary case`
+* `add --category Theft --title Theft case --date 15/10/2024 --info Stolen wallet --victim John Doe --officer Officer Smith`
+
+* `add --category Burglary --info Burglary at 123 Main St --date 20/02/2024 --title Burglary case`
 
 ---
 
@@ -90,16 +91,19 @@ Displays all cases in the system, with optional filters and formatting modes.
 #### **Format:** `list --status <open|closed|all> --mode <summary|verbose>`
 
 #### Flags
+
 - `--status` (optional): Filters cases by their status.
-  - `open`: Show only open cases.
-  - `closed`: Show only closed cases.
-  - `all`: Show all cases (default).
+    - `open`: Show only open cases.
+    - `closed`: Show only closed cases.
+    - `all`: Show all cases (default).
 - `--mode` (optional): Controls the level of detail in the output.
-  - `summary`: One-line display per case.
-  - `verbose`: Multi-line display with labeled fields.
+    - `summary`: One-line display per case.
+    - `verbose`: Multi-line display with labeled fields.
 
 #### Summary Mode Output
+
 Each case is shown in a single line with:
+
 - Status: `[Open]` or `[Closed]`
 - Category (e.g., `Theft`, `Scam`)
 - Case ID (6-character hexadecimal)
@@ -107,6 +111,7 @@ Each case is shown in a single line with:
 - Title
 
 Example:
+
 ```
 You currently have 3 cases in total
 ---
@@ -115,13 +120,15 @@ For more in depth information about the case (e.g. Info, Victim, Officer)
 run: list --mode verbose
 ---
 STATUS   CATEGORY         ID     DATE       TITLE
-[Open]   Theft            0001a3 2025-10-14 Robbery
-[Closed] Scam             0001a4 2025-10-15 Fraud
-[Closed] Traffic accident 0001a5 2025-10-15 Fraud
+[Open]   Theft            0001a3 14/10/2025 Robbery
+[Closed] Scam             0001a4 15/10/2025 Fraud
+[Closed] Traffic accident 0001a5 15/10/2025 Fraud
 ```
 
 #### Verbose Mode Output
+
 Each case is shown in multiple lines with:
+
 - Status
 - Category (e.g., `Theft`, `Scam`)
 - Case ID
@@ -134,6 +141,7 @@ Each case is shown in multiple lines with:
 - Officer (if available)
 
 Example:
+
 ```
 You currently have 1 case in total
 ---
@@ -155,9 +163,10 @@ Victim     : Jane Doe
 Officer    : Officer John Lee
 ```
 
-> Note: 
+> Note:
 > - Deleted cases are excluded from all listings.
-> - More specific case information (e.g. murder weapon) can only be accessed from read. This is an intentional design choice as we do not want to clutter the list command with unnecessary details.
+> - More specific case information (e.g. murder weapon) can only be accessed from read. This is an intentional design
+    choice as we do not want to clutter the list command with unnecessary details.
 
 
 ---
@@ -198,17 +207,35 @@ Marks a case as open.
 
 Updates the details of an existing case.
 
-**Format:** `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]`
+**Format:** `edit ID [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER] ...`
 
-* Updates the case at the specified `INDEX`.
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
+* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
+* Editing the case requires and one or more valid flags and their new values.
+* If no flags are provided, the valid editable fields for that case type will be shown instead.
+* `...` above refers to additional tags that may be available for certain categories. For more information on these additional
+  tags, refer to [Case Categories](#case-categories).
 
 **Examples:**
 
-* `edit 1 --victim Jane Smith --officer Officer Lee` updates the victim and officer of the 1st case in the list.
-* `edit 3 --title Updated title --date 2024-03-01` updates the title and date of the 3rd case in the list.
+1. `edit 000001` : displays a list of all editable fields for the case.
 
+Example output:
+ ```
+  Case found: [Open]   Traffic accident 000001 05/06/2018 Car accident
+
+  Fields that can be edited: --title, --date, --info, --victim, --officer, --vehicle-type, --vehicle-plate, --road-name
+```
+
+2. `edit 000001 --title Drunk Driving --road-name Adam Road --date 03/04/2025` : edits the title, road name, and date of the case
+
+Example output:
+ ```
+  Case edited:
+  [Open]   Traffic accident 000001 03/04/2025 Drunk Driving
+```
+
+> ℹ️ Note: Not all edited fields will show up in the return message after a successful edit. To view the updated case in full detail, use the `read` command.\
+> ℹ️ Note: A closed case cannot be edited. To edit the case, reopen the case using [`open`](#opening-a-case-open) command.\
 > ℹ️ Note: The above are stored as strings (except date). No special formatting is required for those inputs.\
 > ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using
 > the settings command below.\
@@ -240,34 +267,80 @@ Exits the program.
 
 ### Settings: `setting`
 
-This is a function to perform user defined setting for the program. User can set the date input format and output
+This is a function to perform user-defined setting for the program. User can set the date input format and output
 format.
 
 **Format:** `setting --type TYPE --value VALUE`
 > ℹ️ Note: Type can only be `dateinput` representing the input format and `dateoutput` representing the format where the
-> date will be printed.\
-> ⚠️ Warning: The value must be a valid date format, according to Java's DateFormatter. Stray characters that are not 
+> date will be printed and `timestampotuput` representing the format where the date time (for updatedAt and createdAt)
+> will be printed when the user uses verbose printing or read command.\
+> ⚠️ Warning: The value must be a valid date format, according to Java's DateFormatter. Stray characters that are not
 > date and time-related will flag as an error.
 > For more information, please refer
-> to [Java DateTimeFormatter](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html).\
-> ⚠️ Warning: Note that month is capitalised in the date-time-formatter. `MM` represents month, while `mm` represents minutes.\
-> The default input and output format is `dd/MM/yyyy`
-> ⚠️ Warning: If the input format has repeated characters (e.g., `dd-MM-yyyy-dd`), the user is expected to key in the same 
-> day for both `dd`.
+> to [Java DateTimeFormatter](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html).
+> ⚠️ Warning: Note that month is capitalised in the date-time-formatter. `MM` represents month while `mm` represents
+> minutes.
+> The default input and output format is `dd/MM/yyyy` and the default timestamp output format is `dd/MM/yyyy HH:mm:ss`.
+> ⚠️ Warning: If the input format has repeated characters (e.g., `dd-MM-yyyy-dd`), the user is expected to key in the
+> same day for both `dd`.
 
 **Examples:**
 
 * `setting --type dateinput --value dd-MM-yyyy` means that all inputs for date must follow dd-MM-yyyy format to be
   considered valid.
 * `setting --type dateoutput --value dd/MM/yyyy` means that all output for date will be printed in dd/MM/yyyy format.
+* `setting --type datetimeoutput --value dd/MM/yyyy HH:mm:ss` means that all output for timestamp will be
+  printed in dd/MM/yyyy HH:mm:ss format.
 
+---
+
+### Viewing the help menu: `help`
+
+Displays a list of all available commands along with their descriptions and usage examples.
+
+**Format:** `help`
+
+* Shows a complete help menu of supported commands.
+* Use this if you're unsure how to use a command or want a refresher.
+* Can be run anytime
+
+---
+
+### Reading a case: `read`
+
+Displays the full details of a specific case, including any category-specific fields. Fields that are not filled by the user will be shown as empty.
+
+**Format:** `read ID`
+
+* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
+
+**Example:**
+
+Input: `read 000001`
+
+Example output:
+```
+  Title             : Murder at Yishun
+  Case ID           : 000000
+  Status            : Closed
+  Category          : Murder
+  Date              : 23/06/2020
+  Victim            : Lim Ying
+  Officer           : Tony
+  Created at        : 2025-10-30T16:37:05
+  Updated at        : 2025-10-30T16:37:06
+  Weapon            : 
+  Number of Victims : 
+  Info              : Yishun Ring Road
+```
 ---
 
 ### File storage
 
-This is a feature that saves your case info to `data.txt` in the folder that you run the program in. 
-There is no specific command that will execute this function, 
-but it will automatically run every time you run any command.
+This is a feature that saves your case info to `data.txt` in the folder that you run the program in.
+There is no specific command that will execute this function, but it will automatically run every time 
+you run any command. Take note that your date format settings are not saved between different launches of your 
+application.
 
 #### Save file modification (only for advanced users)
 
@@ -277,25 +350,27 @@ The data in the save file is stored in this format:
 
 > `key1:value1|key2:value2|key3:value3|...`
 
-each key corresponds to a field, and each line corresponds to a case. An empty value means that the field has not been initialised.
-
-Fields that you SHOULD NOT EDIT:
-1. id
-2. category
-3. created-at
-
-You cannot add new cases through editing the file, do not add new lines to the save file.
-
-The date field must be stored in the format dd/mm/yyyy (day/month/year).
-
-The modified-at field must be stored in the format dd/mm/yyyy hh:mm:ss (day/month/year hour:minute:second).
+- each key corresponds to a field, and each line corresponds to a case. 
+  An empty value means that the field has not been initialised.
+- Fields that you SHOULD NOT EDIT:
+  1. id
+  2. category
+  3. created-at
+- You cannot add new cases through editing the file, do not add or remove lines to the save file.
+- The date field must be stored in the format dd/MM/yyyy (day/month/year).
+- The updated-at field must be stored in the format dd/MM/yyyy hh:mm:ss (day/month/year hour:minute:second).
+- Any extra fields that do not exist in the case's category will be lost if they are added to the save file.
+- The maximum number of characters allowed in these fields are still 5000.
+- You do not have to escape `--` sequences with `\\--`, but you still cannot use the reserved character `|`.
+- Take note that the updated at field will not be automatically updated to the time that you change the text file.
 
 ***Examples***
-- To change the victim in a case from `alice` to `bob`, modify the line in `data.txt` 
-from `...|victim:alice|...` to `...|victim:bob|...`.
+
+- To change the victim in a case from `alice` to `bob`, modify the line in `data.txt`
+  from `...|victim:alice|...` to `...|victim:bob|...`.
 - To change the date in a case from fifth of november 2024 (05/11/2025) to second of january 2025 (02/01/2025),
-modify the line corresponding to the case that you want to edit in `data.txt` from `...|date:05/11/2025|...`
-to `...|date:02/01/2025|...`.
+  modify the line corresponding to the case that you want to edit in `data.txt` from `...|date:05/11/2025|...`
+  to `...|date:02/01/2025|...`.
 
 ---
 
@@ -336,13 +411,27 @@ refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
 ## FAQ
 
 **Q**: How do I transfer my data to another computer?
+**A**: You can copy the `data.txt` file from the current working directory of the source computer to the directory
+containing the .jar file of the destination computer.
 
-**A**: Unfortunately, there is no built-in feature to transfer data between computers. This feature will be coming soon
-in the next iteration of SGSafe. Stay turned.
+**Q**: Is it recommended that I edit the `data.txt` file directly?
+**A**: It is not recommended as you may corrupt your data if you modify any data incorrectly. You should only edit the
+file if you are an advanced user and know what you are doing.
 
 **Q**: What happens if a case is marked as closed?
-
 **A**: Closed cases are still visible in the list but are marked with `[closed]` instead of `[Open]`.
+
+
+**Q**: Can I edit a closed case?
+**A**: No, closed cases cannot be edited. You will need to reopen the case using the `open` command before you can edit
+it.
+
+**Q**: What date formats are supported?
+**A**: By default, SGSafe supports the `dd/MM/yyyy` format for date input and output. You can change the date input
+and output formats using the `setting` command. The supported formats are based on Java's DateTimeFormatter.
+
+**Q**: Can I edit the data.txt file as the program is running?
+**A**: No, please do not edit or delete the data.txt file while the program is running as it may lead to data corruption.
 
 ---
 
@@ -354,14 +443,9 @@ in the next iteration of SGSafe. Stay turned.
 | **List cases**  | `list`                                                                                                | `list`                                                                                                                     |
 | **Close case**  | `close ID`                                                                                            | `close 000003`                                                                                                             |
 | **Open case**   | `open ID`                                                                                             | `open 000003`                                                                                                              |
-| **Edit case**   | `edit INDEX [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]`        | `edit 1 --victim Jane Smith --officer Officer Lee`                                                                         |
+| **Edit case**   | `edit ID [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]`           | `edit 000001 --victim Jane Smith --officer Officer Lee`                                                                    |
 | **Delete case** | `delete ID`                                                                                           | `delete 00beef`                                                                                                            |
+| **Read Case**   | `read ID`                                                                                             | `read 000001`                                                                                                              |
 | **Setting**     | `setting --type TYPE --value VALUE`                                                                   | `setting --type dateinput --value dd-MM-yyyy`                                                                              |
 | **Exit**        | `bye`                                                                                                 | `bye`                                                                                                                      |
-
-## Coming Soon
-
-- Data transfer between computers
-- Support for multiple formats for date input
-- More advanced search and filter options
-- Escape character for `--` in input values
+| **Help**        | `help`                                                                                                | `help`                                                                                                                     |

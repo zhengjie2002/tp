@@ -28,9 +28,9 @@ public class HelpCommand extends Command {
                     " [--officer OFFICER]\n" +
                     "\n" +
                     "\tExamples:\n" +
-                    "\t\tadd --category Theft --title Theft case --date 2024-01-15 --info Stolen wallet " +
+                    "\t\tadd --category Theft --title Theft case --date 15/01/2022 --info Stolen wallet " +
                     "--victim John Doe --officer Officer Smith\n" +
-                    "\t\tadd --category Burglary --info Burglary at 123 Main St --date 2024-02-20 --title " +
+                    "\t\tadd --category Burglary --info Burglary at 123 Main St --date 15/01/2022 --title " +
                     "Burglary case\n" +
                     "\n" +
                     "\tNotes:\n" +
@@ -110,7 +110,7 @@ public class HelpCommand extends Command {
                     "\tExamples:\n" +
                     "\t\tedit 000001\n" +
                     "\t\t\tDisplays a list of editable fields for the case.\n" +
-                    "\t\tedit 000001 --title Updated Title --date 2024-02-10\n" +
+                    "\t\tedit 000001 --title Updated Title --date 10/02/2024\n" +
                     "\t\t\tUpdates the title and date of case 000001.\n" +
                     "\n" +
                     "\tNotes:\n" +
