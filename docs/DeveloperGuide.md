@@ -117,8 +117,6 @@ The API of this component is primarily specified in `CaseManager`.
 
 #### Structure of the CaseFile Component
 
-![CaseFile Diagram](images/ClassDiagramCasefile.png)
-
 The CaseFile component consists of two main parts: `Case` and `CaseManager`.
 Together, they represent the domain model for managing case records within the system.
 
@@ -132,6 +130,10 @@ It provides high-level operations such as adding, updating, deleting, and retrie
 
 Additionally, `Case` interacts with the `CaseFormatter` class
 to produce formatted representations of case data for display.
+
+> ℹ️ Note: Only attributes are shown in the diagram, methods are omitted.\
+
+![CaseFile Diagram](images/ClassDiagramCasefile.png)
 
 #### Responsibilities
 
