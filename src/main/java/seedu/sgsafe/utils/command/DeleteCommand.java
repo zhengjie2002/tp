@@ -32,7 +32,7 @@ public class DeleteCommand extends Command {
     public void execute() {
         try {
             String caseToDelete = CaseManager.deleteCase(this.caseId);
-            Display.printMessage("Case Deleted: " + caseToDelete);
+            Display.printMessage("Case deleted:", caseToDelete);
         } catch (CaseNotFoundException e) {
             Display.printMessage(e.getMessage());
         }
