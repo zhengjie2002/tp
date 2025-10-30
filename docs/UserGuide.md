@@ -237,6 +237,7 @@ Updates the details of an existing case.
 * `edit 1 --victim Jane Smith --officer Officer Lee` updates the victim and officer of the 1st case in the list.
 * `edit 3 --title Updated title --date 2024-03-01` updates the title and date of the 3rd case in the list.
 
+> ℹ️ Note: A closed case cannot be edited. To edit the case, reopen the case using [`open`](#opening-a-case-open) command.\
 > ℹ️ Note: The above are stored as strings (except date). No special formatting is required for those inputs.\
 > ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using
 > the settings command below.\
