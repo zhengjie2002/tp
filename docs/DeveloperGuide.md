@@ -11,9 +11,6 @@
     - [Command Component](#command-component)
     - [Storage Component](#storage-component)
     - [Commons](#Commons)
-
-[//]: # (4. [Implementation]&#40;#implementation&#41;)
-
 4. [Appendix A: Product Scope](#appendix-a-product-scope)
     - [Target user profile](#target-user-profile)
     - [Value proposition](#value-proposition)
