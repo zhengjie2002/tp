@@ -251,7 +251,32 @@ Saving to the save file:
 
 ---
 
-### Common
+### Commons
+
+#### Exceptions
+
+SGSafe uses a structured exception hierarchy to handle errors gracefully and provide meaningful feedback to users.
+The `InvalidCommandException` is the base exception class for all exceptions. This class extend Java's Exception class
+
+The structure of the abstract exception class is as such:
+
+![ExceptionClassDiagram](images/ExceptionHierarchy.png)
+
+The diagram above does not show all exception classes, but it illustrates the general structure of the exception
+hierarchy and show key exception classes with unique fields.
+
+Here are some key points about the exception class structure:
+
+- Each exception class has a private field consisting an array of string `errorMessages` This array is meant to contain
+  the messages to be displayed to the user when this exception is thrown.
+- Each exception class has a constructor that takes a variable-length argument list that accepts zero or more String
+  values. This allows callers to pass multiple error messages as separate arguments without wrapping them in an array.
+- Some exception class (inherited from the abstract class) can have additional fields and methods as needed to provide
+  more context about the error.
+- In the main business logic of the application, when the exception is thrown, we can use the getter `getErrorMessage()`
+  method to retrieve the array of string and display it.
+- Since `InvalidCommandException` inherits from Java's Exception class, we can treat this as a standard checked
+  expression and catch it using try-catch blocks. It can also be implicitly upcasted to Exception type.
 
 ---
 
