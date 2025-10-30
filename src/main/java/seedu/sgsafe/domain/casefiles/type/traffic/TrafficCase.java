@@ -9,6 +9,12 @@ import seedu.sgsafe.domain.casefiles.CaseFormatter;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a case under the Traffic type.
+ * <p>
+ * This class serves as an abstract base for traffic-related cases
+ * such as {@link SpeedingCase} and {@link AccidentCase}.
+ */
 public abstract class TrafficCase extends Case {
     private String vehicleType;
     private String vehiclePlate;
