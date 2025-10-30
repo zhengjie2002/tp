@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import seedu.sgsafe.utils.exceptions.CaseAlreadyClosedException;
+import seedu.sgsafe.utils.exceptions.CaseCannotBeEditedException;
 import seedu.sgsafe.utils.exceptions.CaseAlreadyOpenException;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
@@ -108,6 +109,11 @@ public class CaseManager {
         Case caseToEdit = getCaseById(caseId);
         if (caseToEdit == null) {
             throw new CaseNotFoundException(caseId);
+        }
+
+        // Chack if case is closed
+        if (!caseToEdit.isOpen()) {
+            throw new CaseCannotBeEditedException(caseId);
         }
 
         // Validate flags before updating

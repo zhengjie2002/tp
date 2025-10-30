@@ -2,6 +2,7 @@ package seedu.sgsafe.utils.command;
 
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
+import seedu.sgsafe.utils.exceptions.CaseCannotBeEditedException;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.ui.Display;
 
@@ -27,6 +28,10 @@ public class EditPromptCommand extends Command {
             
             if (targetCase == null) {
                 throw new CaseNotFoundException(caseId);
+            }
+
+            if (!targetCase.isOpen()) {
+                throw new CaseCannotBeEditedException(caseId);
             }
             
             // Get valid flags for this case type
