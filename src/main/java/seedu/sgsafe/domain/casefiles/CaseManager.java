@@ -171,11 +171,12 @@ public class CaseManager {
     public static ArrayList<Case> findCasesByKeyword(String keyword) {
         ArrayList<Case> casesFound = new ArrayList<>();
         for (Case c : caseList) {
-            if(c.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+            if (c.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
                 casesFound.add(c);
             }
         }
         return casesFound;
+    }
       
     /**
      * Reads and returns the display representation of a case.
