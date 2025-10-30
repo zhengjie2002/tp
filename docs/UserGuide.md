@@ -19,7 +19,7 @@ organised digital workflow that enhances operational efficiency for the public s
     - [Exiting the program: `bye`](#exiting-the-program-bye)
     - [Settings: `setting`](#settings-setting)
     - [File storage](#file-storage)
-    - [Case Categories](#case-categories)
+    - [Case categories](#case-categories)
 - [FAQ](#faq)
 - [Command Summary](#command-summary)
 - [Coming Soon](#coming-soon)
@@ -299,34 +299,36 @@ to `...|date:02/01/2025|...`.
 
 ---
 
-## Case Categories
+### Case categories
 > **Notes:**
 >
-> * The category tag for the add command should be from the "Categories" column below.
-    > If the category is not in the list, type 'others' as the category.
-> * Some categories have additional tags attributed to them, which can be edited using the `edit` feature.
-> * Attributes are stored as strings unless otherwise stated using (integer),
-    > in which case only numerical positive whole numbers will be accepted as input.
+> * If the category is not in the list, type 'others' as the category.
+> * Some categories have additional attributes, which can be edited using the `edit` feature.
 > * For more information on how to add and edit categories,
-    > refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
+refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
 
-**`CATEGORY` tags:**
+**`CATEGORY` inputs:** 
+- indicated under `CATEGORY` column
 
-| Categories | Edit Tags (if any)                                                                                                                                                        |
-|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| burglary   | `--financial-value FINANCIAL-VALUE`(integer), `--location LOCATION`                                                                                                       |
-| scam       | `--financial-value FINANCIAL-VALUE`(integer)                                                                                                                              |
-| theft      | `--financial-value FINANCIAL-VALUE`(integer), `--stolen-object STOLEN-OBJECT`                                                                                             |
-| arson      | `--location LOCATION`, `--monetary-damage MONETARY-DAMAGE`(integer)                                                                                                       |
-| vandalism  | `--location LOCATION`, `--monetary-damage MONETARY-DAMAGE`(integer)                                                                                                       |
-| rape       |                                                                                                                                                                           |
-| voyeurism  |                                                                                                                                                                           |
-| accident   | `--vehicle-type VEHICLE-TYPE`, `--vehicle-plate VEHICLE-PLATE`, `--road-name ROAD-NAME`, `--number-of-casualties NUMBER-OF-CASUALTIES`(integer)                           |
-| speeding   | `--vehicle-type VEHICLE-TYPE`, `--vehicle-plate VEHICLE-PLATE`, `--road-name ROAD-NAME`, `--speed-limit SPEED-LIMIT`(integer), `--exceeded-speed EXCEEDED-SPEED`(integer) |
-| assault    | `--weapon WEAPON`, `--number-of-victims NUMBER-OF-VICTIMS`(integer)                                                                                                       |
-| murder     | `--weapon WEAPON`, `--number-of-victims NUMBER-OF-VICTIMS`(integer)                                                                                                       |
-| robbery    | `--weapon WEAPON`, `--number-of-victims NUMBER-OF-VICTIMS`(integer)                                                                                                       |
-| others     | `--custom-category CUSTOM-CATEGORY`                                                                                                                                       |
+**`edit` tags:**
+- `STRING`: attributes are stored as strings and accept any input
+- `INTEGER`: attributes are stored as integers and only accept positive whole numbers as input.
+
+| `CATEGORY`  | `edit` tags (if any)                                                                                                          |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------|
+| burglary  | `--financial-value INTEGER`, `--location STRING`                                                                              |
+| scam      | `--financial-value INTEGER`                                                                                                   |
+| theft     | `--financial-value INTEGER`, `--stolen-object STRING`                                                                         |
+| arson     | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
+| vandalism | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
+| rape      |                                                                                                                               |
+| voyeurism |                                                                                                                               |
+| accident  | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--number-of-casualties INTEGER`                     |
+| speeding  | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--speed-limit INTEGER` , `--exceeded-speed INTEGER` |
+| assault   | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| murder    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| robbery   | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| others    | `--custom-category STRING`                                                                                                    |
 
 ---
 
@@ -340,7 +342,7 @@ in the next iteration of SGSafe. Stay turned.
 
 **Q**: What happens if a case is marked as closed?
 
-**A**: Closed cases are still visible in the list but are marked with `[C]` instead of `[O]`.
+**A**: Closed cases are still visible in the list but are marked with `[closed]` instead of `[Open]`.
 
 ---
 
