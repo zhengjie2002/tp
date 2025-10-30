@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 /**
  * The `Validator` class provides utility methods for validating flags and inputs.
@@ -16,6 +17,10 @@ public class Validator {
     private static final Logger logger = Logger.getLogger(Validator.class.getName());
     // Constant for case ID validation pattern
     private static final String CASE_ID_REGEX = "^[0-9A-Fa-f]{6}$";
+
+    // Pattern to validate date time format strings
+    private static final Pattern VALID_FORMAT_PATTERN =
+            Pattern.compile("^[yMdHmsESaGwWDFkKhzZXx'\\-/.,: ]+$");
 
     //@@author shennontay
 
@@ -84,4 +89,22 @@ public class Validator {
         }
         return caseId.matches(CASE_ID_REGEX);
     }
+
+
+    //@@author zhengjie2002
+    /**
+     * Validates whether the provided date-time format string contains only valid characters.
+     * <p>
+     * Valid characters include those used in `DateTimeFormatter` patterns, such as:
+     * y, M, d, H, m, s, S, E, a, G, w, W, D, F, k, K, h, z, Z, X, x, single quotes for literals,
+     * and separators like -, /, ., :, space, and comma.
+     *
+     * @param format The date-time format string to validate.
+     * @return {@code true} if the format string is valid; {@code false} otherwise.
+     */
+    public Boolean isValidDateTimeString(String format) {
+        return (VALID_FORMAT_PATTERN.matcher(format).matches());
+    }
+
+    //@@author
 }

@@ -24,6 +24,7 @@ import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidFormatStringException;
 import seedu.sgsafe.utils.exceptions.InvalidHelpCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
@@ -519,6 +520,9 @@ public class Parser {
         }
 
         SettingType settingType = parseSettingType(flagValues.get("type"));
+        if(!validator.isValidDateTimeString(flagValues.get("value"))) {
+            throw new InvalidFormatStringException();
+        }
 
         return new SettingCommand(settingType, flagValues.get("value"));
     }
