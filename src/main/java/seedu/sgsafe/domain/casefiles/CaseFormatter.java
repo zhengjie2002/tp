@@ -115,10 +115,14 @@ public class CaseFormatter {
         if (lines == null || label == null) {
             return;
         }
-        if (value != null && !value.isEmpty()) {
-            List<String> fieldLines = wrapField(false, label, value, MAX_DISPLAY_WIDTH_CHARACTERS);
-            lines.addAll(fieldLines);
+
+        if (value == null || value.equalsIgnoreCase( "null") ||value.isEmpty()) {
+            lines.add(formatPrefix(label, false));
+            return;
         }
+
+        List<String> fieldLines = wrapField(false, label, value, MAX_DISPLAY_WIDTH_CHARACTERS);
+        lines.addAll(fieldLines);
     }
     //@@author
 

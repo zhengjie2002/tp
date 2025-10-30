@@ -271,14 +271,6 @@ class CaseFormatterTest {
     void addWrappedFieldForRead_handlesNullsGracefully() {
         List<String> lines = new ArrayList<>();
 
-        // Null value → nothing added
-        CaseFormatter.addWrappedFieldForRead(lines, "Label", null);
-        assertTrue(lines.isEmpty());
-
-        // Empty value → nothing added
-        CaseFormatter.addWrappedFieldForRead(lines, "Label", "");
-        assertTrue(lines.isEmpty());
-
         // Null lines → should not throw
         assertDoesNotThrow(() -> CaseFormatter.addWrappedFieldForRead(null, "Label", "Value"));
 

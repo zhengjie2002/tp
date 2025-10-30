@@ -176,5 +176,19 @@ public class CaseManager {
             }
         }
         return casesFound;
+      
+    /**
+     * Reads and returns the display representation of a case.
+     * Throws an {@link CaseNotFoundException} if the case does not exist or has been deleted.
+     *
+     * @param caseId the id of the case to be read.
+     * @return the case's display representation as a String array.
+     */
+    public static String[] readCase(String caseId) throws CaseNotFoundException {
+        Case caseToRead = getCaseById(caseId);
+        if (caseToRead == null) {
+            throw new CaseNotFoundException(caseId);
+        }
+        return caseToRead.getReadCaseDisplay();
     }
 }
