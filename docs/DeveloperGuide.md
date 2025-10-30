@@ -47,9 +47,6 @@ Given below is a quick overview of main components and how they interact with ea
 
 The main code flow is as follows:
 
-1. Print welcome message
-2. Initialize CaseManager with saved info from `data.txt` if it exists
-   The main code flow of `SGSafe`, our main class is as follows:
 1. Print welcome message using `Display`
 2. Initialize CaseManager with saved info from `data.txt` if it exists through `Storage`
 3. Read user input from System.in
@@ -109,8 +106,9 @@ The sequence diagram above illustrates how user input is processed to create and
 ### CaseFile Component
 
 The CaseFile component is in charge of how case records are stored, organized, and managed in SGSafe.
-It acts as the main part of the system’s data model, defining what information each case contains and how cases are handled.
-The component’s main functions are provided through the CaseManager class, which other parts of the 
+It acts as the main part of the system’s data model, defining what information each case contains and how cases are
+handled.
+The component’s main functions are provided through the CaseManager class, which other parts of the
 system (like Command and Storage) use to access or update case data.
 
 The API of this component is primarily specified in `CaseManager`.
@@ -122,9 +120,9 @@ The API of this component is primarily specified in `CaseManager`.
 The CaseFile component consists of two main parts: `Case` and `CaseManager`.
 Together, they represent the domain model for managing case records within the system.
 
-The `Case` class defines the structure and behavior of individual cases, 
+The `Case` class defines the structure and behavior of individual cases,
 encapsulating shared attributes such as case ID, case title, case info etc.
-Specialised subclasses (e.g., `FinancialCase`, `TrafficCase`, `ViolentCase`) 
+Specialised subclasses (e.g., `FinancialCase`, `TrafficCase`, `ViolentCase`)
 extend `Case` to implement category specific attributes and methods.
 
 The `CaseManager` class is responsible for managing `Case` objects.
@@ -185,7 +183,7 @@ commands.
 
 > ℹ️ Note: Only non-trivial fields and methods are shown in the above diagram.\
 > ℹ️ UML Info: Due to the limitation of plantUML, the diagram is shown top down for best visibility, instead of the
-> usual left to right. 
+> usual left to right.
 
 ![CommandClassDiagram](images/CommandClassDiagram.png)
 
@@ -313,13 +311,21 @@ Here are some key points about the exception class structure:
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priorities | Version | As a ...           | I want to ...       | So that I can ...                                    |
-|------------|---------|--------------------|---------------------|------------------------------------------------------|
-| ***        | v1.0    | front-desk officer | create case         | record cases into the system                         |
-| ***        | v1.0    | front-desk officer | edit case details   | edit cases that are typed wrongly                    |
-| ***        | v1.0    | front-desk officer | mark case as closed | close cases that have been attended to               |
-| ***        | v1.0    | front-desk officer | delete case         | delete duplicates                                    |
-| ***        | v1.0    | front-desk officer | list all cases      | see all the cases that are currently being worked on |
+| Priorities | Version | As a ...                  | I want to ...                               | So that I can ...                                          |
+|------------|---------|---------------------------|---------------------------------------------|------------------------------------------------------------|
+| ***        | v1.0    | front-desk officer        | create case                                 | record cases into the system                               |
+| ***        | v1.0    | front-desk officer        | edit case details                           | edit cases that are typed wrongly                          |
+| ***        | v1.0    | front-desk officer        | mark case as closed                         | close cases that have been attended to                     |
+| ***        | v1.0    | front-desk officer        | delete case                                 | delete duplicates                                          |
+| ***        | v1.0    | front-desk officer        | list all cases                              | see all the cases that are currently being worked on       |
+| **         | v2.0    | police officer            | reopen case                                 | reopen closed cases when new leads arise                   |
+| **         | v2.0    | analytical police officer | list all the display  verbose               | view details of the cases to get a quick summary           |
+| **         | v2.0    | police chief              | read all the details of one case            | understand the entire case information                     |
+| **         | v2.0    | police officer            | control how I type/view dates in the system | have it personalized to my preference                      |
+| **         | v2.0    | organised police officer  | set category tags for each of the cases     | sort cases with details relevant to each case              |
+| **         | v2.0    | police officer            | add additional information about a case     | record information relevant to that category for that case |
+| *          | v2.0    | new police officer        | view a user guide on the command line       | get familiarized with how to use the application           |
+| *          | v2.0    | police officer            | view when a case is created/edited          | trace back to when changes were made                       |
 
 ---
 
