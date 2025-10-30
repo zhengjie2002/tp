@@ -168,6 +168,16 @@ public class CaseManager {
         return caseToDelete.getDisplayLine();
     }
 
+    public static ArrayList<Case> findCasesByKeyword(String keyword) {
+        ArrayList<Case> casesFound = new ArrayList<>();
+        for (Case c : caseList) {
+            if (c.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                casesFound.add(c);
+            }
+        }
+        return casesFound;
+    }
+      
     /**
      * Reads and returns the display representation of a case.
      * Throws an {@link CaseNotFoundException} if the case does not exist or has been deleted.
