@@ -2,31 +2,45 @@
 !include ../style.puml
 
 skinparam sequenceReferenceBackgroundColor #ffffff
-autoactivate on
 participant ":Storage" as S STORAGE_COLOR
-participant ":CaseManager" as CM CASEFILE_COLOR
+participant "<<Class>>\n:CaseManager" as CM CASEFILE_COLOR
 participant ":Case" as C CASEFILE_COLOR
-participant ":Parser" as P UI_COLOR
+participant "<<Class>>\n:Parser" as P UI_COLOR
+
 -[MAIN_COLOR]> S : loadCaseManager()
+activate S STORAGE_COLOR_T1
 
 opt save file exists
     loop for line in savefile
         S -[STORAGE_COLOR]> S : getCaseFromSaveString(line)
+        activate S STORAGE_COLOR_T2
         create C
         S -[STORAGE_COLOR]> C
+        activate C CASEFILE_COLOR_T1
         return new case
-        S -[STORAGE_COLOR]> P : convertFlagValueTypes(...)
-        return
-        S -[STORAGE_COLOR]> C : update(fields)
-        return
-        S -[STORAGE_COLOR]> C : inititialiseMetadataFromSave(...)
-        return
+        deactivate C
 
-        return new case
-        S -[STORAGE_COLOR]> CM : addCase(new case)
+        S -[STORAGE_COLOR]> P : convertFlagValueTypes(...)
+        activate P UI_COLOR_T1
         return
+        deactivate P
+        S -[STORAGE_COLOR]> C : update(fields)
+        activate C CASEFILE_COLOR_T1
+        return
+        deactivate C
+        S -[STORAGE_COLOR]> C : inititialiseMetadataFromSave(...)
+        activate C CASEFILE_COLOR_T1
+        return
+        deactivate C
+        S --[STORAGE_COLOR]> S
+        deactivate S
+        S -[STORAGE_COLOR]> CM : addCase(new case)
+        activate CM CASEFILE_COLOR_T1
+        return
+        deactivate CM
     end loop
 end opt
+<[MAIN_COLOR]-- S
+deactivate S
 
-return
 @enduml
