@@ -15,16 +15,16 @@
     - [Target user profile](#target-user-profile)
     - [Value proposition](#value-proposition)
 5. [Appendix B: User Stories](#appendix-b-user-stories)
-7. [Appendix C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
-8. [Appendix D: Glossary](#appendix-d-glossary)
-9. [Appendix E: Instructions for Manual Testing](#appendix-e-instructions-for-manual-testing)
+6. [Appendix C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
+7. [Appendix D: Glossary](#appendix-d-glossary)
+8. [Appendix E: Instructions for Manual Testing](#appendix-e-instructions-for-manual-testing)
 
 ---
 
 ## Acknowledgements
 
-- The feature for setting of date and time is designed with inspiration from the
-  [article](https://www.baeldung.com/java-datetimeformatter), although all implementation code was entirely done on own
+- The feature for setting the date and time is designed with inspiration from the
+  [article](https://www.baeldung.com/java-datetimeformatter), although all implementation code was entirely done on our
   own.
 
 ---
@@ -42,7 +42,7 @@ up your development environment and get started with the project.
 
 The Architecture Diagram given above explains the high-level design of the App.
 
-Given below is a quick overview of main components and how they interact with each other.
+Given below is a quick overview of the main components and how they interact with each other.
 
 #### Overall logic
 
@@ -60,7 +60,7 @@ The main code flow is as follows:
 
 #### Overall sequence diagram
 
-This is the overall sequence diagram, that will be elaborated more on in detail later.
+This is the overall sequence diagram, which will be elaborated more on in detail later.
 It describes the rough workflow of our app.
 Likewise, the abstract class `Command` mentioned here is meant to be a specific command, depending on what the user
 input is.
@@ -86,18 +86,19 @@ class extracts the keyword to identify the command type, then calls methods from
 arguments are present in the input.
 
 Here are some examples of command keywords and their required arguments:
-|keyword|Command Type|Required Arguments|
-|-|-|-|
-|add|AddCommand|`title`, `category`, `date`, `info`|
-|read|ReadCommand||
-|delete|DeleteCommand|`case id`|
+
+| keyword | Command Type  | Required Arguments                  |
+|---------|---------------|-------------------------------------|
+| add     | AddCommand    | `title`, `category`, `date`, `info` |
+| read    | ReadCommand   |                                     |
+| delete  | DeleteCommand | `case id`                           |
 
 #### Interaction Flow
 
-1. `SGSafe.mainLoop()` reads user input from console
+1. `SGSafe.mainLoop()` reads user input from the console
 2. `Parser.parseInput()` extracts the command keyword from the input, then calls `Parser.parseXCommand()`, where X is
    the appropriate command type
-3. `parseXCommand()`calls methods in `Validator` to check input validity, then creates the appropriate `XCommand` object
+3. `parseXCommand()` calls methods in `Validator` to check input validity, then creates the appropriate `XCommand` object
    to perform the action
 4. Any exceptions caught or error messages are shown through `Display.printMessage()`
 5. Results are also displayed via `Display.printMessage()`
@@ -112,7 +113,7 @@ The sequence diagram above illustrates how user input is processed to create and
 
 ### CaseFile Component
 
-The CaseFile component is in charge of how case records are stored, organized, and managed in SGSafe.
+The CaseFile component is responsible for how case records are stored, organized, and managed in SGSafe.
 It acts as the main part of the system’s data model, defining what information each case contains and how cases are
 handled.
 The component’s main functions are provided through the CaseManager class, which other parts of the
@@ -156,7 +157,10 @@ The CaseFile component:
 **Case**:
 An abstract class that defines the blueprint for all case types.
 It includes identifiers, metadata (e.g. time it is created at, time it is updated at, title, etc.), and abstract methods
-that must be implemented by subclasses (e.g. domain‑specific case types).
+that must be implemented by subclasses (e.g. domain-specific case types).
+> ℹ️ Note: Whenever a case object is instantiated, a new (and unique) case ID is automatically generated for it. 
+> When a case is deleted, the object is not destroyed. Instead, soft deletion is performed by marking the case as deleted. 
+> This also means that case ID will never be reused within the same instance of this application.
 
 **CaseManager**:
 A concrete class responsible for managing Case objects.
@@ -174,9 +178,9 @@ It also handles validation and persistence by coordinating with Storage.
 
 ### Command Component
 
-The command component is responsible for handling user commands. Based on the interpreted user input by parser, it
+The command component is responsible for handling user commands. Based on the interpreted user input by the parser, it
 executes the corresponding
-actions on the CaseFile component, and prints result to the UI component.
+actions on the CaseFile component, and prints the result to the UI component.
 The API of this component is primarily specified in `Command`.
 
 #### Structure
@@ -200,7 +204,7 @@ commands.
 
 - **Command**: An abstract class that defines the structure for all command classes. It includes an abstract `execute()`
   method that must be implemented by all subclasses.
-- **ENUM: SettingType**: An enumeration that defines different settings types that can be modified by the setting
+- **ENUM: SettingType**: An enumeration that defines different setting types that can be modified by the setting
   commands.
 - **ENUM: CaseListingMode**: An enumeration that defines different modes for listing cases, such as by date or by
   status.
@@ -216,7 +220,7 @@ The responsibilities of the command component include:
   would have already been performed by the UI component during parsing.
 - The command component interacts with the CaseFile component to manipulate case data as required by the command, and it
   uses the UI component to display results or error messages to the user.
-- The command component catches any error with command execution and throws appropriate exceptions to be handled by the
+- The command component catches any errors with command execution and throws appropriate exceptions to be handled by the
   UI component. (example of such errors include trying to edit a non-existent case)
 
 #### Interaction Flow
@@ -260,7 +264,7 @@ Loading from a save file:
 
 Saving to the save file:
 
-- Every time a command completes, `saveToFile()` is run in the `SGsafe.handleUserCommand()` method.
+- Every time a command completes, `saveToFile()` is run in the `SGSafe.handleUserCommand()` method.
   This only occurs if the command is successfully run.
 
 ![SequenceDiagramFileSave.png](images/SequenceDiagramFileSave.png)
@@ -272,27 +276,27 @@ Saving to the save file:
 #### Exceptions
 
 SGSafe uses a structured exception hierarchy to handle errors gracefully and provide meaningful feedback to users.
-The `InvalidCommandException` is the base exception class for all exceptions. This class extend Java's Exception class
+The `InvalidCommandException` is the base exception class for all exceptions. This class extends Java's Exception class
 
-The structure of the abstract exception class is as such:
+The structure of the abstract exception class is as follows:
 
 ![ExceptionClassDiagram](images/ExceptionHierarchy.png)
 
 The diagram above does not show all exception classes, but it illustrates the general structure of the exception
-hierarchy and show key exception classes with unique fields.
+hierarchy and shows key exception classes with unique fields.
 
 Here are some key points about the exception class structure:
 
-- Each exception class has a private field consisting an array of string `errorMessages` This array is meant to contain
+- Each exception class has a private field consisting an array of strings `errorMessages`. This array is meant to contain
   the messages to be displayed to the user when this exception is thrown.
 - Each exception class has a constructor that takes a variable-length argument list that accepts zero or more String
   values. This allows callers to pass multiple error messages as separate arguments without wrapping them in an array.
 - Some exception class (inherited from the abstract class) can have additional fields and methods as needed to provide
   more context about the error.
 - In the main business logic of the application, when the exception is thrown, we can use the getter `getErrorMessage()`
-  method to retrieve the array of string and display it.
+  method to retrieve the array of string and display them.
 - Since `InvalidCommandException` inherits from Java's Exception class, we can treat this as a standard checked
-  expression and catch it using try-catch blocks. It can also be implicitly upcasted to Exception type.
+  exception and catch it using try-catch blocks. It can also be implicitly upcasted to Exception type.
 
 [//]: # ()
 
@@ -334,7 +338,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | ***        | v1.0    | front-desk officer        | delete case                                          | delete duplicates                                          |
 | ***        | v1.0    | front-desk officer        | list all cases                                       | see all the cases that are currently being worked on       |
 | **         | v2.0    | police officer            | reopen case                                          | reopen closed cases when new leads arise                   |
-| **         | v2.0    | analytical police officer | list all the display  verbose                        | view details of the cases to get a quick summary           |
+| **         | v2.0    | analytical police officer | see all the cases in detail                          | view key information of the cases to get a quick summary   |
 | **         | v2.0    | police chief              | read all the details of one case                     | understand the entire case information                     |
 | **         | v2.0    | police officer            | control how I type/view dates in the system          | have it personalized to my preference                      |
 | **         | v2.0    | organised police officer  | set category tags for each of the cases              | sort cases with details relevant to each case              |
@@ -351,7 +355,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 - Should be able to hold up to 1000 cases without a noticeable sluggishness in performance for typical usage.
 - A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be
   able to accomplish most of the tasks faster using commands than using the mouse.
-  {More to be added}
+- Application should save data upon successful completion to minimize risk of unexpected data loss.
 
 ---
 
@@ -377,7 +381,7 @@ Given below are the instructions for manual testing of SGSafe.
 ### Launch and Startup
 
 1. Ensure you have Java 17 installed on your system.
-2. Download the SGSafe JAR file from the [releases page](link_to_releases). Please the file in an empty folder.
+2. Download the SGSafe JAR file from the [releases page](https://github.com/AY2526S1-CS2113-W13-3/tp/releases). Please place the file in an empty folder.
 3. Open a terminal or command prompt.
 4. Navigate to the directory where the JAR file is located.
 5. Run the application using the command:
@@ -400,13 +404,13 @@ Given below are the instructions for manual testing of SGSafe.
 
 ### List Cases
 
-1. Test case: List case in normal mode
+1. Test case: List cases in normal mode
     - Input: `list`
     - Expected Output: All cases being listed out, but there is only information about status, category, ID, date,
       title.
 
-2. Test case: List case with status filer
-    - Input: `list --status closes`
+2. Test case: List case with status filter
+    - Input: `list --status closed`
     - Expected Output: All the cases that have been closed will be listed out.
     -
 3. Test case: List case with verbose mode
@@ -420,7 +424,7 @@ Given below are the instructions for manual testing of SGSafe.
     - Expected: Case marked as closed with confirmation message.
 
 2. Test case: Closing a non-existent case
-    - Input: `close 999999` (use a non-valid case ID from your list)
+    - Input: `close 999999` (use an invalid case ID from your list)
     - Expected: Error message indicating case ID does not exist.
 
 ### Opening Cases
@@ -430,7 +434,7 @@ Given below are the instructions for manual testing of SGSafe.
     - Expected: Case marked as open with confirmation message.
 
 2. Test case: Opening a non-existent case
-    - Input: `open 999999` (use a non-valid case ID from your list)
+    - Input: `open 999999` (use an invalid case ID from your list)
     - Expected: Error message indicating case ID does not exist.
 
 ### Editing Cases
@@ -440,8 +444,8 @@ Given below are the instructions for manual testing of SGSafe.
     - Expected: Case updated successfully with new values.
 
 2. Test case: Editing a case without providing any fields
-    - Input: `edit 000001`
-    - Expected: Error message indicating at least one field must be provided.
+    - Input: `edit 000001` (use a valid closed case ID)
+    - Expected: Error message indicating a list of editable fields.
 
 ### Deleting Cases
 
@@ -465,5 +469,5 @@ Given below are the instructions for manual testing of SGSafe.
     - Input: Add a case, exit the application, restart it, then list cases.
     - Expected: Previously added case is still present after restart.
 
-The above test cases are non exhaustive and meant to cover the main functionalities of SGSafe.
+The above test cases are not exhaustive and meant to cover the main functionalities of SGSafe.
 Please see the user guide for more details on how to use SGSafe and explore additional commands and features.
