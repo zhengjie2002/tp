@@ -14,10 +14,13 @@ organised digital workflow that enhances operational efficiency for the public s
     - [Listing cases: `list`](#listing-cases-list)
     - [Closing a case: `close`](#closing-a-case-close)
     - [Opening a case: `open`](#opening-a-case-open)
-    - [Updating a case: `edit`](#editing-a-case-edit)
+    - [Editing a case: `edit`](#editing-a-case-edit)
     - [Deleting a case: `delete`](#deleting-a-case-delete)
-    - [Exiting the program: `bye`](#exiting-the-program-bye)
     - [Settings: `setting`](#settings-setting)
+    - [Reading a case: `read`](#reading-a-case-read)
+    - [Finding for cases: `find`](#finding-for-cases-find)
+    - [Viewing the help menu: `help`](#viewing-the-help-menu-help)
+    - [Exiting the program: `bye`](#exiting-the-program-bye)
     - [File storage](#file-storage)
     - [Case categories](#case-categories)
 - [FAQ](#faq)
@@ -29,12 +32,11 @@ organised digital workflow that enhances operational efficiency for the public s
 1. Ensure that you have Java 17 installed on your computer.
 2. Download the latest version of `SGSafe` from
    the [releases page](https://github.com/AY2526S1-CS2113-W13-3/tp/releases).
-3. Copy the file to the folder you want to use as the home folder for SGSafe.
+3. Copy the .jar file to the folder you want to use as the home folder for SGSafe.
 4. Open a command terminal, navigate to the folder containing the JAR file, and run `java -jar SGSafe.jar` to start the
-   application.
+   application. (Please note the filename may differ depending on the version you downloaded.)
 5. Type commands in the command line and press Enter to execute them. Refer to the [Command Summary](#command-summary)
-   section
-   below for a quick overview of available commands.
+   section below for a quick overview of available commands.
 
 ---
 ## Features
@@ -52,9 +54,10 @@ organised digital workflow that enhances operational efficiency for the public s
 >
 > * Optional parameters are enclosed in square brackets.\
     >   e.g., `--title TITLE [--victim VICTIM]` means the victim parameter is optional.
+>
 > * The escape character for `--` is `\--`. 
-> For example: `add --category murder --title hello\--world --info hello --date 05/02/2022` will result in the title of be case being `hello--world`
-> * You cannot use the character | in your input as it is used in the save file format.
+> For example: `add --category murder --title hello\--world --info hello --date 05/02/2022` will result in the title of the case being `hello--world`
+> * You cannot use the character `|` in your input as it is used in the save file format.
 ---
 
 ### Adding a case: `add`
@@ -63,24 +66,26 @@ Adds a new case to the case management system.
 
 **Format:** `add --category CATEGORY --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]`
 
-* `CATEGORY`: The category of the case
-* `TITLE`: The title or summary of the case
-* `DATE`: The date the case was recorded or occurred
-* `INFO`: Additional information or notes about the case
-* `VICTIM`: (Optional) The name(s) of the victim involved
-* `OFFICER`: (Optional) The name(s) of the officer assigned
+* `CATEGORY`: The category of the case. This must be one of those specified in [Case Categories](#case-categories)
+* `TITLE`: The title or summary of the case.
+* `DATE`: The date the case occurred. 
+* `INFO`: Additional information or notes about the case.
+* `VICTIM`: (Optional) The name(s) of the victim involved.
+* `OFFICER`: (Optional) The name(s) of the officer assigned.
 
-> ℹ️ Note: The above are stored as strings (except date). No special formatting is required for those inputs.\
-> ℹ️ Note: For accepted CATEGORY tags, refer to [Case Categories](#case-categories).\
+> ℹ️ Note: Title, Info, Victim and Officer are treated as strings. Arguments provided to flags will be saved verbatim. \
 > ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using
-> the settings command below.\
-> ⚠️ Warning: A maximum of 5000 characters is allowed for all the fields.
+> the [Settings](#settings-setting) command below.\
+> ⚠️ Warning: A maximum of 5000 characters is allowed for all the fields.\
+> ⚠️ Warning: Only the above flags are allowed. Additional flags related to specific categories cannot be set during case creation.
+> They can only be set using the [`edit`](#editing-a-case-edit) command after the case has been created. This is an intentional design
+> choice to simplify the case creation process.
 
 **Examples:**
 
-* `add --category Theft --title Theft case --date 15/10/2024 --info Stolen wallet --victim John Doe --officer Officer Smith`
+* `add --category theft --title Theft case --date 15/10/2024 --info Stolen wallet --victim John Doe --officer Officer Smith`
 
-* `add --category Burglary --info Burglary at 123 Main St --date 20/02/2024 --title Burglary case`
+* `add --category burglary --info Burglary at 123 Main St --date 20/02/2024 --title Burglary case`
 
 ---
 
@@ -157,8 +162,8 @@ Category   : Murder
 Title      : TITLE
 Date       : 22/04/2023
 Info       : Masked suspect entered victim's bedroom
-Created at : 2025-10-27T18:28:25.170780500
-Updated at : 2025-10-27T18:28:25.170780500
+Created at : 01/11/2025 20:57:05
+Updated at : 01/11/2025 20:57:05
 Victim     : Jane Doe
 Officer    : Officer John Lee
 ```
@@ -210,7 +215,7 @@ Updates the details of an existing case.
 **Format:** `edit ID [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER] ...`
 
 * The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
-* Editing the case requires and one or more valid flags and their new values.
+* Editing the case requires one or more valid flags and their new values.
 * If no flags are provided, the valid editable fields for that case type will be shown instead.
 * `...` above refers to additional tags that may be available for certain categories. For more information on these additional
   tags, refer to [Case Categories](#case-categories).
@@ -235,10 +240,10 @@ Example output:
 ```
 
 > ℹ️ Note: Not all edited fields will show up in the return message after a successful edit. To view the updated case in full detail, use the `read` command.\
-> ℹ️ Note: A closed case cannot be edited. To edit the case, reopen the case using [`open`](#opening-a-case-open) command.\
+> ℹ️ Note: A closed case cannot be edited. To edit the case, reopen the case using the [`open`](#opening-a-case-open) command.\
 > ℹ️ Note: The above are stored as strings (except date). No special formatting is required for those inputs.\
 > ℹ️ Note: Date is stored as a Java LocalDate. The default input format is `dd/MM/yyyy`. You may wish to change it using
-> the settings command below.\
+> the [Settings](#settings-setting) command below.\
 > ⚠️ Warning: A maximum of 5000 characters is allowed for all the fields.
 
 ---
@@ -257,40 +262,76 @@ Example output:
 
 ---
 
-### Exiting the program: `bye`
-
-Exits the program.
-
-**Format:** `bye`
-
----
-
 ### Settings: `setting`
 
-This is a function to perform user-defined setting for the program. User can set the date input format and output
+This is a function to perform user-defined settings for the program. User can set the date input format and output
 format.
 
 **Format:** `setting --type TYPE --value VALUE`
-> ℹ️ Note: Type can only be `dateinput` representing the input format and `dateoutput` representing the format where the
-> date will be printed and `timestampotuput` representing the format where the date time (for updatedAt and createdAt)
-> will be printed when the user uses verbose printing or read command.\
-> ⚠️ Warning: The value must be a valid date format, according to Java's DateFormatter. Stray characters that are not
-> date and time-related will flag as an error.
+
+The type argument determines the date format. It must be one of the following:
+- `dateinput`: The expected format for user-provided dates.
+- `dateoutput`: The display format for dates.
+- `timestampoutput`: The display format for full date-times (e.g., "Updated At," "Created At") used in verbose listing or the read command.
+
+> ℹ️ Note: The default date input and output format is `dd/MM/yyyy` and the default timestamp output format is `dd/MM/yyyy HH:mm:ss`.
+> ⚠️ Warning: Note that month is capitalised in the date-time formatter. `MM` represents month while `mm` represents
+> minutes. Hour-of-day are represented by `HH`.\
+> ⚠️ Warning: The VALUE must be a valid date format, according to Java's DateFormatter. Stray characters that are not
+> date and time-related will be flagged as an error.
 > For more information, please refer
-> to [Java DateTimeFormatter](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html).
-> ⚠️ Warning: Note that month is capitalised in the date-time-formatter. `MM` represents month while `mm` represents
-> minutes.
-> The default input and output format is `dd/MM/yyyy` and the default timestamp output format is `dd/MM/yyyy HH:mm:ss`.
+> to [Java DateTimeFormatter](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html).\
 > ⚠️ Warning: If the input format has repeated characters (e.g., `dd-MM-yyyy-dd`), the user is expected to key in the
 > same day for both `dd`.
 
 **Examples:**
 
-* `setting --type dateinput --value dd-MM-yyyy` means that all inputs for date must follow dd-MM-yyyy format to be
-  considered valid.
-* `setting --type dateoutput --value dd/MM/yyyy` means that all output for date will be printed in dd/MM/yyyy format.
-* `setting --type datetimeoutput --value dd/MM/yyyy HH:mm:ss` means that all output for timestamp will be
-  printed in dd/MM/yyyy HH:mm:ss format.
+* `setting --type dateinput --value dd-MM-yyyy`. Sets the required format for date inputs. 
+The application will only accept dates matching the `dd-MM-yyyy` format.
+* `setting --type dateoutput --value dd/MM/yyyy`.  Sets the display format for all dates to `dd/MM/yyyy`.
+* `setting --type timestampoutput --value dd/MM/yyyy HH:mm:ss` Sets the display format for all timestamps to `dd/MM/yyyy HH:mm:ss`.
+
+---
+
+### Reading a case: `read`
+
+Displays the full details of a specific case, including any category-specific fields. Fields that are not filled by the user will be shown as empty.
+
+**Format:** `read ID`
+
+> ℹ️ Note: The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
+
+**Example:**
+
+Input: `read 000001`
+
+Example output:
+```
+  Title             : Murder at Yishun
+  Case ID           : 000000
+  Status            : Closed
+  Category          : Murder
+  Date              : 23/06/2020
+  Victim            : Lim Ying
+  Officer           : Tony
+  Created at        : 01/11/2025 20:57:05
+  Updated at        : 01/11/2025 20:57:05
+  Weapon            : 
+  Number of Victims : 
+  Info              : Yishun Ring Road
+```
+
+---
+
+### Finding for cases: `find`
+
+To look for a case within the system that matches the title.
+
+**Format:** `find --keyword KEYWORD`
+
+> ℹ️ Note: KEYWORD is a string literal that will be matched. However, it is case-insensitive.\
+> ℹ️ Note: This search is not case-sensitive asd finds all cases where the title contains the 
+> consecutive KEYWORD string.
 
 ---
 
@@ -306,33 +347,12 @@ Displays a list of all available commands along with their descriptions and usag
 
 ---
 
-### Reading a case: `read`
+### Exiting the program: `bye`
 
-Displays the full details of a specific case, including any category-specific fields. Fields that are not filled by the user will be shown as empty.
+Exits the program.
 
-**Format:** `read ID`
+**Format:** `bye`
 
-* The id **must be exactly 6 hexadecimal digits** 000001, 000fab, 00beef, … and the case must exist.
-
-**Example:**
-
-Input: `read 000001`
-
-Example output:
-```
-  Title             : Murder at Yishun
-  Case ID           : 000000
-  Status            : Closed
-  Category          : Murder
-  Date              : 23/06/2020
-  Victim            : Lim Ying
-  Officer           : Tony
-  Created at        : 2025-10-30T16:37:05
-  Updated at        : 2025-10-30T16:37:06
-  Weapon            : 
-  Number of Victims : 
-  Info              : Yishun Ring Road
-```
 ---
 
 ### File storage
@@ -342,96 +362,81 @@ There is no specific command that will execute this function, but it will automa
 you run any command. Take note that your date format settings are not saved between different launches of your 
 application.
 
-#### Save file modification (only for advanced users)
-
-_Beware that you may corrupt your data if you modify any data incorrectly, do this at your own risk!_
-
-The data in the save file is stored in this format:
-
-> `key1:value1|key2:value2|key3:value3|...`
-
-- each key corresponds to a field, and each line corresponds to a case. 
-  An empty value means that the field has not been initialised.
-- Fields that you SHOULD NOT EDIT:
-  1. id
-  2. category
-  3. created-at
-- You cannot add new cases through editing the file, do not add or remove lines to the save file.
-- The date field must be stored in the format dd/MM/yyyy (day/month/year).
-- The updated-at field must be stored in the format dd/MM/yyyy hh:mm:ss (day/month/year hour:minute:second).
-- Any extra fields that do not exist in the case's category will be lost if they are added to the save file.
-- The maximum number of characters allowed in these fields are still 5000.
-- You do not have to escape `--` sequences with `\\--`, but you still cannot use the reserved character `|`.
-- Take note that the updated at field will not be automatically updated to the time that you change the text file.
-
-***Examples***
-
-- To change the victim in a case from `alice` to `bob`, modify the line in `data.txt`
-  from `...|victim:alice|...` to `...|victim:bob|...`.
-- To change the date in a case from fifth of november 2024 (05/11/2025) to second of january 2025 (02/01/2025),
-  modify the line corresponding to the case that you want to edit in `data.txt` from `...|date:05/11/2025|...`
-  to `...|date:02/01/2025|...`.
+Please **DO NOT** edit the `data.txt` file on your own as this may lead to data corruption.
+In addition, do not open the `data.txt` file as the program is running or change the permissions
+to the `data.txt` file.
 
 ---
 
 ### Case categories
+
+This section lists all the available case categories along with their additional editable attributes. 
+These categories can help you organise and classify cases more effectively.
 > **Notes:**
->
 > * If the category is not in the list, type 'others' as the category.
-> * Some categories have additional attributes, which can be edited using the `edit` feature.
+> * Some categories have additional attributes, which can be edited using the `edit` feature. They cannot be set using the `add` command.
 > * For more information on how to add and edit categories,
 refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
 
 **`CATEGORY` inputs:** 
 - indicated under `CATEGORY` column
+- input is case-insensitive (e.g., `Burglary`, `burglary`, and `BURGLARY` are all acceptable)
 
 **`edit` tags:**
 - `STRING`: attributes are stored as strings and accept any input
 - `INTEGER`: attributes are stored as integers and only accept positive whole numbers as input.
 
-| `CATEGORY`  | `edit` tags (if any)                                                                                                          |
-|-----------|-------------------------------------------------------------------------------------------------------------------------------|
-| burglary  | `--financial-value INTEGER`, `--location STRING`                                                                              |
-| scam      | `--financial-value INTEGER`                                                                                                   |
-| theft     | `--financial-value INTEGER`, `--stolen-object STRING`                                                                         |
-| arson     | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
-| vandalism | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
-| rape      |                                                                                                                               |
-| voyeurism |                                                                                                                               |
-| accident  | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--number-of-casualties INTEGER`                     |
-| speeding  | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--speed-limit INTEGER` , `--exceeded-speed INTEGER` |
-| assault   | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
-| murder    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
-| robbery   | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
-| others    | `--custom-category STRING`                                                                                                    |
+| `CATEGORY` | `edit` tags (if any)                                                                                                          |
+|------------|-------------------------------------------------------------------------------------------------------------------------------|
+| burglary   | `--financial-value INTEGER`, `--location STRING`                                                                              |
+| scam       | `--financial-value INTEGER`                                                                                                   |
+| theft      | `--financial-value INTEGER`, `--stolen-object STRING`                                                                         |
+| arson      | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
+| vandalism  | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
+| rape       |                                                                                                                               |
+| voyeurism  |                                                                                                                               |
+| accident   | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--number-of-casualties INTEGER`                     |
+| speeding   | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--speed-limit INTEGER` , `--exceeded-speed INTEGER` |
+| assault    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| murder     | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| robbery    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| others     | `--custom-category STRING`                                                                                                    |
 
 ---
 
-
 ## FAQ
 
-**Q**: How do I transfer my data to another computer?
+**Q**: How do I transfer my data to another computer?\
 **A**: You can copy the `data.txt` file from the current working directory of the source computer to the directory
-containing the .jar file of the destination computer.
+containing the .jar file of the destination computer. It is your responsibility to ensure that the file is not corrupted
 
-**Q**: Is it recommended that I edit the `data.txt` file directly?
-**A**: It is not recommended as you may corrupt your data if you modify any data incorrectly. You should only edit the
-file if you are an advanced user and know what you are doing.
+**Q**: Is it recommended that I edit the `data.txt` file directly?\
+**A**: It is not recommended as you may corrupt your data if you modify any data incorrectly. You should not touch the 
+data file unless you are a system administrator trying to recover data from the file.
 
-**Q**: What happens if a case is marked as closed?
-**A**: Closed cases are still visible in the list but are marked with `[closed]` instead of `[Open]`.
+**Q**: Can I edit the `data.txt` file as the program is running?\
+**A**: No, please do not edit or delete the data.txt file while the program is running as it may lead to data corruption.
 
+**Q**: What happens if I accidentally deleted a case that I need?\
+**A**: Fortunately, deleted cases are only marked as deleted and not removed from the data file. If you did not corrupt
+the `data.txt` file, you can contact the system administrator to help you recover the deleted case. Please do not edit the
+`data.txt` file yourself as it may lead to data corruption.
 
-**Q**: Can I edit a closed case?
+**Q**: What happens if a case is marked as closed?\
+**A**: Closed cases are still visible in the list but are marked with `[Closed]` instead of `[Open]`.
+
+**Q**: Can I edit a closed case?\
 **A**: No, closed cases cannot be edited. You will need to reopen the case using the `open` command before you can edit
 it.
 
-**Q**: What date formats are supported?
+**Q**: What date formats are supported?\
 **A**: By default, SGSafe supports the `dd/MM/yyyy` format for date input and output. You can change the date input
-and output formats using the `setting` command. The supported formats are based on Java's DateTimeFormatter.
+and output formats using the [setting](#settings-setting) command. The supported formats are based on Java's DateTimeFormatter.
 
-**Q**: Can I edit the data.txt file as the program is running?
-**A**: No, please do not edit or delete the data.txt file while the program is running as it may lead to data corruption.
+**Q**: How are the case ID generated?\
+**A**: Case IDs are generated automatically by the system in hexadecimal format, starting from `000001` and incrementing
+by 1 for each new case added. Deleted cases' IDs are not reused. This is because the system uses the case ID as a unique identifier
+for each case, and reusing IDs could lead to confusion and data integrity issues.
 
 ---
 
@@ -439,13 +444,14 @@ and output formats using the `setting` command. The supported formats are based 
 
 | Action          | Format                                                                                                | Example                                                                                                                    |
 |-----------------|-------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| **Add case**    | `add --category CATEGORY --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]` | `add --category Theft --title Theft case --date 2024-01-15 --info Stolen wallet --victim John Doe --officer Officer Smith` |
+| **Add case**    | `add --category CATEGORY --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]` | `add --category Theft --title Theft case --date 15/10/2025 --info Stolen wallet --victim John Doe --officer Officer Smith` |
 | **List cases**  | `list`                                                                                                | `list`                                                                                                                     |
 | **Close case**  | `close ID`                                                                                            | `close 000003`                                                                                                             |
 | **Open case**   | `open ID`                                                                                             | `open 000003`                                                                                                              |
 | **Edit case**   | `edit ID [--title TITLE] [--date DATE] [--info INFO] [--victim VICTIM] [--officer OFFICER]`           | `edit 000001 --victim Jane Smith --officer Officer Lee`                                                                    |
 | **Delete case** | `delete ID`                                                                                           | `delete 00beef`                                                                                                            |
-| **Read Case**   | `read ID`                                                                                             | `read 000001`                                                                                                              |
 | **Setting**     | `setting --type TYPE --value VALUE`                                                                   | `setting --type dateinput --value dd-MM-yyyy`                                                                              |
-| **Exit**        | `bye`                                                                                                 | `bye`                                                                                                                      |
+| **Read Case**   | `read ID`                                                                                             | `read 000001`                                                                                                              |
+| **Find Case**   | `find --keyword KEYWORD`                                                                              | `find --keyword robbery`                                                                                                   |
 | **Help**        | `help`                                                                                                | `help`                                                                                                                     |
+| **Exit**        | `bye`                                                                                                 | `bye`                                                                                                                      |
