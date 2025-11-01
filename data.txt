@@ -1,3 +1,0 @@
-id:000000|category:MURDER|title:hello--world|date:05/02/2022|info:hello|victim:|officer:|is-deleted:0|is-open:1|created-at:01/11/2025 18:15:11|updated-at:01/11/2025 18:15:11|number-of-victims:|weapon:
-id:000001|category:BURGLARY|title:Burglary case|date:20/02/2024|info:Burglary at 123 Main St|victim:|officer:|is-deleted:0|is-open:1|created-at:01/11/2025 20:55:22|updated-at:01/11/2025 20:55:22|financial-value:|location:
-id:000002|category:BURGLARY|title:Burglary case|date:20/02/2024|info:Burglary at 123 Main St|victim:|officer:|is-deleted:0|is-open:1|created-at:01/11/2025 20:57:05|updated-at:01/11/2025 20:57:05|financial-value:|location:
