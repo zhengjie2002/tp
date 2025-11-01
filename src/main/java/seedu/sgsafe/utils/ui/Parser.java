@@ -83,7 +83,7 @@ public class Parser {
      */
     public static Command parseInput(String userInput) {
         String cleanedUserInput = cleanUserInput(userInput);
-        String keyword = getKeywordFromUserInput(cleanedUserInput);
+        String keyword = getKeywordFromUserInput(cleanedUserInput).toLowerCase();
         String remainder = getRemainderFromUserInput(cleanedUserInput);
         if(remainder.contains("|")) {
             throw new InvalidCharacterException();
