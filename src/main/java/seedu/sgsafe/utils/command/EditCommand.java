@@ -40,6 +40,7 @@ public class EditCommand extends Command {
             }
             Display.printMessage("The case was not edited due to invalid flags: " +
                     String.join(", ", e.getInvalidFlags()));
+            Display.printMessage(e.getErrorMessage());
         }
     }
 }
