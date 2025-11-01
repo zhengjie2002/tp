@@ -436,7 +436,8 @@ public class Parser {
             Map<String, Object> typedFlagValues = convertFlagValueTypes(flagValues);
             return new EditCommand(caseId, typedFlagValues);
         } else {
-            throw new InvalidEditCommandException();
+            logger.log(Level.WARNING, "Incorrect flag usage detected");
+            throw new IncorrectFlagException();
         }
     }
 
