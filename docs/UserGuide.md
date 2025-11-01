@@ -433,6 +433,10 @@ it.
 **A**: By default, SGSafe supports the `dd/MM/yyyy` format for date input and output. You can change the date input
 and output formats using the [setting](#settings-setting) command. The supported formats are based on Java's DateTimeFormatter.
 
+**Q**: How are the case ID generated?\
+**A**: Case IDs are generated automatically by the system in hexadecimal format, starting from `000001` and incrementing
+by 1 for each new case added. Deleted cases' IDs are not reused. This is because the system uses the case ID as a unique identifier
+for each case, and reusing IDs could lead to confusion and data integrity issues.
 
 ---
 
