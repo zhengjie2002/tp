@@ -3,7 +3,7 @@
 	____________________________________________________________
 	____________________________________________________________
 	You have entered: James Gosling
-	The command 'James' that you have entered is not recognised.
+	The command 'james' that you have entered is not recognised.
 	____________________________________________________________
 	____________________________________________________________
 	You currently have no cases in total. Add some now!
