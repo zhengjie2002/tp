@@ -87,8 +87,12 @@ class ParserTest {
     }
 
     @Test
-    void parseInput_listWithMixedCase_returnsUnknownCommandException() {
-        assertThrows(UnknownCommandException.class, () -> Parser.parseInput("LiSt"));
+    void parseInput_listWithMixedCase_returnsListCommand() {
+        Command command = Parser.parseInput("\tLiSt\n");
+        assertEquals(CommandType.LIST, command.getCommandType());
+        assertInstanceOf(ListCommand.class, command);
+        assertEquals(CaseListingMode.DEFAULT, ((ListCommand) command).getListingMode());
+
     }
 
     @Test
