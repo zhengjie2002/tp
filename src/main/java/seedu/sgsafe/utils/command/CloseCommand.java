@@ -16,6 +16,7 @@ public class CloseCommand extends Command {
     private final String caseId;
 
     public CloseCommand(String caseId) {
+        assert caseId != null;
         this.commandType = CommandType.CLOSE;
         this.caseId = caseId;
     }
