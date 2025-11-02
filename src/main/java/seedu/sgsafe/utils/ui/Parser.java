@@ -266,7 +266,7 @@ public class Parser {
         List<String> requiredFlags = List.of("category", "title", "date", "info");
 
         // List of valid flags to be taken as input from the user
-        List<String> VALID_FLAGS = List.of("category", "title", "date", "info", "victim", "officer");
+        List<String> validFlags = List.of("category", "title", "date", "info", "victim", "officer");
 
         LocalDate date;
 
@@ -277,7 +277,7 @@ public class Parser {
         Map<String, String> flagValues = extractFlagValues(remainder);
 
         if (!validator.haveAllRequiredFlags(flagValues, requiredFlags) ||
-                !validator.haveValidFlags(flagValues, VALID_FLAGS)) {
+                !validator.haveValidFlags(flagValues, validFlags)) {
             throw new InvalidAddCommandException();
         }
 

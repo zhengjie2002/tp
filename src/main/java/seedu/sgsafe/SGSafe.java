@@ -49,7 +49,7 @@ public class SGSafe {
     private static void mainLoop() {
         Scanner in = new Scanner(System.in);
         String userInput;
-        while (true) {
+        while (in.hasNextLine()) {
             userInput = in.nextLine();
             handleUserCommand(userInput);
         }
