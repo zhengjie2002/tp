@@ -25,7 +25,8 @@ public class DateFormatter {
     public static LocalDate parseDate(String dateString, String dateFormat) throws DateTimeParseException {
         // Convert yyyy to uuuu for strict parsing
         String strictDateFormat = dateFormat.replace("yyyy", "uuuu");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(strictDateFormat).withResolverStyle(ResolverStyle.STRICT);
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern(strictDateFormat).withResolverStyle(ResolverStyle.STRICT);
         return LocalDate.parse(dateString, formatter);
     }
 
