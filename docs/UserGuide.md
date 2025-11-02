@@ -93,19 +93,17 @@ Adds a new case to the case management system.
 
 Displays all cases in the system, with optional filters and formatting modes.
 
-#### **Format:** `list --status <open|closed|all> --mode <summary|verbose>`
+#### **Format:** `list [--status <open|closed>] [--mode verbose]`
 
 #### Flags
 
 - `--status` (optional): Filters cases by their status.
     - `open`: Show only open cases.
     - `closed`: Show only closed cases.
-    - `all`: Show all cases (default).
 - `--mode` (optional): Controls the level of detail in the output.
-    - `summary`: One-line display per case.
     - `verbose`: Multi-line display with labeled fields.
 
-#### Summary Mode Output
+#### Default Mode Output
 
 Each case is shown in a single line with:
 
