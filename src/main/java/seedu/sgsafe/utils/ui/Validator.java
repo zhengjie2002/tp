@@ -22,6 +22,9 @@ public class Validator {
     private static final Pattern VALID_FORMAT_PATTERN =
             Pattern.compile("^[yMdHmsESaGwWDFkKhzZXx'\\-/.,: ]+$");
 
+    // Regex pattern for ASCII printable characters (English characters)
+    private static final String ASCII_PRINTABLE_REGEX = "[ -~\\s]*";
+
     //@@author shennontay
 
     /**
@@ -104,6 +107,16 @@ public class Validator {
      */
     public Boolean isValidDateTimeString(String format) {
         return (VALID_FORMAT_PATTERN.matcher(format).matches());
+    }
+
+    /**
+     * Checks if the input string contains only English characters (ASCII printable characters).
+     *
+     * @param input The input string to check.
+     * @return {@code true} if the input contains only English characters, {@code false} otherwise.
+     */
+    public boolean containsOnlyEnglishCharacters(String input) {
+        return input.matches(ASCII_PRINTABLE_REGEX);
     }
 
     //@@author

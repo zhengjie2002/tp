@@ -7,9 +7,11 @@ import java.util.logging.ConsoleHandler;
 
 import seedu.sgsafe.utils.command.Command;
 import seedu.sgsafe.utils.exceptions.InvalidCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidInputException;
 import seedu.sgsafe.utils.storage.Storage;
 import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.ui.Parser;
+import seedu.sgsafe.utils.ui.Validator;
 
 /**
  * Entry point for the SGSafe application.
@@ -22,6 +24,9 @@ public class SGSafe {
     private static final String SAVE_FILE_NAME = "./data.txt";
     //the Storage object to handle loading and saving
     private static final Storage storage = new Storage(SAVE_FILE_NAME);
+    // Generic unexpected error message
+    private static final String UNEXPECTED_ERROR_MESSAGE =
+            "An unexpected error occurred. Please try again.";
 
     /**
      * Main method that starts the SGSafe application.
@@ -36,7 +41,7 @@ public class SGSafe {
 
         //load the cases from the savefile
         storage.loadCaseManager();
-        
+
         Display.printWelcomeMessage();
         mainLoop();
     }
@@ -57,16 +62,26 @@ public class SGSafe {
 
     /**
      * Parses and executes a user command.
+     * Catches and handles any exceptions that occur during parsing or execution.
+     * Ensures that the current state is saved after successful execution.
      *
      * @param userInput the raw input string entered by the user
      */
     private static void handleUserCommand(String userInput) {
         try {
+            Validator validator = new Validator();
+            if (!validator.containsOnlyEnglishCharacters(userInput)) {
+                throw new InvalidInputException();
+            }
             Command command = Parser.parseInput(userInput);
             command.execute();
             storage.saveToFile();
         } catch (InvalidCommandException e) {
             Display.printMessage(e.getErrorMessage());
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "An unexpected error occurred: " + e.getMessage(), e);
+            Display.printMessage(UNEXPECTED_ERROR_MESSAGE);
         }
     }
+
 }

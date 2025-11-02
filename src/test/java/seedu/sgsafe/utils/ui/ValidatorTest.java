@@ -6,6 +6,8 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidatorTest {
     @Test
@@ -58,5 +60,21 @@ public class ValidatorTest {
         String input = "Some input";
 
         assertEquals(false, validator.inputIsEmpty(input));
+    }
+
+    @Test
+    void containsOnlyEnglishCharacters_invalidInput_returnsFalse() {
+        Validator validator = new Validator();
+        String input = "Hello 世界";
+
+        assertFalse(validator.containsOnlyEnglishCharacters(input));
+    }
+
+    @Test
+    void containsOnlyEnglishCharacters_validInput_returnsTrue() {
+        Validator validator = new Validator();
+        String input = "Hello World 123!";
+
+        assertTrue(validator.containsOnlyEnglishCharacters(input));
     }
 }
