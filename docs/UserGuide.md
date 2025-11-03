@@ -383,16 +383,18 @@ refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
 - input is case-insensitive (e.g., `Burglary`, `burglary`, and `BURGLARY` are all acceptable)
 
 **`edit` tags:**
-- `STRING`: attributes are stored as strings and accept any input
-- `INTEGER`: attributes are stored as integers and only accept positive whole numbers as input.
+- `STRING`: attributes are stored as strings and accept any input.
+- `INTEGER`: attributes are stored as integers and only accept '0' or positive whole numbers as input.
+- `DECIMAl`: attributes are stored as a number up to 2 decimal points. '0' or any positive number is accepted, 
+but numbers will be rounded off to nearest 2 decimals points.
 
 | `CATEGORY` | `edit` tags (if any)                                                                                                          |
 |------------|-------------------------------------------------------------------------------------------------------------------------------|
-| burglary   | `--financial-value INTEGER`, `--location STRING`                                                                              |
-| scam       | `--financial-value INTEGER`                                                                                                   |
-| theft      | `--financial-value INTEGER`, `--stolen-object STRING`                                                                         |
-| arson      | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
-| vandalism  | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
+| burglary   | `--financial-value DECIMAL`, `--location STRING`                                                                              |
+| scam       | `--financial-value DECIMAL`                                                                                                   |
+| theft      | `--financial-value DECIMAL`, `--stolen-object STRING`                                                                         |
+| arson      | `--location STRING`, `--monetary-damage DECIMAL`                                                                              |
+| vandalism  | `--location STRING`, `--monetary-damage DECIMAL`                                                                              |
 | rape       |                                                                                                                               |
 | voyeurism  |                                                                                                                               |
 | accident   | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--number-of-casualties INTEGER`                     |
