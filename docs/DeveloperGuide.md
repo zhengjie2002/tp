@@ -191,14 +191,18 @@ subclass.
 Each different command is represented by a subclass of the abstract `Command` class, encapsulating the logic for that
 specific command. In addition, each command class may have its own attributes to store parameters needed for execution.
 
-The following diagram illustrates the structure of the command component and some of the noteworthy methods in the
-commands.
-
-> ℹ️ Note: Only non-trivial fields and methods are shown in the above diagram.\
-> ℹ️ UML Info: Due to the limitation of plantUML, the diagram is shown top down for best visibility, instead of the
-> usual left to right.
+The following diagram illustrates the structure of the command component that interacts and edit the cases
+and some of the noteworthy methods in the commands. 
 
 ![CommandClassDiagram](images/CommandClassDiagram.png)
+
+The following diagram illustrates the structure of the command component that does not edit the cases but plays an important
+supporting role in the application.
+
+![SupportingCommandClassDiagram](images/SupportingCommandClassDiagram.png)
+
+> ℹ️ Note: Only non-trivial fields and methods are shown in the above diagram.\
+
 
 #### Key Classes
 
@@ -351,7 +355,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ## Appendix C: Non-Functional Requirements
 
-- Should work on any mainstream OS as long as it has Java 17 or above installed.
+- Should work on any mainstream OS as long as it has Java 17 installed.
 - Should be able to hold up to 1000 cases without a noticeable sluggishness in performance for typical usage.
 - A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be
   able to accomplish most of the tasks faster using commands than using the mouse.
@@ -376,7 +380,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ## Appendix E: Instructions for manual testing
 
-Given below are the instructions for manual testing of SGSafe.
+Given below are the instructions for manual testing of SGSafe. Please note that NOT all commands have been listed.
 
 ### Launch and Startup
 
@@ -470,4 +474,4 @@ Given below are the instructions for manual testing of SGSafe.
     - Expected: Previously added case is still present after restart.
 
 The above test cases are not exhaustive and meant to cover the main functionalities of SGSafe.
-Please see the user guide for more details on how to use SGSafe and explore additional commands and features.
+Please see the [user guide](https://ay2526s1-cs2113-w13-3.github.io/tp/UserGuide.html) for more details on how to use SGSafe and explore additional commands and features.
