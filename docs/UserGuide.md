@@ -274,7 +274,7 @@ The type argument determines the date format. It must be one of the following:
 - `dateoutput`: The display format for dates.
 - `timestampoutput`: The display format for full date-times (e.g., "Updated At," "Created At") used in verbose listing or the read command.
 
-> ℹ️ Note: The default date input and output format is `dd/MM/yyyy` and the default timestamp output format is `dd/MM/yyyy HH:mm:ss`.
+> ℹ️ Note: The default date input and output format is `dd/MM/yyyy` and the default timestamp output format is `dd/MM/yyyy HH:mm:ss`.\
 > ⚠️ Warning: Note that month is capitalised in the date-time formatter. `MM` represents month while `mm` represents
 > minutes. Hour-of-day are represented by `HH`.\
 > ⚠️ Warning: The VALUE must be a valid date format, according to Java's DateFormatter. Stray characters that are not
@@ -327,11 +327,14 @@ Example output:
 
 To look for a case within the system that matches the title.
 
-**Format:** `find --keyword KEYWORD`
+**Format:** `find --keyword KEYWORD [--status <open|closed>]`
 
 > ℹ️ Note: KEYWORD is a string literal that will be matched. However, it is case-insensitive.\
 > ℹ️ Note: This search is not case-sensitive asd finds all cases where the title contains the 
 > consecutive KEYWORD string.
+
+**Example**
+- `find --keyword murder` will find all cases with the keyword murder in its title
 
 ---
 
@@ -443,7 +446,6 @@ for each case, and reusing IDs could lead to confusion and data integrity issues
 ---
 
 ## Command Summary
-
 | Action          | Format                                                                                                | Example                                                                                                                    |
 |-----------------|-------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | **Add case**    | `add --category CATEGORY --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]` | `add --category Theft --title Theft case --date 15/10/2025 --info Stolen wallet --victim John Doe --officer Officer Smith` |
@@ -454,6 +456,8 @@ for each case, and reusing IDs could lead to confusion and data integrity issues
 | **Delete case** | `delete ID`                                                                                           | `delete 00beef`                                                                                                            |
 | **Setting**     | `setting --type TYPE --value VALUE`                                                                   | `setting --type dateinput --value dd-MM-yyyy`                                                                              |
 | **Read Case**   | `read ID`                                                                                             | `read 000001`                                                                                                              |
-| **Find Case**   | `find --keyword KEYWORD`                                                                              | `find --keyword robbery`                                                                                                   |
+| **Find Case**   | `find --keyword KEYWORD [--status <open OR closed>]`                                                  | `find --keyword robbery`                                                                                                   |
 | **Help**        | `help`                                                                                                | `help`                                                                                                                     |
 | **Exit**        | `bye`                                                                                                 | `bye`                                                                                                                      |
+
+^ OR above means either keyword can be used, but not both.
