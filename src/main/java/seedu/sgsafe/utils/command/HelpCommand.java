@@ -13,6 +13,7 @@ public class HelpCommand extends Command {
                     "SGSAFE HELP MENU\n" +
                     "\tHere is a list of supported commands and their formats. Use this as a quick " +
                     "reference to add, manage, and view cases.\n" +
+                    "\tNote: All input fields shown in [brackets] below are optional.\n" +
                     "\t______________________________________________________________________________________" +
                     "____________________________________________\n" +
                     "\n" +
@@ -141,6 +142,7 @@ public class HelpCommand extends Command {
                     "\t\t• Invalid flags will cancel the update and display an error message.\n" +
                     "\t\t• The case ID must be exactly 6 hexadecimal digits (e.g., 000001, 00beef).\n" +
                     "\t\t• Use 'list' to check the case ID of the case to be edited.\n" +
+                    "\t\t• Date format defaults to dd/MM/yyyy. You can change it using the 'setting' command.\n" +
                     "\t____________________________________________________________________________________________" +
                     "______________________________________\n" +
                     "\n" +
@@ -214,6 +216,25 @@ public class HelpCommand extends Command {
                     "\t_______________________________________________________________________________________" +
                     "___________________________________________\n" +
                     "\n" +
+                    "\tFIND — Filter cases by keywords \n" +
+                    "\n" +
+                    "\tDescription:\n" +
+                    "\t\tDisplays all cases whose titles match the keyword(s) provided.\n" +
+                    "\n" +
+                    "\tUsage:\n" +
+                    "\t\tfind --keyword KEYWORD [--status <open|closed>] \n" +
+                    "\n" +
+                    "\tExamples:\n" +
+                    "\t\tfind --keyword homicide \n" +
+                    "\t\tfind --keyword murder at home --status open\n" +
+                    "\n" +
+                    "\tNotes:\n" +
+                    "\t\t• KEYWORD is a string literal that will be matched. However, it is case-insensitive.\n" +
+                    "\t\t• This search is not case-sensitive and finds all cases where the title contains " +
+                            "the KEYWORD string.\n" +
+                    "\t_______________________________________________________________________________________" +
+                    "___________________________________________\n" +
+                    "\n" +
                     "\tHELP — Display this help menu\n" +
                     "\n" +
                     "\tDescription:\n" +
@@ -231,6 +252,10 @@ public class HelpCommand extends Command {
                     "\n" +
                     "\tUsage:\n" +
                     "\t\tbye\n" +
+                    "\n" +
+                    "\tNotes:\n" +
+                    "\t\t• After calling bye, no further input is accepted, additional input " +
+                            "invalidates the command.\n" +
                     "\t___________________________________________________________________________________________" +
                     "_______________________________________\n" +
                     "\tEnd of help.";
