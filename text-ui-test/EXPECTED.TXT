@@ -58,11 +58,10 @@
 	You currently have no cases closed. Add some now!
 	____________________________________________________________
 	____________________________________________________________
-	Your list command format is incorrect.
-	The correct format for a list command is:
-	list [--status <open|closed>] [--mode verbose]
-	Example: list --status closed --mode verbose
-	The items in [ ] are optional.
+	Your list status flag is incorrect.
+	The correct format is:
+	--status <open|closed>
+	You may exclude this flag if you want to list all cases.
 	____________________________________________________________
 	____________________________________________________________
 	Your command format is incorrect.
@@ -146,11 +145,10 @@
 	The items in [ ] are optional.
 	____________________________________________________________
 	____________________________________________________________
-	Your list command format is incorrect.
-	The correct format for a list command is:
-	list [--status <open|closed>] [--mode verbose]
-	Example: list --status closed --mode verbose
-	The items in [ ] are optional.
+	Your list status flag is incorrect.
+	The correct format is:
+	--status <open|closed>
+	You may exclude this flag if you want to list all cases.
 	____________________________________________________________
 	____________________________________________________________
 	Your command format is incorrect.
@@ -185,11 +183,10 @@
 	[Closed] Murder           000000 23/06/2020 Murder at Yishun
 	____________________________________________________________
 	____________________________________________________________
-	Your list command format is incorrect.
-	The correct format for a list command is:
-	list [--status <open|closed>] [--mode verbose]
-	Example: list --status closed --mode verbose
-	The items in [ ] are optional.
+	Your list status flag is incorrect.
+	The correct format is:
+	--status <open|closed>
+	You may exclude this flag if you want to list all cases.
 	____________________________________________________________
 	____________________________________________________________
 	Your command format is incorrect.
