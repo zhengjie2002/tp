@@ -404,6 +404,7 @@ but numbers will be rounded off to nearest 2 decimals points.
 | Robbery          | robbery    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
 | Others           | others     | `--custom-category STRING`                                                                                                    |
 
+> ⚠️ Warning: A maximum value of 1,000,000,000,000.00 is allowed for `DECIMAL` inputs.
 ---
 
 ## FAQ
