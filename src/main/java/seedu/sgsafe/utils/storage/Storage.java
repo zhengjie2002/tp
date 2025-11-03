@@ -152,9 +152,9 @@ public class Storage {
         boolean isOpen = fields.get("is-open").equals("1");
         String category = fields.get("category");
 
-        LocalDate date = null;
-        LocalDateTime createdAt = null;
-        LocalDateTime updatedAt = null;
+        LocalDate date;
+        LocalDateTime createdAt;
+        LocalDateTime updatedAt;
         try {
             date = LocalDate.parse(fields.get("date"), dateFormatter);
             createdAt = LocalDateTime.parse(fields.get("created-at"), dateTimeFormatter);
@@ -212,6 +212,34 @@ public class Storage {
         Settings.setDateTimeFormat(settings[2].strip());
     }
 
+    private void parseLine(String line) {
+        if (line.startsWith(SETTING_PREFIX)) {
+            ArrayList<String> settingResult = new ArrayList<>();
+            settingResult.add("Loading settings from save...");
+
+            try {
+                loadSettings(line);
+            } catch (IllegalArgumentException e) {
+                settingResult.add("Invalid settings format. " +
+                        "Some of them could not be loaded from the save file.");
+            }
+
+            settingResult.add("Date input format was set to: " + Settings.getInputDateFormat());
+            settingResult.add("Date output format was set to: " + Settings.getOutputDateFormat());
+            settingResult.add("Timestamp output format was set to: " + Settings.getDateTimeFormat());
+
+            Display.printMessage(settingResult.toArray(new String[0]));
+        }
+        else if (!line.trim().isEmpty()) {
+            try {
+                Case newCase = getCaseFromSaveString(line);
+                CaseManager.addCase(newCase);
+            } catch (InvalidSaveStringException e) {
+                Display.printMessage(e.getErrorMessage());
+            }
+        }
+    }
+
     /**
      * Loads all cases from the file into the {@link CaseManager}.
      * <p>
@@ -224,30 +252,7 @@ public class Storage {
             try (Scanner s = new Scanner(file)) {
                 while (s.hasNextLine()) {
                     String line = s.nextLine();
-                    if (line.startsWith(SETTING_PREFIX)) {
-                        ArrayList<String> settingResult = new ArrayList<>();
-                        settingResult.add("Loading settings from save...");
-
-                        try {
-                            loadSettings(line);
-                        } catch (IllegalArgumentException e) {
-                            settingResult.add("Invalid settings format. " +
-                                    "Some of them could not be loaded from the save file.");
-                        }
-
-                        settingResult.add("Date input format was set to: " + Settings.getInputDateFormat());
-                        settingResult.add("Date output format was set to: " + Settings.getOutputDateFormat());
-                        settingResult.add("Timestamp output format was set to: " + Settings.getDateTimeFormat());
-                        Display.printMessage(settingResult.toArray(new String[0]));
-                    }
-                    else if (!line.trim().isEmpty()) {
-                        try {
-                            Case newCase = getCaseFromSaveString(line);
-                            CaseManager.addCase(newCase);
-                        } catch (InvalidSaveStringException e) {
-                            Display.printMessage(e.getErrorMessage());
-                        }
-                    }
+                    parseLine(line);
                 }
             } catch (IOException e) {
                 System.out.println("Something went wrong while loading from the save file: " + e.getMessage());
