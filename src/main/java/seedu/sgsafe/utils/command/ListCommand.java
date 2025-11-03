@@ -98,7 +98,6 @@ public class ListCommand extends Command {
             outputLines.add("Note: Only basic case details (e.g. Title) are shown here and is truncated if too long.");
             outputLines.add("For full case information (e.g. case-specific details like murder weapon),");
             outputLines.add("use the read command");
-            outputLines.add("To see how to use the read command, run: help read");
             outputLines.add("To use the read command, run: read <caseID>");
             outputLines.add("---");
         }

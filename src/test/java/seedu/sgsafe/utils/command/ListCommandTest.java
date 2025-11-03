@@ -25,7 +25,7 @@ import java.util.ArrayList;
 class ListCommandTest {
 
     private static final int NUMBER_OF_PREAMBLE_LINES_SHARED = 1; // case count
-    private static final int NUMBER_OF_PREAMBLE_LINES_VERBOSE = NUMBER_OF_PREAMBLE_LINES_SHARED + 7;
+    private static final int NUMBER_OF_PREAMBLE_LINES_VERBOSE = NUMBER_OF_PREAMBLE_LINES_SHARED + 6;
     private static final int NUMBER_OF_PREAMBLE_LINES_SUMMARY = NUMBER_OF_PREAMBLE_LINES_SHARED + 5 + 1;
     private static final int NUMBER_OF_LINES_BETWEEN_VERBOSE_MODE = 2; // Created at and updated at
 
