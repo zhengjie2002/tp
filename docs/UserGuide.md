@@ -57,6 +57,7 @@ organised digital workflow that enhances operational efficiency for the public s
 >
 > * The escape character for `--` is `\--`. 
 > For example: `add --category murder --title hello\--world --info hello --date 05/02/2022` will result in the title of the case being `hello--world`
+> 
 > * You cannot use the character `|` in your input as it is used in the save file format.
 ---
 
