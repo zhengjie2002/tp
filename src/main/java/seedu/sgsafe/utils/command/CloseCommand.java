@@ -16,6 +16,7 @@ public class CloseCommand extends Command {
     private final String caseId;
 
     public CloseCommand(String caseId) {
+        assert caseId != null;
         this.commandType = CommandType.CLOSE;
         this.caseId = caseId;
     }
@@ -26,7 +27,7 @@ public class CloseCommand extends Command {
             String displayLine = CaseManager.closeCase(caseId);
             Display.printMessage("Case closed:", displayLine);
         } catch (CaseNotFoundException e) {
-            Display.printMessage(e.getMessage());
+            Display.printMessage(e.getErrorMessage());
         }
     }
 }

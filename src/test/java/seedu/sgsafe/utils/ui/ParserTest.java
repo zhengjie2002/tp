@@ -28,11 +28,12 @@ import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidFormatStringException;
+import seedu.sgsafe.utils.exceptions.InvalidIntegerException;
 import seedu.sgsafe.utils.exceptions.InvalidReadCommandException;
 
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
-import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidSettingCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidStatusException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.settings.Settings;
 
@@ -87,8 +88,12 @@ class ParserTest {
     }
 
     @Test
-    void parseInput_listWithMixedCase_returnsUnknownCommandException() {
-        assertThrows(UnknownCommandException.class, () -> Parser.parseInput("LiSt"));
+    void parseInput_listWithMixedCase_returnsListCommand() {
+        Command command = Parser.parseInput("\tLiSt\n");
+        assertEquals(CommandType.LIST, command.getCommandType());
+        assertInstanceOf(ListCommand.class, command);
+        assertEquals(CaseListingMode.DEFAULT, ((ListCommand) command).getListingMode());
+
     }
 
     @Test
@@ -117,7 +122,7 @@ class ParserTest {
 
     @Test
     void parseInput_listStatusInvalid_throwsListCommandException() {
-        assertThrows(InvalidListCommandException.class, () -> Parser.parseInput("list --status banana"));
+        assertThrows(InvalidStatusException.class, () -> Parser.parseInput("list --status banana"));
     }
 
     @Test
@@ -127,7 +132,7 @@ class ParserTest {
 
     @Test
     void parseInput_listStatusExtraArgs_throwsListCommandException() {
-        assertThrows(InvalidListCommandException.class, () -> Parser.parseInput("list --status open extra"));
+        assertThrows(InvalidStatusException.class, () -> Parser.parseInput("list --status open extra"));
     }
 
     // ----------- TESTS FOR EDIT COMMANDS ----------- //
@@ -164,13 +169,13 @@ class ParserTest {
     }
 
     @Test
-    void parseInput_nonIntegerValueForSpeedLimit_throwsInvalidEditCommandException() {
-        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit 000001 --speed-limit fast"));
+    void parseInput_nonIntegerValueForSpeedLimit_throwsInvalidIntegerException() {
+        assertThrows(InvalidIntegerException.class, () -> Parser.parseInput("edit 000001 --speed-limit fast"));
     }
 
     @Test
-    void parseInput_negativeValueForVictimNumber_throwsInvalidEditCommandException() {
-        assertThrows(InvalidEditCommandException.class, () -> Parser.parseInput("edit 000001 --number-of-victims -50"));
+    void parseInput_negativeValueForVictimNumber_throwsInvalidIntegerException() {
+        assertThrows(InvalidIntegerException.class, () -> Parser.parseInput("edit 000001 --number-of-victims -50"));
     }
 
     // ----------- TESTS FOR CLOSE COMMANDS ----------- //

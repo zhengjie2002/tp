@@ -244,14 +244,18 @@ public abstract class Case {
 
         String dateString = DateFormatter.formatDate(date, Settings.getOutputDateFormat());
         String statusString = CaseFormatter.convertStatusToString(isOpen);
+        String createdAtString = DateFormatter.formatDateTime(createdAt,
+                Settings.getDateTimeFormat());
+        String updatedAtString = DateFormatter.formatDateTime(updatedAt,
+                Settings.getDateTimeFormat());
 
         CaseFormatter.addWrappedFieldForVerbose(lines, "Status", statusString);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Category", categoryString);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Title", title);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Date", dateString);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Info", info);
-        CaseFormatter.addWrappedFieldForVerbose(lines, "Created at", createdAt.toString());
-        CaseFormatter.addWrappedFieldForVerbose(lines, "Updated at", updatedAt.toString());
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Created at", createdAtString);
+        CaseFormatter.addWrappedFieldForVerbose(lines, "Updated at", updatedAtString);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Victim", victim);
         CaseFormatter.addWrappedFieldForVerbose(lines, "Officer", officer);
 
@@ -331,6 +335,10 @@ public abstract class Case {
         List<String> lines = new ArrayList<>();
 
         String dateString = DateFormatter.formatDate(date, Settings.getOutputDateFormat());
+        String createdAtString = DateFormatter.formatDateTime(createdAt,
+                Settings.getDateTimeFormat());
+        String updatedAtString = DateFormatter.formatDateTime(updatedAt,
+                Settings.getDateTimeFormat());
         String statusString = CaseFormatter.convertStatusToString(isOpen);
 
         CaseFormatter.addWrappedFieldForRead(lines, "Title", title);
@@ -340,8 +348,8 @@ public abstract class Case {
         CaseFormatter.addWrappedFieldForRead(lines,"Date", dateString);
         CaseFormatter.addWrappedFieldForRead(lines,"Victim", getVictim());
         CaseFormatter.addWrappedFieldForRead(lines,"Officer", getOfficer());
-        CaseFormatter.addWrappedFieldForRead(lines,"Created at", createdAt.toString());
-        CaseFormatter.addWrappedFieldForRead(lines,"Updated at", updatedAt.toString());
+        CaseFormatter.addWrappedFieldForRead(lines,"Created at", createdAtString);
+        CaseFormatter.addWrappedFieldForRead(lines,"Updated at", updatedAtString);
 
         return lines;
     }
@@ -376,8 +384,7 @@ public abstract class Case {
     public String toSaveString() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Storage.getSaveDatePattern());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Storage.getSaveDateTimePattern());
-        return "id:" + this.id
-                + "|category:" + this.category.toString()
+        return "category:" + this.category.toString()
                 + "|title:" + (this.title == null ? "" : this.title)
                 + "|date:" + (this.date == null ? "" : this.date.format(dateFormatter))
                 + "|info:" + (this.info == null ? "" : this.info)

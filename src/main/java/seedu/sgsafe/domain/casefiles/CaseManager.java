@@ -9,12 +9,16 @@ import seedu.sgsafe.utils.exceptions.CaseCannotBeEditedException;
 import seedu.sgsafe.utils.exceptions.CaseAlreadyOpenException;
 import seedu.sgsafe.utils.exceptions.CaseNotFoundException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
+import seedu.sgsafe.utils.exceptions.InvalidEditFlagException;
 
 /**
  * Manages the collection of {@link Case} objects in the SGSafe system.
  * Provides functionality to store, retrieve, and display case records.
  */
 public class CaseManager {
+
+    // Format string for generating case IDs
+    private static final String CASE_ID_FORMAT = "%06x";
 
     /**
      * The central list of case records maintained by the application.
@@ -101,7 +105,7 @@ public class CaseManager {
      * @param newFlagValues map of field names to new values
      * @return the updated case’s display line
      * @throws CaseNotFoundException   if no case with the given ID exists
-     * @throws IncorrectFlagException  if any flags in {@code newFlagValues} are invalid
+     * @throws InvalidEditFlagException  if any flags in {@code newFlagValues} are invalid
      */
     public static String editCase(String caseId, Map<String, Object> newFlagValues)
             throws CaseNotFoundException, IncorrectFlagException {
@@ -111,7 +115,6 @@ public class CaseManager {
             throw new CaseNotFoundException(caseId);
         }
 
-        // Chack if case is closed
         if (!caseToEdit.isOpen()) {
             throw new CaseCannotBeEditedException(caseId);
         }
@@ -119,7 +122,7 @@ public class CaseManager {
         // Validate flags before updating
         List<String> invalidFlags = getInvalidEditFlags(caseToEdit, newFlagValues);
         if (!invalidFlags.isEmpty()) {
-            throw new IncorrectFlagException(invalidFlags);
+            throw new InvalidEditFlagException(invalidFlags, caseId);
         }
 
         //Update and return the display line
@@ -167,4 +170,53 @@ public class CaseManager {
         caseToDelete.setDeleted(true);
         return caseToDelete.getDisplayLine();
     }
+
+    public static ArrayList<Case> findCasesByKeyword(String keyword) {
+        ArrayList<Case> casesFound = new ArrayList<>();
+        for (Case c : caseList) {
+            if (c.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                casesFound.add(c);
+            }
+        }
+        return casesFound;
+    }
+      
+    /**
+     * Reads and returns the display representation of a case.
+     * Throws an {@link CaseNotFoundException} if the case does not exist or has been deleted.
+     *
+     * @param caseId the id of the case to be read.
+     * @return the case's display representation as a String array.
+     */
+    public static String[] readCase(String caseId) throws CaseNotFoundException {
+        Case caseToRead = getCaseById(caseId);
+        if (caseToRead == null) {
+            throw new CaseNotFoundException(caseId);
+        }
+        return caseToRead.getReadCaseDisplay();
+    }
+
+    // @@author xelisce
+
+    /**
+     * Generates a unique 6-character hexadecimal ID for a new case.
+     * <p>
+     * The ID is derived from the current size of {@code caseList}, formatted as a
+     * zero-padded lowercase hexadecimal string. This ensures compact, readable,
+     * and collision-free identifiers as long as cases are not removed or reordered.
+     * <p>
+     * Example outputs:
+     * <ul>
+     *   <li>{@code 000000} — first case</li>
+     *   <li>{@code 00000a} — tenth case</li>
+     *   <li>{@code 0000ff} — 256th case</li>
+     * </ul>
+     *
+     * @return a 6-character hexadecimal string representing the new case ID
+     */
+    public static String generateHexId() {
+        int raw = getCaseListSize();
+        return String.format(CASE_ID_FORMAT, raw); // zero-padded 6-digit hex
+    }
+
 }

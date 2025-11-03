@@ -5,6 +5,7 @@ import seedu.sgsafe.utils.command.ByeCommand;
 import seedu.sgsafe.utils.command.CaseListingMode;
 import seedu.sgsafe.utils.command.CloseCommand;
 import seedu.sgsafe.utils.command.Command;
+import seedu.sgsafe.utils.command.FindCommand;
 import seedu.sgsafe.utils.command.HelpCommand;
 import seedu.sgsafe.utils.command.ListCommand;
 import seedu.sgsafe.utils.command.EditCommand;
@@ -23,14 +24,18 @@ import seedu.sgsafe.utils.exceptions.InvalidByeCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
+import seedu.sgsafe.utils.exceptions.InvalidDoubleException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidFindCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidFormatStringException;
 import seedu.sgsafe.utils.exceptions.InvalidHelpCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidIntegerException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidReadCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidSettingCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidStatusException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
 import  seedu.sgsafe.utils.exceptions.InvalidCharacterException;
@@ -58,9 +63,6 @@ public class Parser {
     // Prefix used to identify flags in the input
     private static final String FLAG_PREFIX = "--";
 
-    // List of valid flags to be taken as input from the user
-    private static final List<String> VALID_FLAGS = List.of("category", "title", "date", "info", "victim", "officer");
-
     // Validator instance for input validation
     private static final Validator validator = new Validator();
 
@@ -84,7 +86,7 @@ public class Parser {
      */
     public static Command parseInput(String userInput) {
         String cleanedUserInput = cleanUserInput(userInput);
-        String keyword = getKeywordFromUserInput(cleanedUserInput);
+        String keyword = getKeywordFromUserInput(cleanedUserInput).toLowerCase();
         String remainder = getRemainderFromUserInput(cleanedUserInput);
         if(remainder.contains("|")) {
             throw new InvalidCharacterException();
@@ -101,6 +103,7 @@ public class Parser {
         case "help" -> parseHelpCommand(remainder);
         case "setting" -> parseSettingCommand(remainder);
         case "read" -> parseReadCommand(remainder);
+        case "find" -> parseFindCommand(remainder);
         default -> throw new UnknownCommandException(userInput, keyword);
         };
     }
@@ -218,7 +221,7 @@ public class Parser {
         case "open" -> CaseListingMode.OPEN_ONLY;
         case "closed" -> CaseListingMode.CLOSED_ONLY;
         case "all" -> CaseListingMode.ALL;
-        default -> throw new InvalidListCommandException();
+        default -> throw new InvalidStatusException();
         };
     }
 
@@ -261,7 +264,12 @@ public class Parser {
      * @return a valid {@link AddCommand} if arguments are invalid
      */
     private static Command parseAddCommand(String remainder) {
+        // List of required flags for the add command
         List<String> requiredFlags = List.of("category", "title", "date", "info");
+
+        // List of valid flags to be taken as input from the user
+        List<String> validFlags = List.of("category", "title", "date", "info", "victim", "officer");
+
         LocalDate date;
 
         if (validator.inputIsEmpty(remainder)) {
@@ -271,7 +279,7 @@ public class Parser {
         Map<String, String> flagValues = extractFlagValues(remainder);
 
         if (!validator.haveAllRequiredFlags(flagValues, requiredFlags) ||
-                !validator.haveValidFlags(flagValues, VALID_FLAGS)) {
+                !validator.haveValidFlags(flagValues, validFlags)) {
             throw new InvalidAddCommandException();
         }
 
@@ -430,7 +438,8 @@ public class Parser {
             Map<String, Object> typedFlagValues = convertFlagValueTypes(flagValues);
             return new EditCommand(caseId, typedFlagValues);
         } else {
-            throw new InvalidEditCommandException();
+            logger.log(Level.WARNING, "Incorrect flag usage detected");
+            throw new IncorrectFlagException();
         }
     }
 
@@ -438,7 +447,8 @@ public class Parser {
      * Converts raw flag values from strings to their appropriate types based on flag names.
      * @param rawValues map of flag names and their string values as input by the user
      * @return map of flag names and their values converted to appropriate types
-     * @throws InvalidEditCommandException if a value cannot be converted to the expected type
+     * @throws InvalidDateInputException if a date value cannot be parsed using the system input date format
+     * @throws InvalidIntegerException if a numerical flag value is non-numeric or negative
      */
     public static Map<String, Object> convertFlagValueTypes(Map<String, String> rawValues) {
         logger.fine("Starting flag value type conversion.");
@@ -462,25 +472,41 @@ public class Parser {
                 }
                 break;
 
-            case "exceeded-speed",
-                 "number-of-victims",
-                 "speed-limit",
-                 "monetary-damage",
-                 "financial-value",
-                 "number-of-casualties":
+            case "number-of-victims",
+                 "number-of-casualties",
+                 "exceeded-speed",
+                 "speed-limit":
                 try {
                     Integer intValue = Integer.parseInt(value);
                     if (intValue < 0) {
                         logger.log(Level.WARNING,"Value for flag '" + flag + "' is negative: " + intValue);
-                        throw new InvalidEditCommandException();
+                        throw new InvalidIntegerException(flag);
                     }
                     typedValues.put(flag, intValue);
                 } catch (NumberFormatException e) {
                     logger.log(Level.WARNING, "Failed to parse integer from non-numeric string '" + value
                             + "' for flag '" + flag + "'.");
-                    throw new InvalidEditCommandException();
+                    throw new InvalidIntegerException(flag);
                 }
                 break;
+
+            case "monetary-damage",
+                 "financial-value":
+                try {
+                    Double doubleValue = Double.parseDouble(value);
+                    if (doubleValue < 0) {
+                        logger.log(Level.WARNING, "Value for flag '" + flag + "' is negative: " + doubleValue);
+                        throw new InvalidDoubleException(flag);
+                    }
+                    doubleValue = Math.round(doubleValue * 100.0) / 100.0;
+                    typedValues.put(flag, doubleValue);
+                } catch (NumberFormatException e) {
+                    logger.log(Level.WARNING, "Failed to parse double from non-numeric string '" + value
+                            + "' for flag '" + flag + "'.");
+                    throw new InvalidDoubleException(flag);
+                }
+                break;
+
             default:
                 // All other flags remain as String
                 typedValues.put(flag, value);
@@ -506,7 +532,6 @@ public class Parser {
     private static Command parseSettingCommand(String remainder) {
         List<String> requiredFlags = List.of("type", "value");
         List<String> validFlags = List.of("type", "value");
-
 
         if (validator.inputIsEmpty(remainder)) {
             throw new InvalidSettingCommandException(false);
@@ -560,4 +585,49 @@ public class Parser {
         }
         return new HelpCommand();
     }
+
+    //@@ author zhengjie2002
+    /**
+     * Parses the {@code find} command and validates its arguments.
+     * <p>
+     * This method extracts the {@code --keyword} flag from the input and validates that it is present.
+     * The keyword is used to search for cases with matching titles or descriptions.
+     * <p>
+     * Supported format:
+     * <ul>
+     *   <li>{@code find --keyword <search_term>} — Searches for cases containing the specified keyword</li>
+     * </ul>
+     * The {@code --keyword} flag is required. If it is missing or if any invalid flags are present,
+     * an {@link InvalidFindCommandException} will be thrown.
+     *
+     * @param remainder the portion of the input following the {@code find} keyword
+     * @return a {@link FindCommand} configured with the specified search keyword
+     * @throws InvalidFindCommandException if the input is empty, missing the required {@code --keyword} flag,
+     *                                     or contains invalid flags
+     */
+    private static Command parseFindCommand(String remainder) {
+        // List of required flags for the find command
+        List<String> requiredFlags = List.of("keyword");
+
+        //  List of valid flags to be taken as input from the user
+        List<String> validFlags = List.of("keyword", "status");
+
+
+        if (validator.inputIsEmpty(remainder)) {
+            throw new InvalidFindCommandException();
+        }
+
+        Map<String, String> flagValues = extractFlagValues(remainder);
+
+        if (!validator.haveAllRequiredFlags(flagValues, requiredFlags) ||
+                !validator.haveValidFlags(flagValues, validFlags)) {
+            throw new InvalidFindCommandException();
+        }
+
+        CaseListingMode listingMode = parseListStatus(flagValues.get("status"));
+
+        return new FindCommand(flagValues.get("keyword"), listingMode);
+    }
+
+    //@@ author
 }

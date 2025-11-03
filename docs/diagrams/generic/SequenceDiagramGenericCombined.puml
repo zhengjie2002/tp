@@ -4,15 +4,16 @@ skinparam ArrowFontStyle plain
 
 actor User as user USER_COLOR
 participant ":SGSafe" as sgsafe MAIN_COLOR
-participant ":Parser" as parser UI_COLOR
+participant "<<Class>>\n:Parser" as parser UI_COLOR
 participant ":Validator" as validator UI_COLOR
-participant ":Display" as display UI_COLOR
+participant "<<Class>>\n:Display" as display UI_COLOR
 
+user -[USER_COLOR]> sgsafe : launch()
 activate sgsafe MAIN_COLOR
 
 sgsafe -[MAIN_COLOR]> display :printWelcomeMessage()
 activate display UI_COLOR
-deactivate display UI_COLOR
+return
 
 loop until userInput == "bye"
     user -[USER_COLOR]> sgsafe : userInput
@@ -25,23 +26,27 @@ loop until userInput == "bye"
 
     parser -[UI_COLOR]> parser : extractFlagValues(...)
     activate parser UI_COLOR_T1
+
     deactivate parser
 
     parser -[UI_COLOR]> validator : haveValidFlags(...)
     activate validator UI_COLOR
+
+    return isValid
     deactivate validator
 
-    create participant ":Command" as cmd COMMAND_COLOR
-    parser -[UI_COLOR]> cmd : new Command(...)
+
+    create participant ":XYZCommand" as cmd COMMAND_COLOR
+    parser -[UI_COLOR]> cmd : new XYZCommand(...)
     activate cmd COMMAND_COLOR
 
-    cmd --> parser : return Command
+    cmd --> parser : return XYZCommand
     deactivate cmd
 
-    parser --> parser : return Command
+    parser --> parser : return XYZCommand
     deactivate parser
 
-    parser --> sgsafe : return Command
+    parser --> sgsafe : return XYZCommand
     deactivate parser
 
     sgsafe -[MAIN_COLOR]> cmd : execute()
@@ -56,24 +61,27 @@ loop until userInput == "bye"
 
     caseMgr -[CASEFILE_COLOR]> case : perform some operation
     activate case CASEFILE_COLOR
-    deactivate case
-    deactivate caseMgr
+
+    return
+    return
 
     cmd -[COMMAND_COLOR]> display : printMessage(...)
     activate display UI_COLOR
-    deactivate display
-    deactivate cmd
+    return
+
+    return
+    'Hidden arrow to position the destroy marker below the end of the activation bar.
+    cmd -[hidden]-> display
 
     destroy cmd
-
     sgsafe -[MAIN_COLOR]> storage : saveToFile()
     activate storage STORAGE_COLOR
-    deactivate storage
+    return
 
 end
 
 sgsafe -[MAIN_COLOR]> display :printGoodbyeMessage()
 activate display UI_COLOR
-deactivate display UI_COLOR
+return
 
 @enduml

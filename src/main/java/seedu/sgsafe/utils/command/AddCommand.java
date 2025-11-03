@@ -1,5 +1,6 @@
 package seedu.sgsafe.utils.command;
 
+import seedu.sgsafe.domain.casefiles.CaseFormatter;
 import seedu.sgsafe.domain.casefiles.type.financial.BurglaryCase;
 import seedu.sgsafe.domain.casefiles.type.financial.ScamCase;
 import seedu.sgsafe.domain.casefiles.type.property.ArsonCase;
@@ -31,9 +32,6 @@ public class AddCommand extends Command {
 
     private static final Logger logger = Logger.getLogger(AddCommand.class.getName());
 
-    // Format string for generating case IDs
-    private static final String CASE_ID_FORMAT = "%06x";
-
     // Category of the case
     private final String caseCategory;
 
@@ -55,6 +53,7 @@ public class AddCommand extends Command {
     /**
      * Constructs an AddCommand with the specified case details.
      *
+     * @param caseCategory The category of the case. Cannot be null.
      * @param caseTitle   The title of the case. Cannot be null.
      * @param caseDate    The date of the case. Cannot be null.
      * @param caseInfo    Additional information about the case. Cannot be null.
@@ -97,33 +96,18 @@ public class AddCommand extends Command {
         return caseOfficer;
     }
 
-    // @@author xelisce
+    // @@author zhengjie2002
 
     /**
-     * Generates a unique 6-character hexadecimal ID for a new case.
-     * <p>
-     * The ID is derived from the current size of {@code caseList}, formatted as a
-     * zero-padded lowercase hexadecimal string. This ensures compact, readable,
-     * and collision-free identifiers as long as cases are not removed or reordered.
-     * <p>
-     * Example outputs:
-     * <ul>
-     *   <li>{@code 000000} — first case</li>
-     *   <li>{@code 00000a} — tenth case</li>
-     *   <li>{@code 0000ff} — 256th case</li>
-     * </ul>
+     * Executes the AddCommand, creating a new case based on the provided details.
+     * Each case type is instantiated according to the specified category.
+     * The case is added to the CaseManager, and a confirmation message is displayed.
      *
-     * @return a 6-character hexadecimal string representing the new case ID
+     * @throws InvalidCategoryException if the case category is invalid.
      */
-    private static String generateHexId() {
-        int raw = CaseManager.getCaseListSize();
-        return String.format(CASE_ID_FORMAT, raw); // zero-padded 6-digit hex
-    }
-
-    // @@author zhengjie2002
     @Override
     public void execute() {
-        String id = generateHexId();
+        String id = CaseManager.generateHexId();
         Case newCase;
 
         switch (caseCategory) {
@@ -144,6 +128,11 @@ public class AddCommand extends Command {
         }
 
         CaseManager.addCase(newCase);
-        Display.printMessage("New case added:", newCase.getDisplayLine());
+        Display.printMessage("New case added:", generateListTableHeaderMessage(), newCase.getDisplayLine());
     }
+
+    private String generateListTableHeaderMessage() {
+        return String.format(CaseFormatter.SUMMARY_FORMAT_STRING, "STATUS", "CATEGORY", "ID", "DATE", "TITLE");
+    }
+
 }
