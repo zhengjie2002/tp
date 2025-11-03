@@ -235,8 +235,7 @@ public class Storage {
             settingResult.add("Timestamp output format was set to: " + Settings.getDateTimeFormat());
 
             Display.printMessage(settingResult.toArray(new String[0]));
-        }
-        else if (!line.trim().isEmpty()) {
+        } else if (!line.trim().isEmpty()) {
             try {
                 Case newCase = getCaseFromSaveString(line);
                 CaseManager.addCase(newCase);
