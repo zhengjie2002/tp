@@ -49,31 +49,29 @@ public class HelpCommand extends Command {
                     "and output detail.\n" +
                     "\n" +
                     "\tUsage:\n" +
-                    "\t\tlist [--status open|closed|all] [--mode summary|verbose]\n" +
+                    "\t\tlist [--status open|closed] [--mode verbose]\n" +
                     "\n" +
                     "\tExamples:\n" +
                     "\t\tlist\n" +
                     "\t\tlist --status closed\n" +
-                    "\t\tlist --status all --mode verbose\n" +
+                    "\t\tlist --status open --mode verbose\n" +
                     "\n" +
                     "\tFlags:\n" +
                     "\t\t--status value    Filters cases by their status.\n" +
                     "\t\t\topen   → Show only open cases\n" +
                     "\t\t\tclosed → Show only closed cases\n" +
-                    "\t\t\tall    → Show all cases (default)\n" +
                     "\n" +
                     "\t\t--mode value      Controls the output detail level.\n" +
-                    "\t\t\tsummary → One line per case (default)\n" +
                     "\t\t\tverbose → Detailed multi-line output\n" +
                     "\n" +
-                    "\tDisplayed Fields (--mode summary):\n" +
+                    "\tDisplayed Fields (Default mode):\n" +
                     "\t\t• Status (Open/Closed)\n" +
                     "\t\t• Category\n" +
                     "\t\t• Case ID\n" +
                     "\t\t• Date\n" +
                     "\t\t• Title\n" +
                     "\n" +
-                    "\tDisplayed Fields (--mode verbose):\n" +
+                    "\tDisplayed Fields (Verbose mode):\n" +
                     "\t\t• Case ID\n" +
                     "\t\t• Status (Open/Closed)\n" +
                     "\t\t• Category\n" +

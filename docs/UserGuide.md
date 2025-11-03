@@ -94,19 +94,17 @@ Adds a new case to the case management system.
 
 Displays all cases in the system, with optional filters and formatting modes.
 
-#### **Format:** `list --status <open|closed|all> --mode <summary|verbose>`
+#### **Format:** `list [--status <open|closed>] [--mode verbose]`
 
 #### Flags
 
 - `--status` (optional): Filters cases by their status.
     - `open`: Show only open cases.
     - `closed`: Show only closed cases.
-    - `all`: Show all cases (default).
 - `--mode` (optional): Controls the level of detail in the output.
-    - `summary`: One-line display per case.
     - `verbose`: Multi-line display with labeled fields.
 
-#### Summary Mode Output
+#### Default Mode Output
 
 Each case is shown in a single line with:
 
@@ -154,7 +152,6 @@ You currently have 1 case in total
 Note: Only basic case details (e.g. Title) are shown here and is truncated if too long.
 For full case information (e.g. case-specific details like murder weapon),
 use the read command
-To see how to use the read command, run: help read
 To use the read command, run: read <caseID>
 ---
 ======== CASE ID 000000 ========

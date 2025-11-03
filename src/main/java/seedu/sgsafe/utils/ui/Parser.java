@@ -166,9 +166,7 @@ public class Parser {
      *   <li>{@code list} — Lists cases using the default mode and non-verbose output</li>
      *   <li>{@code list --status open} — Lists only open cases</li>
      *   <li>{@code list --status closed} — Lists only closed cases</li>
-     *   <li>{@code list --status all} — Lists all cases</li>
      *   <li>{@code list --mode verbose} — Enables verbose output</li>
-     *   <li>{@code list --status open --mode summary} — Lists open cases with summary output</li>
      * </ul>
      * If {@code --status} is present, its value must be one of {@code open}, {@code closed}, or {@code all}.
      * If {@code --mode} is present, its value must be either {@code verbose} or {@code summary}.
@@ -203,7 +201,6 @@ public class Parser {
      * <ul>
      *   <li>{@code open} — Maps to {@link CaseListingMode#OPEN_ONLY}</li>
      *   <li>{@code closed} — Maps to {@link CaseListingMode#CLOSED_ONLY}</li>
-     *   <li>{@code all} — Maps to {@link CaseListingMode#ALL}</li>
      * </ul>
      * If the value is {@code null} or empty, {@link CaseListingMode#DEFAULT} is returned.
      * Any other value will result in a {@link IncorrectFlagException}.
@@ -220,7 +217,6 @@ public class Parser {
         return switch (status.toLowerCase()) {
         case "open" -> CaseListingMode.OPEN_ONLY;
         case "closed" -> CaseListingMode.CLOSED_ONLY;
-        case "all" -> CaseListingMode.ALL;
         default -> throw new InvalidStatusException();
         };
     }
@@ -231,7 +227,6 @@ public class Parser {
      * Valid values are:
      * <ul>
      *   <li>{@code verbose} — Enables verbose output</li>
-     *   <li>{@code summary} — Enables summary (non-verbose) output</li>
      * </ul>
      * If the value is {@code null} or empty, summary mode is assumed by default.
      * Any other value will result in a {@link IncorrectFlagException}.
@@ -247,7 +242,6 @@ public class Parser {
 
         return switch (mode.toLowerCase()) {
         case "verbose" -> true;
-        case "summary" -> false;
         default -> throw new InvalidListCommandException();
         };
     }
