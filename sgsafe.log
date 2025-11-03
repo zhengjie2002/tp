@@ -1,0 +1,342 @@
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.logger.LoggerConfigTest.configureLogger_properLoggerConfiguration_configuresSuccessfully()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [class seedu.sgsafe.utils.settings.SettingsTest] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setOutputDateFormat_validFormat_updatesOutputDateFormat()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setOutputDateFormat_invalidFormat_throwsIllegalArgumentException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setInputDateFormat_formatWithLiteralText_updatesInputDateFormat()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setInputDateFormat_emptyFormat_throwsIllegalArgumentException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:02 AM seedu.sgsafe.utils.settings.Settings validateDateFormat
+WARNING: Date time format is null or empty.
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setInputDateFormat_validFormatWithDifferentLocale_updatesInputDateFormat()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setOutputDateFormat_formatWithSpecialCharacters_throwsIllegalArgumentException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setInputDateFormat_invalidFormat_throwsIllegalArgumentException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setOutputDateFormat_formatWithIncompletePattern_throwsIllegalArgumentException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setInputDateFormat_validFormat_updatesInputDateFormat()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:02 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setOutputDateFormat_validFormatWithDifferentLocale_updatesOutputDateFormat()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setOutputDateFormat_emptyFormat_throwsIllegalArgumentException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.settings.Settings validateDateFormat
+WARNING: Date time format is null or empty.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setOutputDateFormat_formatWithLiteralText_updatesOutputDateFormat()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.settings.SettingsTest.setInputDateFormat_formatWithIncompletePattern_throwsIllegalArgumentException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [class seedu.sgsafe.utils.storage.StorageTest] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_burglaryCaseMissingVictimOfficer_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_accidentCaseValidInputAllValues_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_theftCaseMissingVictimOfficer_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_speedingCaseValidInputNullValues_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_scamCaseValidInput_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_accidentCaseValidInput_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_vandalismCaseValidInput_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_theftCaseValidInputNullValues_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_theftCaseValidInputAllValues_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_othersCaseValidInput_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_speedingCaseValidInputAllValues_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_arsonCaseMissingVictimOfficer_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_murderCaseValidInputAllFields_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_assaultCaseValidInput_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_murderCaseMissingVictimOfficer_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_scamCaseMissingVictimOfficer_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_burglaryCaseValidInput_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_robberyCaseValidInput_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [public void seedu.sgsafe.utils.storage.StorageTest.getCaseFromSaveString_arsonCaseValidInput_successfullyReturnsCase()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Finished flag value type conversion.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [class seedu.sgsafe.utils.ui.ParserTest] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_listWithWhitespace_returnsListCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_invalidDateFormat_throwsIncorrectFlagException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+WARNING: Failed to parse date value '32-13-20' for flag 'date'.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_delete_throwsInvalidDeleteCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_settingMissingBothFlags_throwsInvalidSettingCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator inputIsEmpty
+WARNING: Command input is empty
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_settingWithValidOutputFormat_returnsSettingCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_addValid_returnsAddCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.command.AddCommand <init>
+INFO: AddCommand created
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_listStatusMissingValue_throwsIncorrectFlagException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser extractFlagValues
+WARNING: Incorrect flag usage detected
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_deleteTooLongCaseId_throwsInvalidDeleteCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_closeWithWhitespace_returnsCloseCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_addMissingCompulsoryFlag_throwsInvalidAddCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator haveAllRequiredFlags
+WARNING: Missing required flags for the command.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator haveAllRequiredFlags
+WARNING: Missing required flags for the command.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator haveAllRequiredFlags
+WARNING: Missing required flags for the command.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_missingCaseId_throwsInvalidCaseIdException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_listStatusInvalid_throwsListCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_settingExceedingMaxLength_throwsInputLengthExceededException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser extractFlagValues
+WARNING: Input exceeds character limit
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_invalidKeyword_throwsUnknownCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_openWithWhitespace_returnsOpenCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_addWithDuplicateFlags_throwDuplicateFlagException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser extractFlagValues
+WARNING: Duplicated flags detected
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_settingWithCyrillicCharacters_throwsInvalidFormatStringException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_readMissingArgument_throwsInvalidReadCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_deleteAdditionalArguments_throwsInvalidDeleteCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_missingInput_throwsInvalidEditCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_settingWithChineseCharacters_throwsInvalidFormatStringException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_readWithWhitespace_returnsReadCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_emptyInput_throwsEmptyCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_openValid_returnsOpenCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_addWithExtraWhitespace_returnsAddCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.command.AddCommand <init>
+INFO: AddCommand created
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_byeCommand_returnsByeCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_negativeValueForVictimNumber_throwsInvalidIntegerException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+WARNING: Value for flag 'number-of-victims' is negative: -50
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_readValid_returnsReadCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_addWithFlagError_throwIncorrectFlagException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser extractFlagValues
+WARNING: Incorrect flag usage detected
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_closeMissingArgument_throwsInvalidCloseCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator inputIsEmpty
+WARNING: Command input is empty
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator inputIsEmpty
+WARNING: Command input is empty
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_openMissingArgument_throwsInvalidOpenCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator inputIsEmpty
+WARNING: Command input is empty
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator inputIsEmpty
+WARNING: Command input is empty
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_closeWrongCaseId_throwsInvalidCaseIdException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_listWithTabAndNewline_returnsListCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_settingWithEmojiCharacters_throwsInvalidFormatStringException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_missingFlagValue_throwsInvalidEditCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser extractFlagValues
+WARNING: Incorrect flag usage detected
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_wrongCaseId_throwsInvalidCaseIdException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_readWrongCaseId_throwsInvalidReadCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_addExceedInputLength_throwIncorrectFlagException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser extractFlagValues
+WARNING: Input exceeds character limit
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_nonIntegerValueForSpeedLimit_throwsInvalidIntegerException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+FINE: Starting flag value type conversion.
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser convertFlagValueTypes
+WARNING: Failed to parse integer from non-numeric string 'fast' for flag 'speed-limit'.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_listWithMixedCase_returnsListCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_deleteTooShortCaseId_throwsInvalidDeleteCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_fooList_throwsUnknownCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_deleteValid_returnsDeleteCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_settingWithValidInputFormat_returnsSettingCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_readExtraArguments_throwsInvalidReadCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_listStatusOpen_returnsOpenOnlyMode()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_listStatusExtraArgs_throwsListCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_settingMissingTypeFlag_throwsInvalidSettingCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator haveAllRequiredFlags
+WARNING: Missing required flags for the command.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_listWithExtraArgAndWhitespace_throwsIncorrectFlagException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser extractFlagValues
+WARNING: Incorrect flag usage detected
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_settingEmptyRemainder_throwsInvalidSettingCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator inputIsEmpty
+WARNING: Command input is empty
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_foolistWithWhitespace_throwsUnknownCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_settingWithUnicodeSymbols_throwsInvalidFormatStringException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_closeValid_returnsCloseCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_byeCommandWithExtraArgs_throwsInvalidByeCommandException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_openWrongCaseId_throwsInvalidCaseIdException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_addValidWithEscape_returnsAddCommand()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.command.AddCommand <init>
+INFO: AddCommand created
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_duplicateFlags_throwsDuplicateFlagException()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Parser extractFlagValues
+WARNING: Duplicated flags detected
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ParserTest.parseInput_listStatusClosed_returnsClosedOnlyMode()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [class seedu.sgsafe.utils.ui.ValidatorTest] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ValidatorTest.inputIsEmpty_emptyInput_returnsTrue()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator inputIsEmpty
+WARNING: Command input is empty
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ValidatorTest.haveValidFlags_someFlagsInvalid_returnsFalse()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator haveValidFlags
+WARNING: Flags provided are invalid for the command.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ValidatorTest.haveValidFlags_allFlagsValid_returnsTrue()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ValidatorTest.haveAllRequiredFlags_allRequiredFlagsPresent_returnsTrue()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ValidatorTest.haveAllRequiredFlags_missingRequiredFlags_returnsFalse()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']
+Nov 04, 2025 1:49:03 AM seedu.sgsafe.utils.ui.Validator haveAllRequiredFlags
+WARNING: Missing required flags for the command.
+Nov 04, 2025 1:49:03 AM org.junit.jupiter.engine.execution.ConditionEvaluator logResult
+FINER: Evaluation of condition [org.junit.jupiter.engine.extension.DisabledCondition] on [void seedu.sgsafe.utils.ui.ValidatorTest.inputIsEmpty_nonEmptyInput_returnsFalse()] resulted in: ConditionEvaluationResult [enabled = true, reason = '@Disabled is not present']

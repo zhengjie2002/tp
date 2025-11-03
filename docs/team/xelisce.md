@@ -54,7 +54,6 @@ Given below are my contributions to the project.
           * Established a **template for execution‑phase sequence diagrams**, enabling consistent documentation of future commands (`AddCommand`, `DeleteCommand`, etc.).
       * **Model Component Section**:
           * Authored the Model component write‑up, detailing responsibilities of `CaseManager` and `Case`.
-          * Explained integrity constraints (unique IDs, valid statuses) and query/filtering support.
     * Added comprehensive Javadoc comments for all core classes and methods I authored:
         * `Display`, `Parser`, `Validator`, `Command`, `ListCommand`, `Case`, and `CaseManager`.
     * Documented formatting logic, flag behavior, and conditional field inclusion.
