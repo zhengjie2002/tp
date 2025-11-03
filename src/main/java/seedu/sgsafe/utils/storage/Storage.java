@@ -21,6 +21,8 @@ import seedu.sgsafe.utils.exceptions.InvalidSavedCategoryException;
 import seedu.sgsafe.utils.exceptions.InvalidSavedDateException;
 import seedu.sgsafe.utils.exceptions.InvalidSavedFieldsException;
 import seedu.sgsafe.utils.ui.Display;
+import seedu.sgsafe.utils.settings.Settings;
+import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.ui.Parser;
 import seedu.sgsafe.utils.ui.Validator;
 
@@ -52,6 +54,8 @@ public class Storage {
 
     /** The date-time pattern used for saving and parsing timestamps (e.g., 29/10/2025 13:45:22). */
     private static final String SAVE_DATETIME_PATTERN = "dd/MM/yyyy HH:mm:ss";
+
+    private static final String SETTING_PREFIX = "settings:";
 
     /** The filename where cases are stored. */
     private final String filename;
@@ -197,6 +201,17 @@ public class Storage {
         return newCase;
     }
 
+    private void loadSettings(String settingString) throws IllegalArgumentException {
+        String[] settings = settingString.substring(SETTING_PREFIX.length()).split("\\|");
+        if (settings.length != 3) {
+            throw new IllegalArgumentException();
+        }
+
+        Settings.setInputDateFormat(settings[0].strip());
+        Settings.setOutputDateFormat(settings[1].strip());
+        Settings.setDateTimeFormat(settings[2].strip());
+    }
+
     /**
      * Loads all cases from the file into the {@link CaseManager}.
      * <p>
@@ -209,7 +224,23 @@ public class Storage {
             try (Scanner s = new Scanner(file)) {
                 while (s.hasNextLine()) {
                     String line = s.nextLine();
-                    if (!line.trim().isEmpty()) {
+                    if (line.startsWith(SETTING_PREFIX)) {
+                        ArrayList<String> settingResult = new ArrayList<>();
+                        settingResult.add("Loading settings from save...");
+
+                        try {
+                            loadSettings(line);
+                        } catch (IllegalArgumentException e) {
+                            settingResult.add("Invalid settings format. " +
+                                    "Some of them could not be loaded from the save file.");
+                        }
+
+                        settingResult.add("Date input format was set to: " + Settings.getInputDateFormat());
+                        settingResult.add("Date output format was set to: " + Settings.getOutputDateFormat());
+                        settingResult.add("Timestamp output format was set to: " + Settings.getDateTimeFormat());
+                        Display.printMessage(settingResult.toArray(new String[0]));
+                    }
+                    else if (!line.trim().isEmpty()) {
                         try {
                             Case newCase = getCaseFromSaveString(line);
                             CaseManager.addCase(newCase);
@@ -218,8 +249,8 @@ public class Storage {
                         }
                     }
                 }
-            } catch (Exception e) {
-                System.out.println("Something went wrong while loading: " + e.getMessage());
+            } catch (IOException e) {
+                System.out.println("Something went wrong while loading from the save file: " + e.getMessage());
             }
         }
     }
@@ -233,6 +264,10 @@ public class Storage {
     public void saveToFile() {
         ArrayList<Case> cases = CaseManager.getCaseList();
         try (FileWriter fw = new FileWriter(this.filename)) {
+            fw.append(SETTING_PREFIX);
+            fw.append(Settings.getInputDateFormat()).append("|");
+            fw.append(Settings.getOutputDateFormat()).append("|");
+            fw.append(Settings.getDateTimeFormat()).append(System.lineSeparator());
             for (Case c : cases) {
                 fw.append(c.toSaveString());
                 fw.append(System.lineSeparator());
