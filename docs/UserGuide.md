@@ -388,21 +388,21 @@ refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
 - `DECIMAl`: attributes are stored as a number up to 2 decimal points. '0' or any positive number is accepted, 
 but numbers will be rounded off to nearest 2 decimals points.
 
-| `CATEGORY` | `edit` tags (if any)                                                                                                          |
-|------------|-------------------------------------------------------------------------------------------------------------------------------|
-| burglary   | `--financial-value DECIMAL`, `--location STRING`                                                                              |
-| scam       | `--financial-value DECIMAL`                                                                                                   |
-| theft      | `--financial-value DECIMAL`, `--stolen-object STRING`                                                                         |
-| arson      | `--location STRING`, `--monetary-damage DECIMAL`                                                                              |
-| vandalism  | `--location STRING`, `--monetary-damage DECIMAL`                                                                              |
-| rape       |                                                                                                                               |
-| voyeurism  |                                                                                                                               |
-| accident   | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--number-of-casualties INTEGER`                     |
-| speeding   | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--speed-limit INTEGER` , `--exceeded-speed INTEGER` |
-| assault    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
-| murder     | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
-| robbery    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
-| others     | `--custom-category STRING`                                                                                                    |
+| Display          | `CATEGORY` | `edit` tags (if any)                                                                                                          |
+|------------------|------------|-------------------------------------------------------------------------------------------------------------------------------|
+| Burglary         | burglary   | `--financial-value DECIMAL`, `--location STRING`                                                                              |
+| Scam             | scam       | `--financial-value DECIMAL`                                                                                                   |
+| Theft            | theft      | `--financial-value DECIMAL`, `--stolen-object STRING`                                                                         |
+| Arson            | arson      | `--location STRING`, `--monetary-damage DECIMAL`                                                                              |
+| Vandalism        | vandalism  | `--location STRING`, `--monetary-damage DECIMAL`                                                                              |
+| Rape             | rape       |                                                                                                                               |
+| Voyeurism        | voyeurism  |                                                                                                                               |
+| Traffic accident | accident   | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--number-of-casualties INTEGER`                     |
+| Speeding         | speeding   | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--speed-limit INTEGER` , `--exceeded-speed INTEGER` |
+| Assault          | assault    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| Murder           | murder     | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| Robbery          | robbery    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| Others           | others     | `--custom-category STRING`                                                                                                    |
 
 ---
 
