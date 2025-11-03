@@ -57,6 +57,7 @@ organised digital workflow that enhances operational efficiency for the public s
 >
 > * The escape character for `--` is `\--`. 
 > For example: `add --category murder --title hello\--world --info hello --date 05/02/2022` will result in the title of the case being `hello--world`
+> 
 > * You cannot use the character `|` in your input as it is used in the save file format.
 ---
 
@@ -271,7 +272,7 @@ The type argument determines the date format. It must be one of the following:
 - `dateoutput`: The display format for dates.
 - `timestampoutput`: The display format for full date-times (e.g., "Updated At," "Created At") used in verbose listing or the read command.
 
-> ℹ️ Note: The default date input and output format is `dd/MM/yyyy` and the default timestamp output format is `dd/MM/yyyy HH:mm:ss`.
+> ℹ️ Note: The default date input and output format is `dd/MM/yyyy` and the default timestamp output format is `dd/MM/yyyy HH:mm:ss`.\
 > ⚠️ Warning: Note that month is capitalised in the date-time formatter. `MM` represents month while `mm` represents
 > minutes. Hour-of-day are represented by `HH`.\
 > ⚠️ Warning: The VALUE must be a valid date format, according to Java's DateFormatter. Stray characters that are not
@@ -324,11 +325,14 @@ Example output:
 
 To look for a case within the system that matches the title.
 
-**Format:** `find --keyword KEYWORD`
+**Format:** `find --keyword KEYWORD [--status <open|closed>]`
 
 > ℹ️ Note: KEYWORD is a string literal that will be matched. However, it is case-insensitive.\
 > ℹ️ Note: This search is not case-sensitive asd finds all cases where the title contains the 
 > consecutive KEYWORD string.
+
+**Example**
+- `find --keyword murder` will find all cases with the keyword murder in its title
 
 ---
 
@@ -380,24 +384,26 @@ refer to [`add`](#adding-a-case-add) and [`edit`](#editing-a-case-edit)
 - input is case-insensitive (e.g., `Burglary`, `burglary`, and `BURGLARY` are all acceptable)
 
 **`edit` tags:**
-- `STRING`: attributes are stored as strings and accept any input
-- `INTEGER`: attributes are stored as integers and only accept positive whole numbers as input.
+- `STRING`: attributes are stored as strings and accept any input.
+- `INTEGER`: attributes are stored as integers and only accept '0' or positive whole numbers as input.
+- `DECIMAl`: attributes are stored as a number up to 2 decimal points. '0' or any positive number is accepted, 
+but numbers will be rounded off to nearest 2 decimals points.
 
-| `CATEGORY` | `edit` tags (if any)                                                                                                          |
-|------------|-------------------------------------------------------------------------------------------------------------------------------|
-| burglary   | `--financial-value INTEGER`, `--location STRING`                                                                              |
-| scam       | `--financial-value INTEGER`                                                                                                   |
-| theft      | `--financial-value INTEGER`, `--stolen-object STRING`                                                                         |
-| arson      | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
-| vandalism  | `--location STRING`, `--monetary-damage INTEGER`                                                                              |
-| rape       |                                                                                                                               |
-| voyeurism  |                                                                                                                               |
-| accident   | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--number-of-casualties INTEGER`                     |
-| speeding   | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--speed-limit INTEGER` , `--exceeded-speed INTEGER` |
-| assault    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
-| murder     | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
-| robbery    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
-| others     | `--custom-category STRING`                                                                                                    |
+| Display          | `CATEGORY` | `edit` tags (if any)                                                                                                          |
+|------------------|------------|-------------------------------------------------------------------------------------------------------------------------------|
+| Burglary         | burglary   | `--financial-value DECIMAL`, `--location STRING`                                                                              |
+| Scam             | scam       | `--financial-value DECIMAL`                                                                                                   |
+| Theft            | theft      | `--financial-value DECIMAL`, `--stolen-object STRING`                                                                         |
+| Arson            | arson      | `--location STRING`, `--monetary-damage DECIMAL`                                                                              |
+| Vandalism        | vandalism  | `--location STRING`, `--monetary-damage DECIMAL`                                                                              |
+| Rape             | rape       |                                                                                                                               |
+| Voyeurism        | voyeurism  |                                                                                                                               |
+| Traffic accident | accident   | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--number-of-casualties INTEGER`                     |
+| Speeding         | speeding   | `--vehicle-type STRING`, `--vehicle-plate STRING`, `--road-name STRING`, `--speed-limit INTEGER` , `--exceeded-speed INTEGER` |
+| Assault          | assault    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| Murder           | murder     | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| Robbery          | robbery    | `--weapon STRING`, `--number-of-victims INTEGER`                                                                              |
+| Others           | others     | `--custom-category STRING`                                                                                                    |
 
 ---
 
@@ -438,7 +444,6 @@ for each case, and reusing IDs could lead to confusion and data integrity issues
 ---
 
 ## Command Summary
-
 | Action          | Format                                                                                                | Example                                                                                                                    |
 |-----------------|-------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | **Add case**    | `add --category CATEGORY --title TITLE --date DATE --info INFO [--victim VICTIM] [--officer OFFICER]` | `add --category Theft --title Theft case --date 15/10/2025 --info Stolen wallet --victim John Doe --officer Officer Smith` |
@@ -449,6 +454,8 @@ for each case, and reusing IDs could lead to confusion and data integrity issues
 | **Delete case** | `delete ID`                                                                                           | `delete 00beef`                                                                                                            |
 | **Setting**     | `setting --type TYPE --value VALUE`                                                                   | `setting --type dateinput --value dd-MM-yyyy`                                                                              |
 | **Read Case**   | `read ID`                                                                                             | `read 000001`                                                                                                              |
-| **Find Case**   | `find --keyword KEYWORD`                                                                              | `find --keyword robbery`                                                                                                   |
+| **Find Case**   | `find --keyword KEYWORD [--status <open OR closed>]`                                                  | `find --keyword robbery`                                                                                                   |
 | **Help**        | `help`                                                                                                | `help`                                                                                                                     |
 | **Exit**        | `bye`                                                                                                 | `bye`                                                                                                                      |
+
+^ OR above means either keyword can be used, but not both.

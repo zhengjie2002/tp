@@ -24,6 +24,7 @@ import seedu.sgsafe.utils.exceptions.InvalidByeCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidCaseIdException;
 import seedu.sgsafe.utils.exceptions.InvalidCloseCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDateInputException;
+import seedu.sgsafe.utils.exceptions.InvalidDoubleException;
 import seedu.sgsafe.utils.exceptions.InvalidEditCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidFindCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidFormatStringException;
@@ -34,6 +35,7 @@ import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidReadCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidSettingCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidStatusException;
 import seedu.sgsafe.utils.exceptions.UnknownCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidDeleteCommandException;
 import  seedu.sgsafe.utils.exceptions.InvalidCharacterException;
@@ -215,7 +217,7 @@ public class Parser {
         return switch (status.toLowerCase()) {
         case "open" -> CaseListingMode.OPEN_ONLY;
         case "closed" -> CaseListingMode.CLOSED_ONLY;
-        default -> throw new InvalidListCommandException();
+        default -> throw new InvalidStatusException();
         };
     }
 
@@ -464,12 +466,10 @@ public class Parser {
                 }
                 break;
 
-            case "exceeded-speed",
-                 "number-of-victims",
-                 "speed-limit",
-                 "monetary-damage",
-                 "financial-value",
-                 "number-of-casualties":
+            case "number-of-victims",
+                 "number-of-casualties",
+                 "exceeded-speed",
+                 "speed-limit":
                 try {
                     Integer intValue = Integer.parseInt(value);
                     if (intValue < 0) {
@@ -483,6 +483,24 @@ public class Parser {
                     throw new InvalidIntegerException(flag);
                 }
                 break;
+
+            case "monetary-damage",
+                 "financial-value":
+                try {
+                    Double doubleValue = Double.parseDouble(value);
+                    if (doubleValue < 0) {
+                        logger.log(Level.WARNING, "Value for flag '" + flag + "' is negative: " + doubleValue);
+                        throw new InvalidDoubleException(flag);
+                    }
+                    doubleValue = Math.round(doubleValue * 100.0) / 100.0;
+                    typedValues.put(flag, doubleValue);
+                } catch (NumberFormatException e) {
+                    logger.log(Level.WARNING, "Failed to parse double from non-numeric string '" + value
+                            + "' for flag '" + flag + "'.");
+                    throw new InvalidDoubleException(flag);
+                }
+                break;
+
             default:
                 // All other flags remain as String
                 typedValues.put(flag, value);
@@ -586,7 +604,7 @@ public class Parser {
         List<String> requiredFlags = List.of("keyword");
 
         //  List of valid flags to be taken as input from the user
-        List<String> validFlags = List.of("keyword");
+        List<String> validFlags = List.of("keyword", "status");
 
 
         if (validator.inputIsEmpty(remainder)) {
@@ -600,7 +618,9 @@ public class Parser {
             throw new InvalidFindCommandException();
         }
 
-        return new FindCommand(flagValues.get("keyword"));
+        CaseListingMode listingMode = parseListStatus(flagValues.get("status"));
+
+        return new FindCommand(flagValues.get("keyword"), listingMode);
     }
 
     //@@ author
