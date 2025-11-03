@@ -16,7 +16,13 @@ import seedu.sgsafe.domain.casefiles.type.traffic.SpeedingCase;
 import seedu.sgsafe.domain.casefiles.type.violent.AssaultCase;
 import seedu.sgsafe.domain.casefiles.type.violent.MurderCase;
 import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
+import seedu.sgsafe.utils.exceptions.InvalidSaveStringException;
+import seedu.sgsafe.utils.exceptions.InvalidSavedCategoryException;
+import seedu.sgsafe.utils.exceptions.InvalidSavedDateException;
+import seedu.sgsafe.utils.exceptions.InvalidSavedFieldsException;
+import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.ui.Parser;
+import seedu.sgsafe.utils.ui.Validator;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -24,6 +30,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +55,8 @@ public class Storage {
 
     /** The filename where cases are stored. */
     private final String filename;
+
+    private final Validator validator = new Validator();
 
     /**
      * Constructs a {@code Storage} object with the specified filename.
@@ -87,10 +96,12 @@ public class Storage {
         Map<String, String> fields = new HashMap<>();
         for (String field : saveString.split("\\|")) {
             String[] splitField = field.split(":", 2);
-            String key = splitField[0];
-            String value = (splitField[1].isEmpty()) ? null : splitField[1];
-            if (value != null) {
-                fields.put(key, value);
+            if(splitField.length == 2) {
+                String key = splitField[0];
+                String value = (splitField[1].isEmpty()) ? null : splitField[1].strip();
+                if (value != null) {
+                    fields.put(key, value);
+                }
             }
         }
         return fields;
@@ -108,24 +119,55 @@ public class Storage {
     public Case getCaseFromSaveString(String line) {
         Map<String, String> fields = getFields(line);
 
+        // List of required flags
+        List<String> requiredFlags = List.of(
+                "category",
+                "title",
+                "date",
+                "info",
+                "is-deleted",
+                "is-open",
+                "created-at",
+                "updated-at"
+        );
+
+        if(!validator.haveAllRequiredFlags(fields, requiredFlags)) {
+            throw new InvalidSavedFieldsException(line);
+        }
+
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getSaveDatePattern());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(getSaveDateTimePattern());
 
         // Parse base attributes
         String id = fields.get("id");
         String title = fields.get("title");
-        LocalDate date = LocalDate.parse(fields.get("date"), dateFormatter);
         String info = fields.get("info");
         String victim = fields.get("victim");
         String officer = fields.get("officer");
         boolean isDeleted = fields.get("is-deleted").equals("1");
         boolean isOpen = fields.get("is-open").equals("1");
         String category = fields.get("category");
-        LocalDateTime createdAt = LocalDateTime.parse(fields.get("created-at"), dateTimeFormatter);
-        LocalDateTime updatedAt = LocalDateTime.parse(fields.get("updated-at"), dateTimeFormatter);
+
+        LocalDate date = null;
+        LocalDateTime createdAt = null;
+        LocalDateTime updatedAt = null;
+        try {
+            date = LocalDate.parse(fields.get("date"), dateFormatter);
+            createdAt = LocalDateTime.parse(fields.get("created-at"), dateTimeFormatter);
+            updatedAt = LocalDateTime.parse(fields.get("updated-at"), dateTimeFormatter);
+        } catch (DateTimeParseException e) {
+            throw new InvalidSavedDateException(line);
+        }
+
+        CaseCategory caseCategory = null;
+        try {
+            caseCategory = CaseCategory.valueOf(category);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidSavedCategoryException(line);
+        }
 
         // Instantiate the appropriate subclass of Case
-        Case newCase = switch (CaseCategory.valueOf(category)) {
+        Case newCase = switch (caseCategory) {
         case BURGLARY -> new BurglaryCase(id, title, date, info, victim, officer);
         case SCAM -> new ScamCase(id, title, date, info, victim, officer);
         case THEFT -> new TheftCase(id, title, date, info, victim, officer);
@@ -168,8 +210,12 @@ public class Storage {
                 while (s.hasNextLine()) {
                     String line = s.nextLine();
                     if (!line.trim().isEmpty()) {
-                        Case newCase = getCaseFromSaveString(line);
-                        CaseManager.addCase(newCase);
+                        try {
+                            Case newCase = getCaseFromSaveString(line);
+                            CaseManager.addCase(newCase);
+                        } catch (InvalidSaveStringException e) {
+                            Display.printMessage(e.getErrorMessage());
+                        }
                     }
                 }
             } catch (Exception e) {
