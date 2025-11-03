@@ -16,6 +16,7 @@ import seedu.sgsafe.utils.command.ReadCommand;
 import seedu.sgsafe.utils.command.OpenCommand;
 import seedu.sgsafe.utils.command.SettingCommand;
 import seedu.sgsafe.utils.command.SettingType;
+import seedu.sgsafe.utils.exceptions.DoubleLengthExceededException;
 import seedu.sgsafe.utils.exceptions.DuplicateFlagException;
 import seedu.sgsafe.utils.exceptions.EmptyCommandException;
 import seedu.sgsafe.utils.exceptions.IncorrectFlagException;
@@ -32,6 +33,7 @@ import seedu.sgsafe.utils.exceptions.InvalidHelpCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidIntegerException;
 import seedu.sgsafe.utils.exceptions.InvalidListCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidAddCommandException;
+import seedu.sgsafe.utils.exceptions.InvalidNumberException;
 import seedu.sgsafe.utils.exceptions.InvalidOpenCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidReadCommandException;
 import seedu.sgsafe.utils.exceptions.InvalidSettingCommandException;
@@ -67,6 +69,9 @@ public class Parser {
 
     // Maximum allowed length for any input value
     private static final int MAX_INPUT_LENGTH = 5000;
+
+    // Maximum allowed value for double
+    private static final double MAX_DOUBLE = 1_000_000_000_000.0; // adjust per domain
 
     // Placeholder for escaped flag sequences
     private static final String ESCAPED_FLAG_PLACEHOLDER = "<<<ESCAPED_DOUBLE_DASH>>>";
@@ -497,12 +502,16 @@ public class Parser {
                         logger.log(Level.WARNING, "Value for flag '" + flag + "' is negative: " + doubleValue);
                         throw new InvalidDoubleException(flag);
                     }
+                    if (Double.isInfinite(doubleValue) || doubleValue > MAX_DOUBLE) {
+                        logger.log(Level.WARNING, "Value for flag '" + flag + "' exceeds double bounds: " + doubleValue);
+                        throw new DoubleLengthExceededException(flag);
+                    }
                     doubleValue = Math.round(doubleValue * 100.0) / 100.0;
                     typedValues.put(flag, doubleValue);
                 } catch (NumberFormatException e) {
                     logger.log(Level.WARNING, "Failed to parse double from non-numeric string '" + value
                             + "' for flag '" + flag + "'.");
-                    throw new InvalidDoubleException(flag);
+                    throw new InvalidNumberException(flag);
                 }
                 break;
 
