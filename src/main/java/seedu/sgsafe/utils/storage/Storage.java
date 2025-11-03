@@ -185,11 +185,14 @@ public class Storage {
                     if (line.startsWith(SETTING_PREFIX)) {
                         ArrayList<String> settingResult = new ArrayList<>();
                         settingResult.add("Loading settings from save...");
+
                         try {
                             loadSettings(line);
                         } catch (IllegalArgumentException e) {
-                            settingResult.add("Invalid settings format. Some of them could not be loaded from the save file.");
+                            settingResult.add("Invalid settings format. " +
+                                    "Some of them could not be loaded from the save file.");
                         }
+
                         settingResult.add("Date input format was set to: " + Settings.getInputDateFormat());
                         settingResult.add("Date output format was set to: " + Settings.getOutputDateFormat());
                         settingResult.add("Timestamp output format was set to: " + Settings.getDateTimeFormat());
