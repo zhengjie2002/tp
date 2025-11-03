@@ -503,7 +503,8 @@ public class Parser {
                         throw new InvalidDoubleException(flag);
                     }
                     if (Double.isInfinite(doubleValue) || doubleValue > MAX_DOUBLE) {
-                        logger.log(Level.WARNING, "Value for flag '" + flag + "' exceeds double bounds: " + doubleValue);
+                        logger.log(Level.WARNING, "Value for flag '" + flag +
+                                "' exceeds double bounds: " + doubleValue);
                         throw new DoubleLengthExceededException(flag);
                     }
                     doubleValue = Math.round(doubleValue * 100.0) / 100.0;
