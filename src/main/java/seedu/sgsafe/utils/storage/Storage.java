@@ -3,6 +3,7 @@ package seedu.sgsafe.utils.storage;
 import seedu.sgsafe.domain.casefiles.Case;
 import seedu.sgsafe.domain.casefiles.CaseManager;
 import seedu.sgsafe.domain.casefiles.type.CaseCategory;
+import seedu.sgsafe.domain.casefiles.type.InvalidCase;
 import seedu.sgsafe.domain.casefiles.type.OthersCase;
 import seedu.sgsafe.domain.casefiles.type.financial.BurglaryCase;
 import seedu.sgsafe.domain.casefiles.type.financial.ScamCase;
@@ -16,23 +17,27 @@ import seedu.sgsafe.domain.casefiles.type.traffic.SpeedingCase;
 import seedu.sgsafe.domain.casefiles.type.violent.AssaultCase;
 import seedu.sgsafe.domain.casefiles.type.violent.MurderCase;
 import seedu.sgsafe.domain.casefiles.type.violent.RobberyCase;
+
 import seedu.sgsafe.utils.exceptions.InvalidSaveStringException;
 import seedu.sgsafe.utils.exceptions.InvalidSavedCategoryException;
 import seedu.sgsafe.utils.exceptions.InvalidSavedDateException;
 import seedu.sgsafe.utils.exceptions.InvalidSavedFieldsException;
-import seedu.sgsafe.utils.ui.Display;
-import seedu.sgsafe.utils.settings.Settings;
+
 import seedu.sgsafe.utils.ui.Display;
 import seedu.sgsafe.utils.ui.Parser;
 import seedu.sgsafe.utils.ui.Validator;
 
+import seedu.sgsafe.utils.settings.Settings;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -142,8 +147,9 @@ public class Storage {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getSaveDatePattern());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(getSaveDateTimePattern());
 
+        String id = CaseManager.generateHexId();
+
         // Parse base attributes
-        String id = fields.get("id");
         String title = fields.get("title");
         String info = fields.get("info");
         String victim = fields.get("victim");
@@ -163,7 +169,7 @@ public class Storage {
             throw new InvalidSavedDateException(line);
         }
 
-        CaseCategory caseCategory = null;
+        CaseCategory caseCategory;
         try {
             caseCategory = CaseCategory.valueOf(category);
         } catch (IllegalArgumentException e) {
@@ -236,6 +242,7 @@ public class Storage {
                 CaseManager.addCase(newCase);
             } catch (InvalidSaveStringException e) {
                 Display.printMessage(e.getErrorMessage());
+                CaseManager.addCase(new InvalidCase(line));
             }
         }
     }
