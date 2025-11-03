@@ -592,7 +592,7 @@ public class Parser {
         List<String> requiredFlags = List.of("keyword");
 
         //  List of valid flags to be taken as input from the user
-        List<String> validFlags = List.of("keyword");
+        List<String> validFlags = List.of("keyword", "status");
 
 
         if (validator.inputIsEmpty(remainder)) {
@@ -606,7 +606,9 @@ public class Parser {
             throw new InvalidFindCommandException();
         }
 
-        return new FindCommand(flagValues.get("keyword"));
+        CaseListingMode listingMode = parseListStatus(flagValues.get("status"));
+
+        return new FindCommand(flagValues.get("keyword"), listingMode);
     }
 
     //@@ author
