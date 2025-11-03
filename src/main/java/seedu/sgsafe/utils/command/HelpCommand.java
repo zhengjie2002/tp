@@ -63,14 +63,14 @@ public class HelpCommand extends Command {
                     "\t\t--mode value      Controls the output detail level.\n" +
                     "\t\t\tverbose → Detailed multi-line output\n" +
                     "\n" +
-                    "\tDisplayed Fields (--mode summary):\n" +
+                    "\tDisplayed Fields (Default mode):\n" +
                     "\t\t• Status (Open/Closed)\n" +
                     "\t\t• Category\n" +
                     "\t\t• Case ID\n" +
                     "\t\t• Date\n" +
                     "\t\t• Title\n" +
                     "\n" +
-                    "\tDisplayed Fields (--mode verbose):\n" +
+                    "\tDisplayed Fields (Verbose mode):\n" +
                     "\t\t• Case ID\n" +
                     "\t\t• Status (Open/Closed)\n" +
                     "\t\t• Category\n" +

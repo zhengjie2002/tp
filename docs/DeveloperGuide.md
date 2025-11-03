@@ -463,7 +463,7 @@ Given below are the instructions for manual testing of SGSafe. Please note that 
 2. Test case: List cases with status filter
     - Input: `list --status closed`
     - Expected Output: All the cases that have been closed will be listed out.
-    -
+
 3. Test case: List cases with verbose mode
     - Input: `list --mode verbose`
     - Expected Output: More information will be shown per case.
