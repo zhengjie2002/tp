@@ -442,7 +442,8 @@ for each case, and reusing IDs could lead to confusion and data integrity issues
 **Q**: Can I use non english characters (specifically, non ASCII printable characters) in the input fields?\
 **A**: Yes and no. Unfortunately, there is no direct answer for that. SGSafe does support Unicode characters in input fields,
 but there may be limitations based on your terminal or command prompt's ability to handle and display such characters.
-If you encounter issues, it is recommended to stick to standard ASCII printable characters for compatibility.
+If you encounter issues, it is recommended to stick to standard ASCII printable characters for compatibility. We did not intentionally
+restrict the character set as we would like to provide the needed flexibility for users.
 
 ---
 
@@ -464,3 +465,9 @@ NOTE: The notation `OR` below means either keyword can be used, but not both.
 | **Help**        | `help`                                                                                                | `help`                                                                                                                     |
 | **Exit**        | `bye`                                                                                                 | `bye`                                                                                                                      |
 
+## Coming Soon
+Some features that are being considered for future releases include:
+- User authentication and role-based access control to ensure that only authorized personnel can access sensitive case information.
+- Locking of data file and log file for security reasons.
+- Allow logging of interviews and statements related to a case.
+- User defined tags for cases to allow more flexible categorisation.
